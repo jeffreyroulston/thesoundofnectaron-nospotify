@@ -10,6 +10,9 @@ class Controller {
         for (var i=0; i<forms.length; i++) {
             forms[i].addEventListener("submit", this.onFormSubmit.bind(this))
         }
+
+        // show the first question
+        show("#q" + this.currentQuestion.toString());
     }
 
     onFormSubmit(e) {
