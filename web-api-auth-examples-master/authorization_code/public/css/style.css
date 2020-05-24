@@ -5,10 +5,6 @@
     display: none;
 }
 
-#profileImage {
-    border-radius: 100%;
-}
-
 .text-overflow {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -18,6 +14,21 @@
 
 #loggedin {
     /* background: #60CBB5; */
+}
+
+#user-profile {
+    text-align: center;
+}
+
+#profileImage {
+    border-radius: 100%;
+    display: inline-block;
+}
+
+#content-wrapper {
+    /* border: 1px solid grey; */
+    margin-top: 50px;
+    /* padding: 50px; */
 }
 
 #questions {

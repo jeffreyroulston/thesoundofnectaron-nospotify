@@ -22,40 +22,44 @@
         <div id="oauth">
         </div>
 
-        <div id="questions">
-          <div id="question-wrapper">
-            <!-- Question One -->
-            <form method="post" action="/" id="q1" class="question">
-              <label>What style brew tickles your fancy?</label>
-              <div class="answer-wrapper">
-                <input type="submit" name="q1" value="Lager">
-                <input type="submit" name="q1" value="APIA">
-                <input type="submit" name="q1" value="IPA">
-                <input type="submit" name="q1" value="Stout">
-              </div>
-            </form>
-            
-            <!-- Question Two -->
-            <form method="post" action="/" id="q2" class="question">
-              <label>How long do you want to boil for?</label>
-              <div class="answer-wrapper">
-                <input type="range" min="1" max="120" value="60" class="slider" name="q2">
-                <input type="submit">
-              </div>
-            </form>
+        <div id="content-wrapper">
+          <div id="questions">
+            <div id="question-wrapper">
+              <!-- Question One -->
+              <form method="post" action="/" id="q1" class="question">
+                <label>What style brew tickles your fancy?</label>
+                <div class="answer-wrapper">
+                  <input type="submit" name="q1" value="Lager">
+                  <input type="submit" name="q1" value="APIA">
+                  <input type="submit" name="q1" value="IPA">
+                  <input type="submit" name="q1" value="Stout">
+                </div>
+              </form>
+              
+              <!-- Question Two -->
+              <form method="post" action="/" id="q2" class="question">
+                <label>How long do you want to boil for?</label>
+                <div class="answer-wrapper">
+                  <input type="range" min="1" max="120" value="60" class="slider" name="q2">
+                  <input type="submit">
+                </div>
+              </form>
 
-            <!-- Question Three -->
-            <form method="post" action="/" id="q3" class="question">
-              <label>And the mouthfeel?</label>
-              <div class="answer-wrapper">
-                <input type="range" min="1" max="100" value="50" class="slider" name="q3">
-                <input type="submit">
-              </div>
-            </form>
+              <!-- Question Three -->
+              <form method="post" action="/" id="q3" class="question">
+                <label>And the mouthfeel?</label>
+                <div class="answer-wrapper">
+                  <input type="range" min="1" max="100" value="50" class="slider" name="q3">
+                  <input type="submit">
+                </div>
+              </form>
+            </div>
           </div>
+
+          <div id="placeholder"></div>
         </div>
 
-        <div id="placeholder"></div>
+        
 
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
         <a href="https://www.spotify.com/logout/" class="btn btn-primary">Log out</a>
@@ -63,12 +67,13 @@
     </div>
 
     <script id="user-profile-template" type="text/x-handlebars-template">
-      <h1>Logged in as {{display_name}}</h1>
-      <div class="media">
+      <img id="profileImage" class="media-object" width="150" src="{{images.0.url}}" />
+      <!-- <h1>Hey {{display_name}}!</h1> -->
+      <!-- <div class="media">
         <div class="pull-left">
           <img id="profileImage" class="media-object" width="150" src="{{images.0.url}}" />
         </div>
-        <!-- <div class="media-body">
+        <div class="media-body">
           <dl class="dl-horizontal">
             <dt>Display name</dt><dd class="clearfix">{{display_name}}</dd>
             <dt>Id</dt><dd>{{id}}</dd>
@@ -78,8 +83,8 @@
             <dt>Profile Image</dt><dd class="clearfix"><a href="{{images.0.url}}">{{images.0.url}}</a></dd>
             <dt>Country</dt><dd>{{country}}</dd>
           </dl>
-        </div> -->
-      </div>
+        </div>
+      </div> -->
     </script>
 
     <script id="oauth-template" type="text/x-handlebars-template">
