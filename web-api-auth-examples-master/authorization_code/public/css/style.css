@@ -1,0 +1,52 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+#login, #loggedin {
+    display: none;
+}
+
+#profileImage {
+    border-radius: 100%;
+}
+
+.text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 500px;
+}
+
+#loggedin {
+    /* background: #60CBB5; */
+}
+
+#questions {
+    position: relative;
+    float: left;
+    width: 50%;
+}
+
+#question-wrapper {
+    padding: 50px;
+}
+
+#question-wrapper * {
+    font-size: 30px;
+}
+
+#q2, #q3 {
+    display: none;
+    opacity: 0;
+}
+
+#placeholder {
+    position: relative;
+    float: right;
+    display: block;
+    width: 50%;
+    height: 50vw;
+    background-image: url("../assets/placeholder.png");
+    background-size: 100% auto;
+
+    border-radius: 100%;;
+}
