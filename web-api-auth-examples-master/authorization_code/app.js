@@ -320,14 +320,13 @@ function createPlaylist() {
     headers: { 'Authorization': 'Bearer ' + auth_token },
     json: true,
     body : {
-      "name": "Nectaron",
+      "name": "The Sound of Nectaron",
       "description": "New playlist description",
       "public": true
     }
   }
   
   request.post(options, function(error, response, body) {
-    console
     addItemsToPlaylist(body);
   });
 }
