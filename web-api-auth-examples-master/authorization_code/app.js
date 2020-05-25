@@ -141,9 +141,9 @@ app.get('/callback', function(req, res) {
 
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
-          client_id = body["id"];
-          console.log(client_id);
-          test();
+          user_id = body["id"];
+          console.log(user_id);
+          doTheThing();
         });
 
         // we can also pass the token to the browser to make requests from there
@@ -223,31 +223,9 @@ function setQueryParameter(feature, value) {
 // SPOTIFY API QUERIES
 // ================================
 
-function test() {
+function doTheThing() {
   // get('https://api.spotify.com/v1/browse/categories', "categories");
   get("https://api.spotify.com/v1/me/top/artists", "topArtists");
-}
-
-function parseCategories(body) {
-  if (!body.categories) return;
-  var c = body.categories.items;
-  for (var i=0; i<c.length; i++) {
-    console.log(i, c[i].name);
-  }
-}
-
-function parseArtists(body) {
-  if (!body.items) return;
-  topArtists = body.items;
-
-  // to do edge case if top artists list is less than 5
-  getRecommendations();
-}
-
-function parseRecommendations(body) {
-  if (!body.tracks) return;
-  var playlist = body.tracks;
-  // console.log(playlist);
 }
 
 function getRecommendations(){
@@ -269,12 +247,41 @@ function getRecommendations(){
 }
 
 function createPlaylist() {
-  post("https://api.spotify.com/v1/users/{user_id}/playlists")
+  post("https://api.spotify.com/v1/users/" + user_id + "/playlists")
 }
 
 async function parseListing(body, key) {
   console.log("key", key);
   console.log("body", body);
+}
+
+// ================================
+// RESPONSE PARSERS
+// ================================
+
+function parseCategories(body) {
+  if (!body.categories) return;
+  var c = body.categories.items;
+  for (var i=0; i<c.length; i++) {
+    console.log(i, c[i].name);
+  }
+}
+
+function parseArtists(body) {
+  if (!body.items) return;
+  topArtists = body.items;
+
+  // to do edge case if top artists list is less than 5
+  getRecommendations();
+}
+
+function parseRecommendations(body) {
+  if (!body.tracks) return;
+  var playlist = body.tracks;
+  console.log(playlist.length);
+
+  // create a playlist
+  createPlaylist();
 }
 
 // ================================
@@ -290,7 +297,7 @@ async function get(url, key) {
     }
   
     request.get(options, function(error, response, body) {
-      console.log(response.statusCode);
+      console.log(url, response.statusCode);
 
       switch(key) {
         case "categories":
@@ -322,22 +329,7 @@ async function post(url, key) {
     }
   
     request.post(options, function(error, response, body) {
-      console.log(response.statusCode);
-
-      // switch(key) {
-      //   case "categories":
-      //     parseCategories(body);
-      //     break;
-      //   case "topArtists":
-      //     parseArtists(body)
-      //     break;
-      //   case "recommendations":
-      //     parseRecommendations(body)
-      //     break;
-      //   default:
-      //     console.log("default");
-      //     // code block
-      // }
+      console.log(url, response.statusCode);
     });
   });
 
