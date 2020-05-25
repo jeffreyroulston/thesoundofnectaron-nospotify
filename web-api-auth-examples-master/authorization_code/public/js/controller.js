@@ -28,7 +28,7 @@ class Controller {
 
         // show next question
         if (next <= this.totalQuestions) {
-            show("#q" + next.toString());
+            show("#q" + next.toString(), 0.25);
             this.currentQuestion = next;
         }
     }

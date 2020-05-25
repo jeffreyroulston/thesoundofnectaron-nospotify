@@ -244,9 +244,8 @@ function parseArtists(body) {
   var topArtists = body.items;
   // to do edge case if top artists list is less than 5
 
-  // var artists = body.items;
-  // for (var i=0; i< artists.length; i++) {
-  //   console.log(i)
+  // for (var i=0; i< topArtists.length; i++) {
+  //   console.log(topArtists[i].name)
   // }
 }
 
