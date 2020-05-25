@@ -130,8 +130,8 @@ app.get('/callback', function(req, res) {
       if (!error && response.statusCode === 200) {
         auth_token = body.access_token;
 
-        var access_token = body.access_token,
-            refresh_token = body.refresh_token;
+        var access_token = body.access_token;
+        var refresh_token = body.refresh_token;
 
         var options = {
           url: 'https://api.spotify.com/v1/me',
@@ -216,7 +216,8 @@ function setQueryParameter(feature, value) {
   queryParameters[feature].value = value;
   queryParameters[feature].include = true;
 
-  console.log("set", queryParameters[feature])
+  // console.log("set", queryParameters[feature])
+  console.log(queryParameters);
 }
 
 // ================================
@@ -246,19 +247,6 @@ function getRecommendations(){
   get(query, "recommendations")
 }
 
-function createPlaylist() {
-  post("https://api.spotify.com/v1/users/" + user_id + "/playlists")
-}
-
-async function parseListing(body, key) {
-  console.log("key", key);
-  console.log("body", body);
-}
-
-// ================================
-// RESPONSE PARSERS
-// ================================
-
 function parseCategories(body) {
   if (!body.categories) return;
   var c = body.categories.items;
@@ -285,7 +273,7 @@ function parseRecommendations(body) {
 }
 
 // ================================
-// HELPER FUNCTIONS
+// GET/POST FUNCTIONS
 // ================================
 
 async function get(url, key) {
@@ -320,19 +308,19 @@ async function get(url, key) {
   // return r;
 }
 
-async function post(url, key) {
-  var p = new Promise((res, rej) => {
-    var options = {
-      url: url,
-      headers: { 'Authorization': 'Bearer ' + auth_token },
-      json: true
+function createPlaylist() {
+  var options = {
+    url: "https://api.spotify.com/v1/users/" + user_id + "/playlists",
+    headers: { 'Authorization': 'Bearer ' + auth_token },
+    json: true,
+    body : {
+      "name": "Nectaron",
+      "description": "New playlist description",
+      "public": true
     }
+  }
   
-    request.post(options, function(error, response, body) {
-      console.log(url, response.statusCode);
-    });
+  request.post(options, function(error, response, body) {
+    // console.log(url, response.statusCode);
   });
-
-  // var r = await p; 
-  // return r;
 }
