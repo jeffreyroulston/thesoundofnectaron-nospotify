@@ -16,6 +16,8 @@ var topArtists = [];
 var topSongs = [];
 var playlist = [];
 
+var lastQuestion = "q3";
+
 var qDefault = function() {return {value: 0, include: false} };
 
 //0.0 to 1.0
@@ -210,14 +212,16 @@ app.post('/', function(req, res) {
   setQueryParameter(map.feature, queryValue);
   
   res.send(204);
+
+  if (key == lastQuestion) {
+    console.log("last question");
+    getRecommendations();
+  }
 });
 
 function setQueryParameter(feature, value) {
   queryParameters[feature].value = value;
   queryParameters[feature].include = true;
-
-  // console.log("set", queryParameters[feature])
-  console.log(queryParameters);
 }
 
 // ================================
@@ -233,17 +237,22 @@ function getRecommendations(){
   var count = 5;
   var query = "https://api.spotify.com/v1/recommendations?seed_artists=";
 
+  // add top 5 artists as seed artists
   for (var i=0; i<count; i++) {
-    // console.log(topArtists[i]);
     query += topArtists[i].id;
     if (i < count-1) {
       query += ","
     }
   }
 
-  // query += "&seed_tracks=0c6xIDDpzE81m2q797ordA";
+  // add query parameters
+  for (var key in queryParameters) {
+    let v = queryParameters[key];
+    if (v.include) {
+      query += "&target_" + key + "=" + v.value.toString();
+    }
+  }
 
-  // console.log(query);
   get(query, "recommendations")
 }
 
@@ -260,15 +269,12 @@ function parseArtists(body) {
   topArtists = body.items;
 
   // to do edge case if top artists list is less than 5
-  getRecommendations();
+  // getRecommendations();
 }
 
 function parseRecommendations(body) {
   if (!body.tracks) return;
-  var playlist = body.tracks;
-  console.log(playlist.length);
-
-  // create a playlist
+  playlist = body.tracks;
   createPlaylist();
 }
 
@@ -326,5 +332,5 @@ function createPlaylist() {
 }
 
 function addItemsToPlaylist() {
-  
+
 }
