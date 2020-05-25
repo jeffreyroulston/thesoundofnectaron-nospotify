@@ -192,8 +192,21 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
+// app.get('/data', function(req, res) {
+// }
+
 // console.log('Listening on 8888');
 app.listen(8888);
+
+// *******************************
+// GET PLAYLIST DATA
+// *******************************
+
+app.get('/data', function(req, res) {
+  res.send({
+    "queryParameters" : queryParameters
+  })
+});
 
 // ================================
 // CALLED FROM FORMS
@@ -214,7 +227,7 @@ app.post('/', function(req, res) {
   res.send(204);
 
   if (key == lastQuestion) {
-    console.log("last question");
+    // console.log("last question");
     getRecommendations();
   }
 });
@@ -248,9 +261,11 @@ function getRecommendations(){
   for (var key in queryParameters) {
     let v = queryParameters[key];
     if (v.include) {
-      query += "&target_" + key + "=" + v.value.toString();
+      query += "&target_" + key + "=" + (v.value/100).toString();
     }
   }
+
+  console.log(query);
 
   get(query, "recommendations")
 }

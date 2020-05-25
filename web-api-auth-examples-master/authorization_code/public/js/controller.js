@@ -13,6 +13,8 @@ class Controller {
 
         // show the first question
         show("#q" + this.currentQuestion.toString());
+
+        this.getDisplayData();
     }
 
     onFormSubmit(e) {
@@ -33,6 +35,14 @@ class Controller {
         } else {
             show("#summary", 0.25);
         }
+    }
+
+    getDisplayData() {
+        $.ajax({
+            url: '/data'
+          }).done(function(data) {
+            console.log(data);
+          });
     }
 
 }
