@@ -321,6 +321,10 @@ function createPlaylist() {
   }
   
   request.post(options, function(error, response, body) {
-    // console.log(url, response.statusCode);
+    addItemsToPlaylist();
   });
+}
+
+function addItemsToPlaylist() {
+  
 }

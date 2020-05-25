@@ -60,7 +60,8 @@ label {
 
 #profileImage {
     border-radius: 100%;
-    display: inline-block;
+    /* display: inline-block; */
+    display: none;
 }
 
 #content-wrapper {
