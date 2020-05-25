@@ -327,10 +327,35 @@ function createPlaylist() {
   }
   
   request.post(options, function(error, response, body) {
-    addItemsToPlaylist();
+    console
+    addItemsToPlaylist(body);
   });
 }
 
-function addItemsToPlaylist() {
+function addItemsToPlaylist(body) {
 
+  // get playlist id
+  var playlist_id = body["id"];
+
+  // find all the spotify uris
+  var uris = [];
+  playlist.forEach((track) => {
+    uris.push(track["uri"]);
+  });
+
+  // join the uris by a comma 
+  var uriString = uris.join(",");
+
+  // adding a playlist is done by adding resource ids to the track resource
+  // no body required
+  var options = {
+    url: "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks?uris=" + uriString,
+    headers: { 'Authorization': 'Bearer ' + auth_token },
+    json: true
+  }
+
+  // send it up
+  request.post(options, function(error, response, body) {
+
+  });
 }
