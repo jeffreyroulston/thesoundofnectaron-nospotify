@@ -314,6 +314,23 @@ async function get(url, key) {
   // return r;
 }
 
+function buildPlaylistTableString() {
+  var retstring = "<table>";
+
+  retstring += "<th>Track Name</th><th>Artist</th>"
+
+  playlist.forEach((track) => {
+    retstring += "<tr>";
+    retstring += "<td>" + track.name + "</td>";
+    retstring += "<td>" + track.artists[0].name; + "</td>";
+    retstring += "</tr>";
+  });
+
+  retstring += "</table>"
+
+  return retstring;
+}
+
 function createPlaylist() {
   var options = {
     url: "https://api.spotify.com/v1/users/" + user_id + "/playlists",
