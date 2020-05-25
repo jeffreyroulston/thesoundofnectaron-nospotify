@@ -16,19 +16,19 @@ var topArtists = [];
 var topSongs = [];
 var playlist = [];
 
-var qDefault = {value: 0, include: false};
+var qDefault = function() {return {value: 0, include: false} };
 
 //0.0 to 1.0
 var queryParameters = {
-  "acousticness" : qDefault,
-  "danceability" : qDefault,
-  "energy" : qDefault,
-  "instrumentalness" : qDefault,
-  "liveness" : qDefault,
-  "loudness" : qDefault,
-  "speechiness" : qDefault,
-  "valence" : qDefault,
-  "tempo" : qDefault
+  "acousticness" : qDefault(),
+  "danceability" : qDefault(),
+  "energy" : qDefault(),
+  "instrumentalness" : qDefault(),
+  "liveness" : qDefault(),
+  "loudness" : qDefault(),
+  "speechiness" : qDefault(),
+  "valence" : qDefault(),
+  "tempo" : qDefault()
 }
 
 var answerMap = {
