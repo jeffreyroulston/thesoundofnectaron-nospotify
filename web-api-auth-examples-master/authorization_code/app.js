@@ -17,6 +17,8 @@ var bodyParser = require('body-parser');
 var client_id = 'c5a5170f00bf40e2a89be3510402947c'; // Your client id
 var client_secret = '034a83d99249425d98b21cf3c228eac5'; // Your secret
 var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
+
+var user_id = '';
 var auth_token = '';
 
 var topArtists = [];
@@ -69,23 +71,6 @@ app.get('/login', function(req, res) {
       state: state
     }));
 });
-
-// app.get('/login', function(req, res) {
-
-//   var state = generateRandomString(16);
-//   res.cookie(stateKey, state);
-
-//   // your application requests authorization
-//   var scope = 'user-read-private user-read-email user-top-read user-library-modify playlist-modify-public';
-//   res.redirect('https://accounts.spotify.com/authorize?' +
-//     querystring.stringify({
-//       response_type: 'code',
-//       client_id: client_id,
-//       scope: scope,
-//       redirect_uri: redirect_uri,
-//       state: state
-//     }));
-// });
 
 // *******************************
 // PAGE LOAD FROM LOGIN
@@ -186,9 +171,71 @@ app.get('/refresh_token', function(req, res) {
 console.log('Listening on 8888');
 app.listen(8888);
 
+// ================================
+// CALLED FROM FORMS
+// ================================
+
+app.post('/', function(req, res) {
+  console.log(req.body);
+  res.send(204);
+});
+
+// ================================
+// SPOTIFY API QUERIES
+// ================================
+
 function test() {
   // get('https://api.spotify.com/v1/browse/categories', "categories");
   get("https://api.spotify.com/v1/me/top/artists", "topArtists");
+}
+
+function parseCategories(body) {
+  if (!body.categories) return;
+  var c = body.categories.items;
+  for (var i=0; i<c.length; i++) {
+    console.log(i, c[i].name);
+  }
+}
+
+function parseArtists(body) {
+  if (!body.items) return;
+  topArtists = body.items;
+
+  // to do edge case if top artists list is less than 5
+  getRecommendations();
+}
+
+function parseRecommendations(body) {
+  if (!body.tracks) return;
+  var playlist = body.tracks;
+  console.log(playlist);
+}
+
+function getRecommendations(){
+  var count = 5;
+  var query = "https://api.spotify.com/v1/recommendations?seed_artists=";
+
+  for (var i=0; i<count; i++) {
+    // console.log(topArtists[i]);
+    query += topArtists[i].id;
+    if (i < count-1) {
+      query += ","
+    }
+  }
+
+  // query += "&seed_tracks=0c6xIDDpzE81m2q797ordA";
+
+  console.log(query);
+  get(query, "recommendations")
+}
+
+function createPlaylist() {
+  post("https://api.spotify.com/v1/users/{user_id}/playlists")
+}
+
+async function parseListing(body, key) {
+  console.log("key", key);
+  console.log("body", body);
 }
 
 // ================================
@@ -196,9 +243,6 @@ function test() {
 // ================================
 
 async function get(url, key) {
-  console.log("auth token", auth_token);
-
-
   var p = new Promise((res, rej) => {
     var options = {
       url: url,
@@ -216,6 +260,9 @@ async function get(url, key) {
         case "topArtists":
           parseArtists(body)
           break;
+        case "recommendations":
+          parseRecommendations(body)
+          break;
         default:
           console.log("default");
           // code block
@@ -223,46 +270,38 @@ async function get(url, key) {
     });
   });
 
-  var r = await p; 
-  return r;
+  // var r = await p; 
+  // return r;
 }
 
-// var topArtists = [];
-// var topSongs = [];
-// var playlist = [];
+async function post(url, key) {
+  var p = new Promise((res, rej) => {
+    var options = {
+      url: url,
+      headers: { 'Authorization': 'Bearer ' + auth_token },
+      json: true
+    }
+  
+    request.post(options, function(error, response, body) {
+      console.log(response.statusCode);
 
-function parseCategories(body) {
-  if (!body.categories) return;
-  var c = body.categories.items;
-  for (var i=0; i<c.length; i++) {
-    console.log(i, c[i].name);
-  }
+      // switch(key) {
+      //   case "categories":
+      //     parseCategories(body);
+      //     break;
+      //   case "topArtists":
+      //     parseArtists(body)
+      //     break;
+      //   case "recommendations":
+      //     parseRecommendations(body)
+      //     break;
+      //   default:
+      //     console.log("default");
+      //     // code block
+      // }
+    });
+  });
+
+  // var r = await p; 
+  // return r;
 }
-
-function parseArtists(body) {
-  if (!body.items) return;
-  var topArtists = body.items;
-  // to do edge case if top artists list is less than 5
-
-  // for (var i=0; i< topArtists.length; i++) {
-  //   console.log(topArtists[i].name)
-  // }
-}
-
-async function parseListing(body, key) {
-  console.log("key", key);
-  console.log("body", body);
-}
-
-// app.post('/', function(req, res) {
-//   console.log(req.body);
-//   res.send(200);
-
-//   // sending a response does not pause the function
-//   console.log("test");
-// });
-
-app.post('/', function(req, res) {
-  console.log(req.body);
-  res.send(204);
-});
