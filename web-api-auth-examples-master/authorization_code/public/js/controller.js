@@ -30,6 +30,8 @@ class Controller {
         if (next <= this.totalQuestions) {
             show("#q" + next.toString(), 0.25);
             this.currentQuestion = next;
+        } else {
+            show("#summary", 0.25);
         }
     }
 

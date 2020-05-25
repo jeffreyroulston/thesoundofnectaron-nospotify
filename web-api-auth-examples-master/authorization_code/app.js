@@ -229,7 +229,6 @@ function setQueryParameter(feature, value) {
 // ================================
 
 function doTheThing() {
-  // get('https://api.spotify.com/v1/browse/categories', "categories");
   get("https://api.spotify.com/v1/me/top/artists", "topArtists");
 }
 
@@ -256,13 +255,13 @@ function getRecommendations(){
   get(query, "recommendations")
 }
 
-function parseCategories(body) {
-  if (!body.categories) return;
-  var c = body.categories.items;
-  for (var i=0; i<c.length; i++) {
-    console.log(i, c[i].name);
-  }
-}
+// function parseCategories(body) {
+//   if (!body.categories) return;
+//   var c = body.categories.items;
+//   for (var i=0; i<c.length; i++) {
+//     console.log(i, c[i].name);
+//   }
+// }
 
 function parseArtists(body) {
   if (!body.items) return;
@@ -275,6 +274,7 @@ function parseArtists(body) {
 function parseRecommendations(body) {
   if (!body.tracks) return;
   playlist = body.tracks;
+
   createPlaylist();
 }
 
@@ -294,9 +294,9 @@ async function get(url, key) {
       console.log(url, response.statusCode);
 
       switch(key) {
-        case "categories":
-          parseCategories(body);
-          break;
+        // case "categories":
+        //   parseCategories(body);
+        //   break;
         case "topArtists":
           parseArtists(body)
           break;
