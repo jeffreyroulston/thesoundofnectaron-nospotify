@@ -1,12 +1,3 @@
-/**
- * This is an example of a basic node.js script that performs
- * the Authorization Code oAuth2 flow to authenticate against
- * the Spotify Accounts.
- *
- * For more information, read
- * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
- */
-
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var cors = require('cors');
@@ -25,8 +16,38 @@ var topArtists = [];
 var topSongs = [];
 var playlist = [];
 
-var currentQuestion = 0;
+var qDefault = {value: 0, include: false};
 
+//0.0 to 1.0
+var queryParameters = {
+  "acousticness" : qDefault,
+  "danceability" : qDefault,
+  "energy" : qDefault,
+  "instrumentalness" : qDefault,
+  "liveness" : qDefault,
+  "loudness" : qDefault,
+  "speechiness" : qDefault,
+  "valence" : qDefault,
+  "tempo" : qDefault
+}
+
+var answerMap = {
+  "q1" : {
+    feature : "energy",
+    values : {
+      "Lager" : 2,
+      "APA" : 6,
+      "IPA" : 13,
+      "Stout" : 30
+    }
+  },
+  "q2" : {
+    feature : "valence"
+  },
+  "q3" : {
+    feature : "loudness"
+  }
+}
 
 /**
  * Generates a random string containing numbers and letters
@@ -168,7 +189,7 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
-console.log('Listening on 8888');
+// console.log('Listening on 8888');
 app.listen(8888);
 
 // ================================
@@ -176,9 +197,26 @@ app.listen(8888);
 // ================================
 
 app.post('/', function(req, res) {
-  console.log(req.body);
+  // key = question number (q1, q2, q3...)
+  var key = Object.keys(req.body)[0]
+  var inputValue = req.body[key]
+
+  // get answer map
+  var map = answerMap[key];
+
+  // set into query parameters
+  var queryValue = map.values? map.values[inputValue] : inputValue;
+  setQueryParameter(map.feature, queryValue);
+  
   res.send(204);
 });
+
+function setQueryParameter(feature, value) {
+  queryParameters[feature].value = value;
+  queryParameters[feature].include = true;
+
+  console.log("set", queryParameters[feature])
+}
 
 // ================================
 // SPOTIFY API QUERIES
@@ -208,7 +246,7 @@ function parseArtists(body) {
 function parseRecommendations(body) {
   if (!body.tracks) return;
   var playlist = body.tracks;
-  console.log(playlist);
+  // console.log(playlist);
 }
 
 function getRecommendations(){
@@ -225,7 +263,7 @@ function getRecommendations(){
 
   // query += "&seed_tracks=0c6xIDDpzE81m2q797ordA";
 
-  console.log(query);
+  // console.log(query);
   get(query, "recommendations")
 }
 
