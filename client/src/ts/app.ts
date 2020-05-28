@@ -18,36 +18,27 @@ export default class App {
     private profile: UserProfile | undefined;
 
     constructor() {
-
-
         this.spotifyInterface = new SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
-
-
 
         // we need these binds to make sure and 'this' in callbacks is bound to the correct object
         this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
         this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this));
         this.spotifyInterface.OnErrorListeners.push(this.OnSpotifyInterfaceError.bind(this));
-
-        if (!this.spotifyInterface.Authorized) {
-            // show the login screen here Celine
-        }
-
-        // continue with other stuff
-
-        // this.spotifyInterface.GetAuthorization();
-        // this.login();
     }
 
     public login() {
         // kick it all off
         // called from UI
-        console.log("login");
-        this.spotifyInterface.GetAuthorization();
+
+        if (!this.spotifyInterface.Authorized) {
+            // show the login screen here
+            this.ui.showLoggedIn();
+        } else {
+            this.spotifyInterface.GetAuthorization();
+        }
     }
 
     private OnAuthorised(): void {
-        console.log("on authorised");
         // we can only really get these when we're authorised
         this.spotifyInterface.GetUserProfile();
         this.ui.showLoggedIn();
@@ -117,6 +108,19 @@ export default class App {
                 // });
                 // break;
         }
+    }
+
+    public GetRecommendations() {
+        // called from the UI
+
+        
+        // this.spotifyInterface.GetRecommendations({
+        //     Count: 100, 
+        //     SeedArtistIDs: artistIds,
+        //     QueryParameters: [
+        //         {parameter: "energy", value: 0.5}
+        //     ]
+        // });
     }
 
     public OnSpotifyInterfaceError(type: ErrorType, data?: any) {
