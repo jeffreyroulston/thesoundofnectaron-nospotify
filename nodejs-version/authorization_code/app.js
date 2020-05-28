@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 var client_id = 'c5a5170f00bf40e2a89be3510402947c'; // Your client id
 var client_secret = '034a83d99249425d98b21cf3c228eac5'; // Your secret
-var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
+var redirect_uri = 'http://05443d7cddf3.ngrok.io/callback'; // Your redirect uri
 
 var user_id = '';
 var auth_token = '';

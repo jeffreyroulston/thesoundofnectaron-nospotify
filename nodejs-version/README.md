@@ -33,3 +33,11 @@ In order to run the different examples, open the folder with the name of the flo
     $ node app.js
 
 Then, open `http://localhost:8888` in a browser.
+
+
+## setting up ngrok
+Download from here - https://ngrok.com/download
+Extract the binary and run it with ".\ngrok http 8888"
+Copy the forwarding http link into the redirect uri in app.js source, and add "/callback" to the end
+Update the redirect uri in the spotify developer app settings to be the same, making sure it has "/callback" at the end as well
+Run the node app with "node app.js"
