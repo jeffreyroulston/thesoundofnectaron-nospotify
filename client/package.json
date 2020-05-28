@@ -19,5 +19,8 @@
     "typescript": "^3.9.3",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
+  },
+  "dependencies": {
+    "gulp-watch": "^5.0.1"
   }
 }
