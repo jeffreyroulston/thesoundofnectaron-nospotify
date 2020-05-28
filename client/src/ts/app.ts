@@ -25,14 +25,21 @@ export default class App {
         this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this));
         this.spotifyInterface.OnErrorListeners.push(this.OnSpotifyInterfaceError.bind(this));
 
+        // this.spotifyInterface.GetAuthorization();
+        // this.login();
+    }
+
+    public login() {
         // kick it all off
+        // called from UI
+        console.log("login");
         this.spotifyInterface.GetAuthorization();
     }
 
     private OnAuthorised(): void {
+        console.log("on authorised");
         // we can only really get these when we're authorised
         this.spotifyInterface.GetUserProfile();
-
         this.ui.showLoggedIn();
     }
 

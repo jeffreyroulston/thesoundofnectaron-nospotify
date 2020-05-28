@@ -5,6 +5,8 @@
     <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script> -->
   </head>
 
   <body>
@@ -14,7 +16,7 @@
         <div class="wrapper">
           <h1>Experience the Sound of Nectaron</h1>
           <p>Brew up a playlist</p><br />
-          <a href="/login" class="btn">Get started</a>
+          <button id="startBtn" class="btn">Get started</button>
         </div>
       </div>
       
@@ -29,7 +31,7 @@
         <!-- Questions -->
         <div id="questions" class="wrapper">
           <!-- Question One -->
-          <form method="post" action="/" id="q1" class="question">
+          <form id="q1" class="question">
             <label>What style brew tickles your fancy?</label>
             <div class="answer-wrapper">
               <input type="submit" name="q1" value="Lager">
@@ -40,7 +42,7 @@
           </form>
           
           <!-- Question Two -->
-          <form method="post" action="/" id="q2" class="question">
+          <form id="q2" class="question">
             <label>How long do you want to boil for?</label>
             <div class="answer-wrapper">
               <input type="range" min="1" max="120" value="60" class="slider" name="q2"><br />
@@ -49,7 +51,7 @@
           </form>
 
           <!-- Question Three -->
-          <form method="post" action="/" id="q3" class="question">
+          <form id="q3" class="question">
             <label>And the mouthfeel?</label>
             <div class="answer-wrapper">
               <input type="range" min="1" max="100" value="50" class="slider" name="q3"><br />

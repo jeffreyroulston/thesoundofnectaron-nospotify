@@ -14,6 +14,10 @@ body {
     height: 100vh;
 }
 
+#loggedin {
+    display: none;
+}
+
 /* FORM STYLING */
 
 input:hover {
@@ -43,10 +47,6 @@ input[type="range"] {
 label {
     display: block;
     margin-bottom: 30px;;
-}
-
-#login, #loggedin {
-    display: none;
 }
 
 .text-overflow {
