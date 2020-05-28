@@ -13,9 +13,8 @@ let SCOPES: string[] = [
     'playlist-modify-private'];
 
 export default class App {
-
     private spotifyInterface: SpotifyInterface;
-    private ui: UI = new UI();
+    private ui: UI = new UI(this);
     private profile: UserProfile | undefined;
 
     constructor() {
