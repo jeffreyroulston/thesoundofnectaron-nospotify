@@ -29,18 +29,9 @@ export default class UI {
     }
 
     public showLoggedIn(): void {
-        console.log("show logged in");
+        // hide login screen
         this.hide("login");
-        this.show("loggedIn");
-        // const loginElement = document.getElementById("login");
-        // if (loginElement != null) {
-        //     loginElement.style.display = "none";
-        // }
-
-        // const loggedInElement = document.getElementById("loggedin");
-        // if (loggedInElement != null) {
-        //     loggedInElement.style.display = "block";
-        // }
+        this.show("main");
 
         // // show the first question
         this.showCurrentQuestion();

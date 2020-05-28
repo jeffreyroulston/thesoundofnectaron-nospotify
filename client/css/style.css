@@ -14,7 +14,7 @@ body {
     height: 100vh;
 }
 
-#loggedin {
+#main, #summary, .question, .hidden {
     display: none;
 }
 
@@ -91,9 +91,9 @@ label {
     position: relative;
 }
 
-.question, .hidden{
+.question{
     width: 100%;
     position: absolute;
-    display: none;
-    opacity: 0;
+    /* display: none; */
+    /* opacity: 0; */
 }
