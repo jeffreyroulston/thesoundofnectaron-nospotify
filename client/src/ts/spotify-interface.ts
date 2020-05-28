@@ -81,6 +81,10 @@ export class SpotifyInterface {
         window.location.hash = "";
     }
 
+    public get Authorized(): boolean {
+        return this.token !== undefined;
+    }
+
     public GetAuthorization(): void {
 
         // if the token doesn't exist, redirect to the spotify login page
