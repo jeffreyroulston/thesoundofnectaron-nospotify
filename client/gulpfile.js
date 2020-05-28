@@ -47,6 +47,12 @@ gulp.task('compile-dev', gulp.series(['scripts'], function () {
         .pipe(gulp.dest('dist'));
 }));
 
+
+gulp.task("watch", function() {
+    gulp.watch('{src,html,css}/**/*', gulp.series(['build-dev']));
+});
+
+
 gulp.task('compile', gulp.parallel(['scripts'], function () {
     var b = browserify({
         entries: 'build/main.js',
