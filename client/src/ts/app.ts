@@ -18,11 +18,7 @@ export default class App {
     private profile: UserProfile | undefined;
 
     constructor() {
-
-
         this.spotifyInterface = new SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
-
-
 
         // we need these binds to make sure and 'this' in callbacks is bound to the correct object
         this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
@@ -112,6 +108,19 @@ export default class App {
                 // });
                 // break;
         }
+    }
+
+    public GetRecommendations() {
+        // called from the UI
+
+        
+        // this.spotifyInterface.GetRecommendations({
+        //     Count: 100, 
+        //     SeedArtistIDs: artistIds,
+        //     QueryParameters: [
+        //         {parameter: "energy", value: 0.5}
+        //     ]
+        // });
     }
 
     public OnSpotifyInterfaceError(type: ErrorType, data?: any) {

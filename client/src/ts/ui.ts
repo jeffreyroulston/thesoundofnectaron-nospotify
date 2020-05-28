@@ -9,7 +9,7 @@ export default class UI {
     private totalQuestions = 3;
     private currentQuestion = 1;
 
-    private queryParameters = {
+    private queryParameters : { [p: string]: {value: number, include: boolean}} = {
         "acousticness" : qDefault(),
         "danceability" : qDefault(),
         "energy" : qDefault(),
@@ -93,37 +93,33 @@ export default class UI {
 
     private onFormSubmit(e : any) {
         e.preventDefault();
+        var map = this.answerMap[e.target.id];
+        var value = 0;
 
         // switch based on map
-        var qType = this.answerMap[e.target.id].type;
-        // console.log(e, e.submitter, e.submitter.value);
-
-        switch(qType) {
+        switch(map.type) {
             case "multichoice":
-                this.getMultichoiceAnswer(e.submitter.value);
+                value = map.values[e.submitter.value];
                 break;
             case "slider":
-                this.getSliderAnswer(e.target);
+                var slider = this.querySelector("input[type=range]", e.target);
+                value = slider? parseInt(slider.value) : 0;
                 break;
             default:
-                // code block
         }
-    }
 
-    private getMultichoiceAnswer(value : string) {
-        console.log("value = ", value);
+        this.queryParameters[map.feature].value += value;
+        this.queryParameters[map.feature].include = true;
+        console.log(this.queryParameters);
 
-        this.currentQuestion++;
-        this.showCurrentQuestion();
-    }
-
-    private getSliderAnswer(el: HTMLElement) {
-        var slider = this.querySelector("input[type=range]", el);
-        var value = slider?.value;
-        console.log("value = ", value);
-
-        this.currentQuestion++;
-        this.showCurrentQuestion();
+        if (this.currentQuestion < this.totalQuestions) {
+            // show next question
+            this.currentQuestion++;
+            this.showCurrentQuestion();
+        } else {
+            // get recommendations
+            this.app.GetRecommendations();
+        }
     }
 
     private getElements(e: string) {
