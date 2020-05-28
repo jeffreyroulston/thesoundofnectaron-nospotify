@@ -91,14 +91,15 @@ export default class App {
                 var artists = (data as Artist[]);
                 console.log(artists);
                 var artistIds = artists.map(artist => artist.Id).slice(0, 5);
-                this.spotifyInterface.GetRecommendations({
-                    Count: 100, 
-                    SeedArtistIDs: artistIds,
-                    QueryParameters: [
-                        {parameter: "energy", value: 0.5}
-                    ]
-                });
-                break;
+
+                // this.spotifyInterface.GetRecommendations({
+                //     Count: 100, 
+                //     SeedArtistIDs: artistIds,
+                //     QueryParameters: [
+                //         {parameter: "energy", value: 0.5}
+                //     ]
+                // });
+                // break;
         }
     }
 
