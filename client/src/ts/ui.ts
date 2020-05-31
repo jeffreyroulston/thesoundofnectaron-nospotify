@@ -1,6 +1,6 @@
 import {Question, QuestionType} from "./questions";
 import App from "./app";
-// import {TweenLite} from "gsap"
+import {TweenLite} from "gsap"
 
 var qDefault = function() {return {value: 0, include: false} };
 
@@ -131,7 +131,7 @@ export default class UI {
     }
 
     private show(e: string, d: number = 0) {
-        // var t = TweenLite.fromTo(e, 0.25, {y: 10}, {y: 0, alpha:1, display: "block", delay: d});
+        var t = TweenLite.fromTo(e, 0.25, {y: 10}, {y: 0, alpha:1, display: "block", delay: d});
         var el = this.querySelector(e);
         if (el) el.style.display = "block";
     }
