@@ -1,15 +1,17 @@
-import {Question, QuestionType} from "./questions";
-import App from "./app";
+import * as si from "./spotify-interface";
+import {Question, QuestionType, QueryParameter} from "./questions";
 import {TweenLite} from "gsap"
 
-var qDefault = function() {return {value: 0, include: false} };
+var qDefault = function() { return { value: 0, include: false } };
+
 
 export default class UI {
-    private app : App;
     private totalQuestions = 3;
     private currentQuestion = 1;
 
-    private queryParameters : { [p: string]: {value: number, include: boolean}} = {
+    private recommendations: si.Track[] | undefined = [];
+
+    private queryParameters: {[key: string]: QueryParameter }  = {
         "acousticness" : qDefault(),
         "danceability" : qDefault(),
         "energy" : qDefault(),
@@ -23,7 +25,7 @@ export default class UI {
       
     private answerMap : { [q: string]: any} = {
         "q1" : {
-            type: "multichoice",
+            type: QuestionType.MultiChoice,
             feature : "energy",
             values : {
             "Lager" : 2,
@@ -33,24 +35,47 @@ export default class UI {
             }
         },
         "q2" : {
-            type: "slider",
+            type: QuestionType.Slider,
             feature : "valence",
         },
         "q3" : {
-            type : "slider",
+            type : QuestionType.Slider,
             feature : "loudness",
         }
     }
 
-    constructor(app: App) {
-        this.app = app;
+    public OnLoginPressed = () => {};
+    public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: Question): void}[] = [];
+
+    constructor() {
         this.init();
+    }
+
+    public OnUserData(type: si.DataType, data: si.Data): void {
+
+        switch(type) {
+            case si.DataType.UserProfile:
+                const profile: si.UserProfile = (data as si.UserProfile);
+                if (profile.images != null && profile.DisplayName != null) {
+                    this.ShowUserData(profile.images[0], profile.DisplayName);
+                }
+
+                break;
+
+            case si.DataType.Recommendations:
+                this.recommendations = (data as si.Track[]);
+                break;
+
+            case si.DataType.TopArtists:
+                // this.artists = (data as si.Artist[]);
+                break;
+        }
     }
 
     private init() {
         // bind start button
         var startBtn = this.querySelector("#startBtn");
-        startBtn?.addEventListener("click", this.login.bind(this))
+        startBtn?.addEventListener("click", this.Login.bind(this))
 
         // bind forms
         var forms = this.getElements("form");
@@ -59,8 +84,8 @@ export default class UI {
         }
     }
 
-    public login() {
-        this.app.login();
+    public Login() {
+        this.OnLoginPressed();
     }
 
     public showLoggedIn(): void {
@@ -79,7 +104,7 @@ export default class UI {
     
     // here we will activate and populate one of three different html question templates depending on question type
     // once the answer is chosen, we use that callback to pass the selection back up
-    public showQuestion(question: Question, callback: (type: QuestionType, selection: number) => void): void {
+    public showQuestion(question: Question): void {
 
     }
 
@@ -98,10 +123,11 @@ export default class UI {
 
         // switch based on map
         switch(map.type) {
-            case "multichoice":
+            case QuestionType.MultiChoice:
                 value = map.values[e.submitter.value];
                 break;
-            case "slider":
+
+            case QuestionType.Slider:
                 var slider = this.querySelector("input[type=range]", e.target);
                 value = slider? parseInt(slider.value) : 0;
                 break;
@@ -118,7 +144,7 @@ export default class UI {
             this.showCurrentQuestion();
         } else {
             // get recommendations
-            this.app.GetRecommendations();
+            //this.app.GetRecommendations();
         }
     }
 

@@ -1,4 +1,5 @@
-import {SpotifyInterface, UserProfile, Artist, DataType, Data, Track, ErrorType} from "./spotify-interface";
+import * as si from "./spotify-interface";
+import * as Questions from "./questions";
 import UI from "./ui";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
@@ -12,21 +13,29 @@ let SCOPES: string[] = [
     'playlist-modify-public',
     'playlist-modify-private'];
 
+
 export default class App {
-    private spotifyInterface: SpotifyInterface;
-    private ui: UI = new UI(this);
-    private profile: UserProfile | undefined;
+    private spotifyInterface: si.SpotifyInterface;
+    private ui: UI = new UI();
+    private profile: si.UserProfile | undefined;
+    private topArtists: si.Artist[] | undefined;
+    private answeredQuestions: Questions.Question[] = [];
 
     constructor() {
-        this.spotifyInterface = new SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
+        this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
 
         // we need these binds to make sure and 'this' in callbacks is bound to the correct object
         this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
         this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this));
         this.spotifyInterface.OnErrorListeners.push(this.OnSpotifyInterfaceError.bind(this));
+
+        this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this.ui));
+
+        this.ui.OnLoginPressed = this.Login;
+        this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
     }
 
-    public login() {
+    public Login() {
         // kick it all off
         // called from UI
 
@@ -38,6 +47,34 @@ export default class App {
         }
     }
 
+    private QuestionAnswered(totalQuestions: number, questionNumber: number, question: Questions.Question) {
+        // this is where we aggregate query parameters
+        // once we have all questions i.e. TotalQuestions == QuestionNumber, we can get recommendations and make the playlist
+        // and the ui will get the recommendations, and playlist information through the data callback
+        
+        this.answeredQuestions.push(question);
+        
+        if (totalQuestions >= questionNumber) {
+            
+            var artistIds = this.topArtists?.map(artist => artist.Id).slice(0, 5);
+            var params: ({parameter: string, value: number})[] = [];
+            
+            // parse parameters
+            this.answeredQuestions.forEach((question) => {
+                if (question.answer !== undefined) {
+                    params.push({parameter: question.parameter, value: question.answer.value})
+                }
+            });
+
+            // get spotify recommendation
+            this.spotifyInterface.GetRecommendations({
+                Count: 100, 
+                SeedArtistIDs: artistIds,
+                QueryParameters: params
+            });
+        }
+    }
+
     private OnAuthorised(): void {
         // we can only really get these when we're authorised
         this.spotifyInterface.GetUserProfile();
@@ -45,24 +82,26 @@ export default class App {
     }
 
     // most of this stuff is temporary, will hook up the proper handlers with the ui state
-    public OnUserData(type: DataType, data: Data): void {
+    public OnUserData(type: si.DataType, data: si.Data): void {
 
         switch (type) {
-            case DataType.UserProfile:
+            case si.DataType.UserProfile:
             
-                this.profile = (data as UserProfile);
-                console.log(this.profile);
-                // could pass through the profile here but I'm trying to keep everything as separated as possible
-                if (this.profile.images != null && this.profile.DisplayName != null) {
-                    this.ui.ShowUserData(this.profile.images[0], this.profile.DisplayName);
-                }
+                this.profile = (data as si.UserProfile);
+                // console.log(this.profile);
+                // // could pass through the profile here but I'm trying to keep everything as separated as possible
+                // if (this.profile.images != null && this.profile.DisplayName != null) {
+                //     this.ui.ShowUserData(this.profile.images[0], this.profile.DisplayName);
+                // }
 
                 
-                this.spotifyInterface.GetTopArtists();
+                // this.spotifyInterface.GetTopArtists();
                 break;
 
-            case DataType.Recommendations:
-                var recommendations = (data as Track[]);
+            // when we get recommendations back, we can automatically create the new playlist
+            case si.DataType.Recommendations:
+
+                var recommendations = (data as si.Track[]);
                 console.log(recommendations);
 
                 // all this below is to build a playlist just over four hours
@@ -94,36 +133,13 @@ export default class App {
      
                 break;
 
-            case DataType.TopArtists:
-                var artists = (data as Artist[]);
-                console.log(artists);
-                var artistIds = artists.map(artist => artist.Id).slice(0, 5);
-
-                // this.spotifyInterface.GetRecommendations({
-                //     Count: 100, 
-                //     SeedArtistIDs: artistIds,
-                //     QueryParameters: [
-                //         {parameter: "energy", value: 0.5}
-                //     ]
-                // });
-                // break;
+            case si.DataType.TopArtists:
+                this.topArtists = (data as si.Artist[]);
+                break;
         }
     }
 
-    public GetRecommendations() {
-        // called from the UI
-
-        
-        // this.spotifyInterface.GetRecommendations({
-        //     Count: 100, 
-        //     SeedArtistIDs: artistIds,
-        //     QueryParameters: [
-        //         {parameter: "energy", value: 0.5}
-        //     ]
-        // });
-    }
-
-    public OnSpotifyInterfaceError(type: ErrorType, data?: any) {
+    public OnSpotifyInterfaceError(type: si.ErrorType, data?: any) {
         console.log(type.toString());
         console.log(data);
     }
