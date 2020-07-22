@@ -1,6 +1,7 @@
 import * as si from "./spotify-interface";
 import * as Questions from "./questions";
 import UI from "./ui";
+import ResourceManager from "./resource-manager";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
 let REDIRECT_URI: string = "http://localhost:8888";
@@ -16,6 +17,7 @@ let SCOPES: string[] = [
 
 export default class App {
     private spotifyInterface: si.SpotifyInterface;
+    private resourceManager: ResourceManager = new ResourceManager();
     private ui: UI = new UI();
     private profile: si.UserProfile | undefined;
     private topArtists: si.Artist[] | undefined;
@@ -33,6 +35,8 @@ export default class App {
 
         this.ui.OnLoginPressed = this.Login;
         this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
+
+        // this.resourceManager.loadResourceByPath(HTMLImageElement, "")
     }
 
     public Login() {
