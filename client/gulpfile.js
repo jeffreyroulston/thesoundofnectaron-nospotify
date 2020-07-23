@@ -33,6 +33,10 @@ gulp.task("css", function() {
         .pipe(gulp.dest('dist'));
 });
 
+gulp.task("copy-assets", function() {
+    return gulp.src(["assets/**/*"], {base: "assets"}).pipe(gulp.dest("dist/assets"));
+});
+
 gulp.task('compile-dev', gulp.series(['scripts'], function () {
     var b = browserify({
         entries: 'build/app.js',
@@ -66,5 +70,5 @@ gulp.task('compile', gulp.parallel(['scripts'], function () {
         .pipe(gulp.dest('dist'));
 }));
 
-gulp.task('build-dev', gulp.series(['copy-html', 'css', 'compile-dev']));
-gulp.task('build', gulp.series(['copy-html', 'css', 'compile']));
+gulp.task('build-dev', gulp.series(['copy-html', 'copy-assets', 'css', 'compile-dev']));
+gulp.task('build', gulp.series(['copy-html', 'copy-assets', 'css', 'compile']));

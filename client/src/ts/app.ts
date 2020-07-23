@@ -2,6 +2,7 @@ import * as si from "./spotify-interface";
 import * as Questions from "./questions";
 import UI from "./ui";
 import ResourceManager from "./resource-manager";
+import Graphics from "./graphics";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
 let REDIRECT_URI: string = "http://localhost:8888";
@@ -17,6 +18,7 @@ let SCOPES: string[] = [
 
 export default class App {
     private spotifyInterface: si.SpotifyInterface;
+    private graphics: Graphics = new Graphics();
     private resourceManager: ResourceManager = new ResourceManager();
     private ui: UI = new UI();
     private profile: si.UserProfile | undefined;
@@ -26,17 +28,19 @@ export default class App {
     constructor() {
         this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
 
-        // we need these binds to make sure and 'this' in callbacks is bound to the correct object
-        this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
-        this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this));
-        this.spotifyInterface.OnErrorListeners.push(this.OnSpotifyInterfaceError.bind(this));
+        // // we need these binds to make sure and 'this' in callbacks is bound to the correct object
+        // this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
+        // this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this));
+        // this.spotifyInterface.OnErrorListeners.push(this.OnSpotifyInterfaceError.bind(this));
 
-        this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this.ui));
+        // this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this.ui));
 
-        this.ui.OnLoginPressed = this.Login;
-        this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
+        // this.ui.OnLoginPressed = this.Login;
+        // this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
 
-        // this.resourceManager.loadResourceByPath(HTMLImageElement, "")
+        this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png").then(() => {
+            this.graphics.onInitResources(this.resourceManager);
+        });
     }
 
     public Login() {

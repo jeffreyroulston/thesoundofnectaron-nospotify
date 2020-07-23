@@ -9,9 +9,10 @@ h1 {
 }
 
 body {
-    background: #60CBB5;
+    /* background: #60CBB5; */
     overflow: hidden;
     height: 100vh;
+    margin: 0;
 }
 
 #main, #summary, .question, .hidden {
@@ -68,6 +69,11 @@ label {
     border-radius: 100%;
     /* display: inline-block; */
     display: none;
+}
+
+#graphics-canvas {
+    height: 100vh !important;
+    width: 100vw !important;
 }
 
 .container {
