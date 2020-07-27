@@ -16,13 +16,27 @@ const fragShader = `
     uniform vec2 size;
     uniform sampler2D noiseTexture;
     uniform float time;
+    uniform float pixelRatio;
+
+    uniform float lerp;
+    uniform vec3 firstColor;
+    uniform vec3 secondColor;
 
     void main() {
-        float aspect = size.x / size.y;
-        vec2 aspectCorrectedUV = vUv * vec2(aspect, 1.0);
-        vec4 texCol = texture2D(noiseTexture, aspectCorrectedUV * 4.0);
-        gl_FragColor = vec4(texCol.xyz, 1.0);
+
+        // float lerp = sin(time * 2.0) * 0.5 + 0.5;
+
+        vec2 aspectCorrectedUV = vUv * size;
+        vec4 texCol = texture2D(noiseTexture, aspectCorrectedUV * 0.01 * pixelRatio);
+
+        float pixelValue = texCol.r * 0.8 + 0.1;
+
+        float pixel = smoothstep(pixelValue - 0.05, pixelValue + 0.05, lerp);
+        vec3 interpedColor = mix(firstColor, secondColor, pixel);
+
+        gl_FragColor = vec4(interpedColor, 1.0);
         // gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        // gl_FragColor = vec4(vec3(pixel), 0.0);
     }
 `
 
@@ -43,9 +57,15 @@ export default class Graphics {
 
     constructor() {
         this.renderer = new THREE.WebGLRenderer({antialias: true});
+        this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.append(this.renderer.domElement);
-        this.renderer.domElement.id = "graphics-canvas";
+
+        const container = document.getElementById('canvas-container');
+        if (container !== null) {
+            container.append(this.renderer.domElement);
+            this.renderer.domElement.id = "graphics-canvas";
+        }
+
         window.onresize = () => {
             this.frameResized = true;
         }
@@ -62,7 +82,11 @@ export default class Graphics {
             uniforms: {
                 noiseTexture: {value: undefined},
                 size: {value: new THREE.Vector2()},
-                time: {value: 0.0}
+                time: {value: 0.0},
+                firstColor: {value: new THREE.Color(0x60CBB5)},
+                secondColor: {value: new THREE.Color(0xd955a2)},
+                pixelRatio: {value: 1.0 / devicePixelRatio},
+                lerp: {value: 0.0}
             }
         });
 
@@ -75,6 +99,7 @@ export default class Graphics {
         const image = resourceManager.getResourceByPath(HTMLImageElement, "assets/noise-tex.png");
 
         const tex = new THREE.Texture(image);
+        tex.format = THREE.RedFormat;
         tex.wrapS = THREE.RepeatWrapping;
         tex.wrapT = THREE.RepeatWrapping;
         tex.magFilter = THREE.NearestFilter;
@@ -112,7 +137,7 @@ export default class Graphics {
         this.renderer.setSize(width, height);
         this.renderer.getDrawingBufferSize(this.currentRendererSize);
 
-        this.material.uniforms.size.value = this.currentRendererSize;
+        this.material.uniforms.size.value.copy(this.currentRendererSize);
     }
 
     private render(): void {
@@ -122,6 +147,9 @@ export default class Graphics {
 
         const dt = this.clock.getDelta();
         const time = this.clock.getElapsedTime();
+
+        this.material.uniforms.time.value = time;
+        this.material.uniforms.lerp.value = Math.sin(time * 4.0) * 0.5 + 0.5;
 
         this.renderer.render(this.scene, this.camera);
     }
