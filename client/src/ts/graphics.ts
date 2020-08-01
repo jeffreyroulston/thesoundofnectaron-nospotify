@@ -25,13 +25,18 @@ const fragShader = `
     void main() {
 
         // float lerp = sin(time * 2.0) * 0.5 + 0.5;
+        float aspect = size.x / size.y;
+        float width = 0.5 / aspect;
+
+
+        float positionLerp = smoothstep(vUv.x - width, vUv.x + width, lerp * (1.0 + 2.0 * width) - width);
 
         vec2 aspectCorrectedUV = vUv * size;
         vec4 texCol = texture2D(noiseTexture, aspectCorrectedUV * 0.01 * pixelRatio);
 
         float pixelValue = texCol.r * 0.8 + 0.1;
 
-        float pixel = smoothstep(pixelValue - 0.05, pixelValue + 0.05, lerp);
+        float pixel = smoothstep(pixelValue - 0.05, pixelValue + 0.05, positionLerp);
         vec3 interpedColor = mix(firstColor, secondColor, pixel);
 
         gl_FragColor = vec4(interpedColor, 1.0);
@@ -149,7 +154,10 @@ export default class Graphics {
         const time = this.clock.getElapsedTime();
 
         this.material.uniforms.time.value = time;
-        this.material.uniforms.lerp.value = Math.sin(time * 4.0) * 0.5 + 0.5;
+        this.material.uniforms.lerp.value = this.material.uniforms.lerp.value + 1.0 * dt;
+        if (this.material.uniforms.lerp.value > 1.0) {
+            this.material.uniforms.lerp.value = 0.0;
+        }
 
         this.renderer.render(this.scene, this.camera);
     }
