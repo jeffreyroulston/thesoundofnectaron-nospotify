@@ -1,28 +1,51 @@
-// this can all be subject to change
+import {QueryParameters} from "./spotify-interface";
 
 export type QueryParameter = {value: number, include: boolean};
 
 export enum QuestionType {
     // as there are three different question types, we can do a sort of template for question types
     Slider,
-    MultiChoice
+    MultiChoice,
+    QuickFire
 }
 
 export interface Question {
     type: QuestionType;
-    params: QuestionParams;
-    parameter: string;
-    answer: QueryParameter | undefined;
+    params: QueryParameters;
+    question : string;
+
+    // include non spotify query related parameters
 }
 
-export interface QuestionParams {
-
+export interface SliderQuestion extends Question {
+    minValue : number;
+    maxValue : number;
+    answer : number;
 }
 
-export interface SliderQuestionParams extends QuestionParams {
-
+export interface MCQuestion extends Question {
+    options : MCAnswer [];
+    answer: MCAnswer;
 }
 
-export interface MultiChoiceQuestionParams extends QuestionParams {
+export interface QuickFireQuestion extends Question {
+    answer : boolean;
+}
 
+export interface MCAnswer {
+    value : string,
+    asset : string
+}
+
+export function createSliderQuestion(params: QueryParameters, question : string, minValue : number, maxValue : number) {
+    var q : SliderQuestion = {
+        type : QuestionType.Slider,
+        params : params,
+        question : question,
+        minValue : minValue,
+        maxValue : maxValue,
+        answer : 0
+    }
+
+    return q;
 }
