@@ -1,6 +1,10 @@
 $letterSize: 50px;
 $letterPadding: 20px;
 
+// COLOURS
+$purple : #88009D;
+$orange: #FF1900;
+
 @function center($containerWidth, $elWidth) {
   @return calc(#{$containerWidth} / 2 - (#{$elWidth} / 2));
 }
@@ -17,21 +21,74 @@ $letterPadding: 20px;
     transform: translateX(-50%);
 }
 
+@font-face {
+    font-family: 'Circular';
+        src: url('fonts/CircularStd-Bold.otf') format('opentype'),
+            url('fonts/CircularStd-Bold.woff') format('woff'),
+            url('fonts/CircularStd-Bold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Circular';
+        src: url('fonts/CircularStd-Book.otf') format('opentype'),
+            url('fonts/CircularStd-Book.woff') format('woff'),
+            url('fonts/CircularStd-Book.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Harbour';
+        src: url('fonts/Harbour-Bold.ttf') format('truetype'),
+            url('fonts/Harbour-Bold.woff') format('woff'),
+            url('fonts/Harbour-Bold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Harbour';
+        src: url('fonts/Harbour-Light.ttf') format('truetype'),
+            url('fonts/Harbour-Light.woff') format('woff'),
+            url('fonts/Harbour-Light.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
 body {
-    overflow: hidden;
     margin: 0;
     padding: 0;
-    border: 1px solid black;
 }
 
 .container {
     position: relative;
+    overflow: hidden;
 }
 
 .fullPage {
+    margin: 0;
+    padding: 0;
     height: 100vh; // make this compatible with iphone
     width: 100%;
 }
+
+.btn {
+    width: 150px;
+    display: inline-block;
+}
+
+// .btn {
+//     background: $purple;
+//     color: $orange;
+//     text-transform: uppercase;
+//     font-size: 20px;
+//     font-weight: 600;
+//     padding: 15px 25px;
+//     border-radius: 4px;
+//     border: none;
+// }
 
 #letters {
     .letter {
@@ -68,7 +125,48 @@ body {
     }
 }
 
+#fruits {
+    #fruitTop {
+        background-image: url("./assets/fruitTop.png");
+        height: 260px;
+        width: 200px;
+        right: 200px;
+        top: 60px;
+    }
+
+    #fruitBottom {
+        background-image: url("./assets/fruitBottom.png");
+        height: 215px;
+        width: 200px;
+        right: 200px;
+        top: 60px;
+    }
+
+    #pineappleTop {
+        background-image: url("./assets/pineappleTop.png");
+        height: 300px;
+        width: 200px;
+    }
+    #pineappleBurner {
+        background-image: url("./assets/pineappleBurner.png");
+        height: 360px;
+        width: 300px;
+        right: 200px;
+        bottom: 60px;
+    }
+
+    .fruit {
+        display: block;
+        position: absolute;
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        border: 1px solid black;
+    }
+}
+
 #login {
+    font-family: 'Circular';
+
     .wrapper {
         width: 100%;
         text-align: center;
@@ -78,5 +176,14 @@ body {
     .logo {
         width: 50vw;
         display: inline-block;
+    }
+
+    .subheading {
+        color: $orange;
+        margin: 30px 0px;
+
+        span {
+            display: block;
+        }
     }
 }
