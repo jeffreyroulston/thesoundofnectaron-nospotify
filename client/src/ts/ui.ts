@@ -11,6 +11,7 @@ export default class UI {
     // PRIVATE VARIABLES
     private pages = allPages;
     private currentPage = this.pages[0];
+    private currentPageIdx = 0;
     // private container = el(".container");
 
     private recommendations: si.Track[] | undefined = [];
@@ -48,13 +49,21 @@ export default class UI {
 
     }
 
+    private getNextPage() {
+        this.currentPageIdx++;
+        this.currentPage = this.pages[this.currentPageIdx];
+        this.setCurrentPage();
+    }
+
     private setBG() {
         el("body").style.backgroundColor = this.currentPage.bgColour;
+        console.log(this.currentPage.bgColour);
     }
 
     // CALLBACK FROM APP
     public loginSuccessful() {
         console.log("login successful");
+        this.getNextPage();
     }
 
     public OnUserData(type: si.DataType, data: si.Data): void {

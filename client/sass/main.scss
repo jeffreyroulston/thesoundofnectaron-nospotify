@@ -77,6 +77,26 @@ body {
 .btn {
     width: 150px;
     display: inline-block;
+    cursor: pointer;
+
+    // .purple, .orange, .orange-2 {
+    //     transition: all 0.1s ease-in-out;
+    // }
+    
+
+    // &:hover {
+    //     .purple {
+    //         fill: $orange;
+    //     }
+
+    //     .orange {
+    //         fill: $purple;
+    //     }
+
+    //     .orange, .orange-2 {
+    //         stroke: $purple;
+    //     }
+    // }
 }
 
 // .btn {
@@ -90,14 +110,14 @@ body {
 //     border: none;
 // }
 
-#letters {
-    .letter {
-        position: absolute;
+.letter {
+    position: absolute
+}
 
-        svg {
-            width: $letterSize;
-            height: $letterSize;
-        }
+#shared {
+    .letter svg{
+        width: $letterSize;
+        height: $letterSize;
     }
 
     #letter-N1, #letter-E, #letter-C {

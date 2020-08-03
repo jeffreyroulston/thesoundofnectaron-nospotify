@@ -3,7 +3,7 @@ import {Question, QuestionType, QueryParameter, createSliderQuestion} from "./qu
 
 var colours = {
     default : "#FCF1DB",
-    red : "#FF200"
+    red : "#FF2000"
 }
 
 export enum PageType {
