@@ -1,0 +1,82 @@
+$letterSize: 50px;
+$letterPadding: 20px;
+
+@function center($containerWidth, $elWidth) {
+  @return calc(#{$containerWidth} / 2 - (#{$elWidth} / 2));
+}
+
+@mixin verticalAlign {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@mixin horizontalAlign {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+body {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    border: 1px solid black;
+}
+
+.container {
+    position: relative;
+}
+
+.fullPage {
+    height: 100vh; // make this compatible with iphone
+    width: 100%;
+}
+
+#letters {
+    .letter {
+        position: absolute;
+
+        svg {
+            width: $letterSize;
+            height: $letterSize;
+        }
+    }
+
+    #letter-N1, #letter-E, #letter-C {
+        top: $letterPadding;
+    }
+    
+    #letter-N1, #letter-T, #letter-R {
+        left: $letterPadding;
+    }
+    
+    #letter-R, #letter-O, #letter-N2 {
+        bottom: $letterPadding;
+    }
+    
+    #letter-C, #letter-A, #letter-N2 {
+        right: $letterPadding;
+    }
+    
+    #letter-E, #letter-O {
+        left: center(100vw, $letterSize);
+    }
+    
+    #letter-T, #letter-A {
+        top: center(100vh, $letterSize);
+    }
+}
+
+#login {
+    .wrapper {
+        width: 100%;
+        text-align: center;
+        @include verticalAlign();
+    }
+
+    .logo {
+        width: 50vw;
+        display: inline-block;
+    }
+}

@@ -7,6 +7,8 @@ var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
 var tsProject = ts.createProject("tsconfig.json");
 var del = require('del');
+var sass = require('gulp-sass');
+sass.compiler = require('node-sass');
 
 gulp.task("scripts", function () {
     return tsProject.src()
@@ -28,10 +30,20 @@ gulp.task("copy-html", function () {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task("css", function() {
-    return gulp.src('css/style.css')
-        .pipe(gulp.dest('dist'));
+gulp.task('sass', function () {
+  return gulp.src('./sass/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('./dist'));
 });
+ 
+gulp.task('sass:watch', function () {
+  gulp.watch('./sass/**/*.scss', ['sass']);
+});
+
+// gulp.task("css", function() {
+//     return gulp.src('css/*.css')
+//         .pipe(gulp.dest('dist'));
+// });
 
 gulp.task('compile-dev', gulp.series(['scripts'], function () {
     var b = browserify({
@@ -49,7 +61,7 @@ gulp.task('compile-dev', gulp.series(['scripts'], function () {
 
 
 gulp.task("watch", function() {
-    gulp.watch('{src,html,css}/**/*', gulp.series(['build-dev']));
+    gulp.watch('{src,html,css,sass}/**/*', gulp.series(['build-dev']));
 });
 
 
@@ -66,5 +78,8 @@ gulp.task('compile', gulp.parallel(['scripts'], function () {
         .pipe(gulp.dest('dist'));
 }));
 
-gulp.task('build-dev', gulp.series(['copy-html', 'css', 'compile-dev']));
-gulp.task('build', gulp.series(['copy-html', 'css', 'compile']));
+// gulp.task('build-dev', gulp.series(['copy-html', 'sass', 'css', 'compile-dev']));
+// gulp.task('build', gulp.series(['copy-html', 'sass', 'css', 'compile']));
+
+gulp.task('build-dev', gulp.series(['copy-html', 'sass', 'compile-dev']));
+gulp.task('build', gulp.series(['copy-html', 'sass', 'compile']));

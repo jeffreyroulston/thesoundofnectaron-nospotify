@@ -1,0 +1,30 @@
+body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border: 1px solid black; }
+
+.container {
+  position: relative; }
+
+.fullPage {
+  height: 100vh;
+  width: 100%; }
+
+#letters .letter {
+  position: absolute; }
+  #letters .letter svg {
+    width: 50px;
+    height: 50px; }
+
+#letters #letter-N1, #letters #letter-E, #letters #letter-C {
+  top: 20px; }
+
+#letters #letter-N1, #letters #letter-T, #letters #letter-R {
+  left: 20px; }
+
+#letters #letter-R, #letters #letter-O, #letters #letter-N2 {
+  bottom: 20px; }
+
+#letters #letter-C, #letters #letter-A, #letters #letter-N2 {
+  right: 20px; }
