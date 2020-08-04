@@ -1,5 +1,5 @@
 import * as si from "./spotify-interface";
-import {Question, QuestionType, QueryParameter} from "./questions";
+import {Question, QuestionType, QueryParameter, SliderQuestion} from "./questions";
 // import Page from "./page";
 import {Page, PageType, allPages} from "./page";
 import {TweenLite} from "gsap"
@@ -12,10 +12,7 @@ export default class UI {
     private pages = allPages;
     private currentPage = this.pages[0];
     private previousPage : Page | undefined = undefined;
-    private nextPage : Page | undefined = undefined;
     private currentPageIdx = 0;
-    // private container = el(".container");
-
     private recommendations: si.Track[] | undefined = [];
     private queryParameters: {[key: string]: QueryParameter }  = {
         "acousticness" : qDefault(),
@@ -46,7 +43,7 @@ export default class UI {
     }
 
     private setCurrentPage() {
-        console.log(this.currentPage);
+        // console.log(this.currentPage);
 
         // hide current page
         if (this.previousPage) {
@@ -57,6 +54,11 @@ export default class UI {
         // show the next page
         // el(this.currentPage.pageElement).classList.toggle("active");
         el(this.currentPage.pageElement).style.display = "block";
+
+        // set question bits
+        if (this.currentPage.pageType == PageType.Question) {
+            this.setQuestion();
+        }
 
         this.setBG();
 
@@ -71,7 +73,32 @@ export default class UI {
 
     private setBG() {
         el("body").style.backgroundColor = this.currentPage.bgColour;
-        console.log(this.currentPage.bgColour);
+    }
+
+    private setQuestion() {
+        if (!this.currentPage.question) return;
+        var q = this.currentPage.question;
+        var e = this.currentPage.pageElement;
+
+        // set question copy
+        el(e + " .question p").innerHTML = q.question;
+
+        switch (q.type) {
+            case QuestionType.Slider:
+                // set slider parameters
+                q = <SliderQuestion>q;
+                var slider = <HTMLInputElement>document.querySelector("#sliderInput");
+                slider.min = q.minValue.toString();
+                slider.max = q.maxValue.toString();
+                break;
+
+            case QuestionType.MultiChoice:
+                break;
+
+            case QuestionType.QuickFire:
+                break;
+        }
+
     }
 
     // CALLBACK FROM APP

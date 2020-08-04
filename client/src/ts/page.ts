@@ -1,5 +1,5 @@
 import {QueryParameters} from "./spotify-interface";
-import {Question, QuestionType, QueryParameter, createSliderQuestion} from "./questions";
+import {SliderQuestion, MCQuestion, QuickFireQuestion, createSliderQuestion} from "./questions";
 
 var colours = {
     default : "#FCF1DB",
@@ -15,7 +15,7 @@ export enum PageType {
 export interface Page {
     assets : string[];
     pageType : PageType,
-    question : Question | undefined,
+    question : SliderQuestion | MCQuestion | QuickFireQuestion | undefined,
     pageElement : string,
     bgColour : string,
 }

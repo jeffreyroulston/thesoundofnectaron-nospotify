@@ -124,6 +124,18 @@ body {
     }
 }
 
+.wrapper {
+    width: 100%;
+    text-align: center;
+    @include verticalAlign();
+}
+
+.text-wrapper {
+    font-family: "Harbour";
+    font-weight: 600;
+    display: inline-block;
+}
+
 #shared {
     .logo-letters {
         .letter-N1, .letter-E, .letter-C {
@@ -191,22 +203,6 @@ body {
     }
 }
 
-#login, #roundName {
-    .wrapper {
-        width: 100%;
-        text-align: center;
-        @include verticalAlign();
-    }
-
-    .text-wrapper {
-        // font-family: "Harbour";
-        // font-weight: 600;
-        // text-transform: uppercase;
-        // position: relative;
-        display: inline-block;
-    }
-}
-
 #login {
     font-family: 'Circular';
 
@@ -265,5 +261,12 @@ body {
 
         position: relative;
         display: inline-block;
+    }
+}
+
+#questions {
+    .question {
+        font-family: "Harbour";
+        font-weight: 600;
     }
 }
