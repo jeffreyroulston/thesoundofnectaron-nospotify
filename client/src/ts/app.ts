@@ -46,7 +46,7 @@ export default class App {
         // called from UI
         console.log("login", this.spotifyInterface.Authorized);
 
-        if (this.spotifyInterface.Authorized) {
+        if (!this.spotifyInterface.Authorized) {
             console.log("Login Authorized, show question one");
             this.ui.loginSuccessful();
         } else {

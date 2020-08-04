@@ -16,6 +16,7 @@ export interface Page {
     assets : string[];
     pageType : PageType,
     question : Question | undefined,
+    pageElement : string,
     bgColour : string,
 }
 
@@ -25,6 +26,7 @@ export var allPages : Page[] = [
         assets : [],
         pageType : PageType.Login,
         question : undefined,
+        pageElement : "#login",
         bgColour : colours.default,
         
     },
@@ -32,6 +34,7 @@ export var allPages : Page[] = [
         assets : [],
         pageType : PageType.RoundName,
         question : undefined,
+        pageElement : "#roundName",
         bgColour : colours.red,
         
     },
@@ -44,6 +47,7 @@ export var allPages : Page[] = [
             0,
             100
         ),
+        pageElement : "#slider-q", // move into question parameter
         bgColour : colours.default,
         
     }

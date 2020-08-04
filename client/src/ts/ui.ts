@@ -1,7 +1,7 @@
 import * as si from "./spotify-interface";
 import {Question, QuestionType, QueryParameter} from "./questions";
 // import Page from "./page";
-import {PageType, allPages} from "./page";
+import {Page, PageType, allPages} from "./page";
 import {TweenLite} from "gsap"
 
 var qDefault = function() { return { value: 0, include: false } };
@@ -11,6 +11,8 @@ export default class UI {
     // PRIVATE VARIABLES
     private pages = allPages;
     private currentPage = this.pages[0];
+    private previousPage : Page | undefined = undefined;
+    private nextPage : Page | undefined = undefined;
     private currentPageIdx = 0;
     // private container = el(".container");
 
@@ -39,12 +41,23 @@ export default class UI {
         this.setCurrentPage();
 
         // set button bindings
-        var startBtn = el("#startBtn");
-        startBtn?.addEventListener("click", this.Login.bind(this))
+        el("#startBtn").addEventListener("click", this.Login.bind(this));
+        el(".next").addEventListener("click", this.getNextPage.bind(this));
     }
 
     private setCurrentPage() {
         console.log(this.currentPage);
+
+        // hide current page
+        if (this.previousPage) {
+            // el(this.previousPage.pageElement).classList.toggle("active");
+            el(this.previousPage.pageElement).style.display = "none";
+        }
+
+        // show the next page
+        // el(this.currentPage.pageElement).classList.toggle("active");
+        el(this.currentPage.pageElement).style.display = "block";
+
         this.setBG();
 
     }
@@ -52,6 +65,7 @@ export default class UI {
     private getNextPage() {
         this.currentPageIdx++;
         this.currentPage = this.pages[this.currentPageIdx];
+        this.previousPage = this.pages[this.currentPageIdx-1];
         this.setCurrentPage();
     }
 
