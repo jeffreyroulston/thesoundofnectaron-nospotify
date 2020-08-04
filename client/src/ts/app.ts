@@ -1,5 +1,6 @@
 import * as si from "./spotify-interface";
 import * as Questions from "./questions";
+import * as THREE from 'three';
 import UI from "./ui";
 import ResourceManager from "./resource-manager";
 import Graphics from "./graphics";
@@ -41,6 +42,12 @@ export default class App {
         this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png").then(() => {
             this.graphics.onInitResources(this.resourceManager);
         });
+
+        // this below was just for testing
+        // is also a great example for how to switch colour in the background
+        setInterval(() => {
+            this.graphics.switchColor(new THREE.Color(Math.random(), Math.random(), Math.random()), 0.5);
+        }, 2000)
     }
 
     public Login() {

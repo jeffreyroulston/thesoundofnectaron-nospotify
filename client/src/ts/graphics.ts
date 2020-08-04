@@ -26,7 +26,7 @@ const fragShader = `
 
         // float lerp = sin(time * 2.0) * 0.5 + 0.5;
         float aspect = size.x / size.y;
-        float width = 0.5 / aspect;
+        float width = 2.0;
 
 
         float positionLerp = smoothstep(vUv.x - width, vUv.x + width, lerp * (1.0 + 2.0 * width) - width);
@@ -59,6 +59,12 @@ export default class Graphics {
 
     // timing
     private clock: THREE.Clock;
+    private lerpRate: number = 0.0;
+    private currentLerp: number = 0.0;
+
+    // colors
+    private firstColor: THREE.Color = new THREE.Color(0x60CBB5);
+    private secondColor: THREE.Color = new THREE.Color(0xd955a2);
 
     constructor() {
         this.renderer = new THREE.WebGLRenderer({antialias: true});
@@ -88,8 +94,8 @@ export default class Graphics {
                 noiseTexture: {value: undefined},
                 size: {value: new THREE.Vector2()},
                 time: {value: 0.0},
-                firstColor: {value: new THREE.Color(0x60CBB5)},
-                secondColor: {value: new THREE.Color(0xd955a2)},
+                firstColor: {value: this.firstColor},
+                secondColor: {value: this.secondColor},
                 pixelRatio: {value: 1.0 / devicePixelRatio},
                 lerp: {value: 0.0}
             }
@@ -120,6 +126,14 @@ export default class Graphics {
 
         this.clock.start();
         this.render();
+    }
+
+    public switchColor(newColour: THREE.Color, time: number) {
+        this.firstColor.copy(this.secondColor);
+        this.secondColor.copy(newColour);
+
+        this.lerpRate = 1.0 / time;
+        this.currentLerp = 0.0;
     }
 
     private checkResize(): void {
@@ -153,11 +167,11 @@ export default class Graphics {
         const dt = this.clock.getDelta();
         const time = this.clock.getElapsedTime();
 
+        this.currentLerp += this.lerpRate * dt;
+        this.currentLerp = Math.min(this.currentLerp, 1.0);
+
         this.material.uniforms.time.value = time;
-        this.material.uniforms.lerp.value = this.material.uniforms.lerp.value + 1.0 * dt;
-        if (this.material.uniforms.lerp.value > 1.0) {
-            this.material.uniforms.lerp.value = 0.0;
-        }
+        this.material.uniforms.lerp.value = this.currentLerp;
 
         this.renderer.render(this.scene, this.camera);
     }
