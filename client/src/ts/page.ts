@@ -2,7 +2,7 @@ import {QueryParameters} from "./spotify-interface";
 import {SliderQuestion, MCQuestion, QuickFireQuestion, createSliderQuestion} from "./questions";
 
 var colours = {
-    default : "#FCF1DB",
+    beige : "#FCF1DB",
     red : "#FF2000"
 }
 
@@ -27,7 +27,7 @@ export var allPages : Page[] = [
         pageType : PageType.Login,
         question : undefined,
         pageElement : "#login",
-        bgColour : colours.default,
+        bgColour : colours.beige,
         
     },
     {
@@ -47,8 +47,8 @@ export var allPages : Page[] = [
             0,
             100
         ),
-        pageElement : "#slider-q", // move into question parameter
-        bgColour : colours.default,
+        pageElement : "#slider-q",
+        bgColour : colours.beige,
         
     }
 ]

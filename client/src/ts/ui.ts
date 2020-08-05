@@ -13,6 +13,15 @@ export default class UI {
     private currentPage = this.pages[0];
     private previousPage : Page | undefined = undefined;
     private currentPageIdx = 0;
+
+    // this is horrible, fix it
+    private currentQuestion : any = undefined;
+
+    // ELEMENTS
+    private sliderArrowEl = el("#slider-thumb");
+    private sliderWidth = 0;
+    private sliderValue = 0;
+
     private recommendations: si.Track[] | undefined = [];
     private queryParameters: {[key: string]: QueryParameter }  = {
         "acousticness" : qDefault(),
@@ -40,10 +49,11 @@ export default class UI {
         // set button bindings
         el("#startBtn").addEventListener("click", this.Login.bind(this));
         el(".next").addEventListener("click", this.getNextPage.bind(this));
+        el("#sliderInput").addEventListener("input",this.sliderChange.bind(this));
     }
 
     private setCurrentPage() {
-        // console.log(this.currentPage);
+        console.log(this.currentPage);
 
         // hide current page
         if (this.previousPage) {
@@ -72,6 +82,7 @@ export default class UI {
     }
 
     private setBG() {
+        // sets background colour based on page
         el("body").style.backgroundColor = this.currentPage.bgColour;
     }
 
@@ -99,6 +110,30 @@ export default class UI {
                 break;
         }
 
+        this.currentQuestion = q;
+
+    }
+
+    private sliderChange(e : any) {
+        if (!this.currentPage.question) return;
+
+        // get the width and the value of the slider 
+        this.sliderWidth = e.srcElement.clientWidth;
+        this.sliderValue = e.srcElement.value;
+        console.log(this.sliderWidth, this.sliderValue, this.sliderArrowEl.getBoundingClientRect().x);
+
+        // var v = 0;
+        // if (this.sliderValue < (this.currentQuestion.maxValue - this.currentQuestion.minValue)/2) {
+        //     v = (((this.sliderValue - this.currentQuestion.minValue) / (this.currentQuestion.maxValue - this.currentQuestion.minValue) * (this.sliderWidth)) - this.sliderArrowEl.getBoundingClientRect().width/2);
+        // } else {
+        //     v = (((this.sliderValue - this.currentQuestion.minValue) / (this.currentQuestion.maxValue - this.currentQuestion.minValue) * (this.sliderWidth)) - this.sliderArrowEl.getBoundingClientRect().width/2);
+        // }
+
+        // get the next position of the arrow
+        var v = (((this.sliderValue - this.currentQuestion.minValue) / (this.currentQuestion.maxValue - this.currentQuestion.minValue) * (this.sliderWidth)) - this.sliderArrowEl.getBoundingClientRect().width/2);
+
+        // move the triangle to match the position of the slider thumb
+        this.sliderArrowEl.style.left = v.toString() + "px"
     }
 
     // CALLBACK FROM APP
