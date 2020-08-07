@@ -198,7 +198,9 @@ $breakpoints: (phone: 640px, tablet: 768px, desktop: 1024px) !default;
     text-align: center;
     @include verticalAlign();
 
-    top: 41.2%;
+    height: 300px;
+
+    // top: 41.2%;
 }
 
 .text-wrapper {
@@ -303,21 +305,25 @@ $breakpoints: (phone: 640px, tablet: 768px, desktop: 1024px) !default;
 }
 
 #roundName {
-    // background-color: black;
-    // background-image: url("./assets/_Round.png");
-    // background-repeat: no-repeat;
-    // background-size: 100% auto;
+    background-color: black;
+    background-image: url("./assets/_Round.png");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
 
     .round {
         display: inline-block;
         position: relative;
     }
 
+    .text-wrapper {
+        // margin-top: -300px // this is the height of the description box + round name
+    }
+
     .round-name {
         display: inline-block;
-        position: relative;
-        top: 130px;
-        left: -27px;
+        // position: relative;
+        // top: 130px;
+        // left: -27px;
         z-index: 50;
 
         svg {
@@ -355,10 +361,10 @@ $breakpoints: (phone: 640px, tablet: 768px, desktop: 1024px) !default;
         padding: 20px;
         transform: rotate(-17deg);
 
-        position: relative;
-        display: inline-block;
-        top: 140px;
-        left: -44px;
+        // position: relative;
+        // display: inline-block;
+        // top: 140px;
+        // left: -44px;
     }
 
     .btn {
