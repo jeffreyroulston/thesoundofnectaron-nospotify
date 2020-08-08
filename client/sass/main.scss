@@ -428,31 +428,57 @@ li {
         }
 
         .fruits {
-            .fruit {
-                border: 1px solid black;
-                display: block;
+            .fruit-top, .fruit-bottom {
                 height: 50vh;
-                width: 100%;
+                text-align: center;
+                position: relative;
+
+                img {
+                    @include horizontalAlign();
+                    position: absolute;
+                    display: inline-block;
+                    width: 200px;
+                }
             }
 
             .fruit-top {
-                background-position: bottom center;
+                img {
+                    bottom: 10px;
+                }
+
+                z-index: 100;
             }
 
             .fruit-bottom {
-                background-position: top center;
+                img {
+                    top: 10px;
+                }
             }
+            // .fruit {
+            //     border: 1px solid black;
+            //     display: block;
+            //     height: 50vh;
+            //     width: 100%;
+            // }
 
-            .fruitTop {
-            }
+            // .fruit-top {
+                // background-position: bottom center;
+            // }
+
+            // .fruit-bottom {
+                // background-position: top center;
+            // }
+
+            // .fruitTop {
+            // }
             
-            .fruitBottom {
-                background-size: 180px auto;
-            }
+            // .fruitBottom {
+            //     background-size: 180px auto;
+            // }
             
-            .pineappleTop {
-                background-size: 300px auto;
-            }
+            // .pineappleTop {
+            //     background-size: 300px auto;
+            // }
             
         }
 

@@ -19,10 +19,11 @@ export default class UI {
 
     // SLIDER VARIABLES
     private sliderArrowEl = el("#slider-thumb");
+    private sliderTopFruitEl = el(".fruit-top img");
+    private sliderBottomFruitEl = el(".fruit-bottom img");
     private sliderWidth = 0;
     private sliderValue = 0;
-    private sliderTopFruitWidth = 0;
-    private sliderBottomFruitWidth = 0;
+    private sliderPreviousValue = 0;
 
     private recommendations: si.Track[] | undefined = [];
     private queryParameters: {[key: string]: QueryParameter }  = {
@@ -52,6 +53,7 @@ export default class UI {
         el("#startBtn").addEventListener("click", this.Login.bind(this));
         el(".next").addEventListener("click", this.getNextPage.bind(this));
         el("#sliderInput").addEventListener("input",this.sliderChange.bind(this));
+        // el("#sliderInput").addEventListener("change", this.sliderInput)
     }
 
     private setCurrentPage() {
@@ -122,13 +124,32 @@ export default class UI {
         // get the width and the value of the slider 
         this.sliderWidth = e.srcElement.clientWidth;
         this.sliderValue = e.srcElement.value;
-        console.log(this.sliderWidth, this.sliderValue, this.sliderArrowEl.getBoundingClientRect().x);
 
         // get the next position of the arrow
-        var v = (((this.sliderValue - this.currentQuestion.minValue) / (this.currentQuestion.maxValue - this.currentQuestion.minValue) * (this.sliderWidth)) - this.sliderArrowEl.getBoundingClientRect().width/2);
-
         // move the triangle to match the position of the slider thumb
-        this.sliderArrowEl.style.left = v.toString() + "px"
+        this.sliderArrowEl.style.left = (((this.sliderValue - this.currentQuestion.minValue) / (this.currentQuestion.maxValue - this.currentQuestion.minValue) * (this.sliderWidth)) - this.sliderArrowEl.getBoundingClientRect().width/2).toString() + "px"
+
+        this.sliderFruitScaleChange()
+    }
+
+    private sliderFruitScaleChange() {
+        console.log(this.sliderPreviousValue, this.sliderValue);
+
+        if (this.sliderValue < ((this.currentQuestion.maxValue - this.currentQuestion.minValue) / 2) ) {
+            // bottom fruit
+            this.sliderBottomFruitEl.style.width = px(this.sliderBottomFruitEl.getBoundingClientRect().width + (this.sliderPreviousValue < this.sliderValue ? -2 : 2));
+            this.sliderBottomFruitEl.style.top = px(parseInt(getComputedStyle(this.sliderBottomFruitEl).top.replace(/[^\d-]/g, "")) + (this.sliderPreviousValue < this.sliderValue ? 1 : -1))
+        } else {
+            // top fruit
+            this.sliderTopFruitEl.style.width = px(this.sliderTopFruitEl.getBoundingClientRect().width + (this.sliderPreviousValue < this.sliderValue ? 2 : -2))
+            this.sliderTopFruitEl.style.bottom = px(parseInt(getComputedStyle(this.sliderTopFruitEl).bottom.replace(/[^\d-]/g, "")) + (this.sliderPreviousValue < this.sliderValue ? -1 : 1))
+        }
+
+        this.sliderPreviousValue = this.sliderValue;  
+    }
+
+    private scaleFruit(el: HTMLElement, increment : number) {
+        el.style.width = (el.getBoundingClientRect().width + increment).toString() + "px";
     }
 
     // CALLBACK FROM APP
@@ -182,4 +203,8 @@ function el(e: string) {
 
 function querySelector(query: string, el : HTMLElement | null = null) {
     return el ? el.querySelector<HTMLInputElement>(query) : document.querySelector<HTMLInputElement>(query);
+}
+
+function px (n : number) {
+    return n.toString() + "px";
 }
