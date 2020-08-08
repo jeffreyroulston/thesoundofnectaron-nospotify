@@ -17,10 +17,12 @@ export default class UI {
     // this is horrible, fix it
     private currentQuestion : any = undefined;
 
-    // ELEMENTS
+    // SLIDER VARIABLES
     private sliderArrowEl = el("#slider-thumb");
     private sliderWidth = 0;
     private sliderValue = 0;
+    private sliderTopFruitWidth = 0;
+    private sliderBottomFruitWidth = 0;
 
     private recommendations: si.Track[] | undefined = [];
     private queryParameters: {[key: string]: QueryParameter }  = {
@@ -121,13 +123,6 @@ export default class UI {
         this.sliderWidth = e.srcElement.clientWidth;
         this.sliderValue = e.srcElement.value;
         console.log(this.sliderWidth, this.sliderValue, this.sliderArrowEl.getBoundingClientRect().x);
-
-        // var v = 0;
-        // if (this.sliderValue < (this.currentQuestion.maxValue - this.currentQuestion.minValue)/2) {
-        //     v = (((this.sliderValue - this.currentQuestion.minValue) / (this.currentQuestion.maxValue - this.currentQuestion.minValue) * (this.sliderWidth)) - this.sliderArrowEl.getBoundingClientRect().width/2);
-        // } else {
-        //     v = (((this.sliderValue - this.currentQuestion.minValue) / (this.currentQuestion.maxValue - this.currentQuestion.minValue) * (this.sliderWidth)) - this.sliderArrowEl.getBoundingClientRect().width/2);
-        // }
 
         // get the next position of the arrow
         var v = (((this.sliderValue - this.currentQuestion.minValue) / (this.currentQuestion.maxValue - this.currentQuestion.minValue) * (this.sliderWidth)) - this.sliderArrowEl.getBoundingClientRect().width/2);
