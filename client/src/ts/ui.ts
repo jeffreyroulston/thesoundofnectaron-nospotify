@@ -16,6 +16,7 @@ class Slider {
     private sliderThumb : HTMLElement;
     private topFruitElement : HTMLElement;
     private bottomFruitElement : HTMLElement;
+    private questionElement: HTMLElement;
 
     private min : number = 0;
     private max : number = 0;
@@ -30,6 +31,7 @@ class Slider {
         this.sliderThumb = el(this.el + " .slider-thumb");
         this.topFruitElement = el(this.el+ " .fruit-top img");
         this.bottomFruitElement = el(this.el + " .fruit-bottom img");
+        this.questionElement = el(this.el + " .question");
 
         // set bindings
         this.sliderEl.addEventListener("input",this.sliderChange.bind(this));
@@ -48,6 +50,12 @@ class Slider {
         this.sliderEl.min = this.min.toString();
         this.sliderEl.max = this.max.toString();
         this.sliderEl.value = initial.toString();
+
+        // add copy
+        this.questionElement.innerHTML = q.question;
+
+        // show element
+        el(this.el).style.display = "block";
     }
 
     sliderChange(e: any){
@@ -73,10 +81,12 @@ export default class UI {
 
     private currentPage : PageType = PageType.Login;
     private currentRound : number = 0;
+    private currentQuestionIdx : number = 0;
 
     private slider = new Slider("#slider-q")
     private questions : SliderQuestion[] = [
         {
+            round:1,
             type: QuestionType.Slider,
             params: si.QueryParameters.Valence,
             question : "How bitter would you like your brew?",
@@ -85,6 +95,7 @@ export default class UI {
             answer : 0
         },
         {
+            round: 1,
             type: QuestionType.Slider,
             params: si.QueryParameters.Valence,
             question : "How tangy would you like your brew?",
@@ -123,10 +134,10 @@ export default class UI {
     private init() {
         // set button bindings
         el("#startBtn").addEventListener("click", this.Login.bind(this));
-        // el(".next").addEventListener("click", this.next.bind(this));
+        el(".next").addEventListener("click", this.next.bind(this));
         
-        // this.showLogin();
-        this.showRoundName();
+        this.showLogin();
+        // this.showRoundName();
     }
 
     private setBG(color : string) {
@@ -151,7 +162,9 @@ export default class UI {
     }
 
     private showRoundName() {
+        this.currentPage = PageType.RoundName;
         this.currentRound++;
+
         this.setBG(this.colours.red);
         el("#round-name").style.display = "block";
 
@@ -159,18 +172,32 @@ export default class UI {
         TweenMax.from(".round path", 0.75, {opacity:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}});
 
         // swing in numbers
-        TweenMax.from("#round-name .numbers li:first-child", 0.5, {opacity:0, y:50, delay:0.6});
-        TweenMax.from("#round-name .numbers li:nth-child(" + (this.currentRound+1).toString() + ")", 0.5, {opacity:0, scale:0.5, y:-50, rotate:-120, delay:0.7});
+        TweenMax.from("#round-name .numbers li:first-child", 0.5, {opacity:0, y:50, delay:0.4});
+        TweenMax.from("#round-name .numbers li:nth-child(" + (this.currentRound+1).toString() + ")", 0.5, {opacity:0, scale:0.5, y:-50, rotate:-120, delay:0.5});
 
         // show the round name
-        TweenMax.from(".round-name-text li:nth-child(" + this.currentRound.toString() + ")", 0.5, {opacity:0, x:-50, delay:1.5});
+        TweenMax.from(".round-name-text li:nth-child(" + this.currentRound.toString() + ")", 0.5, {opacity:0, x:-50, delay:1});
 
         // show the description box
-        TweenMax.from("#round-name .description, #round-name .next", 0.5, {opacity:0, y:20, delay:1.6});
+        TweenMax.from("#round-name .description, #round-name .btn", 0.6, {opacity:0, y:20, delay:1.1});
     }
 
-    private next(nextPage : PageType) {
+    private showQuestion() {
+        var q = this.questions[this.currentQuestionIdx];
+        this.setBG(this.colours.beige);
+
+        switch(q.type) {
+            case QuestionType.Slider:
+                this.slider.set(q);
+
+                // animation
+                break;
+        }
+    }
+
+    private next() {
         // hide current page
+        // show next page
         switch (this.currentPage) {
             case PageType.Login:
                 //hide button
@@ -180,20 +207,14 @@ export default class UI {
                 TweenMax.to("#login .bleed path, #login .bleed polygon, #login .bleed rect", 0.5, {opacity:0, y:50, scale:0, transformOrigin: "bottom", stagger: {each: 0.005, from:"random"}, delay:0.2});
                 
                 //hide login
-                TweenMax.to("#login", 0, {alpha:0, delay: 1});
+                TweenMax.to("#login", 0, {alpha:0, delay: 1, onComplete: this.showRoundName.bind(this)});
                 break;
             
             case PageType.RoundName:
-                break;
-            
-            case PageType.Question:
-                break;
-        }
+                //hide button
+                TweenMax.to("#round-name", 0.3, {opacity:0});
+                TweenMax.to("#login", 0, {alpha:0, delay: 0.5, onComplete: this.showQuestion.bind(this)});
 
-        // show next page
-        switch (nextPage) {
-            case PageType.RoundName:
-                this.showRoundName();
                 break;
             
             case PageType.Question:
@@ -296,8 +317,7 @@ export default class UI {
     // CALLBACK FROM APP
     public loginSuccessful() {
         console.log("login successful");
-        var p = PageType.RoundName;
-        this.next(p);
+        this.next();
     }
 
     public OnUserData(type: si.DataType, data: si.Data): void {
@@ -331,11 +351,11 @@ export default class UI {
     
     // here we will activate and populate one of three different html question templates depending on question type
     // once the answer is chosen, we use that callback to pass the selection back up
-    public showQuestion(question: Question): void {
-    }
+    // public showQuestion(question: Question): void {
+    // }
 
-    private showCurrentQuestion() {
-    }
+    // private showCurrentQuestion() {
+    // }
 
 }
 

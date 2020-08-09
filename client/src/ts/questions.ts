@@ -79,6 +79,7 @@ export interface MCAnswer {
 // }
 
 export interface Question {
+    round : number;
     type: QuestionType;
     params: QueryParameters;
     question : string;

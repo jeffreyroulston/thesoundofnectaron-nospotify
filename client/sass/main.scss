@@ -136,6 +136,10 @@ $breakpoints: (phone: 640px, tablet: 768px, desktop: 1024px) !default;
     padding: 0;
 }
 
+body {
+    @include transition(background-color 0.5s ease);
+}
+
 li {
     list-style: none;
 }
@@ -490,7 +494,7 @@ li {
             border-top: 2px solid $purple;
         }
 
-        #slider-thumb {
+        .slider-thumb {
             width: 0;
             height: 0;
             border-left: 11px solid transparent;
@@ -501,13 +505,13 @@ li {
 
         }
 
-        #slider-input {
+        .slider-input {
             width: 100%;
             opacity: 0;
             position: relative;
         }
 
-        #slider-thumb, #slider-input {
+        .slider-thumb, .slider-input {
             top: 17px;
             cursor: pointer;
         }
