@@ -18,12 +18,16 @@ class Slider {
     private bottomFruitElement : HTMLElement;
     private questionElement: HTMLElement;
 
+    private fruitDefaultWidth : number;
+    private topFruitDefaultBottomValue : number;
+    private bottomFruitDefaultTopValue : number;
+
     private min : number = 0;
     private max : number = 0;
+    private mid : number = 0;
     private value : number = 0;
     private prevValue : number = 0
     private sliderWidth : number = 0;
-    private fruitDefaultWidth : number = 200;
 
     constructor(elementName: string) {
         this.el = elementName;
@@ -32,6 +36,13 @@ class Slider {
         this.topFruitElement = el(this.el+ " .fruit-top img");
         this.bottomFruitElement = el(this.el + " .fruit-bottom img");
         this.questionElement = el(this.el + " .question");
+
+        // this.fruitDefaultWidth = this.topFruitElement.getBoundingClientRect().width;
+        this.fruitDefaultWidth = 200;
+        this.topFruitDefaultBottomValue = pxToInt(getComputedStyle(this.topFruitElement).bottom);
+        this.bottomFruitDefaultTopValue = pxToInt(getComputedStyle(this.bottomFruitElement).top);
+
+        console.log(this.fruitDefaultWidth, this.topFruitDefaultBottomValue, this.bottomFruitDefaultTopValue);
 
         // set bindings
         this.sliderEl.addEventListener("input",this.sliderChange.bind(this));
@@ -42,20 +53,27 @@ class Slider {
         this.max = q.maxValue;
 
         // set slider value to the middle
-        var initial = (this.max - this.min)/2;
-        this.value = initial;
-        this.prevValue = initial;
+        this.mid = (this.max - this.min)/2;
+        this.value = this.mid;
+        this.prevValue = this.mid;
 
         // apply to slider element
         this.sliderEl.min = this.min.toString();
         this.sliderEl.max = this.max.toString();
-        this.sliderEl.value = initial.toString();
+        this.sliderEl.value = this.mid.toString();
 
         // add copy
         this.questionElement.innerHTML = q.question;
 
         // show element
         el(this.el).style.display = "block";
+    }
+
+    show() {
+
+        TweenMax.from(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.5});
+        TweenMax.from(this.el + " .slide-container", 0.2, {scaleX:0, transformOrigin: "left", delay: 0.8});
+        TweenMax.from(this.el + " .slider-thumb", 0.5, {alpha:0, scale:1.5, y:20, delay:1});
     }
 
     sliderChange(e: any){
@@ -66,19 +84,48 @@ class Slider {
         // get the next position of the arrow
         // move the triangle to match the position of the slider thumb
         this.sliderThumb.style.left = (((this.value - this.min) / (this.max - this.min) * (this.sliderWidth)) - this.sliderThumb.getBoundingClientRect().width/2).toString() + "px"
+
+        // scale fruit
+        if (this.value > this.mid) {
+            // top fruit
+            console.log(this.prevValue, this.value, "top fruit");
+            this.scaleTopFruit();
+        } else if (this.value < this.mid) {
+            console.log(this.prevValue, this.value, "bottom fruit");
+            this.scaleBottomFruit();
+        } else {
+            //mid point
+            if (this.prevValue > this.mid) {
+                // going down so top fruit
+                console.log(this.prevValue, this.value, "top fruit");
+                this.scaleTopFruit();
+            } else {
+                // bottom fruit
+                console.log(this.prevValue, this.value, "bottom fruit");
+                this.scaleBottomFruit();
+            }
+        }
+
+    }
+
+    scaleTopFruit() {
+        this.topFruitElement.style.width = px(3*(this.value - this.mid) + this.fruitDefaultWidth);
+
+        this.topFruitElement.style.bottom = px(this.topFruitDefaultBottomValue - 0.5 * (this.value - this.mid))
+
+        this.prevValue = this.value;
+    }
+
+    scaleBottomFruit() {
+        this.bottomFruitElement.style.width = px(3*(this.mid - this.value) + this.fruitDefaultWidth);
+
+        this.bottomFruitElement.style.top = px(this.bottomFruitDefaultTopValue - 0.5 * (this.mid - this.value))
+
+        this.prevValue = this.value;
     }
 }
 
 export default class UI {
-    // PRIVATE VARIABLES
-    // private pages = allPages;
-    // private currentPage = this.pages[0];
-    // private previousPage : Page | undefined = undefined;
-    // private currentPageIdx = 0;
-
-    // this is horrible, fix it
-    // private currentQuestion : any = undefined;
-
     private currentPage : PageType = PageType.Login;
     private currentRound : number = 0;
     private currentQuestionIdx : number = 0;
@@ -136,8 +183,8 @@ export default class UI {
         el("#startBtn").addEventListener("click", this.Login.bind(this));
         el(".next").addEventListener("click", this.next.bind(this));
         
-        this.showLogin();
-        // this.showRoundName();
+        // this.showLogin();
+        this.showRoundName();
     }
 
     private setBG(color : string) {
@@ -190,7 +237,8 @@ export default class UI {
             case QuestionType.Slider:
                 this.slider.set(q);
 
-                // animation
+                // show question
+                this.slider.show();
                 break;
         }
     }
@@ -359,7 +407,7 @@ export default class UI {
 
 }
 
-export function el(e: string) {
+export function el(e: string) : HTMLElement{
     return <HTMLElement>document.querySelector(e);
 }
 
@@ -367,8 +415,12 @@ function querySelector(query: string, el : HTMLElement | null = null) {
     return el ? el.querySelector<HTMLInputElement>(query) : document.querySelector<HTMLInputElement>(query);
 }
 
-function px (n : number) {
+function px (n : number) : string{
     return n.toString() + "px";
+}
+
+function pxToInt(s : string) : number {
+    return parseInt(s.replace(/[^\d-]/g, ""));
 }
 
 function rand(min:number, max:number) {
