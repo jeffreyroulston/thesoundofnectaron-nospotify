@@ -71,7 +71,8 @@ export default class UI {
         el(".next").addEventListener("click", this.next.bind(this));
         
         // this.showLogin();
-        this.showRoundName();
+        // this.showRoundName();
+        this.showQuestion();
     }
 
     private setBG(color : string) {
@@ -91,8 +92,6 @@ export default class UI {
 
         // show subheading and button
         TweenMax.from("#login .subheading, #login .btn", 0.5, {opacity:0, y:5, delay: 3.2});
-        // pulse button?
-        // TweenMax.to("#login .btn", 0.75, {scale:1.02, repeat:-1, delay:2.85, ease:"linear", yoyo:true, yoyoEase:"linear"})
     }
 
     private showRoundName() {

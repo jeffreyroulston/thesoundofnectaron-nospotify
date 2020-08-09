@@ -66,10 +66,15 @@ export default class Slider {
     }
 
     show() {
-
         TweenMax.from(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.5});
-        TweenMax.from(this.el + " .slide-container", 0.2, {scaleX:0, transformOrigin: "left", delay: 0.8});
-        TweenMax.from(this.el + " .slider-thumb", 0.5, {alpha:0, scale:1.5, y:20, delay:1});
+        TweenMax.from(this.el + " .slide-container", 0.2, {scaleX:0, transformOrigin: "right", delay: 0.5});
+        TweenMax.from(this.el + " .slider-thumb", 0.5, {alpha:0, scale:1.5, y:20, delay:0.8});
+        
+        TweenMax.from(this.topFruitElement, 0.3, {alpha:0, delay:0.8});
+        TweenMax.from(this.topFruitElement, 0.8, {y:-50, ease:"bounce", delay:0.8});
+
+        TweenMax.from(this.bottomFruitElement, 0.3, {alpha:0, delay:0.8});
+        TweenMax.from(this.bottomFruitElement, 0.8, {y:50, ease:"bounce", delay:0.8});
     }
 
     sliderChange(e: any){
@@ -99,22 +104,22 @@ export default class Slider {
 
     scaleTopFruit() {
         this.topFruitElement.style.width = px(3*(this.value - this.mid) + this.fruitDefaultWidth);
-
         this.topFruitElement.style.bottom = px(this.topFruitDefaultBottomValue - 0.5 * (this.value - this.mid))
-
         this.prevValue = this.value;
     }
 
     scaleBottomFruit() {
         this.bottomFruitElement.style.width = px(3*(this.mid - this.value) + this.fruitDefaultWidth);
-
         this.bottomFruitElement.style.top = px(this.bottomFruitDefaultTopValue - 0.5 * (this.mid - this.value))
-
         this.prevValue = this.value;
     }
 
     sliderValueSet(e: any) {
         this.value= e.srcElement.value;
-        this.ui.answerRetrieved(this.value);
+        TweenMax.to(this.el + " .slider-thumb", 0.5, {alpha:0, y:20});
+        TweenMax.to(this.topFruitElement, 0.5, {alpha: 0, y:-50});
+        TweenMax.to(this.bottomFruitElement, 0.5, {alpha:0, y:50});
+        TweenMax.to(this.el + " .slide-container", 0.2, {scaleX:0, transformOrigin: "right", delay: 0.2});
+        TweenMax.to(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.2, onComplete: this.ui.answerRetrieved.bind(this)});
     }
 }
