@@ -137,11 +137,11 @@ export default class UI {
         el("#login").style.display = "block";
 
         // animate
-        TweenMax.from(".theSoundOf path", 0.5, {opacity:0, y:-50, stagger: {each: 0.05, from:"random"}, delay:1});
+        TweenMax.from(".theSoundOf path", 1, {opacity:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}, delay:1});
 
-        TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 0.5, {opacity:0, y:50, stagger: {each: 0.02, from:"random"}, delay:1});
+        TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 1, {opacity:0, y:50, scale:0, transformOrigin: "top", stagger: {each: 0.05, from:"random"}, delay:1});
 
-        TweenMax.from("#login .subheading, #login .btn", 1, {opacity:0, delay: 2.1});
+        TweenMax.from("#login .subheading, #login .btn", 1, {opacity:0, y:5, delay: 3.2});
 
         // TweenMax.to("#login .btn", 0.75, {scale:1.02, repeat:-1, delay:2.85, ease:"linear", yoyo:true, yoyoEase:"linear"})
     }
@@ -300,4 +300,8 @@ function querySelector(query: string, el : HTMLElement | null = null) {
 
 function px (n : number) {
     return n.toString() + "px";
+}
+
+function rand(min:number, max:number) {
+
 }
