@@ -136,13 +136,13 @@ export default class UI {
         this.setBG(this.colours.beige);
         el("#login").style.display = "block";
 
-        // animate
-        TweenMax.from(".theSoundOf path", 1, {opacity:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}, delay:1});
-
-        TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 1, {opacity:0, y:50, scale:0, transformOrigin: "top", stagger: {each: 0.05, from:"random"}, delay:1});
-
-        TweenMax.from("#login .subheading, #login .btn", 1, {opacity:0, y:5, delay: 3.2});
-
+        // bleed in the sound of
+        TweenMax.from(".theSoundOf path", 0.75, {opacity:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}, delay:1});
+        // bleed in nectaron
+        TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 0.75, {opacity:0, y:50, scale:0, transformOrigin: "top", stagger: {each: 0.05, from:"random"}, delay:1});
+        // show subheading and button
+        TweenMax.from("#login .subheading, #login .btn", 0.5, {opacity:0, y:5, delay: 3.2});
+        // pulse button?
         // TweenMax.to("#login .btn", 0.75, {scale:1.02, repeat:-1, delay:2.85, ease:"linear", yoyo:true, yoyoEase:"linear"})
     }
 
@@ -150,8 +150,31 @@ export default class UI {
         console.log()
     }
 
-    private next() {
+    private next(nextPage : PageType) {
+        // hide current page
+        switch (this.currentPage) {
+            case PageType.Login:
+                //hide button
+                TweenMax.to("#login .subheading, #login .btn", 0.3, {opacity:0});
+                // bleed out logo
+                TweenMax.to("#login .bleed path, #login .bleed polygon, #login .bleed rect", 0.5, {opacity:0, y:50, scale:0, transformOrigin: "bottom", stagger: {each: 0.005, from:"random"}, delay:0.2});
+                //hide login
+                TweenMax.to("#login", 0, {alpha:0, delay: 1});
+                break;
+            
+            case PageType.RoundName:
+                console.log("round name");
+                break;
+            
+            case PageType.Question:
+                console.log("question")
+                break;
+        }
 
+        // show next page
+        // switch (this.nextPage) {
+
+        // }
     }
 
     // private setCurrentPage() {
@@ -249,6 +272,8 @@ export default class UI {
     // CALLBACK FROM APP
     public loginSuccessful() {
         console.log("login successful");
+        var p = PageType.RoundName;
+        this.next(p);
     }
 
     public OnUserData(type: si.DataType, data: si.Data): void {
