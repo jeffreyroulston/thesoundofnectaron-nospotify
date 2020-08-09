@@ -72,6 +72,7 @@ export default class UI {
     // private currentQuestion : any = undefined;
 
     private currentPage : PageType = PageType.Login;
+    private currentRound : number = 0;
 
     private slider = new Slider("#slider-q")
     private questions : SliderQuestion[] = [
@@ -122,9 +123,10 @@ export default class UI {
     private init() {
         // set button bindings
         el("#startBtn").addEventListener("click", this.Login.bind(this));
-        el(".next").addEventListener("click", this.next.bind(this));
+        // el(".next").addEventListener("click", this.next.bind(this));
         
-        this.showLogin();
+        // this.showLogin();
+        this.showRoundName();
     }
 
     private setBG(color : string) {
@@ -138,8 +140,10 @@ export default class UI {
 
         // bleed in the sound of
         TweenMax.from(".theSoundOf path", 0.75, {opacity:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}, delay:1});
+
         // bleed in nectaron
         TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 0.75, {opacity:0, y:50, scale:0, transformOrigin: "top", stagger: {each: 0.05, from:"random"}, delay:1});
+
         // show subheading and button
         TweenMax.from("#login .subheading, #login .btn", 0.5, {opacity:0, y:5, delay: 3.2});
         // pulse button?
@@ -147,7 +151,22 @@ export default class UI {
     }
 
     private showRoundName() {
-        console.log()
+        this.currentRound++;
+        this.setBG(this.colours.red);
+        el("#round-name").style.display = "block";
+
+        // bleed in round
+        TweenMax.from(".round path", 0.75, {opacity:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}});
+
+        // swing in numbers
+        TweenMax.from("#round-name .numbers li:first-child", 0.5, {opacity:0, y:50, delay:0.6});
+        TweenMax.from("#round-name .numbers li:nth-child(" + (this.currentRound+1).toString() + ")", 0.5, {opacity:0, scale:0.5, y:-50, rotate:-120, delay:0.7});
+
+        // show the round name
+        TweenMax.from(".round-name-text li:nth-child(" + this.currentRound.toString() + ")", 0.5, {opacity:0, x:-50, delay:1.5});
+
+        // show the description box
+        TweenMax.from("#round-name .description, #round-name .next", 0.5, {opacity:0, y:20, delay:1.6});
     }
 
     private next(nextPage : PageType) {
@@ -156,25 +175,30 @@ export default class UI {
             case PageType.Login:
                 //hide button
                 TweenMax.to("#login .subheading, #login .btn", 0.3, {opacity:0});
+                
                 // bleed out logo
                 TweenMax.to("#login .bleed path, #login .bleed polygon, #login .bleed rect", 0.5, {opacity:0, y:50, scale:0, transformOrigin: "bottom", stagger: {each: 0.005, from:"random"}, delay:0.2});
+                
                 //hide login
                 TweenMax.to("#login", 0, {alpha:0, delay: 1});
                 break;
             
             case PageType.RoundName:
-                console.log("round name");
                 break;
             
             case PageType.Question:
-                console.log("question")
                 break;
         }
 
         // show next page
-        // switch (this.nextPage) {
-
-        // }
+        switch (nextPage) {
+            case PageType.RoundName:
+                this.showRoundName();
+                break;
+            
+            case PageType.Question:
+                break;
+        }
     }
 
     // private setCurrentPage() {
