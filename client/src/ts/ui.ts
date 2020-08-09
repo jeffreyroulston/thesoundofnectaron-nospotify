@@ -1,6 +1,8 @@
 import * as si from "./spotify-interface";
-import {Question, QuestionType, QueryParameter, SliderQuestion} from "./questions";
-import {TweenLite, TweenMax} from "gsap"
+import * as q from "./questions";
+import Slider from "./slider";
+import {el} from "./helpers";
+import {TweenMax} from "gsap"
 
 var qDefault = function() { return { value: 0, include: false } };
 
@@ -10,131 +12,16 @@ enum PageType {
     Question
 }
 
-class Slider {
-    private el : string;
-    private sliderEl : HTMLInputElement;
-    private sliderThumb : HTMLElement;
-    private topFruitElement : HTMLElement;
-    private bottomFruitElement : HTMLElement;
-    private questionElement: HTMLElement;
-
-    private fruitDefaultWidth : number;
-    private topFruitDefaultBottomValue : number;
-    private bottomFruitDefaultTopValue : number;
-
-    private min : number = 0;
-    private max : number = 0;
-    private mid : number = 0;
-    private value : number = 0;
-    private prevValue : number = 0
-    private sliderWidth : number = 0;
-
-    constructor(elementName: string) {
-        this.el = elementName;
-        this.sliderEl = <HTMLInputElement>el(this.el + " .slider-input");
-        this.sliderThumb = el(this.el + " .slider-thumb");
-        this.topFruitElement = el(this.el+ " .fruit-top img");
-        this.bottomFruitElement = el(this.el + " .fruit-bottom img");
-        this.questionElement = el(this.el + " .question");
-
-        // this.fruitDefaultWidth = this.topFruitElement.getBoundingClientRect().width;
-        this.fruitDefaultWidth = 200;
-        this.topFruitDefaultBottomValue = pxToInt(getComputedStyle(this.topFruitElement).bottom);
-        this.bottomFruitDefaultTopValue = pxToInt(getComputedStyle(this.bottomFruitElement).top);
-
-        console.log(this.fruitDefaultWidth, this.topFruitDefaultBottomValue, this.bottomFruitDefaultTopValue);
-
-        // set bindings
-        this.sliderEl.addEventListener("input",this.sliderChange.bind(this));
-    }
-
-    set(q : SliderQuestion) {
-        this.min = q.minValue;
-        this.max = q.maxValue;
-
-        // set slider value to the middle
-        this.mid = (this.max - this.min)/2;
-        this.value = this.mid;
-        this.prevValue = this.mid;
-
-        // apply to slider element
-        this.sliderEl.min = this.min.toString();
-        this.sliderEl.max = this.max.toString();
-        this.sliderEl.value = this.mid.toString();
-
-        // add copy
-        this.questionElement.innerHTML = q.question;
-
-        // show element
-        el(this.el).style.display = "block";
-    }
-
-    show() {
-
-        TweenMax.from(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.5});
-        TweenMax.from(this.el + " .slide-container", 0.2, {scaleX:0, transformOrigin: "left", delay: 0.8});
-        TweenMax.from(this.el + " .slider-thumb", 0.5, {alpha:0, scale:1.5, y:20, delay:1});
-    }
-
-    sliderChange(e: any){
-        // get the width and the value of the slider 
-        this.sliderWidth = e.srcElement.clientWidth;
-        this.value= e.srcElement.value;
-
-        // get the next position of the arrow
-        // move the triangle to match the position of the slider thumb
-        this.sliderThumb.style.left = (((this.value - this.min) / (this.max - this.min) * (this.sliderWidth)) - this.sliderThumb.getBoundingClientRect().width/2).toString() + "px"
-
-        // scale fruit
-        if (this.value > this.mid) {
-            // top fruit
-            console.log(this.prevValue, this.value, "top fruit");
-            this.scaleTopFruit();
-        } else if (this.value < this.mid) {
-            console.log(this.prevValue, this.value, "bottom fruit");
-            this.scaleBottomFruit();
-        } else {
-            //mid point
-            if (this.prevValue > this.mid) {
-                // going down so top fruit
-                console.log(this.prevValue, this.value, "top fruit");
-                this.scaleTopFruit();
-            } else {
-                // bottom fruit
-                console.log(this.prevValue, this.value, "bottom fruit");
-                this.scaleBottomFruit();
-            }
-        }
-
-    }
-
-    scaleTopFruit() {
-        this.topFruitElement.style.width = px(3*(this.value - this.mid) + this.fruitDefaultWidth);
-
-        this.topFruitElement.style.bottom = px(this.topFruitDefaultBottomValue - 0.5 * (this.value - this.mid))
-
-        this.prevValue = this.value;
-    }
-
-    scaleBottomFruit() {
-        this.bottomFruitElement.style.width = px(3*(this.mid - this.value) + this.fruitDefaultWidth);
-
-        this.bottomFruitElement.style.top = px(this.bottomFruitDefaultTopValue - 0.5 * (this.mid - this.value))
-
-        this.prevValue = this.value;
-    }
-}
-
 export default class UI {
     private currentPage : PageType = PageType.Login;
     private currentRound : number = 0;
     private currentQuestionIdx : number = 0;
 
-    private slider = new Slider("#slider-q")
-    private questions : SliderQuestion[] = [
+    private slider = new Slider(this, "#slider-q")
+    private questions : q.SliderQuestion[] = [
         {
             round:1,
-            type: QuestionType.Slider,
+            type: q.QuestionType.Slider,
             params: si.QueryParameters.Valence,
             question : "How bitter would you like your brew?",
             minValue : 0,
@@ -143,7 +30,7 @@ export default class UI {
         },
         {
             round: 1,
-            type: QuestionType.Slider,
+            type: q.QuestionType.Slider,
             params: si.QueryParameters.Valence,
             question : "How tangy would you like your brew?",
             minValue : 0,
@@ -158,7 +45,7 @@ export default class UI {
     }
 
     private recommendations: si.Track[] | undefined = [];
-    private queryParameters: {[key: string]: QueryParameter }  = {
+    private queryParameters: {[key: string]: q.QueryParameter }  = {
         "acousticness" : qDefault(),
         "danceability" : qDefault(),
         "energy" : qDefault(),
@@ -172,7 +59,7 @@ export default class UI {
     
     // PUBLIC VARIABLES
     public OnLoginPressed = () => {};
-    public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: Question): void}[] = [];
+    public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: q.Question): void}[] = [];
 
     constructor() {
         this.init();
@@ -230,12 +117,13 @@ export default class UI {
     }
 
     private showQuestion() {
-        var q = this.questions[this.currentQuestionIdx];
+        this.currentPage = PageType.Question;
+        var currentQuestion = this.questions[this.currentQuestionIdx];
         this.setBG(this.colours.beige);
 
-        switch(q.type) {
-            case QuestionType.Slider:
-                this.slider.set(q);
+        switch(currentQuestion.type) {
+            case q.QuestionType.Slider:
+                this.slider.set(currentQuestion);
 
                 // show question
                 this.slider.show();
@@ -266,8 +154,15 @@ export default class UI {
                 break;
             
             case PageType.Question:
+                console.log("get next question");
                 break;
         }
+    }
+
+    public answerRetrieved(a : any) {
+        this.questions[this.currentQuestionIdx].answer = a;
+        console.log(this.questions[this.currentQuestionIdx]);
+        this.next();
     }
 
     // private setCurrentPage() {
@@ -397,32 +292,4 @@ export default class UI {
     public ShowUserData(imageURL: string, displayName: string): void {
     }
     
-    // here we will activate and populate one of three different html question templates depending on question type
-    // once the answer is chosen, we use that callback to pass the selection back up
-    // public showQuestion(question: Question): void {
-    // }
-
-    // private showCurrentQuestion() {
-    // }
-
-}
-
-export function el(e: string) : HTMLElement{
-    return <HTMLElement>document.querySelector(e);
-}
-
-function querySelector(query: string, el : HTMLElement | null = null) {
-    return el ? el.querySelector<HTMLInputElement>(query) : document.querySelector<HTMLInputElement>(query);
-}
-
-function px (n : number) : string{
-    return n.toString() + "px";
-}
-
-function pxToInt(s : string) : number {
-    return parseInt(s.replace(/[^\d-]/g, ""));
-}
-
-function rand(min:number, max:number) {
-
 }
