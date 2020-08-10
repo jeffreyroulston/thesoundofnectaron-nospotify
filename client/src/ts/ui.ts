@@ -1,6 +1,7 @@
 import * as si from "./spotify-interface";
 import * as q from "./questions";
 import Slider from "./slider";
+import MCQ from "./mcq";
 import {el} from "./helpers";
 import {TweenMax} from "gsap"
 import Graphics from "./graphics";
@@ -24,9 +25,11 @@ enum PageType {
 export default class UI {
     private currentPage : PageType = PageType.Login;
     private currentRoundIdx : number = 0;
-    private currentQuestionIdx : number = 0;
+    private currentQuestionIdx : number = -1;
 
-    private slider = new Slider(this, "#slider-q")
+    private slider : Slider;
+    // private slider = new Slider(this, "#slider-q");
+    // private mcq = new MCQ(this, "#mc-q");
 
     private rounds : q.QuestionRound[] = [
         {
@@ -86,6 +89,10 @@ export default class UI {
                 {
                     value : "snake",
                     asset : ""
+                },
+                {
+                    value : "person",
+                    asset : ""
                 }
             ],
             answer : ""
@@ -110,23 +117,39 @@ export default class UI {
     public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: q.Question): void}[] = [];
 
     constructor() {
-        this.init();
-    }
-    
-    private init() {
+        console.log(el("#slider-q .slider-input"));
+        this.slider= new Slider(this, "#slider-q");
+
         // set button bindings
         el("#startBtn").addEventListener("click", this.Login.bind(this));
         el(".next").addEventListener("click", this.next.bind(this));
         
-        this.showLogin();
-        // this.showRoundName();
+         // this.showLogin();
+        this.showRoundName();
         // this.showQuestion();
     }
 
     private setBG(color : string) {
         // sets background colour based on page
+        var e = el("#color-wipe");
+        var origins = ["top", "bottom", "right"];
+        var origin = origins[Math.floor(Math.random() * origins.length)];
+
+        // console.log(origin);
+        
         el("body").style.backgroundColor = color;
-        // this.graphics.switchColor(new THREE.Color(color), 0.5);
+        if (origin == "top" || origin == "bottom") {
+            TweenMax.to(e, 0.5, {height: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
+                e.style.backgroundColor = color;
+                e.style.height = "100vh";
+            }})
+        } else {
+            TweenMax.to(e, 0.5, {width: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
+                e.style.backgroundColor = color;
+                e.style.width = "100%";
+            }})
+        }
+        
     }
 
     private showLogin() {
@@ -160,15 +183,16 @@ export default class UI {
         TweenMax.fromTo("#round-name .numbers li:first-child", 0.5, {alpha:0, y:50}, {alpha:1, y:0, delay:0.4});
         TweenMax.fromTo("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {alpha:0, scale:0.5, y:-50, rotate:-120}, {alpha:1, scale:1, y:0, rotate:0, delay:0.5});
 
-
         // show the round name
-        TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.5, {alpha:0, x:-50}, {alpha:1, x:0, delay:1});
+        TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.75, {display:"block", alpha:0, x:-50}, {alpha:1, x:0, delay:1});
 
         // show the description box
         TweenMax.fromTo("#round-name .description, #round-name .btn", 0.6, {alpha:0, y:20}, {alpha:1, y:0, delay:1.1});
     }
 
     private showQuestion() { 
+        console.log(this.currentQuestionIdx);
+        this.currentQuestionIdx++;
         this.currentPage = PageType.Question;
         var currentQuestion = this.questions[this.currentQuestionIdx];
         this.setBG(COLOURS.beige);
@@ -176,10 +200,11 @@ export default class UI {
         switch(currentQuestion.type) {
             case q.QuestionType.Slider:
                 this.slider.set(<q.SliderQuestion>currentQuestion);
-
-                // show question
                 this.slider.show();
                 break;
+            case q.QuestionType.MultiChoice:
+                // this.mcq.set(<q.MCQuestion>currentQuestion);
+                // this.mcq.show()
         }
     }
 
@@ -195,14 +220,17 @@ export default class UI {
                 TweenMax.to("#login .bleed path, #login .bleed polygon, #login .bleed rect", 0.5, {alpha:0, y:50, scale:0, transformOrigin: "bottom", stagger: {each: 0.005, from:"random"}, delay:0.2});
                 
                 //hide login
-                TweenMax.to("#login", 0, {alpha:0, delay: 1, onComplete: this.showRoundName.bind(this)});
+                TweenMax.to("#login", 0, {display: "none", delay: 1, onComplete: this.showRoundName.bind(this)});
                 break;
             
             case PageType.RoundName:
                 //hide button
-                TweenMax.to("#round-name", 0.3, {alpha:0});
-                TweenMax.to("#login", 0, {alpha:0, delay: 0.5, onComplete: this.showQuestion.bind(this)});
+                TweenMax.to("#round-name .description, #round-name .btn, #round-name .numbers li", 0.5, {alpha:0, y:20});
 
+                TweenMax.to(".round-name-text li", 0.5, {alpha:0, x:-50});
+
+                // bleed out round
+                TweenMax.to(".round path", 0.5, {alpha:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}, onComplete: this.showQuestion.bind(this)});
                 break;
             
             case PageType.Question:
@@ -212,7 +240,6 @@ export default class UI {
                     var nextQuestion = this.questions[this.currentQuestionIdx+1];
                     // check if it's the same or a new round
                     if (currentQuestion.round < nextQuestion.round) {
-                        this.currentRoundIdx++;
                         this.showRoundName();
                     } else {
                         this.showQuestion();

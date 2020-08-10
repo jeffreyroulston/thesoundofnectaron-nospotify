@@ -32,6 +32,8 @@ export default class Slider {
         this.bottomFruitElement = el(this.el + " .fruit-bottom img");
         this.questionElement = el(this.el + " .question");
 
+        console.log(this.el, this.sliderEl, this.sliderThumb, this.topFruitElement, this.bottomFruitElement, this.questionElement);
+
         // this.fruitDefaultWidth = this.topFruitElement.getBoundingClientRect().width;
         this.fruitDefaultWidth = 200;
         this.topFruitDefaultBottomValue = pxToInt(getComputedStyle(this.topFruitElement).bottom);
