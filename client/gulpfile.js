@@ -35,15 +35,24 @@ gulp.task('sass', function () {
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('./dist'));
 });
+
+gulp.task("copy-assets", function() {
+    return gulp.src(["assets/**/*"])
+        .pipe(gulp.dest("dist/assets"));
+});
+
+gulp.task("copy-fonts", function() {
+    return gulp.src(["assets/fonts/**/*"])
+        .pipe(gulp.dest("dist/fonts"));
+});
  
 gulp.task('sass:watch', function () {
   gulp.watch('./sass/**/*.scss', ['sass']);
 });
 
-// gulp.task("css", function() {
-//     return gulp.src('css/*.css')
-//         .pipe(gulp.dest('dist'));
-// });
+gulp.task("copy-assets", function() {
+    return gulp.src(["assets/**/*"], {base: "assets"}).pipe(gulp.dest("dist/assets"));
+});
 
 gulp.task('compile-dev', gulp.series(['scripts'], function () {
     var b = browserify({
@@ -78,8 +87,5 @@ gulp.task('compile', gulp.parallel(['scripts'], function () {
         .pipe(gulp.dest('dist'));
 }));
 
-// gulp.task('build-dev', gulp.series(['copy-html', 'sass', 'css', 'compile-dev']));
-// gulp.task('build', gulp.series(['copy-html', 'sass', 'css', 'compile']));
-
-gulp.task('build-dev', gulp.series(['copy-html', 'sass', 'compile-dev']));
-gulp.task('build', gulp.series(['copy-html', 'sass', 'compile']));
+gulp.task('build-dev', gulp.parallel(['copy-html', 'copy-assets', 'copy-fonts', 'sass', 'compile-dev']));
+gulp.task('build', gulp.parallel(['copy-html', 'copy-assets', 'copy-fonts', 'sass', 'compile']));

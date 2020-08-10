@@ -4,7 +4,7 @@
   "description": "Nectaron Client App",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-dev": "gulp build-dev"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "gsap": "^3.2.6",
-    "gulp-watch": "^5.0.1"
+    "gulp-watch": "^5.0.1",
+    "three": "^0.118.3"
   }
 }

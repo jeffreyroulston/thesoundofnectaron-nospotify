@@ -38,6 +38,8 @@ export default class ResourceManager {
                 image.onerror = (e) => {
                     reject(e);
                 }
+
+                image.src = path;
             });
         }
 
