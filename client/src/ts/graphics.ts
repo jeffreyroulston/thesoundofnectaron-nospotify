@@ -24,19 +24,14 @@ const fragShader = `
 
     void main() {
 
-        // float lerp = sin(time * 2.0) * 0.5 + 0.5;
-        float aspect = size.x / size.y;
-        float width = 2.0;
 
-
-        float positionLerp = smoothstep(vUv.x - width, vUv.x + width, lerp * (1.0 + 2.0 * width) - width);
 
         vec2 aspectCorrectedUV = vUv * size;
-        vec4 texCol = texture2D(noiseTexture, aspectCorrectedUV * 0.01 * pixelRatio);
+        vec4 texCol = texture2D(noiseTexture, aspectCorrectedUV * 0.02 * pixelRatio);
 
         float pixelValue = texCol.r * 0.8 + 0.1;
 
-        float pixel = smoothstep(pixelValue - 0.05, pixelValue + 0.05, positionLerp);
+        float pixel = smoothstep(pixelValue - 0.05, pixelValue + 0.05, lerp);
         vec3 interpedColor = mix(firstColor, secondColor, pixel);
 
         gl_FragColor = vec4(interpedColor, 1.0);
