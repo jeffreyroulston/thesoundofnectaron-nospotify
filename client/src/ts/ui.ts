@@ -44,7 +44,7 @@ export default class UI {
         }
     ]
 
-    private questions : q.SliderQuestion[] = [
+    private questions : Array<q.SliderQuestion | q.MCQuestion> = [
         {
             round:1,
             type: q.QuestionType.Slider,
@@ -62,6 +62,31 @@ export default class UI {
             minValue : 0,
             maxValue : 100,
             answer : 0
+        },
+        {
+            round: 2,
+            type: q.QuestionType.MultiChoice,
+            params: si.QueryParameters.Valence,
+            question : "Choose your brewer",
+            options : [
+                {
+                    value : "dino",
+                    asset : ""
+                },
+                {
+                    value : "dragon",
+                    asset : ""
+                },
+                {
+                    value : "unicorn",
+                    asset : ""
+                },
+                {
+                    value : "snake",
+                    asset : ""
+                }
+            ],
+            answer : ""
         }
     ]
 
@@ -91,9 +116,9 @@ export default class UI {
         el("#startBtn").addEventListener("click", this.Login.bind(this));
         el(".next").addEventListener("click", this.next.bind(this));
         
-        // this.showLogin();
+        this.showLogin();
         // this.showRoundName();
-        this.showQuestion();
+        // this.showQuestion();
     }
 
     private setBG(color : string) {
@@ -106,19 +131,19 @@ export default class UI {
         el("#login").style.display = "block";
 
         // bleed in the sound of
-        TweenMax.from(".theSoundOf path", 0.75, {opacity:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}, delay:1});
+        TweenMax.from(".theSoundOf path", 0.75, {alpha:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}, delay:1});
 
         // bleed in nectaron
-        TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 0.75, {opacity:0, y:50, scale:0, transformOrigin: "top", stagger: {each: 0.05, from:"random"}, delay:1});
+        TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 0.75, {alpha:0, y:50, scale:0, transformOrigin: "top", stagger: {each: 0.05, from:"random"}, delay:1});
 
         // show subheading and button
-        TweenMax.from("#login .subheading, #login .btn", 0.5, {opacity:0, y:5, delay: 3.2});
+        TweenMax.from("#login .subheading, #login .btn", 0.5, {alpha:0, y:5, delay: 3.2});
     }
 
     private showRoundName() {
         this.currentPage = PageType.RoundName;
-        this.currentRoundIdx++;
         var currentRound = this.rounds[this.currentRoundIdx];
+        console.log(this.currentQuestionIdx);
 
         // set the things
         this.setBG(currentRound.color);
@@ -126,28 +151,27 @@ export default class UI {
         el("#round-name").style.display = "block";
 
         // bleed in round
-        TweenMax.from(".round path", 0.75, {opacity:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}});
+        TweenMax.fromTo(".round path", 0.75, {alpha:0, y:-50, scale:0, transformOrigin: "bottom"}, {alpha:1, y:0, scale:1, stagger: {each: 0.1, from:"random"}});
 
         // swing in numbers
-        TweenMax.from("#round-name .numbers li:first-child", 0.5, {opacity:0, y:50, delay:0.4});
-        TweenMax.from("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {opacity:0, scale:0.5, y:-50, rotate:-120, delay:0.5});
+        TweenMax.fromTo("#round-name .numbers li:first-child", 0.5, {alpha:0, y:50}, {alpha:1, y:0, delay:0.4});
+        TweenMax.fromTo("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {alpha:0, scale:0.5, y:-50, rotate:-120}, {alpha:1, scale:1, y:0, rotate:0, delay:0.5});
 
         // show the round name
-        TweenMax.from(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.5, {opacity:0, x:-50, delay:1});
+        TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.5, {alpha:0, x:-50}, {alpha:1, x:0, delay:1});
 
         // show the description box
-        TweenMax.from("#round-name .description, #round-name .btn", 0.6, {opacity:0, y:20, delay:1.1});
+        TweenMax.fromTo("#round-name .description, #round-name .btn", 0.6, {alpha:0, y:20}, {alpha:1, y:0, delay:1.1});
     }
 
     private showQuestion() { 
         this.currentPage = PageType.Question;
         var currentQuestion = this.questions[this.currentQuestionIdx];
-        console.log("show question", currentQuestion);
         this.setBG(COLOURS.beige);
 
         switch(currentQuestion.type) {
             case q.QuestionType.Slider:
-                this.slider.set(currentQuestion);
+                this.slider.set(<q.SliderQuestion>currentQuestion);
 
                 // show question
                 this.slider.show();
@@ -161,10 +185,10 @@ export default class UI {
         switch (this.currentPage) {
             case PageType.Login:
                 //hide button
-                TweenMax.to("#login .subheading, #login .btn", 0.3, {opacity:0});
+                TweenMax.to("#login .subheading, #login .btn", 0.3, {alpha:0});
                 
                 // bleed out logo
-                TweenMax.to("#login .bleed path, #login .bleed polygon, #login .bleed rect", 0.5, {opacity:0, y:50, scale:0, transformOrigin: "bottom", stagger: {each: 0.005, from:"random"}, delay:0.2});
+                TweenMax.to("#login .bleed path, #login .bleed polygon, #login .bleed rect", 0.5, {alpha:0, y:50, scale:0, transformOrigin: "bottom", stagger: {each: 0.005, from:"random"}, delay:0.2});
                 
                 //hide login
                 TweenMax.to("#login", 0, {alpha:0, delay: 1, onComplete: this.showRoundName.bind(this)});
@@ -172,7 +196,7 @@ export default class UI {
             
             case PageType.RoundName:
                 //hide button
-                TweenMax.to("#round-name", 0.3, {opacity:0});
+                TweenMax.to("#round-name", 0.3, {alpha:0});
                 TweenMax.to("#login", 0, {alpha:0, delay: 0.5, onComplete: this.showQuestion.bind(this)});
 
                 break;
@@ -184,6 +208,7 @@ export default class UI {
                     var nextQuestion = this.questions[this.currentQuestionIdx+1];
                     // check if it's the same or a new round
                     if (currentQuestion.round < nextQuestion.round) {
+                        this.currentRoundIdx++;
                         this.showRoundName();
                     } else {
                         this.currentQuestionIdx++;

@@ -358,6 +358,7 @@ li {
         li {
             display: inline-block;
             position: relative;
+            opacity: 0;
 
             &:nth-child(n+2) {
                 left: 17px;

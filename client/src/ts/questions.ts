@@ -30,3 +30,8 @@ export interface SliderQuestion extends Question {
     maxValue : number;
     answer : number;
 }
+
+export interface MCQuestion extends Question {
+    options : MCAnswer[];
+    answer : string;
+}
