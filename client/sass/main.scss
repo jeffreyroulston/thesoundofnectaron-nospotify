@@ -144,6 +144,18 @@ li {
     list-style: none;
 }
 
+#canvas-container {
+    position: absolute;
+    height: 100vh; // make this compatible with iphone scroll
+    width: 100%;
+}
+
+#graphics-canvas {
+    display:block;
+    height: 100vh !important; // make this compatible with iphone scroll
+    width: 100% !important;
+}
+
 .container {
     position: relative;
     overflow: hidden;
@@ -154,7 +166,7 @@ li {
     padding: 0;
     height: 100vh; // make this compatible with iphone scroll
     width: 100%;
-    position: absolute;
+    position: fixed;
 }
 
 .section {
