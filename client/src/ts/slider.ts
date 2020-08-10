@@ -133,6 +133,7 @@ export default class Slider {
     }
 
     answerRetrieved() {
+        el(this.el).style.display = "none";
         this.ui.answerRetrieved(this.value);
     }
 }

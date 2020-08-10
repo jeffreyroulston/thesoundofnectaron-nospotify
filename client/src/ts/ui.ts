@@ -6,6 +6,13 @@ import {TweenMax} from "gsap"
 
 var qDefault = function() { return { value: 0, include: false } };
 
+var COLOURS = {
+    beige : "#FCF1DB",
+    red : "#FF2000",
+    purple : "#88009D",
+    blue : "#00C1F5"
+}
+
 enum PageType {
     Login,
     RoundName,
@@ -14,10 +21,29 @@ enum PageType {
 
 export default class UI {
     private currentPage : PageType = PageType.Login;
-    private currentRound : number = 0;
+    private currentRoundIdx : number = 0;
     private currentQuestionIdx : number = 0;
 
     private slider = new Slider(this, "#slider-q")
+
+    private rounds : q.QuestionRound[] = [
+        {
+            round: 1,
+            color: COLOURS.red,
+            text : "All about the science of brewing. It's the details and the process - the part the brewers will really sing their teeth into. What's the brew style? What flavours are you heroing? Is it light or dark? These slider centric questions will be accompanied by 5 hero images that change based on the answer - all in the style of Nectaron 'visual collision,' half fruit - half something else." 
+        },
+        {
+            round : 2,
+            color: COLOURS.purple,
+            text: "Now we've covered the basics, it's time to get experimental. Section Two is where we see mastery and mystery come into play. This section is all about imbuing their brew with personality. These questions will come to life visually through an 8 bit style. This will resonate with brewers as it borros from the nostalgia of retro gaming - something that brewers love."
+        },
+        {
+            round: 3,
+            color: COLOURS.blue,
+            text: "Some text"
+        }
+    ]
+
     private questions : q.SliderQuestion[] = [
         {
             round:1,
@@ -38,11 +64,6 @@ export default class UI {
             answer : 0
         }
     ]
-
-    private colours = {
-        beige : "#FCF1DB",
-        red : "#FF2000"
-    }
 
     private recommendations: si.Track[] | undefined = [];
     private queryParameters: {[key: string]: q.QueryParameter }  = {
@@ -81,7 +102,7 @@ export default class UI {
     }
 
     private showLogin() {
-        this.setBG(this.colours.beige);
+        this.setBG(COLOURS.beige);
         el("#login").style.display = "block";
 
         // bleed in the sound of
@@ -96,9 +117,12 @@ export default class UI {
 
     private showRoundName() {
         this.currentPage = PageType.RoundName;
-        this.currentRound++;
+        this.currentRoundIdx++;
+        var currentRound = this.rounds[this.currentRoundIdx];
 
-        this.setBG(this.colours.red);
+        // set the things
+        this.setBG(currentRound.color);
+        el("#round-name .description").innerHTML = currentRound.text;
         el("#round-name").style.display = "block";
 
         // bleed in round
@@ -106,20 +130,20 @@ export default class UI {
 
         // swing in numbers
         TweenMax.from("#round-name .numbers li:first-child", 0.5, {opacity:0, y:50, delay:0.4});
-        TweenMax.from("#round-name .numbers li:nth-child(" + (this.currentRound+1).toString() + ")", 0.5, {opacity:0, scale:0.5, y:-50, rotate:-120, delay:0.5});
+        TweenMax.from("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {opacity:0, scale:0.5, y:-50, rotate:-120, delay:0.5});
 
         // show the round name
-        TweenMax.from(".round-name-text li:nth-child(" + this.currentRound.toString() + ")", 0.5, {opacity:0, x:-50, delay:1});
+        TweenMax.from(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.5, {opacity:0, x:-50, delay:1});
 
         // show the description box
         TweenMax.from("#round-name .description, #round-name .btn", 0.6, {opacity:0, y:20, delay:1.1});
     }
 
-    private showQuestion() {
+    private showQuestion() { 
         this.currentPage = PageType.Question;
         var currentQuestion = this.questions[this.currentQuestionIdx];
         console.log("show question", currentQuestion);
-        this.setBG(this.colours.beige);
+        this.setBG(COLOURS.beige);
 
         switch(currentQuestion.type) {
             case q.QuestionType.Slider:

@@ -7,6 +7,12 @@ export enum QuestionType {
     QuickFire
 }
 
+export interface QuestionRound {
+    round : number;
+    color: string;
+    text : string;
+}
+
 export interface MCAnswer {
     value : string,
     asset : string
