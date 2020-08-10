@@ -118,6 +118,7 @@ export default class UI {
     private showQuestion() {
         this.currentPage = PageType.Question;
         var currentQuestion = this.questions[this.currentQuestionIdx];
+        console.log("show question", currentQuestion);
         this.setBG(this.colours.beige);
 
         switch(currentQuestion.type) {
@@ -153,7 +154,21 @@ export default class UI {
                 break;
             
             case PageType.Question:
-                console.log("get next question");
+                var currentQuestion = this.questions[this.currentQuestionIdx];
+                if (this.currentQuestionIdx < this.questions.length-1) {
+                    // get next question
+                    var nextQuestion = this.questions[this.currentQuestionIdx+1];
+                    // check if it's the same or a new round
+                    if (currentQuestion.round < nextQuestion.round) {
+                        this.showRoundName();
+                    } else {
+                        this.currentQuestionIdx++;
+                        this.showQuestion();
+                    }
+                } else {
+                    // the end!
+                    console.log("the end has been reached");
+                }
                 break;
         }
     }
@@ -163,98 +178,6 @@ export default class UI {
         console.log(this.questions[this.currentQuestionIdx]);
         this.next();
     }
-
-    // private setCurrentPage() {
-    //     console.log(this.currentPage);
-
-    //     // hide current page
-    //     if (this.previousPage) {
-    //         // el(this.previousPage.pageElement).classList.toggle("active");
-    //         el(this.previousPage.pageElement).style.display = "none";
-    //     }
-
-    //     // show the next page
-    //     // el(this.currentPage.pageElement).classList.toggle("active");
-    //     el(this.currentPage.pageElement).style.display = "block";
-
-    //     // set question bits
-    //     if (this.currentPage.pageType == PageType.Question) {
-    //         this.setQuestion();
-    //     }
-
-    //     this.setBG();
-
-    // }
-
-    // private getNextPage() {
-    //     this.currentPageIdx++;
-    //     this.currentPage = this.pages[this.currentPageIdx];
-    //     this.previousPage = this.pages[this.currentPageIdx-1];
-    //     this.setCurrentPage();
-    // }
-
-
-    // private setQuestion() {
-    //     if (!this.currentPage.question) return;
-    //     var q = this.currentPage.question;
-    //     var e = this.currentPage.pageElement;
-
-    //     // set question copy
-    //     el(e + " .question p").innerHTML = q.question;
-
-    //     switch (q.type) {
-    //         case QuestionType.Slider:
-    //             // set slider parameters
-    //             q = <SliderQuestion>q;
-    //             var slider = <HTMLInputElement>document.querySelector("#sliderInput");
-    //             slider.min = q.minValue.toString();
-    //             slider.max = q.maxValue.toString();
-    //             break;
-
-    //         case QuestionType.MultiChoice:
-    //             break;
-
-    //         case QuestionType.QuickFire:
-    //             break;
-    //     }
-
-    //     this.currentQuestion = q;
-
-    // }
-
-    // private sliderChange(e : any) {
-    //     if (!this.currentPage.question) return;
-
-    //     // get the width and the value of the slider 
-    //     this.sliderWidth = e.srcElement.clientWidth;
-    //     this.sliderValue = e.srcElement.value;
-
-    //     // get the next position of the arrow
-    //     // move the triangle to match the position of the slider thumb
-    //     this.sliderArrowEl.style.left = (((this.sliderValue - this.currentQuestion.minValue) / (this.currentQuestion.maxValue - this.currentQuestion.minValue) * (this.sliderWidth)) - this.sliderArrowEl.getBoundingClientRect().width/2).toString() + "px"
-
-    //     this.sliderFruitScaleChange()
-    // }
-
-    // private sliderFruitScaleChange() {
-    //     console.log(this.sliderPreviousValue, this.sliderValue);
-
-    //     if (this.sliderValue < ((this.currentQuestion.maxValue - this.currentQuestion.minValue) / 2) ) {
-    //         // bottom fruit
-    //         this.sliderBottomFruitEl.style.width = px(this.sliderBottomFruitEl.getBoundingClientRect().width + (this.sliderPreviousValue < this.sliderValue ? -2 : 2));
-    //         this.sliderBottomFruitEl.style.top = px(parseInt(getComputedStyle(this.sliderBottomFruitEl).top.replace(/[^\d-]/g, "")) + (this.sliderPreviousValue < this.sliderValue ? 1 : -1))
-    //     } else {
-    //         // top fruit
-    //         this.sliderTopFruitEl.style.width = px(this.sliderTopFruitEl.getBoundingClientRect().width + (this.sliderPreviousValue < this.sliderValue ? 2 : -2))
-    //         this.sliderTopFruitEl.style.bottom = px(parseInt(getComputedStyle(this.sliderTopFruitEl).bottom.replace(/[^\d-]/g, "")) + (this.sliderPreviousValue < this.sliderValue ? -1 : 1))
-    //     }
-
-    //     this.sliderPreviousValue = this.sliderValue;  
-    // }
-
-    // private scaleFruit(el: HTMLElement, increment : number) {
-    //     el.style.width = (el.getBoundingClientRect().width + increment).toString() + "px";
-    // }
 
     // CALLBACK FROM APP
     public loginSuccessful() {

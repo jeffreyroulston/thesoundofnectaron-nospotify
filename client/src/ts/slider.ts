@@ -52,6 +52,14 @@ export default class Slider {
         this.mid = (this.max - this.min)/2;
         this.value = this.mid;
         this.prevValue = this.mid;
+        this.sliderThumb.style.left = "calc(50% - 9px)";
+
+        // reset fruit {
+        this.topFruitElement.style.width = px(this.fruitDefaultWidth);
+        this.bottomFruitElement.style.width = px(this.fruitDefaultWidth);
+        this.bottomFruitElement.style.top = px(this.bottomFruitDefaultTopValue);
+        this.topFruitElement.style.bottom = px(this.topFruitDefaultBottomValue);
+
 
         // apply to slider element
         this.sliderEl.min = this.min.toString();
@@ -66,15 +74,16 @@ export default class Slider {
     }
 
     show() {
-        TweenMax.from(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.5});
-        TweenMax.from(this.el + " .slide-container", 0.2, {scaleX:0, transformOrigin: "right", delay: 0.5});
-        TweenMax.from(this.el + " .slider-thumb", 0.5, {alpha:0, scale:1.5, y:20, delay:0.8});
+        TweenMax.fromTo(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.5}, {alpha:1, x:0, delay:0.2});
+        TweenMax.fromTo(this.el + " .slide-container", 0.2, {scaleX:0, transformOrigin: "right"}, {scaleX:1, delay:0.2});
         
-        TweenMax.from(this.topFruitElement, 0.3, {alpha:0, delay:0.8});
-        TweenMax.from(this.topFruitElement, 0.8, {y:-50, ease:"bounce", delay:0.8});
+        TweenMax.fromTo(this.topFruitElement, 0.3, {alpha:0}, {alpha:1, delay:0.5});
+        TweenMax.fromTo(this.topFruitElement, 0.8, {y:-50}, {y:0, delay:0.5, ease:"bounce"});
 
-        TweenMax.from(this.bottomFruitElement, 0.3, {alpha:0, delay:0.8});
-        TweenMax.from(this.bottomFruitElement, 0.8, {y:50, ease:"bounce", delay:0.8});
+        TweenMax.fromTo(this.bottomFruitElement, 0.3, {alpha:0}, {alpha:1, delay:0.5});
+        TweenMax.fromTo(this.bottomFruitElement, 0.8, {y:50}, {y:0, delay:0.5, ease:"bounce"});
+
+        TweenMax.fromTo(this.el + " .slider-thumb", 0.5, {alpha:0, scale:1.5, y:20}, {alpha:1, scale:1, y:0, delay:0.6});
     }
 
     sliderChange(e: any){
@@ -84,7 +93,7 @@ export default class Slider {
 
         // get the next position of the arrow
         // move the triangle to match the position of the slider thumb
-        this.sliderThumb.style.left = (((this.value - this.min) / (this.max - this.min) * (this.sliderWidth)) - this.sliderThumb.getBoundingClientRect().width/2).toString() + "px"
+        this.sliderThumb.style.left = px(((this.value - this.min) / (this.max - this.min) * (this.sliderWidth)) - this.sliderThumb.getBoundingClientRect().width/2);
 
         // scale fruit
         if (this.value > this.mid) {
@@ -104,13 +113,13 @@ export default class Slider {
 
     scaleTopFruit() {
         this.topFruitElement.style.width = px(3*(this.value - this.mid) + this.fruitDefaultWidth);
-        this.topFruitElement.style.bottom = px(this.topFruitDefaultBottomValue - 0.5 * (this.value - this.mid))
+        this.topFruitElement.style.bottom = px(this.topFruitDefaultBottomValue - 0.5 * (this.value - this.mid));
         this.prevValue = this.value;
     }
 
     scaleBottomFruit() {
         this.bottomFruitElement.style.width = px(3*(this.mid - this.value) + this.fruitDefaultWidth);
-        this.bottomFruitElement.style.top = px(this.bottomFruitDefaultTopValue - 0.5 * (this.mid - this.value))
+        this.bottomFruitElement.style.top = px(this.bottomFruitDefaultTopValue - 0.5 * (this.mid - this.value));
         this.prevValue = this.value;
     }
 
@@ -120,6 +129,10 @@ export default class Slider {
         TweenMax.to(this.topFruitElement, 0.5, {alpha: 0, y:-50});
         TweenMax.to(this.bottomFruitElement, 0.5, {alpha:0, y:50});
         TweenMax.to(this.el + " .slide-container", 0.2, {scaleX:0, transformOrigin: "right", delay: 0.2});
-        TweenMax.to(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.2, onComplete: this.ui.answerRetrieved.bind(this)});
+        TweenMax.to(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.2, onComplete: this.answerRetrieved.bind(this)});
+    }
+
+    answerRetrieved() {
+        this.ui.answerRetrieved(this.value);
     }
 }
