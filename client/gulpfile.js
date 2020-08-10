@@ -7,6 +7,8 @@ var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
 var tsProject = ts.createProject("tsconfig.json");
 var del = require('del');
+var sass = require('gulp-sass');
+sass.compiler = require('node-sass');
 
 gulp.task("scripts", function () {
     return tsProject.src()
@@ -28,9 +30,24 @@ gulp.task("copy-html", function () {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task("css", function() {
-    return gulp.src('css/style.css')
-        .pipe(gulp.dest('dist'));
+gulp.task('sass', function () {
+  return gulp.src('./sass/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('./dist'));
+});
+
+gulp.task("copy-assets", function() {
+    return gulp.src(["assets/**/*"])
+        .pipe(gulp.dest("dist/assets"));
+});
+
+gulp.task("copy-fonts", function() {
+    return gulp.src(["assets/fonts/**/*"])
+        .pipe(gulp.dest("dist/fonts"));
+});
+ 
+gulp.task('sass:watch', function () {
+  gulp.watch('./sass/**/*.scss', ['sass']);
 });
 
 gulp.task("copy-assets", function() {
@@ -53,7 +70,7 @@ gulp.task('compile-dev', gulp.series(['scripts'], function () {
 
 
 gulp.task("watch", function() {
-    gulp.watch('{src,html,css}/**/*', gulp.series(['build-dev']));
+    gulp.watch('{src,html,css,sass}/**/*', gulp.series(['build-dev']));
 });
 
 
@@ -70,5 +87,5 @@ gulp.task('compile', gulp.parallel(['scripts'], function () {
         .pipe(gulp.dest('dist'));
 }));
 
-gulp.task('build-dev', gulp.series(['copy-html', 'copy-assets', 'css', 'compile-dev']));
-gulp.task('build', gulp.series(['copy-html', 'copy-assets', 'css', 'compile']));
+gulp.task('build-dev', gulp.parallel(['copy-html', 'copy-assets', 'copy-fonts', 'sass', 'compile-dev']));
+gulp.task('build', gulp.parallel(['copy-html', 'copy-assets', 'copy-fonts', 'sass', 'compile']));

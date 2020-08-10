@@ -1,0 +1,519 @@
+$letterSize: 50px;
+$letterPadding: 20px;
+
+// $logoTopHeight: 4vw;
+// $logoHeight: 5vw;
+// $roundNumberHeight: 18vw;
+
+// COLOURS
+$purple : #88009D;
+$orange: #FF1900;
+$beige: #FCF1DB;
+
+$breakpoints: (phone: 640px, tablet: 768px, desktop: 1024px) !default;
+@mixin media($conditions...) {
+    @for $i from 1 through length($conditions) {
+      $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));
+    }
+  
+    $branches: get-query-branches($conditions);
+    $query: '';
+  
+    @each $branch in $branches {
+      @if (str-length($query) != 0) {
+        $query: $query + ', ';
+      }
+  
+      $query: $query + $branch;
+    }
+  
+    @media #{$query} {
+      @content;
+    }
+  }
+
+// @include media(">desktop") {
+        
+// }
+
+// @include media(">=tablet", "<desktop") {
+
+// }
+
+// @include media(">=phone", "<tablet") {
+
+// }
+
+// @include media(">=phone", "<tablet") {
+
+// }
+
+// @include media("<phone") {
+
+// }
+
+@function center($containerWidth, $elWidth) {
+  @return calc(#{$containerWidth} / 2 - (#{$elWidth} / 2));
+}
+
+@mixin verticalAlign {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@mixin horizontalAlign {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@mixin centerAlign {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translateY(-50%) translateX(-50%);
+    -moz-transform: translateY(-50%) translateX(-50%);
+    -o-transform: translateY(-50%) translateX(-50%);
+    -ms-transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
+}
+
+
+@mixin transform($value) {
+    -webkit-transform: $value;
+    -moz-transform: $value;
+    -o-transform: $value;
+    -ms-transform: $value;
+    transform: $value;
+}
+  
+  @mixin transition($value) {
+    -webkit-transition: $value;
+    -moz-transition: $value;
+    -o-transition: $value;
+    transition: $value;
+}
+
+@font-face {
+    font-family: 'Circular';
+        src: url('fonts/CircularStd-Bold.otf') format('opentype'),
+            url('fonts/CircularStd-Bold.woff') format('woff'),
+            url('fonts/CircularStd-Bold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Circular';
+        src: url('fonts/CircularStd-Book.otf') format('opentype'),
+            url('fonts/CircularStd-Book.woff') format('woff'),
+            url('fonts/CircularStd-Book.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Harbour';
+        src: url('fonts/Harbour-Bold.ttf') format('truetype'),
+            url('fonts/Harbour-Bold.woff') format('woff'),
+            url('fonts/Harbour-Bold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Harbour';
+        src: url('fonts/Harbour-Light.ttf') format('truetype'),
+            url('fonts/Harbour-Light.woff') format('woff'),
+            url('fonts/Harbour-Light.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    @include transition(background-color 0.5s ease);
+}
+
+li {
+    list-style: none;
+}
+
+.container {
+    position: relative;
+    overflow: hidden;
+}
+
+.fullPage {
+    margin: 0;
+    padding: 0;
+    height: 100vh; // make this compatible with iphone scroll
+    width: 100%;
+    position: absolute;
+}
+
+.section {
+    display: none;
+    // transition: opacity 0.2s ease;
+    // opacity: 0;
+
+    // &.active {
+    //     opacity: 1;
+    // }
+}
+
+.btn {
+    width: 120px;
+    display: inline-block;
+    cursor: pointer;
+
+    // .purple, .orange, .orange-2 {
+    //     transition: all 0.1s ease-in-out;
+    // }
+    
+
+    // &:hover {
+    //     .purple {
+    //         fill: $orange;
+    //     }
+
+    //     .orange {
+    //         fill: $purple;
+    //     }
+
+    //     .orange, .orange-2 {
+    //         stroke: $purple;
+    //     }
+    // }
+}
+
+.letter {
+    position: absolute;
+
+    svg{
+        width: $letterSize;
+        height: $letterSize;
+    }
+}
+
+.center-wrapper {
+    width: 100%;
+    text-align: center;
+    position: relative;
+    top: 35vh;
+    // @include verticalAlign();
+}
+
+.text-wrapper {
+    font-family: "Harbour";
+    font-weight: 600;
+    display: inline-block;
+    position: relative;
+}
+
+.heading-size svg {
+    height: 70px;     
+}
+
+.fruitTop {
+    background-image: url("./assets/fruitTop.png");
+}
+
+.fruitBottom {
+    background-image: url("./assets/fruitBottom.png");
+}
+
+.pineappleTop {
+    background-image: url("./assets/pineappleTop.png");   
+}
+
+.fruit {
+    background-repeat: no-repeat;
+}
+
+#shared {
+    .logo-letters {
+        .letter-N1, .letter-E, .letter-C {
+            top: $letterPadding;
+        }
+        
+        .letter-N1, .letter-T, .letter-R {
+            left: $letterPadding;
+        }
+        
+        .letter-R, .letter-O, .letter-N2 {
+            bottom: $letterPadding;
+        }
+        
+        .letter-C, .letter-A, .letter-N2 {
+            right: $letterPadding;
+        }
+        
+        .letter-E, .letter-O {
+            left: center(100vw, $letterSize);
+        }
+        
+        .letter-T, .letter-A {
+            top: center(100vh, $letterSize);
+        }
+    }
+}
+
+#fruits {
+
+    #fruitTop {
+        background-image: url("./assets/fruitTop.png");
+        height: 260px;
+        width: 200px;
+        right: 200px;
+        top: 60px;
+    }
+
+    #fruitBottom {
+        background-image: url("./assets/fruitBottom.png");
+        height: 215px;
+        width: 200px;
+        right: 200px;
+        top: 60px;
+    }
+
+    #pineappleTop {
+        background-image: url("./assets/pineappleTop.png");
+        height: 300px;
+        width: 200px;
+    }
+    #pineappleBurner {
+        background-image: url("./assets/pineappleBurner.png");
+        height: 360px;
+        width: 300px;
+        right: 200px;
+        bottom: 60px;
+    }
+
+    .fruit {
+        display: block;
+        position: absolute;
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        border: 1px solid black;
+    }
+}
+
+#login {
+    font-family: 'Circular';
+
+    .subheading {
+        color: $orange;
+        margin: 30px 0px;
+
+        span {
+            display: block;
+        }
+    }
+
+    .theSoundOf {
+        margin-bottom: 10px;
+
+        svg {
+            height: 57px;
+        }
+    }
+}
+
+#round-name {
+    // background-color: black;
+    // background-image: url("./assets/_Round.png");
+    // background-repeat: no-repeat;
+    // background-size: 100% auto;
+
+    .round {
+        display: inline-block;
+        position: relative;
+
+        margin-top: 76px;
+    }
+
+    .round-name-text {
+        display: inline-block;
+        position: relative;
+        top: 130px;
+        left: -15px;
+        z-index: 50;
+
+        svg {
+            height: 47px;
+        }
+    }
+
+    .numbers {
+        position: absolute;
+        left: 78px;
+        top: 126px;
+
+        li {
+            display: inline-block;
+            position: relative;
+
+            &:nth-child(n+2) {
+                left: 17px;
+                top: -10px
+            }
+        }
+
+        svg {
+            height: 226px;
+        }
+    }
+
+    .description {
+        background-color: $beige;
+        font-family: 'Circular';
+        color: $purple;
+        font-size: 12px;
+        width: 270px;
+        height: 135px;
+        padding: 20px;
+        transform: rotate(-17deg);
+
+        position: relative;
+        display: inline-block;
+        top: 79px;
+        left: -28px;
+    }
+
+    .btn {
+        position: absolute;
+        bottom: -147px;
+        right: 16px;
+    }
+}
+
+#questions {
+    .question {
+        font-family: "Harbour";
+        font-weight: 600;
+        text-align: left;
+        font-size: 62px;
+        line-height: 1.2;
+        padding-left: 15px;
+        height: 380px;
+        color: $orange;
+    }
+
+    .wrapper {
+        // border: 1px solid black;
+        width: calc(100% - 400px);
+        margin: 0 auto;
+    }
+
+    .col-wrapper {
+        float: left;
+        width: 50%;
+
+        &.text-column {
+            margin-top: 30vh;
+        }
+    }
+
+    #slider-q {
+        // background-color: black;
+        // background-image: url("./assets/_Slider.png");
+        // background-repeat: no-repeat;
+        // background-size: 100% auto;
+
+        .question-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .fruits {
+            .fruit-top, .fruit-bottom {
+                height: 50vh;
+                text-align: center;
+                position: relative;
+
+                img {
+                    @include horizontalAlign();
+                    position: absolute;
+                    display: inline-block;
+                    width: 200px;
+                }
+            }
+
+            .fruit-top {
+                img {
+                    bottom: 0px;
+                }
+
+                z-index: 100;
+            }
+
+            .fruit-bottom {
+                img {
+                    top: 0px;
+                }
+            }
+            // .fruit {
+            //     border: 1px solid black;
+            //     display: block;
+            //     height: 50vh;
+            //     width: 100%;
+            // }
+
+            // .fruit-top {
+                // background-position: bottom center;
+            // }
+
+            // .fruit-bottom {
+                // background-position: top center;
+            // }
+
+            // .fruitTop {
+            // }
+            
+            // .fruitBottom {
+            //     background-size: 180px auto;
+            // }
+            
+            // .pineappleTop {
+            //     background-size: 300px auto;
+            // }
+            
+        }
+
+        .slide-container {
+            position: relative;
+            width: 465px;
+            left: 10px;
+
+            border-top: 2px solid $purple;
+        }
+
+        .slider-thumb {
+            width: 0;
+            height: 0;
+            border-left: 11px solid transparent;
+            border-right: 11px solid transparent;
+            border-bottom: 16px solid $purple;
+            position: absolute;
+            left: calc(50% - 9px);
+
+        }
+
+        .slider-input {
+            width: 100%;
+            opacity: 0;
+            position: relative;
+        }
+
+        .slider-thumb, .slider-input {
+            top: 17px;
+            cursor: pointer;
+        }
+    }
+}

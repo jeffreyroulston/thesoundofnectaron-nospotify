@@ -47,17 +47,26 @@ export default class App {
         // is also a great example for how to switch colour in the background
         setInterval(() => {
             this.graphics.switchColor(new THREE.Color(Math.random(), Math.random(), Math.random()), 0.5);
-        }, 2000)
+        }, 2000);
+        
+        // UI BINDINGS
+        this.ui.OnLoginPressed = this.Login.bind(this);
+        // this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
+        // this.resourceManager.loadResourceByPath(HTMLImageElement, "")
+
+        console.log("app initialised", this.spotifyInterface);
     }
 
     public Login() {
         // kick it all off
         // called from UI
+        console.log("login", this.spotifyInterface.Authorized);
 
         if (!this.spotifyInterface.Authorized) {
-            // show the login screen here
-            this.ui.showLoggedIn();
+            console.log("Login Authorized, show question one");
+            this.ui.loginSuccessful();
         } else {
+            console.log("Login not Authorized");
             this.spotifyInterface.GetAuthorization();
         }
     }
@@ -67,33 +76,33 @@ export default class App {
         // once we have all questions i.e. TotalQuestions == QuestionNumber, we can get recommendations and make the playlist
         // and the ui will get the recommendations, and playlist information through the data callback
         
-        this.answeredQuestions.push(question);
+        // this.answeredQuestions.push(question);
         
-        if (totalQuestions >= questionNumber) {
+        // if (totalQuestions >= questionNumber) {
             
-            var artistIds = this.topArtists?.map(artist => artist.Id).slice(0, 5);
-            var params: ({parameter: string, value: number})[] = [];
+        //     var artistIds = this.topArtists?.map(artist => artist.Id).slice(0, 5);
+        //     var params: ({parameter: string, value: number})[] = [];
             
-            // parse parameters
-            this.answeredQuestions.forEach((question) => {
-                if (question.answer !== undefined) {
-                    params.push({parameter: question.parameter, value: question.answer.value})
-                }
-            });
+        //     // parse parameters
+        //     this.answeredQuestions.forEach((question) => {
+        //         if (question.answer !== undefined) {
+        //             params.push({parameter: question.parameter, value: question.answer.value})
+        //         }
+        //     });
 
-            // get spotify recommendation
-            this.spotifyInterface.GetRecommendations({
-                Count: 100, 
-                SeedArtistIDs: artistIds,
-                QueryParameters: params
-            });
-        }
+        //     // get spotify recommendation
+        //     this.spotifyInterface.GetRecommendations({
+        //         Count: 100, 
+        //         SeedArtistIDs: artistIds,
+        //         QueryParameters: params
+        //     });
+        // }
     }
 
     private OnAuthorised(): void {
         // we can only really get these when we're authorised
         this.spotifyInterface.GetUserProfile();
-        this.ui.showLoggedIn();
+        this.ui.loginSuccessful();
     }
 
     // most of this stuff is temporary, will hook up the proper handlers with the ui state

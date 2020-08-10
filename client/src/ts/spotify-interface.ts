@@ -1,3 +1,14 @@
+export enum QueryParameters {
+    Acousticness,
+    Energy,
+    Instrumentalness,
+    Liveness,
+    Loudness,
+    Speechiness,
+    Valence,
+    Tempo
+}
+
 export interface SpotifyInterfaceParams {
     ClientID: string;
     RedirectURI: string;

@@ -2,116 +2,157 @@
 <html>
   <head>
     <title>Nectaron</title>
-    <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script> -->
-    <!-- <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="main.css" />
   </head>
 
-  <body>
-    <!-- LOGIN PAGE -->
-    <div id='canvas-container'>
-      
-    </div>
-    <div class="container">
-      <div id="login" class="pageHeight">
-        <div class="wrapper">
-          <h1>Experience the Sound of Nectaron</h1>
-          <p>Brew up a playlist</p><br />
-          <button id="startBtn" class="btn">Get started</button>
+  <body class="fullPage">
+    <div class="container fullPage">
+      <!-- LOGIN/LANDING PAGE -->
+      <div id="login" class="fullPage section">
+        <div class="center-wrapper">
+          <!-- SVG OF LOGO -->
+          <div class="text-wrapper">
+            <div class="logo">
+              <div class="theSoundOf bleed">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 804.87 64.49"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery">
+                  <path class="purple" d="M16.41,39.26,8.87,42.14,25,58.22l3.43.38-5.89,5.89-.38-3.43L6,45,3.12,52.54,0,49.42,13.29,36.13Z"/>
+                  <path class="purple" d="M49.55,37.42l-5.89,5.9-.4-3.45L36.1,32.71l-6.76,6.76,7.16,7.16L40,47l-5.89,5.9-.4-3.45L18.73,34.54l-3.45-.4,5.89-5.89.4,3.45,6.22,6.22,6.76-6.76-6.22-6.22-3.45-.4,5.89-5.89.4,3.45L46.1,37Z"/>
+                  <path class="purple" d="M62.2,24.77,51.45,35.52l-.4-3.45L36.12,17.15l-3.45-.4L43.42,6l3.12,3.12L38,13.3l7.37,7.37,4.77-4.77L53,18.81l-6.76,2.77,8.66,8.66,4.15-8.61Z"/>
+                  <path class="purple" d="M353.46,20.22a7.13,7.13,0,0,1-2.24,5.34,7.52,7.52,0,0,1-5.4,2.16,14.94,14.94,0,0,1-8.36-2.39l3.55-3,6.7,3.85a6.14,6.14,0,0,0,2-4.15A7.26,7.26,0,0,0,347,16.76l-5-4.18a7.29,7.29,0,0,1-2.69-5.28,7.16,7.16,0,0,1,2.09-5.54A6.79,6.79,0,0,1,346.22,0a11.58,11.58,0,0,1,6.84,2.32L349.8,5.18l-6.3-3.49a7,7,0,0,0-1,3.42q0,2.57,2.86,5,2.64,2.13,5.26,4.22A8,8,0,0,1,353.46,20.22Z"/>
+                  <path class="purple" d="M379.38,13.74a14.78,14.78,0,0,1-3.29,9.7,9.89,9.89,0,0,1-15.9,0,14.83,14.83,0,0,1-3.28-9.7,14.82,14.82,0,0,1,3.28-9.69,9.87,9.87,0,0,1,15.9,0A14.77,14.77,0,0,1,379.38,13.74Zm-4,1.76A14.19,14.19,0,0,0,373,7q-2.79-3.78-8.17-3.78a14.54,14.54,0,0,0-2.32.2A21.37,21.37,0,0,0,360.79,12a14.17,14.17,0,0,0,2.39,8.53q2.79,3.79,8.17,3.79a15.81,15.81,0,0,0,2.32-.2A21.42,21.42,0,0,0,375.4,15.5Z"/>
+                  <path class="purple" d="M405,.46l-2.16,2.73V17.73a9.64,9.64,0,0,1-2.72,6.87,8.93,8.93,0,0,1-13.08,0,9.68,9.68,0,0,1-2.72-6.91V3.19L382.2.46h8.33l-2.15,2.73V15.63A8.67,8.67,0,0,0,391,22.17a8,8,0,0,0,5.81,2.39,8.25,8.25,0,0,0,2-.26V3.19L396.71.46Z"/>
+                  <path class="purple" d="M429,.46l-2.16,2.73V22.44l2,1.79L425,27.52,411.71,6.9V24.3L413.9,27h-6.54l2.16-2.72V3.52l-2-3.06h4.72l12.38,19.19V3.19L422.47.46Z"/>
+                  <path class="purple" d="M452.41,14.14A13.88,13.88,0,0,1,449.62,23a10.34,10.34,0,0,1-8.6,4h-9.33l2.16-2.72V3.19L431.69.46h9.1a10.39,10.39,0,0,1,8.66,4.29A15.14,15.14,0,0,1,452.41,14.14Zm-3.92,1.26A13,13,0,0,0,446,7.24a13,13,0,0,0-8.1-4.72V22.41l8.6,1.82Q448.5,21.08,448.49,15.4Z"/>
+                  <path class="purple" d="M782.48,38.32a14.79,14.79,0,0,1-9.18,4.53,9.87,9.87,0,0,1-11.24-11.24,14.79,14.79,0,0,1,4.53-9.18,14.85,14.85,0,0,1,9.18-4.53A9.87,9.87,0,0,1,787,29.15,14.8,14.8,0,0,1,782.48,38.32Zm-4.06-1.57A14.12,14.12,0,0,0,782.76,29q.71-4.65-3.1-8.45a14.26,14.26,0,0,0-1.78-1.5,21.23,21.23,0,0,0-7.3,4.86,14.12,14.12,0,0,0-4.34,7.72q-.71,4.65,3.09,8.45a16.39,16.39,0,0,0,1.79,1.5A21.32,21.32,0,0,0,778.42,36.75Z"/>
+                  <path class="purple" d="M801.75,45.06l-4.18-8.59-7.37,7.37L795,48.6l-2.92,2.92-2.76-6.76-7.66,7.65-.4,3.45L775.34,50l3.45-.4,14.93-14.93.4-3.45,10.75,10.75Z"/></g></g></svg>
+              </div>
+              <div class="nectaron bleed heading-size">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 695.61 76.16"><defs><style>.orange{fill:#ff1900;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery"><path class="orange" d="M689,7.44l-1-.53V9.58l.37.48h-1.6l.37-.48V6.91l-1,.54V6.61H689Z"/><path class="orange" d="M691.69,10.06l.36-.48V7.76l-1,1.57-1-1.59V9.58l.37.48h-1.16l.37-.48V7.16l-.28-.27.83-.49,1.16,1.83.72-1.15-.36-.47h1.59l-.36.48V9.58l.36.48h-1.59"/><path class="orange" d="M689.69,14.15a5.92,5.92,0,1,1,5.92-5.92A5.93,5.93,0,0,1,689.69,14.15Zm0-11.22A5.3,5.3,0,1,0,695,8.23,5.31,5.31,0,0,0,689.69,2.93Z"/><polygon class="orange" points="98.09 2.26 98.09 3.16 111.17 21.2 111.17 55.5 98.09 73.55 98.09 74.45 129.22 74.45 129.22 2.26 98.09 2.26"/><polygon class="orange" points="147.9 23.46 134.09 38.35 147.9 52.97 148.62 52.97 148.62 23.46 147.9 23.46"/><polygon class="orange" points="136.98 2.26 160.44 26.71 161.25 26.71 161.25 2.26 136.98 2.26"/><polygon class="orange" points="163.51 74.45 163.51 48.01 162.61 48.01 138.34 74.45 163.51 74.45"/><path class="orange" d="M195.62,6.9a36.2,36.2,0,0,0-7.31,8.76,39.25,39.25,0,0,0-4.38,10.64,49,49,0,0,0-1.44,12,50,50,0,0,0,1.44,12.05,41,41,0,0,0,4.33,10.78,35.19,35.19,0,0,0,17.6,15.07V.72A35.41,35.41,0,0,0,195.62,6.9Z"/><polygon class="orange" points="240.15 28.7 240.15 2.26 214.97 2.26 239.25 28.7 240.15 28.7"/><polygon class="orange" points="240.15 74.45 240.15 48.01 239.25 48.01 214.97 74.45 240.15 74.45"/><polygon class="orange" points="358.37 74.45 358.37 73.55 343.48 54.23 328.5 73.55 328.5 74.45 358.37 74.45"/><polygon class="orange" points="360.35 19.67 377.41 55.5 364.86 73.55 364.86 74.45 411.97 74.45 411.97 73.55 397.44 55.5 371.18 0 360.35 19.67"/><polygon class="orange" points="424.94 2.26 424.94 3.16 438.03 21.2 438.03 55.5 424.94 73.55 424.94 74.45 456.07 74.45 456.07 2.26 424.94 2.26"/><path class="orange" d="M489.42,31.85a17.33,17.33,0,0,0-.05-24,19.94,19.94,0,0,0-6-4.29,25.18,25.18,0,0,0-8.48-2.17V38.26a25.54,25.54,0,0,0,8.52-2.16A19.85,19.85,0,0,0,489.42,31.85Z"/><polygon class="orange" points="503.36 74.45 503.36 73.55 475.84 44.67 474.94 44.67 474.94 74.45 503.36 74.45"/><path class="orange" d="M518.1,15.66a39.25,39.25,0,0,0-4.38,10.64,49,49,0,0,0-1.44,12,50,50,0,0,0,1.44,12.05,41,41,0,0,0,4.33,10.78,35.19,35.19,0,0,0,17.6,15.07V.72A35.54,35.54,0,0,0,525.41,6.9,36.2,36.2,0,0,0,518.1,15.66Z"/><path class="orange" d="M570.8,69.93a36.62,36.62,0,0,0,7.31-8.84,40.41,40.41,0,0,0,4.38-10.78,50,50,0,0,0,1.44-12.05,49,49,0,0,0-1.44-12,39.9,39.9,0,0,0-4.38-10.64A36.43,36.43,0,0,0,570.8,6.9,35.54,35.54,0,0,0,560.56.72V76.16A34.59,34.59,0,0,0,570.8,69.93Z"/><polygon class="orange" points="29.87 70.08 29.87 70.08 12.24 47.2 12.24 61.21 2.67 73.55 2.67 74.45 32.54 74.45 32.54 73.55 29.87 70.08"/><polygon class="orange" points="70.28 53.03 23.93 2.26 0 2.26 0 3.16 65.65 75.35 70.28 75.35 70.28 53.03"/><polygon class="orange" points="53.02 2.26 53.02 3.16 67.91 22.47 82.89 3.16 82.89 2.26 53.02 2.26"/><polygon class="orange" points="659.95 75.35 664.58 75.35 664.58 53.03 618.23 2.26 594.3 2.26 594.3 3.16 659.95 75.35"/><polygon class="orange" points="663.1 22.47 678.08 3.16 678.08 2.26 648.21 2.26 648.21 3.16 663.1 22.47"/><rect class="orange" x="260.92" y="2.12" width="63.35" height="16.06"/><polygon class="orange" points="270.48 73.41 270.48 74.31 314.7 74.31 314.7 73.41 301.61 55.36 301.61 31 283.56 31 283.56 55.36 270.48 73.41"/><polygon class="orange" points="607.42 47.2 607.42 61.21 597.85 73.55 597.85 74.45 627.72 74.45 627.72 73.55 625.04 70.07 607.42 47.2"/></g></g></svg>
+              </div>
+            </div>
+          </div>
+          <!-- SUBHEADING AND BUTTON -->
+          <p class="subheading"><span>The Sound of Nectaron is an interactive experience</span><span>designed especially with brewers in mind</span></p>
+          <div id="startBtn" class="btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176.57 55.46"><defs><style>.purple{fill:#88009d;}.orange{fill:#ff1900;}.orange-2{fill:none;stroke:#ff1900;stroke-miterlimit:10;stroke-width:1.18px;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery"><rect class="purple" width="176.57" height="55.46" rx="5.44"/><path class="orange" d="M30.56,36.93V20.31H41v3.05H33.79v3.79h6.5V30h-6.5v3.84H41v3Z"/><path class="orange" d="M55,36.93,47.43,25.14V36.93H44.2V20.31h4l6.91,11v-11h3.24V36.93Z"/><path class="orange" d="M69.16,23.38V36.93H65.9V23.38H60.65V20.31H74.41v3.07Z"/><path class="orange" d="M76.68,36.93V20.31H87.09v3.05H79.92v3.79h6.49V30H79.92v3.84h7.17v3Z"/><path class="orange" d="M95.27,30.53H93.58v6.4H90.32V20.31h6.49a5,5,0,0,1,5.3,5.11,4.71,4.71,0,0,1-3.54,4.71l3.56,6.8H98.52Zm.93-2.79a2.33,2.33,0,1,0,0-4.62H93.58v4.62Z"/><line class="orange-2" x1="115.47" y1="29.96" x2="148.4" y2="29.96"/><polygon class="orange" points="144.48 34.8 143.68 33.93 147.95 29.96 143.68 25.99 144.48 25.12 149.68 29.96 144.48 34.8"/></g></g></svg>
+          </div>
+        </div>
+      </div>
+
+      <div id="round-name" class="fullPage section">
+        <div class="center-wrapper">
+          <div class="text-wrapper">
+            <div class="round heading-size">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 428.84 88.97"><defs><style>.yellow{fill:#ffe700;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery"><path class="yellow" d="M78.27,76.58,57.51,89,30.19,47.24V74.35l9,11.76H0L8.9,74.35V13.13L0,1.38H39.61q13.88,0,23,7.94,8.58,7.52,8.58,17.79,0,14.73-17.05,21.61l12.82,19.7ZM50.52,35.48a22.32,22.32,0,0,0-6-15,23.82,23.82,0,0,0-14.35-8.2V37.71l17.68,7.2A17.76,17.76,0,0,0,50.52,35.48Z"/><path class="yellow" d="M166.6,43.64q0,18.74-11.91,31.29A38.81,38.81,0,0,1,125.4,87.48q-17.48,0-29.23-11.86Q84.1,63.54,84.09,44.91q0-18.85,12-31.88T125.4,0a39,39,0,0,1,29.29,12.44Q166.6,24.89,166.6,43.64ZM147.11,57q0-17.79-10.59-30.5Q125.2,12.82,107.08,12.71a46.6,46.6,0,0,0-3.6,18.22q0,17.79,10.48,30.61,11.45,13.77,29.55,13.87A49.2,49.2,0,0,0,147.11,57Z"/><path class="yellow" d="M258.85,1.38l-9,11.75V55.29a31,31,0,0,1-9.43,22.82,33.39,33.39,0,0,1-46.44,0,31.07,31.07,0,0,1-9.48-22.88v-42L175.6,1.38h39.19l-9,11.75V54.86a23.07,23.07,0,0,0,6,16.21,20,20,0,0,0,15.36,6.56h1.38V13.13l-8.9-11.75Z"/><path class="yellow" d="M347,1.38l-8.9,11.75V70l8.79,6.35L325.89,89,284.48,28.49V74.35l9,11.76H265.2l8.9-11.76V13.24L266.05,1.38h25.1l36.54,53.48V13.13l-9-11.75Z"/><path class="yellow" d="M428.84,45.44q0,16.62-10.59,28.06-11.76,12.61-31.78,12.61h-33l8.9-11.76V13.13l-8.9-11.75h32q19.71,0,32.1,14A43.73,43.73,0,0,1,428.84,45.44Zm-19.17,7.41A40.22,40.22,0,0,0,403,30a34.92,34.92,0,0,0-19.39-14.19V67.15L404,75.62A47.61,47.61,0,0,0,409.67,52.85Z"/></g></g></svg>
+            </div>
+            <ul class="numbers">
+              <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 235.76 282.65"><defs><style>.yellow-letter{fill:none;stroke:#ffe700;stroke-miterlimit:10;stroke-width:1.98px;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery"><path class="yellow-letter" d="M234.77,141.33q0,57.42-34,98.88t-82.91,41.45Q69,281.66,35,240.21T1,141.33Q1,83.91,35,42.45T117.88,1q48.93,0,82.91,41.46T234.77,141.33ZM179.72,177q0-55.38-27.86-93.78Q121.95,42.11,73,41.77a200.45,200.45,0,0,0-11.22,65.58q0,55.38,27.87,93.44,29.89,41.46,78.83,41.79A200.65,200.65,0,0,0,179.72,177Z"/></g></g></svg>
+              </li>
+              <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 153.21 291.56"><defs><style>.yellow-letter{fill:none;stroke:#ffe700;stroke-miterlimit:10;stroke-width:1.98px;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery"><path class="yellow-letter" d="M151.21,290.57H25.49L54,252.85V79.21L17.67,101,1.36,73.78l121-72V252.85Z"/></g></g></svg>
+              </li>
+              <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 193.52 278.23"><defs><style>.yellow-letter{fill:none;stroke:#ffe700;stroke-miterlimit:10;stroke-width:1.98px;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery"><path class="yellow-letter" d="M192.53,88q0,25.49-15.63,47.91L95,253.46,186.41,211v66.26H1.9L78.7,167.83Q14.81,133.17,14.82,83.22q0-34.32,23.44-57.42Q63.4,1,104.52,1q37.38,0,62.69,25.49T192.53,88ZM141.9,76.76,59.67,35.31a62.53,62.53,0,0,0-3.74,21.75q0,33.3,56.41,62.52Z"/></g></g></svg>
+              </li>
+              <li></li>
+            </ul>
+            <ul class="round-name-text">
+              <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 253.43 57.81"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery"><path class="purple" d="M33.81,9.91,22,3.57V35.19l4.34,5.66H7.46l4.29-5.66V3.57L0,10V0H33.81Z"/><path class="purple" d="M77.52,40.85H58.63l4.29-5.66V21.91h-11V35.19l4.34,5.66H37.38l4.29-5.66V5.67L37.38,0h18.9L51.94,5.67V17h11V5.67L58.63,0H77.52L73.18,5.67V35.19Z"/><path class="purple" d="M108.88,40.85H80.64l4.29-5.66V5.67L80.64,0h28.24V9.91L95.19,3.52V16.39h10.16v9L95.19,19.92V37.33L108.88,31Z"/><path class="purple" d="M154,9.91,140.28,3.52V16.39h10.17v9l-10.17-5.46V35.19l4.34,5.66H125.73L130,35.19V5.67L125.73,0H154Z"/><path class="purple" d="M186.3,40.85H158.06l4.29-5.66V5.67L158.06,0H186.3V9.91L172.61,3.52V16.39h10.16v9l-10.16-5.46V37.33L186.3,31Z"/><path class="purple" d="M218.62,40.85H190.38l4.29-5.66V5.67L190.38,0h28.24V9.91L204.94,3.52V16.39H215.1v9l-10.16-5.46V37.33L218.62,31Z"/><path class="purple" d="M251,40.85H222.71L227,35.19V5.67L222.71,0H241.6l-4.34,5.67V37.33L251,31Z"/><rect class="purple" x="2.56" y="54.53" width="250.88" height="3.28"/></g></g></svg>
+              </li>
+            </ul>
+            <div class="description">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              </p>
+            </div>
+            <div class="btn next">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176.57 55.46"><defs><style>.purple{fill:#88009d;}.orange{fill:#ff1900;}.orange-2{fill:none;stroke:#ff1900;stroke-miterlimit:10;stroke-width:1.18px;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery"><rect class="purple" width="176.57" height="55.46" rx="5.44"/><path class="orange" d="M30.56,36.93V20.31H41v3.05H33.79v3.79h6.5V30h-6.5v3.84H41v3Z"/><path class="orange" d="M55,36.93,47.43,25.14V36.93H44.2V20.31h4l6.91,11v-11h3.24V36.93Z"/><path class="orange" d="M69.16,23.38V36.93H65.9V23.38H60.65V20.31H74.41v3.07Z"/><path class="orange" d="M76.68,36.93V20.31H87.09v3.05H79.92v3.79h6.49V30H79.92v3.84h7.17v3Z"/><path class="orange" d="M95.27,30.53H93.58v6.4H90.32V20.31h6.49a5,5,0,0,1,5.3,5.11,4.71,4.71,0,0,1-3.54,4.71l3.56,6.8H98.52Zm.93-2.79a2.33,2.33,0,1,0,0-4.62H93.58v4.62Z"/><line class="orange-2" x1="115.47" y1="29.96" x2="148.4" y2="29.96"/><polygon class="orange" points="144.48 34.8 143.68 33.93 147.95 29.96 143.68 25.99 144.48 25.12 149.68 29.96 144.48 34.8"/></g></g></svg>
+            </div>
+          </div>
         </div>
       </div>
       
-      <!-- VIEW WHEN LOGGED IN -->
-      <div id="main" class="pageHeight">
-
-        <div id="user-profile">
-        </div>
-        <div id="oauth">
+      <!-- QUESTION TEMPLATES-->
+      <div id="questions">
+        <div id="mc-q" class="fullPage section">
         </div>
 
-        <!-- Questions -->
-        <div id="questions" class="wrapper">
-          <!-- Question One -->
-          <form id="q1" class="question" value="multichoice">
-            <label>What style brew tickles your fancy?</label>
-            <div class="answer-wrapper">
-              <input type="submit" name="q1" value="Lager">
-              <input type="submit" name="q1" value="APIA">
-              <input type="submit" name="q1" value="IPA">
-              <input type="submit" name="q1" value="Stout">
+        <div id="slider-q" class="fullPage section">
+          <div class="wrapper">
+            <div class="col-wrapper text-column">
+              <div class="question-wrapper">
+                <div class="question">
+                  <p></p>
+                </div>
+                <div class="slide-container">
+                  <span class="slider-thumb"></span>
+                  <input type="range" min="0" max="100" value="50" class="slider slider-input">
+                </div>
+              </div>
             </div>
-          </form>
-          
-          <!-- Question Two -->
-          <form id="q2" class="question" value="slider">
-            <label>How long do you want to boil for?</label>
-            <div class="answer-wrapper">
-              <input type="range" min="1" max="120" value="60" class="slider" name="q2"><br />
-              <input type="submit" value="Boil it up">
+            <div class="col-wrapper">
+              <div class="fruits">
+                <div class="fruit-top">
+                  <img src="./assets/pineappleTop.png">
+                </div>
+                <div class="fruit-bottom">
+                  <img src="./assets/fruitBottom.png">
+                </div>
+                <!-- <span class="fruit .fruit-top .fruitTop"></span> -->
+                <!-- <span class="fruit fruit-top pineappleTop"></span>
+                <span class="fruit fruit-bottom fruitBottom"></span> -->
+              </div>
             </div>
-          </form>
-
-          <!-- Question Three -->
-          <form id="q3" class="question" value="slider">
-            <label>And the mouthfeel?</label>
-            <div class="answer-wrapper">
-              <input type="range" min="1" max="100" value="50" class="slider" name="q3"><br />
-              <input type="submit" value="Swish">
-            </div>
-          </form>
+          </div>
         </div>
 
-        <!-- Summary -->
-        <div id="summary" class="wrapper">
-          <h1>Here's your playlist</h1>
-          <div id="playlist"></div>
-        </div>
-
-        <div class="hidden">
-          <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
-          <a href="https://www.spotify.com/logout/" class="btn btn-primary">Log out</a>
-        </div>
+        <div id="quickfire-q" class="fullPage section">
+        </div>     
       </div>
+
+      <!-- SHARED ELEMENTS -->
+      <div id="shared">
+        <div class="logo-letters letters">
+          <div class="letter letter-N1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.18 43.37"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="purple" points="17.72 40.24 17.72 40.24 7.26 26.67 7.26 34.98 1.58 42.3 1.58 42.83 19.3 42.83 19.3 42.3 17.72 40.24"/><polygon class="purple" points="41.7 30.13 14.2 0 0 0 0 0.54 38.95 43.37 41.7 43.37 41.7 30.13"/><polygon class="purple" points="31.46 0 31.46 0.54 40.29 11.99 49.18 0.54 49.18 0 31.46 0"/></g></g></svg>
+          </div>
+          <div class="letter letter-E">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38.82 42.83"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="purple" points="0 0 0 0.54 7.76 11.24 7.76 31.59 0 42.3 0 42.83 18.47 42.83 18.47 0 0 0"/><polygon class="purple" points="29.55 12.58 21.36 21.42 29.55 30.09 29.98 30.09 29.98 12.58 29.55 12.58"/><polygon class="purple" points="23.08 0 37 14.51 37.48 14.51 37.48 0 23.08 0"/><polygon class="purple" points="38.82 42.83 38.82 27.14 38.28 27.14 23.88 42.83 38.82 42.83"/></g></g></svg>
+          </div>
+          <div class="letter letter-C">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34.21 44.76"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><path class="purple" d="M7.79,3.67A21.72,21.72,0,0,0,3.45,8.86,23.43,23.43,0,0,0,.86,15.18,29,29,0,0,0,0,22.27a29.6,29.6,0,0,0,.86,7.15,24,24,0,0,0,2.57,6.4,20.73,20.73,0,0,0,10.44,8.94V0A20.9,20.9,0,0,0,7.79,3.67Z"/><polygon class="purple" points="34.21 16.6 34.21 0.91 19.27 0.91 33.68 16.6 34.21 16.6"/><polygon class="purple" points="34.21 43.74 34.21 28.05 33.68 28.05 19.27 43.74 34.21 43.74"/></g></g></svg>
+          </div>
+          <div class="letter letter-T">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37.59 42.83"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><rect class="purple" width="37.59" height="9.53"/><polygon class="purple" points="5.67 42.3 5.67 42.83 31.91 42.83 31.91 42.3 24.15 31.59 24.15 17.13 13.44 17.13 13.44 31.59 5.67 42.3"/></g></g></svg>
+          </div>
+          <div class="letter letter-A"> 
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.53 44.17"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="purple" points="17.72 44.17 17.72 43.64 8.89 32.18 0 43.64 0 44.17 17.72 44.17"/><polygon class="purple" points="18.9 11.67 29.02 32.93 21.58 43.64 21.58 44.17 49.52 44.17 49.52 43.64 40.91 32.93 25.32 0 18.9 11.67"/></g></g></svg>
+          </div>
+          <div class="letter letter-R">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46.53 43.37"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="purple" points="0 0.54 0 1.07 7.76 11.78 7.76 32.12 0 42.83 0 43.37 18.47 43.37 18.47 0.54 0 0.54"/><path class="purple" d="M38.25,18.1a10.42,10.42,0,0,0,2.15-3.35,10.26,10.26,0,0,0,0-7.55,10.62,10.62,0,0,0-2.17-3.37,12,12,0,0,0-3.59-2.55,15.15,15.15,0,0,0-5-1.28V21.9a15.21,15.21,0,0,0,5.06-1.29A11.52,11.52,0,0,0,38.25,18.1Z"/><polygon class="purple" points="46.53 43.37 46.53 42.83 30.2 25.7 29.66 25.7 29.66 43.37 46.53 43.37"/></g></g></svg>
+          </div>
+          <div class="letter letter-O">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.51 44.76"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><path class="purple" d="M3.45,8.86A23.43,23.43,0,0,0,.86,15.18,29,29,0,0,0,0,22.27a29.6,29.6,0,0,0,.86,7.15,24,24,0,0,0,2.57,6.4,20.73,20.73,0,0,0,10.44,8.94V0A20.9,20.9,0,0,0,7.79,3.67,21.72,21.72,0,0,0,3.45,8.86Z"/><path class="purple" d="M34.72,41.07a22,22,0,0,0,4.34-5.25,23.68,23.68,0,0,0,2.59-6.4,29.11,29.11,0,0,0,.86-7.15,28.51,28.51,0,0,0-.86-7.09,23.43,23.43,0,0,0-2.59-6.32,21.72,21.72,0,0,0-4.34-5.19A20.9,20.9,0,0,0,28.64,0V44.76A20.73,20.73,0,0,0,34.72,41.07Z"/></g></g></svg>
+          </div>
+          <div class="letter letter-N2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.18 43.37"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="purple" points="17.72 40.24 17.72 40.24 7.26 26.67 7.26 34.98 1.58 42.3 1.58 42.83 19.3 42.83 19.3 42.3 17.72 40.24"/><polygon class="purple" points="41.7 30.13 14.2 0 0 0 0 0.54 38.95 43.37 41.7 43.37 41.7 30.13"/><polygon class="purple" points="31.46 0 31.46 0.54 40.29 11.99 49.18 0.54 49.18 0 31.46 0"/></g></g></svg>
+          </div>
+        </div>
+        <!-- <div id="fruits">
+          <span id="fruitBottom" class="fruit"></span>
+          <span id="fruitTop" class="fruit"></span>
+          <span id="pineappleTop" class="fruit"></span>
+          <span id="pineappleBurner" class="fruit"></span>
+        </div> -->
+      </div>
+      
     </div>
-
-    <script id="user-profile-template" type="text/x-handlebars-template">
-      <img id="profileImage" class="media-object" width="150" src="{{images.0.url}}" />
-      <!-- <h1>Hey {{display_name}}!</h1> -->
-      <!-- <div class="media">
-        <div class="pull-left">
-          <img id="profileImage" class="media-object" width="150" src="{{images.0.url}}" />
-        </div>
-        <div class="media-body">
-          <dl class="dl-horizontal">
-            <dt>Display name</dt><dd class="clearfix">{{display_name}}</dd>
-            <dt>Id</dt><dd>{{id}}</dd>
-            <dt>Email</dt><dd>{{email}}</dd>
-            <dt>Spotify URI</dt><dd><a href="{{external_urls.spotify}}">{{external_urls.spotify}}</a></dd>
-            <dt>Link</dt><dd><a href="{{href}}">{{href}}</a></dd>
-            <dt>Profile Image</dt><dd class="clearfix"><a href="{{images.0.url}}">{{images.0.url}}</a></dd>
-            <dt>Country</dt><dd>{{country}}</dd>
-          </dl>
-        </div>
-      </div> -->
-    </script>
-
-    <script id="oauth-template" type="text/x-handlebars-template">
-      <!-- <h2>oAuth info</h2>
-      <dl class="dl-horizontal">
-        <dt>Access token</dt><dd class="text-overflow">{{access_token}}</dd>
-        <dt>Refresh token</dt><dd class="text-overflow">{{refresh_token}}</dd>
-      </dl> -->
-    </script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script type="text/javascript" src="out.js"></script>
-    <!-- <script type="text/javascript" src="./js/gsap.min.js"></script>
-    <script type="text/javascript" src="./js/shared.js"></script>
-    <script type="text/javascript" src="./js/controller.js"></script>
-    <script type="text/javascript" src="./js/main.js"></script> -->
   </body>
 </html>
 

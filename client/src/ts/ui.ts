@@ -1,17 +1,72 @@
 import * as si from "./spotify-interface";
-import {Question, QuestionType, QueryParameter} from "./questions";
-import {TweenLite} from "gsap"
+import * as q from "./questions";
+import Slider from "./slider";
+import {el} from "./helpers";
+import {TweenMax} from "gsap"
 
 var qDefault = function() { return { value: 0, include: false } };
 
+var COLOURS = {
+    beige : "#FCF1DB",
+    red : "#FF2000",
+    purple : "#88009D",
+    blue : "#00C1F5"
+}
+
+enum PageType {
+    Login,
+    RoundName,
+    Question
+}
 
 export default class UI {
-    private totalQuestions = 3;
-    private currentQuestion = 1;
+    private currentPage : PageType = PageType.Login;
+    private currentRoundIdx : number = 0;
+    private currentQuestionIdx : number = 0;
+
+    private slider = new Slider(this, "#slider-q")
+
+    private rounds : q.QuestionRound[] = [
+        {
+            round: 1,
+            color: COLOURS.red,
+            text : "All about the science of brewing. It's the details and the process - the part the brewers will really sing their teeth into. What's the brew style? What flavours are you heroing? Is it light or dark? These slider centric questions will be accompanied by 5 hero images that change based on the answer - all in the style of Nectaron 'visual collision,' half fruit - half something else." 
+        },
+        {
+            round : 2,
+            color: COLOURS.purple,
+            text: "Now we've covered the basics, it's time to get experimental. Section Two is where we see mastery and mystery come into play. This section is all about imbuing their brew with personality. These questions will come to life visually through an 8 bit style. This will resonate with brewers as it borros from the nostalgia of retro gaming - something that brewers love."
+        },
+        {
+            round: 3,
+            color: COLOURS.blue,
+            text: "Some text"
+        }
+    ]
+
+    private questions : q.SliderQuestion[] = [
+        {
+            round:1,
+            type: q.QuestionType.Slider,
+            params: si.QueryParameters.Valence,
+            question : "How bitter would you like your brew?",
+            minValue : 0,
+            maxValue : 100,
+            answer : 0
+        },
+        {
+            round: 1,
+            type: q.QuestionType.Slider,
+            params: si.QueryParameters.Valence,
+            question : "How tangy would you like your brew?",
+            minValue : 0,
+            maxValue : 100,
+            answer : 0
+        }
+    ]
 
     private recommendations: si.Track[] | undefined = [];
-
-    private queryParameters: {[key: string]: QueryParameter }  = {
+    private queryParameters: {[key: string]: q.QueryParameter }  = {
         "acousticness" : qDefault(),
         "danceability" : qDefault(),
         "energy" : qDefault(),
@@ -22,33 +77,136 @@ export default class UI {
         "valence" : qDefault(),
         "tempo" : qDefault()
     }
-      
-    private answerMap : { [q: string]: any} = {
-        "q1" : {
-            type: QuestionType.MultiChoice,
-            feature : "energy",
-            values : {
-            "Lager" : 2,
-            "APA" : 6,
-            "IPA" : 13,
-            "Stout" : 30
-            }
-        },
-        "q2" : {
-            type: QuestionType.Slider,
-            feature : "valence",
-        },
-        "q3" : {
-            type : QuestionType.Slider,
-            feature : "loudness",
-        }
-    }
-
+    
+    // PUBLIC VARIABLES
     public OnLoginPressed = () => {};
-    public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: Question): void}[] = [];
+    public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: q.Question): void}[] = [];
 
     constructor() {
         this.init();
+    }
+    
+    private init() {
+        // set button bindings
+        el("#startBtn").addEventListener("click", this.Login.bind(this));
+        el(".next").addEventListener("click", this.next.bind(this));
+        
+        // this.showLogin();
+        // this.showRoundName();
+        this.showQuestion();
+    }
+
+    private setBG(color : string) {
+        // sets background colour based on page
+        el("body").style.backgroundColor = color;
+    }
+
+    private showLogin() {
+        this.setBG(COLOURS.beige);
+        el("#login").style.display = "block";
+
+        // bleed in the sound of
+        TweenMax.from(".theSoundOf path", 0.75, {opacity:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}, delay:1});
+
+        // bleed in nectaron
+        TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 0.75, {opacity:0, y:50, scale:0, transformOrigin: "top", stagger: {each: 0.05, from:"random"}, delay:1});
+
+        // show subheading and button
+        TweenMax.from("#login .subheading, #login .btn", 0.5, {opacity:0, y:5, delay: 3.2});
+    }
+
+    private showRoundName() {
+        this.currentPage = PageType.RoundName;
+        this.currentRoundIdx++;
+        var currentRound = this.rounds[this.currentRoundIdx];
+
+        // set the things
+        this.setBG(currentRound.color);
+        el("#round-name .description").innerHTML = currentRound.text;
+        el("#round-name").style.display = "block";
+
+        // bleed in round
+        TweenMax.from(".round path", 0.75, {opacity:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}});
+
+        // swing in numbers
+        TweenMax.from("#round-name .numbers li:first-child", 0.5, {opacity:0, y:50, delay:0.4});
+        TweenMax.from("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {opacity:0, scale:0.5, y:-50, rotate:-120, delay:0.5});
+
+        // show the round name
+        TweenMax.from(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.5, {opacity:0, x:-50, delay:1});
+
+        // show the description box
+        TweenMax.from("#round-name .description, #round-name .btn", 0.6, {opacity:0, y:20, delay:1.1});
+    }
+
+    private showQuestion() { 
+        this.currentPage = PageType.Question;
+        var currentQuestion = this.questions[this.currentQuestionIdx];
+        console.log("show question", currentQuestion);
+        this.setBG(COLOURS.beige);
+
+        switch(currentQuestion.type) {
+            case q.QuestionType.Slider:
+                this.slider.set(currentQuestion);
+
+                // show question
+                this.slider.show();
+                break;
+        }
+    }
+
+    private next() {
+        // hide current page
+        // show next page
+        switch (this.currentPage) {
+            case PageType.Login:
+                //hide button
+                TweenMax.to("#login .subheading, #login .btn", 0.3, {opacity:0});
+                
+                // bleed out logo
+                TweenMax.to("#login .bleed path, #login .bleed polygon, #login .bleed rect", 0.5, {opacity:0, y:50, scale:0, transformOrigin: "bottom", stagger: {each: 0.005, from:"random"}, delay:0.2});
+                
+                //hide login
+                TweenMax.to("#login", 0, {alpha:0, delay: 1, onComplete: this.showRoundName.bind(this)});
+                break;
+            
+            case PageType.RoundName:
+                //hide button
+                TweenMax.to("#round-name", 0.3, {opacity:0});
+                TweenMax.to("#login", 0, {alpha:0, delay: 0.5, onComplete: this.showQuestion.bind(this)});
+
+                break;
+            
+            case PageType.Question:
+                var currentQuestion = this.questions[this.currentQuestionIdx];
+                if (this.currentQuestionIdx < this.questions.length-1) {
+                    // get next question
+                    var nextQuestion = this.questions[this.currentQuestionIdx+1];
+                    // check if it's the same or a new round
+                    if (currentQuestion.round < nextQuestion.round) {
+                        this.showRoundName();
+                    } else {
+                        this.currentQuestionIdx++;
+                        this.showQuestion();
+                    }
+                } else {
+                    // the end!
+                    console.log("the end has been reached");
+                }
+                break;
+        }
+    }
+
+    public answerRetrieved(a : any) {
+        this.questions[this.currentQuestionIdx].answer = a;
+        console.log(this.questions[this.currentQuestionIdx]);
+        this.next();
+    }
+
+    // CALLBACK FROM APP
+    public loginSuccessful() {
+        console.log("login successful");
+        this.next();
     }
 
     public OnUserData(type: si.DataType, data: si.Data): void {
@@ -72,99 +230,12 @@ export default class UI {
         }
     }
 
-    private init() {
-        // bind start button
-        var startBtn = this.querySelector("#startBtn");
-        startBtn?.addEventListener("click", this.Login.bind(this))
-
-        // bind forms
-        var forms = this.getElements("form");
-        for (var i=0; i<forms.length; i++) {
-            forms[i].addEventListener("submit", this.onFormSubmit.bind(this), true)
-        }
-    }
 
     public Login() {
         this.OnLoginPressed();
     }
-
-    public showLoggedIn(): void {
-        // hide login screen
-        this.hide("#login");
-        this.show("#main");
-
-        // // show the first question
-        this.showCurrentQuestion();
-    }
-
     
     public ShowUserData(imageURL: string, displayName: string): void {
-
     }
     
-    // here we will activate and populate one of three different html question templates depending on question type
-    // once the answer is chosen, we use that callback to pass the selection back up
-    public showQuestion(question: Question): void {
-
-    }
-
-    private showCurrentQuestion() {
-        // hide previous question and show current question
-        if (this.currentQuestion > 1) {
-            this.hide("#q" + (this.currentQuestion - 1).toString());
-        }
-        this.show("#q" + this.currentQuestion.toString());
-    }
-
-    private onFormSubmit(e : any) {
-        e.preventDefault();
-        var map = this.answerMap[e.target.id];
-        var value = 0;
-
-        // switch based on map
-        switch(map.type) {
-            case QuestionType.MultiChoice:
-                value = map.values[e.submitter.value];
-                break;
-
-            case QuestionType.Slider:
-                var slider = this.querySelector("input[type=range]", e.target);
-                value = slider? parseInt(slider.value) : 0;
-                break;
-            default:
-        }
-
-        this.queryParameters[map.feature].value += value;
-        this.queryParameters[map.feature].include = true;
-        console.log(this.queryParameters);
-
-        if (this.currentQuestion < this.totalQuestions) {
-            // show next question
-            this.currentQuestion++;
-            this.showCurrentQuestion();
-        } else {
-            // get recommendations
-            //this.app.GetRecommendations();
-        }
-    }
-
-    private getElements(e: string) {
-        return document.querySelectorAll(e);
-    }
-
-    private querySelector(query: string, el : HTMLElement | null = null) {
-        return el ? el.querySelector<HTMLInputElement>(query) : document.querySelector<HTMLInputElement>(query);
-    }
-
-    private show(e: string, d: number = 0) {
-        var t = TweenLite.fromTo(e, 0.25, {y: 10}, {y: 0, alpha:1, display: "block", delay: d});
-        var el = this.querySelector(e);
-        if (el) el.style.display = "block";
-    }
-
-    private hide(e: string) {
-        var el = this.querySelector(e);
-        console.log("hide", e, el);
-        if (el) el.style.display = "none";
-    }
 }
