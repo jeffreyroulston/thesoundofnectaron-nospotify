@@ -1,6 +1,6 @@
 import ResourceManager from "./resource-manager";
 import * as THREE from 'three';
-import {COLOURS} from "./ui";
+import {COLOURS} from "./data";
 
 const vertShader = `
     varying vec2 vUv;

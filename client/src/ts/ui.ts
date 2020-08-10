@@ -1,20 +1,14 @@
 import * as si from "./spotify-interface";
 import * as q from "./questions";
+import * as data from "./data";
 import Slider from "./slider";
 import MCQ from "./mcq";
 import {el} from "./helpers";
 import {TweenMax} from "gsap"
-import Graphics from "./graphics";
-import * as THREE from 'three';
+// import Graphics from "./graphics";
+// import * as THREE from 'three';
 
 var qDefault = function() { return { value: 0, include: false } };
-
-export const COLOURS = {
-    beige : "#FCF1DB",
-    red : "#FF2000",
-    purple : "#88009D",
-    blue : "#00C1F5"
-}
 
 enum PageType {
     Login,
@@ -23,81 +17,12 @@ enum PageType {
 }
 
 export default class UI {
+    private slider : Slider;
+    private mcq : MCQ;
+
     private currentPage : PageType = PageType.Login;
     private currentRoundIdx : number = 0;
     private currentQuestionIdx : number = -1;
-
-    private slider : Slider;
-    // private slider = new Slider(this, "#slider-q");
-    // private mcq = new MCQ(this, "#mc-q");
-
-    private rounds : q.QuestionRound[] = [
-        {
-            round: 1,
-            color: COLOURS.red,
-            text : "All about the science of brewing. It's the details and the process - the part the brewers will really sing their teeth into. What's the brew style? What flavours are you heroing? Is it light or dark? These slider centric questions will be accompanied by 5 hero images that change based on the answer - all in the style of Nectaron 'visual collision,' half fruit - half something else." 
-        },
-        {
-            round : 2,
-            color: COLOURS.purple,
-            text: "Now we've covered the basics, it's time to get experimental. Section Two is where we see mastery and mystery come into play. This section is all about imbuing their brew with personality. These questions will come to life visually through an 8 bit style. This will resonate with brewers as it borros from the nostalgia of retro gaming - something that brewers love."
-        },
-        {
-            round: 3,
-            color: COLOURS.blue,
-            text: "Some text"
-        }
-    ]
-
-    private questions : Array<q.SliderQuestion | q.MCQuestion> = [
-        {
-            round:1,
-            type: q.QuestionType.Slider,
-            params: si.QueryParameters.Valence,
-            question : "How bitter would you like your brew?",
-            minValue : 0,
-            maxValue : 100,
-            answer : 0
-        },
-        {
-            round: 1,
-            type: q.QuestionType.Slider,
-            params: si.QueryParameters.Valence,
-            question : "How tangy would you like your brew?",
-            minValue : 0,
-            maxValue : 100,
-            answer : 0
-        },
-        {
-            round: 2,
-            type: q.QuestionType.MultiChoice,
-            params: si.QueryParameters.Valence,
-            question : "Choose your brewer",
-            options : [
-                {
-                    value : "dino",
-                    asset : ""
-                },
-                {
-                    value : "dragon",
-                    asset : ""
-                },
-                {
-                    value : "unicorn",
-                    asset : ""
-                },
-                {
-                    value : "snake",
-                    asset : ""
-                },
-                {
-                    value : "person",
-                    asset : ""
-                }
-            ],
-            answer : ""
-        }
-    ]
 
     private recommendations: si.Track[] | undefined = [];
     private queryParameters: {[key: string]: q.QueryParameter }  = {
@@ -117,15 +42,15 @@ export default class UI {
     public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: q.Question): void}[] = [];
 
     constructor() {
-        console.log(el("#slider-q .slider-input"));
         this.slider= new Slider(this, "#slider-q");
+        this.mcq = new MCQ(this, "#mc-q");
 
         // set button bindings
         el("#startBtn").addEventListener("click", this.Login.bind(this));
         el(".next").addEventListener("click", this.next.bind(this));
         
-         // this.showLogin();
-        this.showRoundName();
+         this.showLogin();
+        // this.showRoundName();
         // this.showQuestion();
     }
 
@@ -153,7 +78,7 @@ export default class UI {
     }
 
     private showLogin() {
-        this.setBG(COLOURS.beige);
+        this.setBG(data.COLOURS.beige);
         el("#login").style.display = "block";
 
         // bleed in the sound of
@@ -169,7 +94,7 @@ export default class UI {
     private showRoundName() {
         this.currentPage = PageType.RoundName;
         this.currentRoundIdx++;
-        var currentRound = this.rounds[this.currentRoundIdx-1];
+        var currentRound = data.ROUNDS[this.currentRoundIdx-1];
 
         // set the things
         this.setBG(currentRound.color);
@@ -194,8 +119,8 @@ export default class UI {
         console.log(this.currentQuestionIdx);
         this.currentQuestionIdx++;
         this.currentPage = PageType.Question;
-        var currentQuestion = this.questions[this.currentQuestionIdx];
-        this.setBG(COLOURS.beige);
+        var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
+        this.setBG(data.COLOURS.beige);
 
         switch(currentQuestion.type) {
             case q.QuestionType.Slider:
@@ -203,8 +128,8 @@ export default class UI {
                 this.slider.show();
                 break;
             case q.QuestionType.MultiChoice:
-                // this.mcq.set(<q.MCQuestion>currentQuestion);
-                // this.mcq.show()
+                this.mcq.set(<q.MCQuestion>currentQuestion);
+                this.mcq.show()
         }
     }
 
@@ -234,10 +159,10 @@ export default class UI {
                 break;
             
             case PageType.Question:
-                var currentQuestion = this.questions[this.currentQuestionIdx];
-                if (this.currentQuestionIdx < this.questions.length-1) {
+                var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
+                if (this.currentQuestionIdx < data.QUESTIONS.length-1) {
                     // get next question
-                    var nextQuestion = this.questions[this.currentQuestionIdx+1];
+                    var nextQuestion = data.QUESTIONS[this.currentQuestionIdx+1];
                     // check if it's the same or a new round
                     if (currentQuestion.round < nextQuestion.round) {
                         this.showRoundName();
@@ -253,8 +178,8 @@ export default class UI {
     }
 
     public answerRetrieved(a : any) {
-        this.questions[this.currentQuestionIdx].answer = a;
-        console.log(this.questions[this.currentQuestionIdx]);
+        data.QUESTIONS[this.currentQuestionIdx].answer = a;
+        console.log(data.QUESTIONS[this.currentQuestionIdx]);
         this.next();
     }
 
