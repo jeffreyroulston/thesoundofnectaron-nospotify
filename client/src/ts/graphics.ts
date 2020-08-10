@@ -1,5 +1,6 @@
 import ResourceManager from "./resource-manager";
 import * as THREE from 'three';
+import {COLOURS} from "./ui";
 
 const vertShader = `
     varying vec2 vUv;
@@ -58,11 +59,12 @@ export default class Graphics {
     private currentLerp: number = 0.0;
 
     // colors
-    private firstColor: THREE.Color = new THREE.Color(0x60CBB5);
-    private secondColor: THREE.Color = new THREE.Color(0xd955a2);
+    private firstColor: THREE.Color = new THREE.Color(COLOURS.beige);
+    private secondColor: THREE.Color = new THREE.Color(COLOURS.beige);
 
     constructor() {
         this.renderer = new THREE.WebGLRenderer({antialias: true});
+        // this.renderer.setClearColor(COLOURS.beige)
         this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
 

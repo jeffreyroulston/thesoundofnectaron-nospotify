@@ -3,10 +3,12 @@ import * as q from "./questions";
 import Slider from "./slider";
 import {el} from "./helpers";
 import {TweenMax} from "gsap"
+import Graphics from "./graphics";
+import * as THREE from 'three';
 
 var qDefault = function() { return { value: 0, include: false } };
 
-var COLOURS = {
+export const COLOURS = {
     beige : "#FCF1DB",
     red : "#FF2000",
     purple : "#88009D",
@@ -107,7 +109,7 @@ export default class UI {
     public OnLoginPressed = () => {};
     public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: q.Question): void}[] = [];
 
-    constructor() {
+    constructor(private graphics: Graphics) {
         this.init();
     }
     
@@ -123,7 +125,8 @@ export default class UI {
 
     private setBG(color : string) {
         // sets background colour based on page
-        el("body").style.backgroundColor = color;
+        // el("body").style.backgroundColor = color;
+        this.graphics.switchColor(new THREE.Color(color), 0.5);
     }
 
     private showLogin() {

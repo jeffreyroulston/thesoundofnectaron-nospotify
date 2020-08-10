@@ -21,7 +21,7 @@ export default class App {
     private spotifyInterface: si.SpotifyInterface;
     private graphics: Graphics = new Graphics();
     private resourceManager: ResourceManager = new ResourceManager();
-    private ui: UI = new UI();
+    private ui: UI = new UI(this.graphics);
     private profile: si.UserProfile | undefined;
     private topArtists: si.Artist[] | undefined;
     private answeredQuestions: Questions.Question[] = [];
@@ -45,9 +45,9 @@ export default class App {
 
         // this below was just for testing
         // is also a great example for how to switch colour in the background
-        setInterval(() => {
-            this.graphics.switchColor(new THREE.Color(Math.random(), Math.random(), Math.random()), 0.5);
-        }, 2000);
+        // setInterval(() => {
+        //     this.graphics.switchColor(new THREE.Color(Math.random(), Math.random(), Math.random()), 0.5);
+        // }, 2000);
         
         // UI BINDINGS
         this.ui.OnLoginPressed = this.Login.bind(this);
