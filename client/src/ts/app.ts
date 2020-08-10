@@ -19,9 +19,10 @@ let SCOPES: string[] = [
 
 export default class App {
     private spotifyInterface: si.SpotifyInterface;
-    private graphics: Graphics = new Graphics();
+    // private graphics: Graphics = new Graphics();
     private resourceManager: ResourceManager = new ResourceManager();
-    private ui: UI = new UI(this.graphics);
+    // private ui: UI = new UI(this.graphics);
+    private ui: UI = new UI();
     private profile: si.UserProfile | undefined;
     private topArtists: si.Artist[] | undefined;
     private answeredQuestions: Questions.Question[] = [];
@@ -39,9 +40,9 @@ export default class App {
         // this.ui.OnLoginPressed = this.Login;
         // this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
 
-        this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png").then(() => {
-            this.graphics.onInitResources(this.resourceManager);
-        });
+        // this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png").then(() => {
+        //     this.graphics.onInitResources(this.resourceManager);
+        // });
 
         // this below was just for testing
         // is also a great example for how to switch colour in the background

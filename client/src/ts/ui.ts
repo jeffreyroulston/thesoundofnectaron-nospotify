@@ -109,7 +109,7 @@ export default class UI {
     public OnLoginPressed = () => {};
     public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: q.Question): void}[] = [];
 
-    constructor(private graphics: Graphics) {
+    constructor() {
         this.init();
     }
     
@@ -125,8 +125,8 @@ export default class UI {
 
     private setBG(color : string) {
         // sets background colour based on page
-        // el("body").style.backgroundColor = color;
-        this.graphics.switchColor(new THREE.Color(color), 0.5);
+        el("body").style.backgroundColor = color;
+        // this.graphics.switchColor(new THREE.Color(color), 0.5);
     }
 
     private showLogin() {
@@ -145,8 +145,8 @@ export default class UI {
 
     private showRoundName() {
         this.currentPage = PageType.RoundName;
-        var currentRound = this.rounds[this.currentRoundIdx];
-        console.log(this.currentQuestionIdx);
+        this.currentRoundIdx++;
+        var currentRound = this.rounds[this.currentRoundIdx-1];
 
         // set the things
         this.setBG(currentRound.color);
@@ -159,6 +159,7 @@ export default class UI {
         // swing in numbers
         TweenMax.fromTo("#round-name .numbers li:first-child", 0.5, {alpha:0, y:50}, {alpha:1, y:0, delay:0.4});
         TweenMax.fromTo("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {alpha:0, scale:0.5, y:-50, rotate:-120}, {alpha:1, scale:1, y:0, rotate:0, delay:0.5});
+
 
         // show the round name
         TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.5, {alpha:0, x:-50}, {alpha:1, x:0, delay:1});
@@ -214,7 +215,6 @@ export default class UI {
                         this.currentRoundIdx++;
                         this.showRoundName();
                     } else {
-                        this.currentQuestionIdx++;
                         this.showQuestion();
                     }
                 } else {
