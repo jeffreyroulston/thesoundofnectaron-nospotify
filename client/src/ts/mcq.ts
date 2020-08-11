@@ -30,7 +30,7 @@ export default class MCQ {
 
     show() {
         // start animating in elements
-        TweenMax.fromTo(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.5}, {alpha:1, x:0, delay:0.2});
+        TweenMax.fromTo(this.el + " .question", 0.3, {alpha:0, x:-20}, {alpha:1, x:0, delay:0.4});
         for (var i=0; i<this.options.length; i++) {
             TweenMax.fromTo(
                 this.el + " #mc-" + this.options[i].value, 0.5,

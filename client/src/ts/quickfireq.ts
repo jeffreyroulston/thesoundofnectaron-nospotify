@@ -37,17 +37,27 @@ export default class QuickFireQ {
         // start timer
         if (!this.timerStarted) {
             this.updateTimerElement();
-            setTimeout(this.updateTimer.bind(this), 1000);
-            this.timerStarted = true;
-            TweenMax.fromTo(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.5}, {alpha:1, x:0, delay:0.2});
+
+            TweenMax.fromTo(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.4}, {alpha:1, x:0, delay:0.5});
+            TweenMax.fromTo("#answer-wrapper li", 0.3, {alpha:0, y:50}, {alpha:1, y:0, stagger:0.1, delay:0.5});
+            TweenMax.fromTo("#timer", 0.3, {alpha:0, x:200}, {alpha:1, x:0, delay:0.5, onComplete: ()=> {
+                this.updateTimerElement();
+                setTimeout(this.updateTimer.bind(this), 1000);
+                this.timerStarted = true;
+            }})
         }
+    }
+
+    hide() {
+        TweenMax.to(this.el, 0.5, {opacity:0, scale:0.7});
     }
 
     updateTimer() {
         this.timerCount--;
 
         if (this.timerCount < 0) {
-            console.log("end");
+            this.hide();
+            this.ui.questionsCompleted();
         } else {
             this.updateTimerElement();;
             setTimeout(this.updateTimer.bind(this), 1000);

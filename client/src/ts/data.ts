@@ -126,7 +126,7 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
         type: q.QuestionType.QuickFire,
         params: si.QueryParameters.Valence,
         question: "Every Die Hard movie is good?",
-        answer: false
+        answer: false,
     },
     {
         round: 3,

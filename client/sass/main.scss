@@ -167,6 +167,22 @@ li {
     // }
 }
 
+h1 {
+    font-family: "Harbour";
+    font-weight: 600;
+    text-align: left;
+    font-size: 62px;
+    line-height: 1.2;
+}
+
+p {
+    font-family: "Circular";
+    font-weight: 400;
+    text-align: left;
+    font-size: 20px;
+    line-height: 1.5;
+}
+
 .letter {
     position: absolute;
 
@@ -189,6 +205,21 @@ li {
     font-weight: 600;
     display: inline-block;
     position: relative;
+}
+
+.wrapper {
+    width: calc(100% - 400px);
+    position: relative;
+    margin: 0 auto;
+}
+
+.col-wrapper {
+    float: left;
+    width: 50%;
+
+    &.text-column {
+        margin-top: 30vh;
+    }
 }
 
 .heading-size svg {
@@ -290,6 +321,7 @@ li {
     .subheading {
         color: $orange;
         margin: 30px 0px;
+        text-align: center;
 
         span {
             display: block;
@@ -380,34 +412,13 @@ li {
 
 #questions {
     .question {
-        font-family: "Harbour";
-        font-weight: 600;
-        text-align: left;
-        font-size: 62px;
-        line-height: 1.2;
-        // padding-left: 15px;
         height: 380px;
         color: $orange;
-    }
-
-    .wrapper {
-        width: calc(100% - 400px);
-        position: relative;
-        margin: 0 auto;
     }
 
     .question-wrapper {
         max-width: 600px;
         margin: 0 auto;
-    }
-
-    .col-wrapper {
-        float: left;
-        width: 50%;
-
-        &.text-column {
-            margin-top: 30vh;
-        }
     }
 }
 
@@ -479,6 +490,10 @@ li {
         float: none;
     }
 
+    .question {
+        height: 200px;
+    }
+
     #mc-dino {
         background-image: url("./assets/dino.png");
     }
@@ -518,29 +533,39 @@ li {
 }
 
 #quickfire-q {
+    .question {
+        color: $purple;
+    }
 
     #timer {
         // border: 1px solid black;
         font-family: "Harbour";
         font-weight: 600;
         text-align: right;
-        font-size: 1000px;
+        // font-size: 1000px;
+        font-size: 50vw;
         color: $blue;
 
-        position: absolute;
-        right: 0;
+        position: relative;
+        width: 100%;
 
         li {
-            width: 750px;
-            display: inline-block;
+            // width: 750px;
+            right: 0;
+            width: 37vw;
+            line-height: calc(100vh + 5vw);
+            position: absolute;
 
             &:first-child {
-                letter-spacing: -350px;
+                // letter-spacing: -350px;
+                right: 33vw;
             }
         }
     }
 
     #answer-wrapper {
+        margin-left: 10px;
+
         li {
             background-color: $purple;
             font-family: "Harbour";
@@ -563,6 +588,36 @@ li {
                 background-color: $orange;
                 color: $purple;
             }
+        }
+    }
+}
+
+#end-frame {
+    .wrapper {
+        color: $purple;
+    }
+
+    #playlist-title {
+        font-family: "Harbour";
+        font-weight: 600;
+    }
+
+    #playlist-desc {
+        margin-top: 30px;
+    }
+
+    #album-cover {
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .col-wrapper {
+        width: 65%;
+        margin-top: 22vh;
+
+        &:first-child {
+            width: 35%;
         }
     }
 }

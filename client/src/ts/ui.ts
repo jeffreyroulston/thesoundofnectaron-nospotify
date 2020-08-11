@@ -14,7 +14,8 @@ var qDefault = function() { return { value: 0, include: false } };
 enum PageType {
     Login,
     RoundName,
-    Question
+    Question,
+    EndFrame
 }
 
 export default class UI {
@@ -60,14 +61,15 @@ export default class UI {
         el(".next").addEventListener("click", this.next.bind(this));
         
         //  this.showLogin();
-        this.showRoundName();
+        // this.showRoundName();
         // this.showQuestion();
+        this.showEndFrame();
     }
 
     private setBG(color : string) {
         // sets background colour based on page
         var e = el("#color-wipe");
-        var origins = ["top", "bottom", "right"];
+        var origins = ["bottom", "right"];
         var origin = origins[Math.floor(Math.random() * origins.length)];
 
         // set logo colours
@@ -78,12 +80,12 @@ export default class UI {
         el("body").style.backgroundColor = color;
 
         if (origin == "top" || origin == "bottom") {
-            TweenMax.to(e, 0.5, {height: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
+            TweenMax.to(e, 0.3, {height: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
                 e.style.backgroundColor = color;
                 e.style.height = "100vh";
             }})
         } else {
-            TweenMax.to(e, 0.5, {width: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
+            TweenMax.to(e, 0.3, {width: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
                 e.style.backgroundColor = color;
                 e.style.width = "100%";
             }})
@@ -96,7 +98,7 @@ export default class UI {
         el("#login").style.display = "block";
 
         // bleed in the sound of
-        TweenMax.from(".theSoundOf path", 0.75, {alpha:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}, delay:1});
+        TweenMax.from(".theSoundOf path", 0.75,{alpha:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}, delay:1});
 
         // bleed in nectaron
         TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 0.75, {alpha:0, y:50, scale:0, transformOrigin: "top", stagger: {each: 0.05, from:"random"}, delay:1});
@@ -211,10 +213,44 @@ export default class UI {
         }
     }
 
+    private showEndFrame() {
+        this.currentPage = PageType.EndFrame;
+        this.setBG(data.COLOURS.beige);
+        el("#end-frame").style.display = "block";
+        
+        // slide in title
+        TweenMax.fromTo("#playlist-title", 0.3, {
+            alpha:0, x:-20
+        }, {
+            alpha:1, x:0, delay:0.4
+        })
+
+        // slide in description
+        TweenMax.fromTo("#playlist-desc", 0.3, {
+            alpha:0, x:-20
+        }, {
+            alpha:1, x:0, delay:0.6
+        })
+
+        // show playlist cover
+        TweenMax.fromTo("#album-cover", 0.5, {
+            alpha:0, scale:0.5
+        }, {
+            alpha: 1, scale:1, delay: 0.9
+        })
+    }
+
     public answerRetrieved(a : any) {
         data.QUESTIONS[this.currentQuestionIdx].answer = a;
         console.log(data.QUESTIONS[this.currentQuestionIdx]);
         this.next();
+    }
+
+    public questionsCompleted() {
+        // called from quick fire question class
+        // use the current question index to discount unanswered quickfire questions
+        this.showEndFrame();
+
     }
 
     // CALLBACK FROM APP

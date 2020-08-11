@@ -76,8 +76,8 @@ export default class Slider {
     }
 
     show() {
-        TweenMax.fromTo(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.5}, {alpha:1, x:0, delay:0.2});
-        TweenMax.fromTo(this.el + " .slide-container", 0.2, {scaleX:0, transformOrigin: "right"}, {scaleX:1, delay:0.2});
+        TweenMax.fromTo(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.5}, {alpha:1, x:0, delay:0.4});
+        TweenMax.fromTo(this.el + " .slide-container", 0.2, {scaleX:0, transformOrigin: "right"}, {scaleX:1, delay:0.4});
         
         TweenMax.fromTo(this.topFruitElement, 0.3, {alpha:0}, {alpha:1, delay:0.5});
         TweenMax.fromTo(this.topFruitElement, 0.8, {y:-50}, {y:0, delay:0.5, ease:"bounce"});
