@@ -49,7 +49,7 @@ export default class UI {
         this.mcq = new MCQ(this, "#mc-q");
         this.qfq = new QuickFireQ(this, "#quickfire-q");
 
-        var letters = document.querySelectorAll(".logo-letters .letter polygon, .logo-letters .letter path");
+        var letters = document.querySelectorAll(".logo-letters .letter polygon, .logo-letters .letter path, .logo-letters .letter rect");
         for(var i=0; i<letters.length; i++) {
             this.logoLetters.push(<HTMLElement>letters[i]);
         }
@@ -75,6 +75,7 @@ export default class UI {
         }
         
         el("body").style.backgroundColor = color;
+
         if (origin == "top" || origin == "bottom") {
             TweenMax.to(e, 0.5, {height: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
                 e.style.backgroundColor = color;
@@ -107,6 +108,11 @@ export default class UI {
         this.currentPage = PageType.RoundName;
         this.currentRoundIdx++;
         var currentRound = data.ROUNDS[this.currentRoundIdx-1];
+
+        // if round 3, change the colour of zero
+        if (this.currentRoundIdx == 3) {
+            el("#round-name .numbers li:first-child path").style.stroke = data.COLOURS.purple;
+        }
 
         // set the things
         this.setBG(currentRound.color);
