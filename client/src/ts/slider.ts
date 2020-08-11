@@ -32,14 +32,14 @@ export default class Slider {
         this.bottomFruitElement = el(this.el + " .fruit-bottom img");
         this.questionElement = el(this.el + " .question");
 
-        console.log(this.el, this.sliderEl, this.sliderThumb, this.topFruitElement, this.bottomFruitElement, this.questionElement);
+        // console.log(this.el, this.sliderEl, this.sliderThumb, this.topFruitElement, this.bottomFruitElement, this.questionElement);
 
         // this.fruitDefaultWidth = this.topFruitElement.getBoundingClientRect().width;
         this.fruitDefaultWidth = 200;
         this.topFruitDefaultBottomValue = pxToInt(getComputedStyle(this.topFruitElement).bottom);
         this.bottomFruitDefaultTopValue = pxToInt(getComputedStyle(this.bottomFruitElement).top);
 
-        console.log(this.fruitDefaultWidth, this.topFruitDefaultBottomValue, this.bottomFruitDefaultTopValue);
+        // console.log(this.fruitDefaultWidth, this.topFruitDefaultBottomValue, this.bottomFruitDefaultTopValue);
 
         // set bindings
         this.sliderEl.addEventListener("input",this.sliderChange.bind(this));

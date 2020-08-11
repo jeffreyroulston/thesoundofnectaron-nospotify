@@ -13,8 +13,7 @@ export default class MCQ {
         this.ui = ui;
         this.el = elementName;
         this.questionElement = el(this.el + " .question");
-
-        var options = this.questionElement.querySelectorAll(".mc-options li");
+        var options = document.querySelectorAll(this.el + " .mc-options li");
         for (var i=0; i<options.length; i++) {
             options[i].addEventListener("click", this.answerRetrieved.bind(this));
         }
@@ -37,6 +36,7 @@ export default class MCQ {
                     display:"none",
                     alpha:0,
                     scale:0,
+                    rotate:200
                 },
                 {
                     display:"inline-block",
@@ -55,7 +55,23 @@ export default class MCQ {
     }
 
     answerRetrieved(e: any) {
+        console.log("answer retrieved");
         var value = e.srcElement.id.replace("mc-",);
-        console.log(value, e.srcElement);
+        for (var i=0; i<this.options.length; i++) {
+            TweenMax.to(
+                this.el + " #mc-" + this.options[i].value, 0.5,
+                {
+                    display:"none",
+                    alpha:0,
+                    scale:0,
+                    delay:i*0.1
+                },
+            );
+        }
+        TweenMax.to(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.2, onComplete: ()=>{
+            this.ui.answerRetrieved(value);
+        }});
+
+        // console.log(value, e.srcElement);
     }
 }

@@ -116,7 +116,7 @@ export default class UI {
     }
 
     private showQuestion() { 
-        console.log(this.currentQuestionIdx);
+        // console.log(this.currentQuestionIdx);
         this.currentQuestionIdx++;
         this.currentPage = PageType.Question;
         var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
