@@ -61,8 +61,8 @@ export default class UI {
         el(".next").addEventListener("click", this.next.bind(this));
         
         //  this.showLogin();
-        // this.showRoundName();
-        this.showQuestion();
+        this.showRoundName();
+        // this.showQuestion();
         // this.showEndFrame();
     }
 
@@ -80,12 +80,12 @@ export default class UI {
         el("body").style.backgroundColor = color;
 
         if (origin == "top" || origin == "bottom") {
-            TweenMax.to(e, 0.3, {height: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
+            TweenMax.to(e, 0.4, {height: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
                 e.style.backgroundColor = color;
                 e.style.height = "100vh";
             }})
         } else {
-            TweenMax.to(e, 0.3, {width: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
+            TweenMax.to(e, 0.4, {width: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
                 e.style.backgroundColor = color;
                 e.style.width = "100%";
             }})

@@ -8,6 +8,7 @@ export default class MCQ {
     private el : string;
     private questionElement: HTMLElement;
     private options : MCAnswer[] = [];
+    private initialised : boolean = false;
 
     constructor(ui : UI, elementName: string) {
         this.ui = ui;
@@ -29,8 +30,16 @@ export default class MCQ {
     }
 
     show() {
+        var d = this.initialised ? 0.2 : 0.4;
+        this.initialised = true;
+
         // start animating in elements
-        TweenMax.fromTo(this.el + " .question", 0.3, {alpha:0, x:-20}, {alpha:1, x:0, delay:0.4});
+        TweenMax.fromTo(this.el + " .question", 0.3, {
+            alpha:0, x:-20
+        }, {
+            alpha:1, x:0, delay: d
+        });
+        
         for (var i=0; i<this.options.length; i++) {
             TweenMax.fromTo(
                 this.el + " #mc-" + this.options[i].value, 0.5,
@@ -50,7 +59,7 @@ export default class MCQ {
                     //     each: 0.25,
                     //     from: "random"
                     // }
-                    delay:i*0.1 + 0.5
+                    delay:i*0.1 + d
                 }
             );
         }
@@ -69,7 +78,8 @@ export default class MCQ {
                 },
             );
         }
-        TweenMax.to(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.2, onComplete: ()=>{
+        TweenMax.to(this.el + " .question", 0.3, {
+            alpha:0, x:-20, delay:0.2, onComplete: ()=>{
             el(this.el).style.display = "none";
             this.ui.answerRetrieved(value);
         }});

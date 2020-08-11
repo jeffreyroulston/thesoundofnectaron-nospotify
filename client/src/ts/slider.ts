@@ -93,7 +93,7 @@ export default class Slider {
             alpha:1, x:0, delay: d
         });
 
-        TweenMax.fromTo(this.el + " .slide-container", 0.2, {
+        TweenMax.fromTo(this.el + " .slide-container", 0.3, {
             scaleX:0, transformOrigin: "right"
         }, {
             scaleX:1, delay: d
