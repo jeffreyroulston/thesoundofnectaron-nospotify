@@ -587,7 +587,7 @@ li {
     }
 
     #answer-wrapper {
-        // border: 1px solid black;
+        margin-top: 200px;;
 
         li {
             background-color: $purple;
@@ -609,6 +609,11 @@ li {
 
             &:hover {
                 top:-10px;
+            }
+
+            &:active {
+                background-color: $orange;
+                color: $purple;
             }
         }
     }

@@ -19,10 +19,14 @@ export default class QuickFireQ {
         this.questionElement = el(this.el + " .question");
         this.timerTensColumn = el("#tensCol");
         this.timerOnesColumn = el("#onesCol");
+
+        var answer = document.querySelectorAll("#answer-wrapper li");
+        for (var i=0; i<answer.length; i++) {
+            answer[i].addEventListener("click", this.answerRetrieved.bind(this))
+        }
     }
 
     set(q : QuickFireQuestion) {
-        console.log("this should show here?")
         this.questionElement.innerHTML = q.question;
 
         // show element
@@ -35,9 +39,8 @@ export default class QuickFireQ {
             this.updateTimerElement();
             setTimeout(this.updateTimer.bind(this), 1000);
             this.timerStarted = true;
+            TweenMax.fromTo(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.5}, {alpha:1, x:0, delay:0.2});
         }
-
-        TweenMax.fromTo(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.5}, {alpha:1, x:0, delay:0.2});
     }
 
     updateTimer() {
@@ -64,9 +67,7 @@ export default class QuickFireQ {
     }
 
     answerRetrieved(e: any) {
-        var value = e.srcElement.id.replace("mc-",);
-        TweenMax.to(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.2, onComplete: ()=>{
-            this.ui.answerRetrieved(value);
-        }});
+        var value = e.srcElement.data == "true";
+        this.ui.answerRetrieved(value);
     }
 }
