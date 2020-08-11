@@ -6,15 +6,18 @@ import {TweenMax} from "gsap"
 export default class MCQ {
     private ui : UI;
     private el : string;
-    private options : MCAnswer[] = [];
-
     private questionElement: HTMLElement;
+    private options : MCAnswer[] = [];
 
     constructor(ui : UI, elementName: string) {
         this.ui = ui;
         this.el = elementName;
-
         this.questionElement = el(this.el + " .question");
+
+        var options = this.questionElement.querySelectorAll(".mc-options li");
+        for (var i=0; i<options.length; i++) {
+            options[i].addEventListener("click", this.answerRetrieved.bind(this));
+        }
     }
 
     set(q : MCQuestion) {
@@ -51,6 +54,8 @@ export default class MCQ {
         }
     }
 
-    answerRetrieved() {
+    answerRetrieved(e: any) {
+        var value = e.srcElement.id.replace("mc-",);
+        console.log(value, e.srcElement);
     }
 }
