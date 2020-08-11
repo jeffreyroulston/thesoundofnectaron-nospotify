@@ -141,17 +141,39 @@ export default class UI {
         el("#round-name").style.display = "block";
 
         // bleed in round
-        TweenMax.fromTo(".round path", 0.75, {alpha:0, y:-50, scale:0, transformOrigin: "bottom"}, {alpha:1, y:0, scale:1, stagger: {each: 0.1, from:"random"}});
+        TweenMax.fromTo(".round path", 0.75, {
+            alpha:0, y:-50, scale:0, transformOrigin: "bottom"
+        }, {
+            alpha:1, y:0, scale:1, stagger: {
+                each: 0.1, from:"random"
+        }});
 
         // swing in numbers
-        TweenMax.fromTo("#round-name .numbers li:first-child", 0.5, {alpha:0, y:50}, {alpha:1, y:0, delay:0.4});
-        TweenMax.fromTo("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {alpha:0, scale:0.5, y:-50, rotate:-120}, {alpha:1, scale:1, y:0, rotate:0, delay:0.5});
+        TweenMax.fromTo("#round-name .numbers li:first-child", 0.5, {
+            alpha:0, y:50
+        }, {
+            alpha:1, y:0, delay:0.4
+        });
+        
+        TweenMax.fromTo("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {
+            alpha:0, scale:0.5, y:-50, rotate:-120
+        }, {
+            alpha:1, scale:1, y:0, rotate:0, delay:0.5
+        });
 
         // show the round name
-        TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.75, {display:"block", alpha:0, x:-50}, {alpha:1, x:0, delay:1});
+        TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.75, {
+            display:"block", alpha:0, x:-50
+        }, {
+            alpha:1, x:0, delay:1
+        });
 
         // show the description box
-        TweenMax.fromTo("#round-name .description, #round-name .btn", 0.6, {alpha:0, y:20}, {alpha:1, y:0, delay:1.1});
+        TweenMax.fromTo("#round-name .description, #round-name .btn", 0.6, {
+            alpha:0, y:20
+        }, {
+            alpha:1, y:0, delay:1.1
+        });
     }
 
     private showQuestion() { 
@@ -213,7 +235,7 @@ export default class UI {
 
                 // bleed out round
                 TweenMax.to(".round path", 0.5, {
-                    alpha:0, y:0, scale:0, transformOrigin: "center", stagger: {
+                    alpha:0, y:0, scale:0, stagger: {
                         each: 0.1, from:"random"
                     }, onComplete: this.showQuestion.bind(this)
                 });

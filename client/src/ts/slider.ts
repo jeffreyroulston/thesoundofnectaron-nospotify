@@ -123,13 +123,13 @@ export default class Slider {
             y:0, ease:"bounce", delay : d
         });
 
-        TweenMax.fromTo([this.minValueLabel, this.maxValueLabel], 0.3, {
+        TweenMax.fromTo([this.minValueLabel, this.maxValueLabel], 0.2, {
             alpha: 0, y:20
         }, {
             alpha: 1, y:0, delay: d + 0.2
         })
 
-        TweenMax.fromTo(this.el + " .slider-thumb", 0.3, {
+        TweenMax.fromTo(this.el + " .slider-thumb", 0.2, {
             alpha:0, y:20
         }, {
             alpha:1, y:0, delay: d + 0.2
@@ -175,28 +175,30 @@ export default class Slider {
 
     sliderValueSet(e: any) {
         this.value= e.srcElement.value;
-        TweenMax.to(this.el + " .slider-thumb", 0.2, {
+        var d = 0.1;
+
+        TweenMax.to(this.el + " .slider-thumb", 0.1, {
             alpha:0, y:20
         });
 
-        TweenMax.to([this.minValueLabel, this.maxValueLabel], 0.2, {
+        TweenMax.to([this.minValueLabel, this.maxValueLabel], 0.1, {
             alpha:0, y:20
         });
 
         TweenMax.to(this.topFruitElement, 0.2, {
-            alpha: 0, y:-50
+            alpha: 0, y:-50, delay:d
         });
 
         TweenMax.to(this.bottomFruitElement, 0.2, {
-            alpha:0, y:50
+            alpha:0, y:50, delay:d
         });
 
         TweenMax.to(this.el + " .slide-container", 0.2, {
-            scaleX:0, transformOrigin: "right"
+            scaleX:0, transformOrigin: "right", delay:d
         });
 
         TweenMax.to(this.el + " .question", 0.2, {
-            alpha:0, x:-20, onComplete: this.answerRetrieved.bind(this)
+            alpha:0, x:-20, delay:d, onComplete: this.answerRetrieved.bind(this)
         });
     }
 
