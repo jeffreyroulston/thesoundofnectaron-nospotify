@@ -10,6 +10,7 @@ export enum QuestionType {
 export interface QuestionRound {
     round : number;
     color: string;
+    numberColor: string,
     text : string;
 }
 

@@ -1,3 +1,5 @@
+@use 'questions/q';
+
 $letterSize: 50px;
 $letterPadding: 40px;
 
@@ -8,6 +10,10 @@ $beige: #FCF1DB;
 $blue: #00C1F5;
 
 $breakpoints: (phone: 640px, tablet: 768px, desktop: 1024px) !default;
+
+@function center($containerWidth, $elWidth) {
+    @return calc(#{$containerWidth}/2 - (#{$elWidth}.2));
+}
 
 @mixin verticalAlign {
     position: relative;
@@ -207,6 +213,11 @@ li {
 
 #shared {
     .logo-letters {
+
+        polygon, path {
+            @include transition(fill 0.5s ease);
+        }
+
         .letter-N1, .letter-E, .letter-C {
             top: $letterPadding;
         }
@@ -314,6 +325,7 @@ li {
             display: none;
             position: absolute;
             top: -48px;
+            right: 5px;
         }
 
         svg {

@@ -10,7 +10,7 @@ export default class QuickFireQ {
     private timerTensColumn : HTMLElement;
     private timerOnesColumn : HTMLElement;
 
-    private timerCount : number = 30;
+    private timerCount : number = 20;
     private timerStarted : boolean = false;
 
     constructor(ui : UI, elementName: string) {

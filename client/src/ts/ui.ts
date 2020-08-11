@@ -22,6 +22,7 @@ export default class UI {
     private mcq : MCQ;
     private qfq : QuickFireQ;
 
+    private logoLetters : HTMLElement[] = [];
     private currentPage : PageType = PageType.Login;
     private currentRoundIdx : number = 0;
     private currentQuestionIdx : number = -1;
@@ -48,6 +49,11 @@ export default class UI {
         this.mcq = new MCQ(this, "#mc-q");
         this.qfq = new QuickFireQ(this, "#quickfire-q");
 
+        var letters = document.querySelectorAll(".logo-letters .letter polygon, .logo-letters .letter path");
+        for(var i=0; i<letters.length; i++) {
+            this.logoLetters.push(<HTMLElement>letters[i]);
+        }
+
         // set button bindings
         el("#startBtn").addEventListener("click", this.Login.bind(this));
         el(".next").addEventListener("click", this.next.bind(this));
@@ -63,7 +69,10 @@ export default class UI {
         var origins = ["top", "bottom", "right"];
         var origin = origins[Math.floor(Math.random() * origins.length)];
 
-        // console.log(origin);
+        // set logo colours
+        for(var i=0; i<this.logoLetters.length; i++) {
+            this.logoLetters[i].style.fill = data.CONTRAST[color];
+        }
         
         el("body").style.backgroundColor = color;
         if (origin == "top" || origin == "bottom") {
