@@ -60,8 +60,8 @@ export default class UI {
         el("#startBtn").addEventListener("click", this.Login.bind(this));
         el(".next").addEventListener("click", this.next.bind(this));
         
-        //  this.showLogin();
-        this.showRoundName();
+         this.showLogin();
+        // this.showRoundName();
         // this.showQuestion();
         // this.showEndFrame();
     }
@@ -80,12 +80,12 @@ export default class UI {
         el("body").style.backgroundColor = color;
 
         if (origin == "top" || origin == "bottom") {
-            TweenMax.to(e, 0.4, {height: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
+            TweenMax.to(e, 0.4, {height: 0, transformOrigin:origin, onComplete: function() {
                 e.style.backgroundColor = color;
                 e.style.height = "100vh";
             }})
         } else {
-            TweenMax.to(e, 0.4, {width: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
+            TweenMax.to(e, 0.4, {width: 0, transformOrigin:origin, onComplete: function() {
                 e.style.backgroundColor = color;
                 e.style.width = "100%";
             }})
@@ -98,13 +98,22 @@ export default class UI {
         el("#login").style.display = "block";
 
         // bleed in the sound of
-        TweenMax.from(".theSoundOf path", 0.75,{alpha:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}, delay:1});
+        TweenMax.from(".theSoundOf path", 0.75,{
+            alpha:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {
+                each: 0.1, from:"random"
+            }, delay:1
+        });
 
         // bleed in nectaron
-        TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 0.75, {alpha:0, y:50, scale:0, transformOrigin: "top", stagger: {each: 0.05, from:"random"}, delay:1});
+        TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 0.75, {
+            alpha:0, y:50, scale:0, transformOrigin: "top", stagger: {
+                each: 0.05, from:"random"
+            }, delay:1});
 
         // show subheading and button
-        TweenMax.from("#login .subheading, #login .btn", 0.5, {alpha:0, y:5, delay: 3.2});
+        TweenMax.from("#login .subheading, #login .btn", 0.5, {
+            alpha:0, y:5, delay: 3.2
+        });
     }
 
     private showRoundName() {
@@ -175,23 +184,39 @@ export default class UI {
         switch (this.currentPage) {
             case PageType.Login:
                 //hide button
-                TweenMax.to("#login .subheading, #login .btn", 0.3, {alpha:0});
+                TweenMax.to("#login .subheading, #login .btn", 0.3, {
+                    alpha:0
+                });
                 
                 // bleed out logo
-                TweenMax.to("#login .bleed path, #login .bleed polygon, #login .bleed rect", 0.5, {alpha:0, y:50, scale:0, transformOrigin: "bottom", stagger: {each: 0.005, from:"random"}, delay:0.2});
+                TweenMax.to("#login .bleed path, #login .bleed polygon, #login .bleed rect", 0.5, {
+                    alpha:0, y:0, scale:0, transformOrigin: "center", stagger: {
+                        each: 0.005, from:"random"
+                    }
+                });
                 
                 //hide login
-                TweenMax.to("#login", 0, {display: "none", delay: 1, onComplete: this.showRoundName.bind(this)});
+                TweenMax.to("#login", 0, {
+                    display: "none", delay: 1, onComplete: this.showRoundName.bind(this)
+                });
                 break;
             
             case PageType.RoundName:
                 //hide button
-                TweenMax.to("#round-name .description, #round-name .btn, #round-name .numbers li", 0.5, {alpha:0, y:20});
+                TweenMax.to("#round-name .description, #round-name .btn, #round-name .numbers li", 0.5, {
+                    alpha:0, y:20
+                });
 
-                TweenMax.to(".round-name-text li", 0.5, {alpha:0, x:-50});
+                TweenMax.to(".round-name-text li", 0.5, {
+                    alpha:0, x:-50
+                });
 
                 // bleed out round
-                TweenMax.to(".round path", 0.5, {alpha:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {each: 0.1, from:"random"}, onComplete: this.showQuestion.bind(this)});
+                TweenMax.to(".round path", 0.5, {
+                    alpha:0, y:0, scale:0, transformOrigin: "center", stagger: {
+                        each: 0.1, from:"random"
+                    }, onComplete: this.showQuestion.bind(this)
+                });
                 break;
             
             case PageType.Question:
@@ -229,14 +254,14 @@ export default class UI {
         TweenMax.fromTo("#playlist-desc", 0.3, {
             alpha:0, x:-20
         }, {
-            alpha:1, x:0, delay:0.6
+            alpha:1, x:0, delay:0.5
         })
 
         // show playlist cover
-        TweenMax.fromTo("#album-cover", 0.5, {
+        TweenMax.fromTo("#album-cover", 0.3, {
             alpha:0, scale:0.5
         }, {
-            alpha: 1, scale:1, delay: 0.9
+            alpha: 1, scale:1, delay: 0.7
         })
     }
 
