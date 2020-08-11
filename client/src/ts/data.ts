@@ -36,15 +36,15 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion> = [
         maxValue : 100,
         answer : 0
     },
-    {
-        round: 1,
-        type: q.QuestionType.Slider,
-        params: si.QueryParameters.Valence,
-        question : "How tangy would you like your brew?",
-        minValue : 0,
-        maxValue : 100,
-        answer : 0
-    },
+    // {
+    //     round: 1,
+    //     type: q.QuestionType.Slider,
+    //     params: si.QueryParameters.Valence,
+    //     question : "How tangy would you like your brew?",
+    //     minValue : 0,
+    //     maxValue : 100,
+    //     answer : 0
+    // },
     {
         round: 2,
         type: q.QuestionType.MultiChoice,

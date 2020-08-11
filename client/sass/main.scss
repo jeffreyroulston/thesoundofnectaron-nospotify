@@ -1,10 +1,6 @@
 $letterSize: 50px;
 $letterPadding: 20px;
 
-// $logoTopHeight: 4vw;
-// $logoHeight: 5vw;
-// $roundNumberHeight: 18vw;
-
 // COLOURS
 $purple : #88009D;
 $orange: #FF1900;
@@ -181,12 +177,6 @@ li {
 
 .section {
     display: none;
-    // transition: opacity 0.2s ease;
-    // opacity: 0;
-
-    // &.active {
-    //     opacity: 1;
-    // }
 }
 
 .btn {
@@ -349,11 +339,6 @@ li {
 }
 
 #round-name {
-    // background-color: black;
-    // background-image: url("./assets/_Round.png");
-    // background-repeat: no-repeat;
-    // background-size: 100% auto;
-
     .round {
         display: inline-block;
         position: relative;
@@ -456,65 +441,118 @@ li {
             margin-top: 30vh;
         }
     }
+}
 
-    #slider-q {
-        .fruits {
-            .fruit-top, .fruit-bottom {
-                height: 50vh;
-                text-align: center;
-                position: relative;
-
-                img {
-                    @include horizontalAlign();
-                    position: absolute;
-                    display: inline-block;
-                    width: 200px;
-                }
-            }
-
-            .fruit-top {
-                img {
-                    bottom: 0px;
-                }
-
-                z-index: 100;
-            }
-
-            .fruit-bottom {
-                img {
-                    top: 0px;
-                }
-            }
-        }
-
-        .slide-container {
+#slider-q {
+    .fruits {
+        .fruit-top, .fruit-bottom {
+            height: 50vh;
+            text-align: center;
             position: relative;
-            width: 465px;
-            left: 10px;
 
-            border-top: 2px solid $purple;
+            img {
+                @include horizontalAlign();
+                position: absolute;
+                display: inline-block;
+                width: 200px;
+            }
         }
 
-        .slider-thumb {
-            width: 0;
-            height: 0;
-            border-left: 11px solid transparent;
-            border-right: 11px solid transparent;
-            border-bottom: 16px solid $purple;
-            position: absolute;
-            left: calc(50% - 9px);
+        .fruit-top {
+            img {
+                bottom: 0px;
+            }
 
+            z-index: 100;
         }
 
-        .slider-input {
-            width: 100%;
-            opacity: 0;
-            position: relative;
-        }
-
-        .slider-thumb, .slider-input {
-            top: 17px;
-            cursor: pointer;
+        .fruit-bottom {
+            img {
+                top: 0px;
+            }
         }
     }
+
+    .slide-container {
+        position: relative;
+        width: 465px;
+        left: 10px;
+
+        border-top: 2px solid $purple;
+    }
+
+    .slider-thumb {
+        width: 0;
+        height: 0;
+        border-left: 11px solid transparent;
+        border-right: 11px solid transparent;
+        border-bottom: 16px solid $purple;
+        position: absolute;
+        left: calc(50% - 9px);
+
+    }
+
+    .slider-input {
+        width: 100%;
+        opacity: 0;
+        position: relative;
+    }
+
+    .slider-thumb, .slider-input {
+        top: 17px;
+        cursor: pointer;
+    }
+}
+
+#mc-q {
+    text-align: center;
+
+    .col-wrapper {
+        float: none;
+    }
+
+    #mc-dino {
+        background-image: url("./assets/dino.png");
+    }
+
+    #mc-dragon {
+        background-image: url("./assets/dragon.png");
+    }
+
+    #mc-snake{
+        background-image: url("./assets/snake.png");
+    }
+
+    #mc-person {
+        background-image: url("./assets/person.png");
+    }
+
+    #mc-unicorn {
+        background-image: url("./assets/unicorn.png");
+    }
+
+    .mc-options {
+        // border: 1px solid black;
+        position: relative;
+        display: inline-block;
+
+        li {
+            // border: 1px solid black;
+            // position: absolute;
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            width: 300px;
+            height: 300px;
+            display: inline-flex;
+            cursor: pointer;
+
+            @include transition(transform all 0.3s);
+
+            &:hover {
+                @include transform(scale(1.2));
+            }
+        }
+    }
+
+
 }

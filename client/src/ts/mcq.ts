@@ -6,6 +6,7 @@ import {TweenMax} from "gsap"
 export default class MCQ {
     private ui : UI;
     private el : string;
+    private options : MCAnswer[] = [];
 
     private questionElement: HTMLElement;
 
@@ -18,29 +19,36 @@ export default class MCQ {
 
     set(q : MCQuestion) {
         this.questionElement.innerHTML = q.question;
-        for (var i=0; i<q.options.length; i++) {
+        this.options = q.options;
+
+        // show element
+        el(this.el).style.display = "block";
+    }
+
+    show() {
+        TweenMax.fromTo(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.5}, {alpha:1, x:0, delay:0.2});
+        for (var i=0; i<this.options.length; i++) {
             TweenMax.fromTo(
-                this.el + " ." + q.options[i].value, 0.3,
+                this.el + " #mc-" + this.options[i].value, 0.5,
                 {
                     display:"none",
                     alpha:0,
                     scale:0,
                 },
                 {
-                    display:"block",
+                    display:"inline-block",
                     alpha:1,
                     scale:1,
+                    rotate:0,
                     ease:"bounce",
-                    stagger:{
-                        each: 0.1,
-                        from: "random"
-                    }
+                    // stagger:{
+                    //     each: 0.25,
+                    //     from: "random"
+                    // }
+                    delay:i*0.1 + 0.5
                 }
             );
         }
-    }
-
-    show() {
     }
 
     answerRetrieved() {

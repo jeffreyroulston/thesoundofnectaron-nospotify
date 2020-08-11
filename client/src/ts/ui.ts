@@ -49,8 +49,8 @@ export default class UI {
         el("#startBtn").addEventListener("click", this.Login.bind(this));
         el(".next").addEventListener("click", this.next.bind(this));
         
-         this.showLogin();
-        // this.showRoundName();
+        //  this.showLogin();
+        this.showRoundName();
         // this.showQuestion();
     }
 
