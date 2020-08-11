@@ -11,6 +11,8 @@ export interface QuestionRound {
     round : number;
     color: string;
     numberColor: string,
+    btnTextColor: string,
+    btnPaddingColor: string,
     text : string;
 }
 

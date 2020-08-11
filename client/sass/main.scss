@@ -518,6 +518,7 @@ li {
 }
 
 #quickfire-q {
+
     #timer {
         // border: 1px solid black;
         font-family: "Harbour";
@@ -540,8 +541,6 @@ li {
     }
 
     #answer-wrapper {
-        margin-top: 200px;;
-
         li {
             background-color: $purple;
             font-family: "Harbour";
@@ -558,10 +557,6 @@ li {
             
             &:first-child {
                 margin-right: 20px;
-            }
-
-            &:hover {
-                top:-10px;
             }
 
             &:active {

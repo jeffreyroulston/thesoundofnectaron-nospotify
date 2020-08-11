@@ -23,18 +23,24 @@ export const ROUNDS : q.QuestionRound[] = [
         round: 1,
         color: COLOURS.red,
         numberColor: COLOURS.yellow,
+        btnTextColor : COLOURS.red,
+        btnPaddingColor : COLOURS.purple,
         text : "All about the science of brewing. It's the details and the process - the part the brewers will really sing their teeth into. What's the brew style? What flavours are you heroing? Is it light or dark? These slider centric questions will be accompanied by 5 hero images that change based on the answer - all in the style of Nectaron 'visual collision,' half fruit - half something else." 
     },
     {
         round : 2,
         color: COLOURS.purple,
         numberColor: COLOURS.yellow,
+        btnTextColor : COLOURS.purple,
+        btnPaddingColor : COLOURS.red,
         text: "Now we've covered the basics, it's time to get experimental. Section Two is where we see mastery and mystery come into play. This section is all about imbuing their brew with personality. These questions will come to life visually through an 8 bit style. This will resonate with brewers as it borros from the nostalgia of retro gaming - something that brewers love."
     },
     {
         round: 3,
         color: COLOURS.blue,
         numberColor: COLOURS.purple,
+        btnTextColor : COLOURS.red,
+        btnPaddingColor : COLOURS.purple,
         text: "Section Three is all about instinct. Every question is phrased as a statement - controversial by design. Brewers can answer either yes or no to these statements. To elicit their sharpest instincts, they’ll have 20 seconds to get through 15 questions in the climax of the experience."
     }
 ]

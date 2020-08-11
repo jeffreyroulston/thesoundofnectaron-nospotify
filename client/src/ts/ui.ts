@@ -48,7 +48,8 @@ export default class UI {
         this.slider= new Slider(this, "#slider-q");
         this.mcq = new MCQ(this, "#mc-q");
         this.qfq = new QuickFireQ(this, "#quickfire-q");
-
+        
+        // get logo letters
         var letters = document.querySelectorAll(".logo-letters .letter polygon, .logo-letters .letter path, .logo-letters .letter rect");
         for(var i=0; i<letters.length; i++) {
             this.logoLetters.push(<HTMLElement>letters[i]);
@@ -114,6 +115,15 @@ export default class UI {
             el("#round-name .numbers li:first-child path").style.stroke = data.COLOURS.purple;
         }
 
+        // change the colour of the button
+        el("#round-name .btn .orange-2").style.stroke = currentRound.btnTextColor;
+        el("#round-name .btn .purple").style.fill = currentRound.btnPaddingColor;
+        var elems = document.querySelectorAll("#round-name .btn .orange");
+        for (var i=0; i<elems.length; i++) {
+            let e = <HTMLElement>elems[i];
+            e.style.fill = currentRound.btnTextColor;
+        }
+        
         // set the things
         this.setBG(currentRound.color);
         el("#round-name .description").innerHTML = currentRound.text;
