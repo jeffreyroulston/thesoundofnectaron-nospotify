@@ -471,6 +471,20 @@ p {
 
     }
 
+    .slider-label {
+        position: absolute;
+        top: 12px;
+        color: $purple;
+    }
+
+    #min-value-label {
+        left:-20px
+    }
+
+    #max-value-label {
+        right: -20px;
+    }
+
     .slider-input {
         width: 100%;
         opacity: 0;

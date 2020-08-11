@@ -62,8 +62,8 @@ export default class UI {
         
         //  this.showLogin();
         // this.showRoundName();
-        // this.showQuestion();
-        this.showEndFrame();
+        this.showQuestion();
+        // this.showEndFrame();
     }
 
     private setBG(color : string) {

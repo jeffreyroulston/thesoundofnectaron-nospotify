@@ -86,6 +86,33 @@
       
       <!-- QUESTION TEMPLATES-->
       <div id="questions">
+        
+        <div id="slider-q" class="full-page section">
+          <div class="wrapper">
+            <div class="col-wrapper text-column">
+              <div class="question-wrapper">
+                <h1 class="question"></h1>
+                <div class="slide-container">
+                  <p id="min-value-label" class="slider-label"></p>
+                  <p id="max-value-label" class="slider-label"></p>
+                  <span class="slider-thumb"></span>
+                  <input type="range" min="0" max="100" value="50" class="slider slider-input">
+                </div>
+              </div>
+            </div>
+            <div class="col-wrapper">
+              <div class="fruits">
+                <div class="fruit-top">
+                  <img src="./assets/pineappleTop.png">
+                </div>
+                <div class="fruit-bottom">
+                  <img src="./assets/fruitBottom.png">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div id="mc-q" class="full-page section">
           <div class="wrapper">
             <div class="col-wrapper text-column">
@@ -103,48 +130,24 @@
           </div>
         </div>
 
-      <div id="slider-q" class="full-page section">
-        <div class="wrapper">
-          <div class="col-wrapper text-column">
-            <div class="question-wrapper">
-              <h1 class="question"></h1>
-              <div class="slide-container">
-                <span class="slider-thumb"></span>
-                <input type="range" min="0" max="100" value="50" class="slider slider-input">
-              </div>
+        <div id="quickfire-q" class="full-page section">
+          <div class="wrapper">
+            <ul id="timer">
+              <li id="tensCol"></li>
+              <li id="onesCol"></li>
+            </ul>
+            <div class="col-wrapper text-column">
+              <div class="question-wrapper">
+                <h1 class="question"></h1>
+                <ul id="answer-wrapper">
+                  <li value="true">Yes</li>
+                  <li value="false">No</li>
+                </ul>
+            </div>
             </div>
           </div>
-          <div class="col-wrapper">
-            <div class="fruits">
-              <div class="fruit-top">
-                <img src="./assets/pineappleTop.png">
-              </div>
-              <div class="fruit-bottom">
-                <img src="./assets/fruitBottom.png">
-              </div>
-            </div>
-          </div>
-        </div>
+        </div>     
       </div>
-
-      <div id="quickfire-q" class="full-page section">
-        <div class="wrapper">
-          <ul id="timer">
-            <li id="tensCol"></li>
-            <li id="onesCol"></li>
-          </ul>
-          <div class="col-wrapper text-column">
-            <div class="question-wrapper">
-              <h1 class="question"></h1>
-              <ul id="answer-wrapper">
-                <li value="true">Yes</li>
-                <li value="false">No</li>
-              </ul>
-          </div>
-          </div>
-        </div>
-      </div>     
-    </div>
 
     <div id="end-frame" class="full-page section">
       <div class="wrapper question">

@@ -31,6 +31,8 @@ export interface Question {
 export interface SliderQuestion extends Question {
     minValue : number;
     maxValue : number;
+    minTextValue : string;
+    maxTextValue : string;
     answer : number;
 }
 
