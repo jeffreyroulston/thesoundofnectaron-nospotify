@@ -35,3 +35,7 @@ export interface MCQuestion extends Question {
     options : MCAnswer[];
     answer : string;
 }
+
+export interface QuickFireQuestion extends Question {
+    answer : boolean
+}

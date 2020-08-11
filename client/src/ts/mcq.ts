@@ -13,6 +13,7 @@ export default class MCQ {
         this.ui = ui;
         this.el = elementName;
         this.questionElement = el(this.el + " .question");
+
         var options = document.querySelectorAll(this.el + " .mc-options li");
         for (var i=0; i<options.length; i++) {
             options[i].addEventListener("click", this.answerRetrieved.bind(this));
@@ -28,6 +29,7 @@ export default class MCQ {
     }
 
     show() {
+        // start animating in elements
         TweenMax.fromTo(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.5}, {alpha:1, x:0, delay:0.2});
         for (var i=0; i<this.options.length; i++) {
             TweenMax.fromTo(
@@ -55,7 +57,6 @@ export default class MCQ {
     }
 
     answerRetrieved(e: any) {
-        console.log("answer retrieved");
         var value = e.srcElement.id.replace("mc-",);
         for (var i=0; i<this.options.length; i++) {
             TweenMax.to(
@@ -69,9 +70,8 @@ export default class MCQ {
             );
         }
         TweenMax.to(this.el + " .question", 0.3, {alpha:0, x:-20, delay:0.2, onComplete: ()=>{
+            el(this.el).style.display = "none";
             this.ui.answerRetrieved(value);
         }});
-
-        // console.log(value, e.srcElement);
     }
 }

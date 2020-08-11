@@ -3,6 +3,7 @@ import * as q from "./questions";
 import * as data from "./data";
 import Slider from "./slider";
 import MCQ from "./mcq";
+import QuickFireQ from "./quickfireq";
 import {el} from "./helpers";
 import {TweenMax} from "gsap"
 // import Graphics from "./graphics";
@@ -19,6 +20,7 @@ enum PageType {
 export default class UI {
     private slider : Slider;
     private mcq : MCQ;
+    private qfq : QuickFireQ;
 
     private currentPage : PageType = PageType.Login;
     private currentRoundIdx : number = 0;
@@ -44,6 +46,7 @@ export default class UI {
     constructor() {
         this.slider= new Slider(this, "#slider-q");
         this.mcq = new MCQ(this, "#mc-q");
+        this.qfq = new QuickFireQ(this, "#quickfire-q");
 
         // set button bindings
         el("#startBtn").addEventListener("click", this.Login.bind(this));
@@ -116,7 +119,7 @@ export default class UI {
     }
 
     private showQuestion() { 
-        // console.log(this.currentQuestionIdx);
+        console.log(this.currentQuestionIdx);
         this.currentQuestionIdx++;
         this.currentPage = PageType.Question;
         var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
@@ -129,7 +132,13 @@ export default class UI {
                 break;
             case q.QuestionType.MultiChoice:
                 this.mcq.set(<q.MCQuestion>currentQuestion);
-                this.mcq.show()
+                this.mcq.show();
+                break;
+            case q.QuestionType.QuickFire:
+                console.log("quick fire")
+                this.qfq.set(<q.QuickFireQuestion>currentQuestion);
+                this.qfq.show();
+                break;
         }
     }
 

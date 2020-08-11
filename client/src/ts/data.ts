@@ -26,7 +26,7 @@ export const ROUNDS : q.QuestionRound[] = [
     }
 ]
 
-export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion> = [
+export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuestion> = [
     {
         round:1,
         type: q.QuestionType.Slider,
@@ -73,5 +73,82 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion> = [
             }
         ],
         answer : ""
+    },
+    {
+        round: 3,
+        type: q.QuestionType.QuickFire,
+        params: si.QueryParameters.Valence,
+        question: "I’ll have the usual?",
+        answer: false
+    },
+    {
+        round: 3,
+        type: q.QuestionType.QuickFire,
+        params: si.QueryParameters.Valence,
+        question: "Beer in a can over a bottle?",
+        answer: false
+    },
+    {
+        round: 3,
+        type: q.QuestionType.QuickFire,
+        params: si.QueryParameters.Valence,
+        question: "Ketchup should be kept in the fridge?",
+        answer: false
+    },
+    {
+        round: 3,
+        type: q.QuestionType.QuickFire,
+        params: si.QueryParameters.Valence,
+        question: "Hazys over Lagers?",
+        answer: false
+    },
+    {
+        round: 3,
+        type: q.QuestionType.QuickFire,
+        params: si.QueryParameters.Valence,
+        question: "Every Die Hard movie is good?",
+        answer: false
+    },
+    {
+        round: 3,
+        type: q.QuestionType.QuickFire,
+        params: si.QueryParameters.Valence,
+        question: "German beer over American beer?",
+        answer: false
+    },
+    {
+        round: 3,
+        type: q.QuestionType.QuickFire,
+        params: si.QueryParameters.Valence,
+        question: "You wash your legs in the shower?",
+        answer: false
+    },
+    {
+        round: 3,
+        type: q.QuestionType.QuickFire,
+        params: si.QueryParameters.Valence,
+        question: "Six pack or single serve?",
+        answer: false
+    },
+    {
+        round: 3,
+        type: q.QuestionType.QuickFire,
+        params: si.QueryParameters.Valence,
+        question: "There was enough room for both Jack and Rose on the door?",
+        answer: false
+    },
+    {
+        round: 3,
+        type: q.QuestionType.QuickFire,
+        params: si.QueryParameters.Valence,
+        question: "Brew bars over micro pub?",
+        answer: false
+    },
+    {
+        round: 3,
+        type: q.QuestionType.QuickFire,
+        params: si.QueryParameters.Valence,
+        question: "The Karate Kid is the bad guy in the Karate Kid?",
+        answer: false
     }
 ]
