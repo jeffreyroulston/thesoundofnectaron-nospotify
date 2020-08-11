@@ -1,5 +1,5 @@
 $letterSize: 50px;
-$letterPadding: 20px;
+$letterPadding: 40px;
 
 // COLOURS
 $purple : #88009D;
@@ -8,50 +8,6 @@ $beige: #FCF1DB;
 $blue: #00C1F5;
 
 $breakpoints: (phone: 640px, tablet: 768px, desktop: 1024px) !default;
-@mixin media($conditions...) {
-    @for $i from 1 through length($conditions) {
-      $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));
-    }
-  
-    $branches: get-query-branches($conditions);
-    $query: '';
-  
-    @each $branch in $branches {
-      @if (str-length($query) != 0) {
-        $query: $query + ', ';
-      }
-  
-      $query: $query + $branch;
-    }
-  
-    @media #{$query} {
-      @content;
-    }
-  }
-
-// @include media(">desktop") {
-        
-// }
-
-// @include media(">=tablet", "<desktop") {
-
-// }
-
-// @include media(">=phone", "<tablet") {
-
-// }
-
-// @include media(">=phone", "<tablet") {
-
-// }
-
-// @include media("<phone") {
-
-// }
-
-@function center($containerWidth, $elWidth) {
-  @return calc(#{$containerWidth} / 2 - (#{$elWidth} / 2));
-}
 
 @mixin verticalAlign {
     position: relative;
@@ -218,9 +174,8 @@ li {
     width: 100%;
     text-align: center;
     position: relative;
-    // top: 35vh;
     @include verticalAlign();
-    transform: translateY(-200px);
+    @include transform(translateY(-200px));
 }
 
 .text-wrapper {
@@ -546,12 +501,6 @@ li {
             height: 300px;
             display: inline-flex;
             cursor: pointer;
-
-            // @include transition(transform all 0.3s);
-
-            // &:hover {
-            //     @include transform(scale(1.2));
-            // }
         }
     }
 }
@@ -571,17 +520,9 @@ li {
         li {
             width: 750px;
             display: inline-block;
-            // border: 1px solid red;
 
             &:first-child {
                 letter-spacing: -350px;
-                // margin-right: -350px;
-
-                // text-align: right;
-            }
-
-            &:nth-child(2) {
-                // text-align: left;
             }
         }
     }
