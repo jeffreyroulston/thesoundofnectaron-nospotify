@@ -114,16 +114,7 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
             {
                 value : "dragon",
                 asset : ""
-            }
-        ],
-        answer : ""
-    },
-    {
-        round: 2,
-        type: q.QuestionType.MultiChoice,
-        params: si.QueryParameters.Valence,
-        question : "Where is this best enjoyed?",
-        options : [
+            },
             {
                 value : "unicorn",
                 asset : ""
@@ -134,6 +125,31 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
             },
             {
                 value : "person",
+                asset : ""
+            },
+        ],
+        answer : ""
+    },
+    {
+        round: 2,
+        type: q.QuestionType.MultiChoice,
+        params: si.QueryParameters.Valence,
+        question : "Where is this best enjoyed?",
+        options : [
+            {
+                value : "scene1",
+                asset : ""
+            },
+            {
+                value : "scene2",
+                asset : ""
+            },
+            {
+                value : "scene3",
+                asset : ""
+            },
+            {
+                value : "scene4",
                 asset : ""
             }
         ],
@@ -146,11 +162,11 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
         question : "Choose your drinking buddy",
         options : [
             {
-                value : "dino",
+                value : "drinking-buddy-1",
                 asset : ""
             },
             {
-                value : "person",
+                value : "drinking-buddy-2",
                 asset : ""
             }
         ],
@@ -163,11 +179,15 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
         question : "Perfect pairing?",
         options : [
             {
-                value : "dino",
+                value : "pairing-sushi",
                 asset : ""
             },
             {
-                value : "snake",
+                value : "pairing-pizza",
+                asset : ""
+            },
+            {
+                value : "pairing-avo",
                 asset : ""
             }
         ],
@@ -180,11 +200,19 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
         question : "Choose your vessel",
         options : [
             {
-                value : "snake",
+                value : "vessel-bottle",
                 asset : ""
             },
             {
-                value : "person",
+                value : "vessel-can",
+                asset : ""
+            },
+            {
+                value : "vessel-glass",
+                asset : ""
+            },
+            {
+                value : "vessel-tumbler",
                 asset : ""
             }
         ],

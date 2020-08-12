@@ -45,13 +45,13 @@ export default class MCQ {
                 this.el + " #mc-" + this.options[i].value, 0.5,
                 {
                     display:"none",
-                    alpha:0,
+                    opacity:0,
                     scale:0,
                     rotate:200
                 },
                 {
                     display:"inline-block",
-                    alpha:1,
+                    opacity:1,
                     scale:1,
                     rotate:0,
                     ease:"bounce",
@@ -73,8 +73,8 @@ export default class MCQ {
                 {
                     display:"none",
                     alpha:0,
-                    scale:0,
-                    delay:i*0.05
+                    y:20,
+                    delay:0.3
                 },
             );
         }

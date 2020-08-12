@@ -60,7 +60,8 @@ export default class UI {
         el("#startBtn").addEventListener("click", this.Login.bind(this));
         el(".next").addEventListener("click", this.next.bind(this));
         
-         this.showLogin();
+        this.showLogo();
+        //  this.showLogin();
         // this.showRoundName();
         // this.showQuestion();
         // this.showEndFrame();
@@ -91,6 +92,16 @@ export default class UI {
             }})
         }
         
+    }
+
+    private showLogo() {
+        TweenMax.fromTo(".logo-letters .letter", 0.4, {
+            scale:0
+        }, {
+            scale: 1, stagger : {
+                each: 0.2
+            }, onComplete: this.showLogin.bind(this)
+        })
     }
 
     private showLogin() {
@@ -127,7 +138,7 @@ export default class UI {
     }
 
     private showFruits() {
-        var d = 1.6;
+        var d = 1.8;
 
         // bring in fruits
         TweenMax.from("#login .fruit", 0.5, {
@@ -219,18 +230,32 @@ export default class UI {
             alpha:1, scale:1, y:0, rotate:0, delay:0.5
         });
 
+        // bring in the fruit
+        TweenMax.fromTo("#round-name .fruit-whole", 1, {
+            alpha: 0, y:-500, x:500, rotate:360
+        }, {
+            alpha:1, y:0, x:0, rotate:0, delay:0.5, ease: "linear"
+        })
+
+        // bop the fruit
+        TweenMax.fromTo("#round-name .fruit-whole", 1, {
+            rotate:0, y:0
+        }, {
+            rotate: -5, y:20, delay:1.5, repeat:-1, yoyo: true, yoyoEase: "linear"
+        })
+
         // show the round name
         TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.75, {
             display:"block", alpha:0, x:-50
         }, {
-            alpha:1, x:0, delay:1
+            alpha:1, x:0, delay:0.8
         });
 
         // show the description box
         TweenMax.fromTo("#round-name .description, #round-name .btn", 0.6, {
             alpha:0, y:20
         }, {
-            alpha:1, y:0, delay:1.1
+            alpha:1, y:0, delay:1
         });
     }
 
@@ -305,10 +330,16 @@ export default class UI {
                     }
                 });
 
+                // hide fruit {
+                TweenMax.to("#round-name .fruit-whole", 0.5, {
+                    rotate:0, y:-20, alpha:0
+                })
+
                 //hide login
                 TweenMax.to("#round-name", 0, {
                     display: "none", delay: 0.5, onComplete: this.showQuestion.bind(this)
                 });
+
                 break;
             
             case PageType.Question:
@@ -373,8 +404,9 @@ export default class UI {
 
     // CALLBACK FROM APP
     public loginSuccessful() {
-        console.log("login successful");
+        // console.log("login successful");
         this.next();
+        // this.showRoundName();
     }
 
     public OnUserData(type: si.DataType, data: si.Data): void {

@@ -318,6 +318,13 @@ p {
 //     }
 // }
 
+.fruits {
+    .fruit {
+        position: absolute;
+        // display: none
+    }
+}
+
 #login {
     font-family: 'Circular';
 
@@ -340,11 +347,6 @@ p {
     }
 
     .fruits {
-        .fruit {
-            position: absolute;
-            // display: none
-        }
-
         .fruit-top {
             width: 140px;
             right: 185px;
@@ -418,6 +420,12 @@ p {
 }
 
 #round-name {
+    .fruit-whole {
+        width: 180px;
+        left: 767px;
+        top: -80px;      
+    }
+
     .round {
         display: inline-block;
         position: relative;
@@ -595,25 +603,25 @@ p {
         height: 200px;
     }
 
-    #mc-dino {
-        background-image: url("./assets/dino.png");
-    }
+    // #mc-dino {
+    //     background-image: url("./assets/dino.png");
+    // }
 
-    #mc-dragon {
-        background-image: url("./assets/dragon.png");
-    }
+    // #mc-dragon {
+    //     background-image: url("./assets/dragon.png");
+    // }
 
-    #mc-snake{
-        background-image: url("./assets/snake.png");
-    }
+    // #mc-snake{
+    //     background-image: url("./assets/snake.png");
+    // }
 
-    #mc-person {
-        background-image: url("./assets/person.png");
-    }
+    // #mc-person {
+    //     background-image: url("./assets/person.png");
+    // }
 
-    #mc-unicorn {
-        background-image: url("./assets/unicorn.png");
-    }
+    // #mc-unicorn {
+    //     background-image: url("./assets/unicorn.png");
+    // }
 
     .mc-options {
         // border: 1px solid black;
@@ -623,13 +631,12 @@ p {
         li {
             // border: 1px solid black;
             // position: absolute;
-            background-size: 100% auto;
-            background-repeat: no-repeat;
-            width: 300px;
-            height: 300px;
+            // background-size: 100% auto;
+            // background-repeat: no-repeat;
+            width: 250px;
+            // height: 300px;
             display: none;
             cursor: pointer;
-            opacity: 0;
         }
     }
 }
@@ -640,7 +647,7 @@ p {
     }
 
     .question-wrapper {
-        max-width: 800px;
+        max-width: 700px;
     }
 
     #timer {
