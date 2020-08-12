@@ -59,7 +59,7 @@ export default class MCQ {
                     //     each: 0.25,
                     //     from: "random"
                     // }
-                    delay:i*0.1 + d
+                    delay:i*0.05 + d
                 }
             );
         }
@@ -69,12 +69,12 @@ export default class MCQ {
         var value = e.srcElement.id.replace("mc-",);
         for (var i=0; i<this.options.length; i++) {
             TweenMax.to(
-                this.el + " #mc-" + this.options[i].value, 0.5,
+                this.el + " #mc-" + this.options[i].value, 0.2,
                 {
                     display:"none",
                     alpha:0,
                     scale:0,
-                    delay:i*0.1
+                    delay:i*0.05
                 },
             );
         }

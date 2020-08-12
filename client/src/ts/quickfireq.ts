@@ -64,7 +64,9 @@ export default class QuickFireQ {
     }
 
     hide() {
-        TweenMax.to(this.el, 0.3, {opacity:0, scale:0.7});
+        TweenMax.to(this.el, 0.3, {opacity:0, scale:0.7, onComplete: ()=> {
+            el("#questions").style.display = "none";
+        }});
     }
 
     updateTimer() {

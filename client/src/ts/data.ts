@@ -72,6 +72,17 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
         round:1,
         type: q.QuestionType.Slider,
         params: si.QueryParameters.Valence,
+        question : "What mouthfeel would you like?",
+        minValue : 0,
+        maxValue : 100,
+        minTextValue : "Light",
+        maxTextValue : "Heavy",
+        answer : 0
+    },
+    {
+        round:1,
+        type: q.QuestionType.Slider,
+        params: si.QueryParameters.Valence,
         question : "How long would you like to boil for?",
         minValue : 0,
         maxValue : 100,
@@ -103,18 +114,6 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
             {
                 value : "dragon",
                 asset : ""
-            },
-            {
-                value : "unicorn",
-                asset : ""
-            },
-            {
-                value : "snake",
-                asset : ""
-            },
-            {
-                value : "person",
-                asset : ""
             }
         ],
         answer : ""
@@ -125,14 +124,6 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
         params: si.QueryParameters.Valence,
         question : "Where is this best enjoyed?",
         options : [
-            {
-                value : "dino",
-                asset : ""
-            },
-            {
-                value : "dragon",
-                asset : ""
-            },
             {
                 value : "unicorn",
                 asset : ""
@@ -159,18 +150,6 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
                 asset : ""
             },
             {
-                value : "dragon",
-                asset : ""
-            },
-            {
-                value : "unicorn",
-                asset : ""
-            },
-            {
-                value : "snake",
-                asset : ""
-            },
-            {
                 value : "person",
                 asset : ""
             }
@@ -188,19 +167,7 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
                 asset : ""
             },
             {
-                value : "dragon",
-                asset : ""
-            },
-            {
-                value : "unicorn",
-                asset : ""
-            },
-            {
                 value : "snake",
-                asset : ""
-            },
-            {
-                value : "person",
                 asset : ""
             }
         ],
@@ -212,18 +179,6 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
         params: si.QueryParameters.Valence,
         question : "Choose your vessel",
         options : [
-            {
-                value : "dino",
-                asset : ""
-            },
-            {
-                value : "dragon",
-                asset : ""
-            },
-            {
-                value : "unicorn",
-                asset : ""
-            },
             {
                 value : "snake",
                 asset : ""
@@ -288,7 +243,7 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
         round: 3,
         type: q.QuestionType.QuickFire,
         params: si.QueryParameters.Valence,
-        question: "Six pack or single serve?",
+        question: "Six pack over single serve?",
         answer: false
     },
     {

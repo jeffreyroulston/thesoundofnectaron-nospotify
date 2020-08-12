@@ -141,6 +141,8 @@ li {
 
 .section {
     display: none;
+    max-width: 2500px;
+    @include horizontalAlign();
 }
 
 .btn {
@@ -219,7 +221,7 @@ p {
     width: 50%;
 
     &.text-column {
-        margin-top: 30vh;
+        margin-top: 20vh;
     }
 }
 
@@ -227,21 +229,21 @@ p {
     height: 70px;     
 }
 
-.fruitTop {
-    background-image: url("./assets/fruitTop.png");
-}
+// .fruitTop {
+//     background-image: url("./assets/fruitTop.png");
+// }
 
-.fruitBottom {
-    background-image: url("./assets/fruitBottom.png");
-}
+// .fruitBottom {
+//     background-image: url("./assets/fruitBottom.png");
+// }
 
-.pineappleTop {
-    background-image: url("./assets/pineappleTop.png");   
-}
+// .pineappleTop {
+//     background-image: url("./assets/pineappleTop.png");   
+// }
 
-.fruit {
-    background-repeat: no-repeat;
-}
+// .fruit {
+//     background-repeat: no-repeat;
+// }
 
 #shared {
     .logo-letters {
@@ -276,45 +278,45 @@ p {
     }
 }
 
-#fruits {
+// #fruits {
 
-    #fruitTop {
-        background-image: url("./assets/fruitTop.png");
-        height: 260px;
-        width: 200px;
-        right: 200px;
-        top: 60px;
-    }
+//     fruitTop {
+//         background-image: url("./assets/fruitTop.png");
+//         height: 260px;
+//         width: 200px;
+//         right: 200px;
+//         top: 60px;
+//     }
 
-    #fruitBottom {
-        background-image: url("./assets/fruitBottom.png");
-        height: 215px;
-        width: 200px;
-        right: 200px;
-        top: 60px;
-    }
+//     #fruitBottom {
+//         background-image: url("./assets/fruitBottom.png");
+//         height: 215px;
+//         width: 200px;
+//         right: 200px;
+//         top: 60px;
+//     }
 
-    #pineappleTop {
-        background-image: url("./assets/pineappleTop.png");
-        height: 300px;
-        width: 200px;
-    }
-    #pineappleBurner {
-        background-image: url("./assets/pineappleBurner.png");
-        height: 360px;
-        width: 300px;
-        right: 200px;
-        bottom: 60px;
-    }
+//     #pineappleTop {
+//         background-image: url("./assets/pineappleTop.png");
+//         height: 300px;
+//         width: 200px;
+//     }
+//     #pineappleBurner {
+//         background-image: url("./assets/pineappleBurner.png");
+//         height: 360px;
+//         width: 300px;
+//         right: 200px;
+//         bottom: 60px;
+//     }
 
-    .fruit {
-        display: block;
-        position: absolute;
-        background-repeat: no-repeat;
-        background-size: 100% auto;
-        border: 1px solid black;
-    }
-}
+//     .fruit {
+//         display: block;
+//         position: absolute;
+//         background-repeat: no-repeat;
+//         background-size: 100% auto;
+//         border: 1px solid black;
+//     }
+// }
 
 #login {
     font-family: 'Circular';
@@ -335,6 +337,83 @@ p {
         svg {
             height: 57px;
         }
+    }
+
+    .fruits {
+        .fruit {
+            position: absolute;
+            // display: none
+        }
+
+        .fruit-top {
+            width: 140px;
+            right: 185px;
+            top: -220px;
+        }
+
+        .fruit-bottom {
+            width: 190px;
+            right: 160px;
+            top: -50px;
+        }
+
+        .pineapple-top {
+            width: 210px;
+            left: 140px;
+            top: -250px;
+
+            @include transform(rotate(-90deg));
+        }
+
+        .fruit-bottom-2 {
+            width: 190px;
+            left: 370px;
+            top: -160px;
+        
+            @include transform(rotate(-90deg));
+        }
+
+        .pineapple-burner {
+            width: 330px;
+            right: 250px;
+            bottom: -200px;
+        }
+
+        .fruit-whole {
+            width: 180px;
+            left: 300px;
+            bottom: -200px;        
+        }
+
+        // .fruit-top {
+        //     width: 140px;
+        //     right: 178px;
+        //     top: 71px;
+        // }
+
+        // .fruit-bottom {
+        //     width: 190px;
+        //     right: 160px;
+        //     top: 250px;
+        // }
+
+        // .pineapple-top {
+        //     width: 200px;
+        //     left: 0px;
+        //     top:0px;
+        // }
+
+        // .fruit-bottom-2 {
+        //     width: 200px;
+        //     left: 0px;
+        //     top:0px;
+        // }
+
+        // .pineapple-burner {
+        //     width: 300px;
+        //     right: 250px;
+        //     bottom: 100px;
+        // }
     }
 }
 
@@ -424,6 +503,12 @@ p {
 }
 
 #slider-q {
+    .col-wrapper {
+        &.text-column {
+            margin-top: 30vh;
+        }
+    }
+
     .fruits {
         .fruit-top, .fruit-bottom {
             height: 50vh;
@@ -455,7 +540,8 @@ p {
 
     .slide-container {
         position: relative;
-        width: 465px;
+        // width: 465px;
+        width: 100%;
         left: 10px;
 
         border-top: 2px solid $purple;
@@ -474,7 +560,7 @@ p {
 
     .slider-label {
         position: absolute;
-        top: 12px;
+        top: -35px;
         color: $purple;
     }
 
@@ -541,8 +627,9 @@ p {
             background-repeat: no-repeat;
             width: 300px;
             height: 300px;
-            display: inline-flex;
+            display: none;
             cursor: pointer;
+            opacity: 0;
         }
     }
 }
@@ -550,6 +637,10 @@ p {
 #quickfire-q {
     .question {
         color: $purple;
+    }
+
+    .question-wrapper {
+        max-width: 800px;
     }
 
     #timer {
@@ -608,6 +699,8 @@ p {
 }
 
 #end-frame {
+    position: absolute;
+
     .wrapper {
         color: $purple;
     }

@@ -80,12 +80,12 @@ export default class UI {
         el("body").style.backgroundColor = color;
 
         if (origin == "top" || origin == "bottom") {
-            TweenMax.to(e, 0.4, {height: 0, transformOrigin:origin, onComplete: function() {
+            TweenMax.to(e, 0.5, {height: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
                 e.style.backgroundColor = color;
                 e.style.height = "100vh";
             }})
         } else {
-            TweenMax.to(e, 0.4, {width: 0, transformOrigin:origin, onComplete: function() {
+            TweenMax.to(e, 0.5, {width: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
                 e.style.backgroundColor = color;
                 e.style.width = "100%";
             }})
@@ -97,23 +97,81 @@ export default class UI {
         this.setBG(data.COLOURS.beige);
         el("#login").style.display = "block";
 
+        this.showFruits();
+
         // bleed in the sound of
         TweenMax.from(".theSoundOf path", 0.75,{
             alpha:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {
-                each: 0.1, from:"random"
-            }, delay:1
+                each: 0.1, from:"random",
+            }
         });
 
         // bleed in nectaron
         TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 0.75, {
             alpha:0, y:50, scale:0, transformOrigin: "top", stagger: {
                 each: 0.05, from:"random"
-            }, delay:1});
+            }
+        });
+
+        // loop the bloods
+        // TweenMax.fromTo(".nectaron path, .nectaron polygon, .nectaron rect", 1, {
+        //     scale: 1
+        // }, {
+        //     scale:1.1, transformOrigin: "center", delay: 1, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear"
+        // });
 
         // show subheading and button
         TweenMax.from("#login .subheading, #login .btn", 0.5, {
-            alpha:0, y:5, delay: 3.2
+            alpha:0, y:5, delay: 1.8
         });
+    }
+
+    private showFruits() {
+        var d = 1.6;
+
+        // bring in fruits
+        TweenMax.from("#login .fruit", 0.5, {
+            alpha:0, scale:0.5, stagger : {
+                each: 0.05, from: "random"
+            }, delay:d
+        })
+
+        TweenMax.fromTo("#login .fruit-top", 1, {
+            x:-50, rotate:-30
+        }, {
+            x:50, rotate:30, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
+        })
+
+        TweenMax.fromTo("#login .fruit-bottom", 1, {
+            y:10, rotate:5
+        }, {
+            y:-10, rotate:-5, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
+        })
+
+        TweenMax.fromTo("#login .pineapple-top", 0.5, {
+            x:-10
+        }, {
+            x:10, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
+        })
+
+
+        TweenMax.fromTo("#login .fruit-bottom-2", 0.5, {
+            x:10
+        }, {
+            x:-10, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
+        })
+
+        TweenMax.fromTo("#login .fruit-whole", 5, {
+            rotate:0
+        }, {
+            rotate:360, repeat:-1, ease: "linear", delay:d
+        })
+
+        TweenMax.fromTo("#login .pineapple-burner", 0.1, {
+            rotate:-1
+        }, {
+            rotate:0, transformOrigin: "bottom", repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
+        })
     }
 
     private showRoundName() {
@@ -216,10 +274,17 @@ export default class UI {
                         each: 0.005, from:"random"
                     }
                 });
+
+                // hide the fruits
+                TweenMax.to("#login .fruit", 0.5, {
+                    alpha:0, scale:0.5, stagger : {
+                        each: 0.05, from: "random"
+                    }
+                })
                 
                 //hide login
                 TweenMax.to("#login", 0, {
-                    display: "none", delay: 1, onComplete: this.showRoundName.bind(this)
+                    display: "none", delay: 0.5, onComplete: this.showRoundName.bind(this)
                 });
                 break;
             
@@ -236,8 +301,13 @@ export default class UI {
                 // bleed out round
                 TweenMax.to(".round path", 0.5, {
                     alpha:0, y:0, scale:0, stagger: {
-                        each: 0.1, from:"random"
-                    }, onComplete: this.showQuestion.bind(this)
+                        each: 0.05, from:"random"
+                    }
+                });
+
+                //hide login
+                TweenMax.to("#round-name", 0, {
+                    display: "none", delay: 0.5, onComplete: this.showQuestion.bind(this)
                 });
                 break;
             
@@ -296,6 +366,7 @@ export default class UI {
     public questionsCompleted() {
         // called from quick fire question class
         // use the current question index to discount unanswered quickfire questions
+        console.log("questions completed");
         this.showEndFrame();
 
     }

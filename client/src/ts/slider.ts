@@ -124,7 +124,7 @@ export default class Slider {
         });
 
         TweenMax.fromTo([this.minValueLabel, this.maxValueLabel], 0.2, {
-            alpha: 0, y:20
+            alpha: 0, y:-20
         }, {
             alpha: 1, y:0, delay: d + 0.2
         })
@@ -182,7 +182,7 @@ export default class Slider {
         });
 
         TweenMax.to([this.minValueLabel, this.maxValueLabel], 0.1, {
-            alpha:0, y:20
+            alpha:0, y:-20
         });
 
         TweenMax.to(this.topFruitElement, 0.2, {
