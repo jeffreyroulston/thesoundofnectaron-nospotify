@@ -39,6 +39,8 @@ export default class App {
         } else {
             if (this.spotifyInterface.Authorized) {
                 this.ui.startRounds();
+                this.spotifyInterface.GetUserProfile();
+                console.log(this.profile);
             } else {
                 this.ui.showLanding();
             }
@@ -79,6 +81,8 @@ export default class App {
 
         if (this.spotifyInterface.Authorized) {
             this.ui.loginSuccessful();
+            this.spotifyInterface.GetUserProfile();
+            console.log(this.profile);
         } else {
             this.spotifyInterface.GetAuthorization();
         }

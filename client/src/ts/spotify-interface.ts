@@ -89,9 +89,13 @@ export class SpotifyInterface {
     constructor(params: SpotifyInterfaceParams) {
         this.params = params;
 
+        // console.log("window hash:", window.location.hash);
+
         // get the token
         this.token = window.location.hash.substr(1).split('&')[0].split("=")[1];
-        window.location.hash = "";
+        // window.location.hash = "";
+
+        console.log("token", this.token);
     }
 
     public get Authorized(): boolean {
@@ -142,7 +146,7 @@ export class SpotifyInterface {
     }
 
     public GetUserProfile(): void {
-
+        console.log("get user profile")
         const auth = this.BuildAuthToken();
 
         // we shouldn't be calling these functions without a valid auth token
@@ -171,6 +175,8 @@ export class SpotifyInterface {
             else {
 
                 response.json().then((json) => {
+
+                    console.log("fetched", json);
 
                     // DEBUG
                     //console.log(json);
@@ -210,7 +216,6 @@ export class SpotifyInterface {
 
         // network error maybe? not sure about this one
         }).catch((rejected) => {
-            
             console.log(rejected);
 
         });
