@@ -22,13 +22,27 @@ export default class App {
     // private graphics: Graphics = new Graphics();
     private resourceManager: ResourceManager = new ResourceManager();
     // private ui: UI = new UI(this.graphics);
-    private ui: UI = new UI();
+    private ui: UI = new UI(this);
     private profile: si.UserProfile | undefined;
     private topArtists: si.Artist[] | undefined;
     private answeredQuestions: Questions.Question[] = [];
 
     constructor() {
         this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
+
+        var cookie = document.cookie;
+        console.log(cookie, this.spotifyInterface.Authorized);
+
+        if (cookie == "showLanding" || cookie == "") {
+            document.cookie = "showLanding"
+            this.ui.showLanding();
+        } else {
+            if (this.spotifyInterface.Authorized) {
+                this.ui.startRounds();
+            } else {
+                this.ui.showLanding();
+            }
+        }
 
         // // we need these binds to make sure and 'this' in callbacks is bound to the correct object
         // this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
@@ -55,19 +69,17 @@ export default class App {
         // this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
         // this.resourceManager.loadResourceByPath(HTMLImageElement, "")
 
-        console.log("app initialised", this.spotifyInterface);
+        // console.log("app initialised", this.spotifyInterface);
     }
 
     public Login() {
         // kick it all off
         // called from UI
-        console.log("login", this.spotifyInterface.Authorized);
+        console.log("spotify authorised?", this.spotifyInterface.Authorized);
 
-        if (!this.spotifyInterface.Authorized) {
-            console.log("Login Authorized, show question one");
+        if (this.spotifyInterface.Authorized) {
             this.ui.loginSuccessful();
         } else {
-            console.log("Login not Authorized");
             this.spotifyInterface.GetAuthorization();
         }
     }

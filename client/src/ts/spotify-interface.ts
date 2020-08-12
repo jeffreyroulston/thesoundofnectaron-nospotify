@@ -84,6 +84,8 @@ export class SpotifyInterface {
     public OnDataListeners: {(type: DataType, data: Data): void}[] = [];
     public OnErrorListeners: {(type: ErrorType, data?: any): void}[] = [];
 
+    public sessionAuthorised : boolean = false;
+
     constructor(params: SpotifyInterfaceParams) {
         this.params = params;
 
@@ -116,6 +118,10 @@ export class SpotifyInterface {
             // we could do this or we could do a pop up window
             // I like this style of auth window better, popups can be annoying and we have to redirect anyway
             window.location.href = url.href;
+
+            // stick in there so that when it refreshes the page, you don't see the landing page again
+            // set the cookie so that it redirects correctly
+            document.cookie = "skipLanding";
         }
 
         // the token exists, so we're good to go with the rest of the app

@@ -6,6 +6,7 @@ import MCQ from "./mcq";
 import QuickFireQ from "./quickfireq";
 import {el} from "./helpers";
 import {TweenMax} from "gsap"
+import App from "./app";
 // import Graphics from "./graphics";
 // import * as THREE from 'three';
 
@@ -19,6 +20,7 @@ enum PageType {
 }
 
 export default class UI {
+    private app : App;
     private slider : Slider;
     private mcq : MCQ;
     private qfq : QuickFireQ;
@@ -45,7 +47,9 @@ export default class UI {
     public OnLoginPressed = () => {};
     public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: q.Question): void}[] = [];
 
-    constructor() {
+    constructor(app : App) {
+        this.app = app;
+
         this.slider= new Slider(this, "#slider-q");
         this.mcq = new MCQ(this, "#mc-q");
         this.qfq = new QuickFireQ(this, "#quickfire-q");
@@ -60,7 +64,7 @@ export default class UI {
         el("#startBtn").addEventListener("click", this.Login.bind(this));
         el(".next").addEventListener("click", this.next.bind(this));
         
-        this.showLogo();
+        // this.showLogo();
         //  this.showLogin();
         // this.showRoundName();
         // this.showQuestion();
@@ -189,6 +193,10 @@ export default class UI {
         this.currentPage = PageType.RoundName;
         this.currentRoundIdx++;
         var currentRound = data.ROUNDS[this.currentRoundIdx-1];
+
+        // reset the cookie
+        document.cookie = "showLanding"
+        console.log(document.cookie);
 
         // if round 3, change the colour of zero
         if (this.currentRoundIdx == 3) {
@@ -407,6 +415,14 @@ export default class UI {
         // console.log("login successful");
         this.next();
         // this.showRoundName();
+    }
+
+    public showLanding() {
+        this.showLogo();
+    }
+
+    public startRounds() {
+        this.showRoundName();
     }
 
     public OnUserData(type: si.DataType, data: si.Data): void {
