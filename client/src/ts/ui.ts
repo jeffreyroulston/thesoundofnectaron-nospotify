@@ -5,8 +5,11 @@ import Slider from "./slider";
 import MCQ from "./mcq";
 import QuickFireQ from "./quickfireq";
 import {el} from "./helpers";
-import {TweenMax} from "gsap"
+import {TweenMax, TimelineMax} from "gsap"
 import App from "./app";
+
+import * as d3 from "d3";
+
 // import Graphics from "./graphics";
 // import * as THREE from 'three';
 
@@ -29,6 +32,9 @@ export default class UI {
     private currentPage : PageType = PageType.Login;
     private currentRoundIdx : number = 0;
     private currentQuestionIdx : number = -1;
+
+    private logoTimeline : TimelineMax;
+    private lpTimeline : TimelineMax;
 
     private recommendations: si.Track[] | undefined = [];
     private queryParameters: {[key: string]: q.QueryParameter }  = {
@@ -53,6 +59,10 @@ export default class UI {
         this.slider= new Slider(this, "#slider-q");
         this.mcq = new MCQ(this, "#mc-q");
         this.qfq = new QuickFireQ(this, "#quickfire-q");
+
+        // if (!Modernizr.svg) {
+        //     $(".logo img").attr("src", "images/logo.png");
+        //   }
         
         // get logo letters
         var letters = document.querySelectorAll(".logo-letters .letter polygon, .logo-letters .letter path, .logo-letters .letter rect");
@@ -61,14 +71,54 @@ export default class UI {
         }
 
         // set button bindings
-        el("#startBtn").addEventListener("click", this.Login.bind(this));
+        // el("#startBtn").addEventListener("click", this.Login.bind(this));
+        el("#startBtn").addEventListener("click", this.next.bind(this));
         el(".next").addEventListener("click", this.next.bind(this));
         
-        // this.showLogo();
+        // this.playLoader();
         //  this.showLogin();
         // this.showRoundName();
         // this.showQuestion();
         // this.showEndFrame();
+
+        // set timelines
+
+        // LANDING PAGE TIMELINE
+        this.lpTimeline = new TimelineMax();
+        this.lpTimeline.from(
+            ".theSoundOf path:nth-child(even)", 0.8, {
+                alpha:0, scale:0, y:50, stagger: {each:0.1, from: "random"}
+            }, 0).from(
+            ".theSoundOf path:nth-child(odd)", 0.8, {
+                alpha:0, scale:0, y:-50, stagger: {each:0.1, from: "random"}
+            }, 0).from(
+            ".nectaron path, .nectaron polygon, .nectaron rect", 1, {
+                alpha:0, scale:0, transformOrigin: "center", stagger: {each:0.02, from: "random"}
+            }, 0.8).from(
+                "#login .subheading, #login .btn", 0.5, {
+                alpha:0, y:5
+            }, "+=0.5")
+        this.lpTimeline.pause();
+
+        // LOGO TIMELINE
+        var offset = 100;
+        this.logoTimeline = new TimelineMax({delay:0.5, onComplete: ()=> {
+            this.showLanding();
+            // do a check here
+        }});
+
+        this.logoTimeline
+        .fromTo(".letter-N1", 0.2, {y:-offset}, {y:0})
+        .from(".letter-E", 0.2, {y:-offset}, 0.1)
+        .from(".letter-C", 0.2, {y:-offset}, 0.3)
+        .from(".letter-T", 0.2, {x:-offset}, 0.4)
+        .from(".letter-A", 0.2, {x:offset}, 0.5)
+        .from(".letter-R", 0.2, {y:offset}, 0.6)
+        .from(".letter-O", 0.2, {y:offset}, 0.7)
+        .from(".letter-N2", 0.2, {y:offset}, 0.8)
+        this.logoTimeline.pause();
+
+        this.showLogo();
     }
 
     private setBG(color : string) {
@@ -98,14 +148,63 @@ export default class UI {
         
     }
 
+    private playLoader() {
+        var n1 = el(".letter-N1"),
+        e = el(".letter-E"),
+        c = el(".letter-C"),
+        t = el(".letter-T"),
+        a = el(".letter-A"),
+        r = el(".letter-R"),
+        o = el(".letter-O"),
+        n2 = el(".letter-N2");
+
+        var w = 50,
+        h = 52.5;
+
+        // var tl = new TimelineMax({delay:0.5, repeat:-1, yoyo:true, repeatDelay:0.2});
+        var tl = new TimelineMax({delay:0.5});
+
+        // tl.to(n1, 0.1, {x:50})
+        // .to(e, 0.1, {y:55})
+        // .to(c, 0.1, {y:-55})
+        // .to(t, 0.1, {x:-50})
+
+        tl.to(r, 0.2, {y:h})
+        .to(a, 0.2, {x:w}, 0.1)
+        .to(n2, 0.2, {y:-h}, 0.2)
+        .to(o, 0.2, {x:w}, 0.4)
+        .to(t, 0.2, {y:h}, 0.6)
+        .to(n1, 0.2, {y:h}, 0.8)
+        .to(e, 0.2, {x:-w}, 1)
+        .to(n2, 0.2, {y:-2*h}, 1.2)
+        .to(a, 0.2, {x:0}, 1.4)
+        .to(c, 0.2, {y:h}, 1.6)
+        .to(n2, 0.2, {x:w}, 1.8)
+        .to(e, 0.2, {x:0}, 2)
+        .to(n1, 0.2, {y:0}, 2.2)
+        .to(a, 0.2, {x:-w}, 2.4)
+        .to(c, 0.2, {x:-w}, 2.6)
+        .to(r, 0.2, {y:0}, 2.8)
+        .to(o, 0.2, {x:2*w}, 3)
+
+
+
+        // tl.to
+
+
+        // tl.pause();
+        // .to(a)
+
+        // tl.play();
+    }
+
     private showLogo() {
-        TweenMax.fromTo(".logo-letters .letter", 0.4, {
-            scale:0
-        }, {
-            scale: 1, stagger : {
-                each: 0.2
-            }, onComplete: this.showLogin.bind(this)
-        })
+        this.logoTimeline.play();
+    }
+
+    private showLanding() {
+        el("#login").style.display = "block";
+        this.lpTimeline.play();
     }
 
     private showLogin() {
@@ -114,19 +213,19 @@ export default class UI {
 
         this.showFruits();
 
-        // bleed in the sound of
-        TweenMax.from(".theSoundOf path", 0.75,{
-            alpha:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {
-                each: 0.1, from:"random",
-            }
-        });
+        // // bleed in the sound of
+        // TweenMax.from(".theSoundOf path", 0.75,{
+        //     alpha:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {
+        //         each: 0.1, from:"random",
+        //     }
+        // });
 
-        // bleed in nectaron
-        TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 0.75, {
-            alpha:0, y:50, scale:0, transformOrigin: "top", stagger: {
-                each: 0.05, from:"random"
-            }
-        });
+        // // bleed in nectaron
+        // TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 0.75, {
+        //     alpha:0, y:50, scale:0, transformOrigin: "top", stagger: {
+        //         each: 0.05, from:"random"
+        //     }
+        // });
 
         // loop the bloods
         // TweenMax.fromTo(".nectaron path, .nectaron polygon, .nectaron rect", 1, {
@@ -292,6 +391,7 @@ export default class UI {
     }
 
     private next() {
+        console.log("next");
         // hide current page
         // show next page
         switch (this.currentPage) {
@@ -417,9 +517,9 @@ export default class UI {
         // this.showRoundName();
     }
 
-    public showLanding() {
-        this.showLogo();
-    }
+    // public showLanding() {
+    //     this.showLogo();
+    // }
 
     public startRounds() {
         this.showRoundName();
