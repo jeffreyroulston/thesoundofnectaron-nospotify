@@ -7,6 +7,7 @@ import QuickFireQ from "./quickfireq";
 import {el} from "./helpers";
 import {TweenMax, TimelineMax} from "gsap"
 import App from "./app";
+import * as anim from "./animator"
 
 import * as d3 from "d3";
 
@@ -22,8 +23,13 @@ enum PageType {
     EndFrame
 }
 
+const enum Anim { 
+    linear = "linear"
+};
+
 export default class UI {
     private app : App;
+
     private slider : Slider;
     private mcq : MCQ;
     private qfq : QuickFireQ;
@@ -33,8 +39,8 @@ export default class UI {
     private currentRoundIdx : number = 0;
     private currentQuestionIdx : number = -1;
 
-    private logoTimeline : TimelineMax;
-    private lpTimeline : TimelineMax;
+    // private logoTimeline : TimelineMax;
+    // private lpTimeline : TimelineMax;
 
     private recommendations: si.Track[] | undefined = [];
     private queryParameters: {[key: string]: q.QueryParameter }  = {
@@ -54,21 +60,27 @@ export default class UI {
     public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: q.Question): void}[] = [];
 
     constructor(app : App) {
+        // pass in the app to use for spotify interface
         this.app = app;
 
+        // create the animator
+        // this.animator = new Animator();
+
+        // create the questions classes
         this.slider= new Slider(this, "#slider-q");
         this.mcq = new MCQ(this, "#mc-q");
         this.qfq = new QuickFireQ(this, "#quickfire-q");
 
+        // check if it's fucking internet explorer
         // if (!Modernizr.svg) {
         //     $(".logo img").attr("src", "images/logo.png");
         //   }
         
         // get logo letters
-        var letters = document.querySelectorAll(".logo-letters .letter polygon, .logo-letters .letter path, .logo-letters .letter rect");
-        for(var i=0; i<letters.length; i++) {
-            this.logoLetters.push(<HTMLElement>letters[i]);
-        }
+        // var letters = document.querySelectorAll(".logo-letters .letter polygon, .logo-letters .letter path, .logo-letters .letter rect");
+        // for(var i=0; i<letters.length; i++) {
+        //     this.logoLetters.push(<HTMLElement>letters[i]);
+        // }
 
         // set button bindings
         // el("#startBtn").addEventListener("click", this.Login.bind(this));
@@ -83,42 +95,37 @@ export default class UI {
 
         // set timelines
 
-        // LANDING PAGE TIMELINE
-        this.lpTimeline = new TimelineMax();
-        this.lpTimeline.from(
-            ".theSoundOf path:nth-child(even)", 0.8, {
-                alpha:0, scale:0, y:50, stagger: {each:0.1, from: "random"}
-            }, 0).from(
-            ".theSoundOf path:nth-child(odd)", 0.8, {
-                alpha:0, scale:0, y:-50, stagger: {each:0.1, from: "random"}
-            }, 0).from(
-            ".nectaron path, .nectaron polygon, .nectaron rect", 1, {
-                alpha:0, scale:0, transformOrigin: "center", stagger: {each:0.02, from: "random"}
-            }, 0.8).from(
-                "#login .subheading, #login .btn", 0.5, {
-                alpha:0, y:5
-            }, "+=0.5")
-        this.lpTimeline.pause();
+
 
         // LOGO TIMELINE
-        var offset = 100;
-        this.logoTimeline = new TimelineMax({delay:0.5, onComplete: ()=> {
-            this.showLanding();
-            // do a check here
-        }});
+        // var offset = 100;
+        // this.logoTimeline = new TimelineMax({delay:0.5, onComplete: ()=> {
+        //     this.showLanding();
+        //     // do a check here
+        // }});
 
-        this.logoTimeline
-        .fromTo(".letter-N1", 0.2, {y:-offset}, {y:0})
-        .from(".letter-E", 0.2, {y:-offset}, 0.1)
-        .from(".letter-C", 0.2, {y:-offset}, 0.3)
-        .from(".letter-T", 0.2, {x:-offset}, 0.4)
-        .from(".letter-A", 0.2, {x:offset}, 0.5)
-        .from(".letter-R", 0.2, {y:offset}, 0.6)
-        .from(".letter-O", 0.2, {y:offset}, 0.7)
-        .from(".letter-N2", 0.2, {y:offset}, 0.8)
-        this.logoTimeline.pause();
+        // this.logoTimeline
+        // .fromTo(".letter-N1", 0.2, {y:-offset}, {y:0})
+        // .from(".letter-E", 0.2, {y:-offset}, 0.1)
+        // .from(".letter-C", 0.2, {y:-offset}, 0.3)
+        // .from(".letter-T", 0.2, {x:-offset}, 0.4)
+        // .from(".letter-A", 0.2, {x:offset}, 0.5)
+        // .from(".letter-R", 0.2, {y:offset}, 0.6)
+        // .from(".letter-O", 0.2, {y:offset}, 0.7)
+        // .from(".letter-N2", 0.2, {y:offset}, 0.8)
+        // this.logoTimeline.pause();
 
-        this.showLogo();
+        // this.showLogo();
+
+        anim.landingPageIn.eventCallback("onComplete", ()=> {
+            console.log("landing page in");
+        })
+
+        anim.landingPageOut.eventCallback("onComplete", ()=> {
+            console.log("landing page out");
+        })
+
+        anim.landingPageIn.play();
     }
 
     private setBG(color : string) {
@@ -127,13 +134,16 @@ export default class UI {
         var origins = ["bottom", "right"];
         var origin = origins[Math.floor(Math.random() * origins.length)];
 
-        // set logo colours
+        // set logo colours - set it to the contrast of the background colour
         for(var i=0; i<this.logoLetters.length; i++) {
             this.logoLetters[i].style.fill = data.CONTRAST[color];
         }
         
+        // set the background colour
         el("body").style.backgroundColor = color;
 
+        // to do - why doesn't top and left work?
+        // origin determines direction
         if (origin == "top" || origin == "bottom") {
             TweenMax.to(e, 0.5, {height: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
                 e.style.backgroundColor = color;
@@ -148,63 +158,13 @@ export default class UI {
         
     }
 
-    private playLoader() {
-        var n1 = el(".letter-N1"),
-        e = el(".letter-E"),
-        c = el(".letter-C"),
-        t = el(".letter-T"),
-        a = el(".letter-A"),
-        r = el(".letter-R"),
-        o = el(".letter-O"),
-        n2 = el(".letter-N2");
-
-        var w = 50,
-        h = 52.5;
-
-        // var tl = new TimelineMax({delay:0.5, repeat:-1, yoyo:true, repeatDelay:0.2});
-        var tl = new TimelineMax({delay:0.5});
-
-        // tl.to(n1, 0.1, {x:50})
-        // .to(e, 0.1, {y:55})
-        // .to(c, 0.1, {y:-55})
-        // .to(t, 0.1, {x:-50})
-
-        tl.to(r, 0.2, {y:h})
-        .to(a, 0.2, {x:w}, 0.1)
-        .to(n2, 0.2, {y:-h}, 0.2)
-        .to(o, 0.2, {x:w}, 0.4)
-        .to(t, 0.2, {y:h}, 0.6)
-        .to(n1, 0.2, {y:h}, 0.8)
-        .to(e, 0.2, {x:-w}, 1)
-        .to(n2, 0.2, {y:-2*h}, 1.2)
-        .to(a, 0.2, {x:0}, 1.4)
-        .to(c, 0.2, {y:h}, 1.6)
-        .to(n2, 0.2, {x:w}, 1.8)
-        .to(e, 0.2, {x:0}, 2)
-        .to(n1, 0.2, {y:0}, 2.2)
-        .to(a, 0.2, {x:-w}, 2.4)
-        .to(c, 0.2, {x:-w}, 2.6)
-        .to(r, 0.2, {y:0}, 2.8)
-        .to(o, 0.2, {x:2*w}, 3)
-
-
-
-        // tl.to
-
-
-        // tl.pause();
-        // .to(a)
-
-        // tl.play();
-    }
-
-    private showLogo() {
-        this.logoTimeline.play();
-    }
+    // private showLogo() {
+    //     this.logoTimeline.play();
+    // }
 
     private showLanding() {
         el("#login").style.display = "block";
-        this.lpTimeline.play();
+        // this.lpTimeline.play();
     }
 
     private showLogin() {
@@ -235,45 +195,68 @@ export default class UI {
         // });
 
         // show subheading and button
-        TweenMax.from("#login .subheading, #login .btn", 0.5, {
-            alpha:0, y:5, delay: 1.8
-        });
+        // TweenMax.from("#login .subheading, #login .btn", 0.5, {
+        //     alpha:0, y:5, delay: 1.8
+        // });
     }
 
     private showFruits() {
         var d = 1.8;
 
+        var fruitsIn = new TimelineMax();
+        fruitsIn.fromTo("#login .fruit", 0.5, {
+                alpha:0, scale:0.5
+            }, {
+                alpha:1, scale:1, stagger : {each: 0.05, from: "random"}
+            }).fromTo("#login .fruit-top", 1, {
+                x:-50, rotate:-30
+            }, {
+                x:50, rotate:30, repeat:-1, yoyo:true, ease: Anim.linear
+            }).fromTo("#login .fruit-bottom", 1, {
+                y:10, rotate:5
+            }, {
+                y:-10, rotate:-5, repeat:-1, yoyo:true, ease: Anim.linear
+            }).fromTo("#login .pineapple-top", 0.5, {
+                x:-10
+            }, {
+                x:10, repeat:-1, yoyo:true, ease: Anim.linear
+            }).fromTo("#login .fruit-bottom-2", 0.5, {
+                x:10
+            }, {
+                x:-10, repeat:-1, yoyo:true, ease: Anim.linear
+            })
+    
+
         // bring in fruits
-        TweenMax.from("#login .fruit", 0.5, {
-            alpha:0, scale:0.5, stagger : {
-                each: 0.05, from: "random"
-            }, delay:d
-        })
+        // TweenMax.from("#login .fruit", 0.5, {
+        //     alpha:0, scale:0.5, stagger : {
+        //         each: 0.05, from: "random"
+        //     }, delay:d
+        // })
 
-        TweenMax.fromTo("#login .fruit-top", 1, {
-            x:-50, rotate:-30
-        }, {
-            x:50, rotate:30, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
-        })
+        // TweenMax.fromTo("#login .fruit-top", 1, {
+        //     x:-50, rotate:-30
+        // }, {
+        //     x:50, rotate:30, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
+        // })
 
-        TweenMax.fromTo("#login .fruit-bottom", 1, {
-            y:10, rotate:5
-        }, {
-            y:-10, rotate:-5, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
-        })
+        // TweenMax.fromTo("#login .fruit-bottom", 1, {
+        //     y:10, rotate:5
+        // }, {
+        //     y:-10, rotate:-5, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
+        // })
 
-        TweenMax.fromTo("#login .pineapple-top", 0.5, {
-            x:-10
-        }, {
-            x:10, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
-        })
+        // TweenMax.fromTo("#login .pineapple-top", 0.5, {
+        //     x:-10
+        // }, {
+        //     x:10, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
+        // })
 
-
-        TweenMax.fromTo("#login .fruit-bottom-2", 0.5, {
-            x:10
-        }, {
-            x:-10, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
-        })
+        // TweenMax.fromTo("#login .fruit-bottom-2", 0.5, {
+        //     x:10
+        // }, {
+        //     x:-10, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
+        // })
 
         TweenMax.fromTo("#login .fruit-whole", 5, {
             rotate:0
@@ -397,28 +380,30 @@ export default class UI {
         switch (this.currentPage) {
             case PageType.Login:
                 //hide button
-                TweenMax.to("#login .subheading, #login .btn", 0.3, {
-                    alpha:0
-                });
+                // TweenMax.to("#login .subheading, #login .btn", 0.3, {
+                //     alpha:0
+                // });
                 
                 // bleed out logo
-                TweenMax.to("#login .bleed path, #login .bleed polygon, #login .bleed rect", 0.5, {
-                    alpha:0, y:0, scale:0, transformOrigin: "center", stagger: {
-                        each: 0.005, from:"random"
-                    }
-                });
+                // TweenMax.to("#login .bleed path, #login .bleed polygon, #login .bleed rect", 0.5, {
+                //     alpha:0, y:0, scale:0, transformOrigin: "center", stagger: {
+                //         each: 0.005, from:"random"
+                //     }
+                // });
 
                 // hide the fruits
-                TweenMax.to("#login .fruit", 0.5, {
-                    alpha:0, scale:0.5, stagger : {
-                        each: 0.05, from: "random"
-                    }
-                })
+                // TweenMax.to("#login .fruit", 0.5, {
+                //     alpha:0, scale:0.5, stagger : {
+                //         each: 0.05, from: "random"
+                //     }
+                // })
                 
                 //hide login
-                TweenMax.to("#login", 0, {
-                    display: "none", delay: 0.5, onComplete: this.showRoundName.bind(this)
-                });
+                // TweenMax.to("#login", 0, {
+                //     display: "none", delay: 0.5, onComplete: this.showRoundName.bind(this)
+                // });
+
+                anim.landingPageOut.play();
                 break;
             
             case PageType.RoundName:

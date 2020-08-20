@@ -18,6 +18,8 @@ export const CONTRAST : { [id: string] : string } = {
     "#FFE700" : COLOURS.purple
 }
 
+// to do - random question order in round 3
+
 export const ROUNDS : q.QuestionRound[] = [
     {
         round: 1,
