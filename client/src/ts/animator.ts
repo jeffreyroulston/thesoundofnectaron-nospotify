@@ -1,9 +1,8 @@
-import Slider from "./slider";
-import MCQ from "./mcq";
-import QuickFireQ from "./quickfireq";
+import Slider from "./sliderQ";
+import MCQ from "./mcQ";
+import QuickFireQ from "./quickfireQ";
 import {TweenMax, TimelineMax} from "gsap"
 import * as d3 from "d3";
-import { StreamCopyUsage } from "three";
 
 const enum Anim { 
     linear = "linear",
@@ -34,6 +33,8 @@ landingPageIn.to("#login", 0, {
 }, 0.8).from("#login .subheading, #login .btn", 0.5, {
     alpha:0, y:5
 }, "+=0.5")
+
+
 
 // FRUITS IN LANDING PAGE
 export const fruitsIn = new TimelineMax();
@@ -69,6 +70,8 @@ fruitsIn.fromTo("#login .fruit", 0.5, {
     rotate:0, transformOrigin: "bottom", repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear"
 })
 
+
+
 // LANDING PAGE OUT ANIMATION
 export const landingPageOut = new TimelineMax();
 landingPageOut.pause();
@@ -88,6 +91,8 @@ landingPageOut.to("#login .subheading, #login .btn", 0.3, {
 }).to("#login", 0, {
     display: "none"
 });
+
+
 
 // ROUND NAME IN
 export const roundPageIn = new TimelineMax();
@@ -118,6 +123,8 @@ roundPageIn.to("#round-name", 0, {
     alpha:1, y:0
 }, 1);
 
+
+
 // ROUND NAME OUT
 export const roundPageOut = new TimelineMax();
 roundPageOut.pause();
@@ -135,6 +142,8 @@ roundPageOut.to("#round-name .description, #round-name .btn, #round-name .number
 }).to("#round-name", 0, {
     display: "none"
 });
+
+
 
 // SHOW END FRAME
 export const endFrameIn = new TimelineMax();
