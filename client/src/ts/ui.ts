@@ -67,7 +67,7 @@ export default class UI {
 
         // set button bindings
         // el("#startBtn").addEventListener("click", this.next.bind(this));
-        el(".next").addEventListener("click", this.next.bind(this));
+        el(".next-btn").addEventListener("click", this.next.bind(this));
         
         // set bindings to animation
         anim.landingPageOut.eventCallback("onComplete", this.showRoundName.bind(this))

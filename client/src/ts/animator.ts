@@ -1,9 +1,22 @@
 import Slider from "./sliderQ";
 import MCQ from "./mcQ";
 import QuickFireQ from "./quickfireQ";
-import {TweenMax, TimelineMax} from "gsap"
+// import {TweenMax, TimelineMax} from "gsap"
 import * as d3 from "d3";
 import { easeBounceInOut } from "d3";
+
+import { gsap } from "gsap";
+// import { ExpoScaleEase, RoughEase, SlowMo } from "gsap/EasePack";
+// import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+// import { TextPlugin } from "gsap/TextPlugin";
+// import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+// import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
+// import { MotionPathHelper } from "gsap/MotionPathHelper";
+// import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+// import { SplitText } from "gsap/SplitText";
+
+// gsap.registerPlugin(MotionPathPlugin, TextPlugin, DrawSVGPlugin, MorphSVGPlugin, MotionPathHelper, ScrambleTextPlugin, SplitText, ExpoScaleEase, RoughEase, SlowMo);
+// gsap.to("#landing", {duration: 1, morphSVG:"#start-btn"});
 
 const enum Anim { 
     linear = "linear",

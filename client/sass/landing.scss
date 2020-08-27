@@ -4,7 +4,7 @@
     .text-wrapper {
         text-align: center;
         @include transition(width 0.2s ease);       
-        @include setBreakpoints(width, 650px, 600px, 550px, 500px, 450px, 400px, 60%, 60%);
+        @include setBreakpoints(width, 900px, 800px, 700px, 600px, 500px, 400px, 60%, 60%);
 
         @include maxMobile {
             max-width: 250px;
@@ -37,11 +37,16 @@
         @include setBreakpoints(font-size, 20px, 20px, 20px, 18px, 18px, 16px, 14px, 14px);
 
         @include minTablet {
-
+            span {
+                display: block;
+            }
         }
 
         @include maxMobile {
             width: 80%;
+            span {
+                display: inline-block;
+            }
         }
     }
 }
