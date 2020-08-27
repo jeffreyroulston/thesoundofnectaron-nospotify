@@ -1,4 +1,4 @@
-import Slider from "./sliderq";
+import Slider from "./slider-q";
 // import MCQ from "./mcQ";
 // import QuickFireQ from "./quickfireQ";
 // import {TweenMax, TimelineMax} from "gsap"
