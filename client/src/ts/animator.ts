@@ -1,6 +1,6 @@
-import Slider from "./sliderQ";
-import MCQ from "./mcQ";
-import QuickFireQ from "./quickfireQ";
+import Slider from "./sliderq";
+// import MCQ from "./mcQ";
+// import QuickFireQ from "./quickfireQ";
 // import {TweenMax, TimelineMax} from "gsap"
 import * as d3 from "d3";
 import { easeBounceInOut } from "d3";
