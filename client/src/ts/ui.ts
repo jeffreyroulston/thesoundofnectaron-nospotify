@@ -1,8 +1,8 @@
 import * as si from "./spotify-interface";
 import * as data from "./data";
-import Slider from "./sliderQ";
-import MCQ from "./mcQ";
-import QuickFireQ from "./quickfireQ";
+import Slider from "./slider-q";
+import MCQ from "./mc-q";
+import QuickFireQ from "./quickfire-q";
 import {el} from "./helpers";
 import {TweenMax, TimelineMax} from "gsap"
 import App from "./app";

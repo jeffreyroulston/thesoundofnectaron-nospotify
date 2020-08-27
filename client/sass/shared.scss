@@ -146,13 +146,19 @@ $mobileWidth: 480px;
   }
   
 @mixin minTablet {
-    @media only screen and (min-width: #{$mobileLargeWidth}) {
+    @media (min-width: #{$mobileLargeWidth}) {
         @content;
       }
 }
 
 @mixin maxMobile {
-    @media only screen and (max-width: #{$mobileLargeWidth}) {
+    @media (max-width: #{$mobileLargeWidth}) {
         @content;
     }
 }
+
+@mixin rwd($screen) {
+    @media (min-width: $screen+'px') {
+        @content;
+    }
+ }
