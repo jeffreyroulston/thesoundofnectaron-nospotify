@@ -1,0 +1,96 @@
+// COLOURS
+$purple : #88009D;
+$orange: #FF1900;
+$beige: #FCF1DB;
+$blue: #00C1F5;
+
+$letterSize: 50px;
+$letterPadding: 40px;
+
+$breakpoints: (phone: 640px, tablet: 768px, desktop: 1024px) !default;
+
+@function center($containerWidth, $elWidth) {
+    @return calc(#{$containerWidth}/2 - (#{$elWidth}.2));
+}
+
+@mixin verticalAlign {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@mixin horizontalAlign {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@mixin centerAlign {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateX(-50%);;
+}
+
+@mixin centerAlign {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translateY(-50%) translateX(-50%);
+    -moz-transform: translateY(-50%) translateX(-50%);
+    -o-transform: translateY(-50%) translateX(-50%);
+    -ms-transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
+}
+
+
+@mixin transform($value) {
+    -webkit-transform: $value;
+    -moz-transform: $value;
+    -o-transform: $value;
+    -ms-transform: $value;
+    transform: $value;
+}
+  
+  @mixin transition($value) {
+    -webkit-transition: $value;
+    -moz-transition: $value;
+    -o-transition: $value;
+    transition: $value;
+}
+
+@font-face {
+    font-family: 'Circular';
+        src: url('fonts/CircularStd-Bold.otf') format('opentype'),
+            url('fonts/CircularStd-Bold.woff') format('woff'),
+            url('fonts/CircularStd-Bold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Circular';
+        src: url('fonts/CircularStd-Book.otf') format('opentype'),
+            url('fonts/CircularStd-Book.woff') format('woff'),
+            url('fonts/CircularStd-Book.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Harbour';
+        src: url('fonts/Harbour-Bold.ttf') format('truetype'),
+            url('fonts/Harbour-Bold.woff') format('woff'),
+            url('fonts/Harbour-Bold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Harbour';
+        src: url('fonts/Harbour-Light.ttf') format('truetype'),
+            url('fonts/Harbour-Light.woff') format('woff'),
+            url('fonts/Harbour-Light.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}

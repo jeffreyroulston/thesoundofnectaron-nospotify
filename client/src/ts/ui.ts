@@ -66,7 +66,7 @@ export default class UI {
         //   }
 
         // set button bindings
-        el("#startBtn").addEventListener("click", this.next.bind(this));
+        // el("#startBtn").addEventListener("click", this.next.bind(this));
         el(".next").addEventListener("click", this.next.bind(this));
         
         // set bindings to animation
@@ -109,7 +109,7 @@ export default class UI {
 
     private showLanding() {
         anim.landingPageIn.play();
-        anim.fruitsIn.play();
+        // anim.fruitsIn.play();
     }
 
     private showRoundName() {

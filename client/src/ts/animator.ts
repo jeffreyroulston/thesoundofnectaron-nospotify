@@ -3,6 +3,7 @@ import MCQ from "./mcQ";
 import QuickFireQ from "./quickfireQ";
 import {TweenMax, TimelineMax} from "gsap"
 import * as d3 from "d3";
+import { easeBounceInOut } from "d3";
 
 const enum Anim { 
     linear = "linear",
@@ -16,59 +17,62 @@ const enum Anim {
 export const landingPageIn = new TimelineMax();
 landingPageIn.pause();
 
-landingPageIn.to("#login", 0, {
+landingPageIn.to("#landing", 0, {
     display: "block"
-}).from(".theSoundOf path:nth-child(even)", 0.8, {
+}).from(".logo-head path:nth-child(even)", 0.8, {
     alpha:0, scale:0, y:50, stagger: {
         each:0.1, from: Anim.random
     }
-}, 0).from(".theSoundOf path:nth-child(odd)", 0.8, {
+}, 0).from(".logo-head path:nth-child(odd)", 0.8, {
     alpha:0, scale:0, y:-50, stagger: {
         each:0.1, from: Anim.random
     }
-}, 0).from(".nectaron path, .nectaron polygon, .nectaron rect", 1, {
+}, 0).from(".logo path, .logo polygon, .logo rect", 2, {
     alpha:0, scale:0, transformOrigin: Anim.center, stagger: {
         each:0.02, from: Anim.random
     }
-}, 0.8).from("#login .subheading, #login .btn", 0.5, {
+}).from("#landing .subheading", 0.3, {
     alpha:0, y:5
-}, "+=0.5")
-
+}, "+=0.5").from("#start-btn", 0.3, {
+    alpha:0, x:-10
+}).to("#start-btn", 0.3, {
+    x:-5, repeat: -1, yoyo: true
+})
 
 
 // FRUITS IN LANDING PAGE
 export const fruitsIn = new TimelineMax();
 fruitsIn.pause();
 
-fruitsIn.fromTo("#login .fruit", 0.5, {
-    alpha:0, scale:0.5
-}, {
-    alpha:1, scale:1, stagger : {each: 0.05, from: "random"}
-}).fromTo("#login .fruit-top", 1, {
-    x:-50, rotate:-30
-}, {
-    x:50, rotate:30, repeat:-1, yoyo:true, ease: Anim.linear
-}).fromTo("#login .fruit-bottom", 1, {
-    y:10, rotate:5
-}, {
-    y:-10, rotate:-5, repeat:-1, yoyo:true, ease: Anim.linear
-}).fromTo("#login .pineapple-top", 0.5, {
-    x:-10
-}, {
-    x:10, repeat:-1, yoyo:true, ease: Anim.linear
-}).fromTo("#login .fruit-bottom-2", 0.5, {
-    x:10
-}, {
-    x:-10, repeat:-1, yoyo:true, ease: Anim.linear
-}).fromTo("#login .fruit-whole", 5, {
-    rotate:0
-}, {
-    rotate:360, repeat:-1, ease: "linear"
-}).fromTo("#login .pineapple-burner", 0.1, {
-    rotate:-1
-}, {
-    rotate:0, transformOrigin: "bottom", repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear"
-})
+// fruitsIn.fromTo("#login .fruit", 0.5, {
+//     alpha:0, scale:0.5
+// }, {
+//     alpha:1, scale:1, stagger : {each: 0.05, from: "random"}
+// }).fromTo("#login .fruit-top", 1, {
+//     x:-50, rotate:-30
+// }, {
+//     x:50, rotate:30, repeat:-1, yoyo:true, ease: Anim.linear
+// }).fromTo("#login .fruit-bottom", 1, {
+//     y:10, rotate:5
+// }, {
+//     y:-10, rotate:-5, repeat:-1, yoyo:true, ease: Anim.linear
+// }).fromTo("#login .pineapple-top", 0.5, {
+//     x:-10
+// }, {
+//     x:10, repeat:-1, yoyo:true, ease: Anim.linear
+// }).fromTo("#login .fruit-bottom-2", 0.5, {
+//     x:10
+// }, {
+//     x:-10, repeat:-1, yoyo:true, ease: Anim.linear
+// }).fromTo("#login .fruit-whole", 5, {
+//     rotate:0
+// }, {
+//     rotate:360, repeat:-1, ease: "linear"
+// }).fromTo("#login .pineapple-burner", 0.1, {
+//     rotate:-1
+// }, {
+//     rotate:0, transformOrigin: "bottom", repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear"
+// })
 
 
 

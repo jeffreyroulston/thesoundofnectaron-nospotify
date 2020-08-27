@@ -1,101 +1,4 @@
-@use 'questions/q';
-
-$letterSize: 50px;
-$letterPadding: 40px;
-
-// COLOURS
-$purple : #88009D;
-$orange: #FF1900;
-$beige: #FCF1DB;
-$blue: #00C1F5;
-
-$breakpoints: (phone: 640px, tablet: 768px, desktop: 1024px) !default;
-
-@function center($containerWidth, $elWidth) {
-    @return calc(#{$containerWidth}/2 - (#{$elWidth}.2));
-}
-
-@mixin verticalAlign {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-@mixin horizontalAlign {
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-@mixin centerAlign {
-    position: relative;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateX(-50%);;
-}
-
-@mixin centerAlign {
-    position: relative;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translateY(-50%) translateX(-50%);
-    -moz-transform: translateY(-50%) translateX(-50%);
-    -o-transform: translateY(-50%) translateX(-50%);
-    -ms-transform: translateY(-50%) translateX(-50%);
-    transform: translateY(-50%) translateX(-50%);
-}
-
-
-@mixin transform($value) {
-    -webkit-transform: $value;
-    -moz-transform: $value;
-    -o-transform: $value;
-    -ms-transform: $value;
-    transform: $value;
-}
-  
-  @mixin transition($value) {
-    -webkit-transition: $value;
-    -moz-transition: $value;
-    -o-transition: $value;
-    transition: $value;
-}
-
-@font-face {
-    font-family: 'Circular';
-        src: url('fonts/CircularStd-Bold.otf') format('opentype'),
-            url('fonts/CircularStd-Bold.woff') format('woff'),
-            url('fonts/CircularStd-Bold.woff2') format('woff2');
-    font-weight: 600;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Circular';
-        src: url('fonts/CircularStd-Book.otf') format('opentype'),
-            url('fonts/CircularStd-Book.woff') format('woff'),
-            url('fonts/CircularStd-Book.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Harbour';
-        src: url('fonts/Harbour-Bold.ttf') format('truetype'),
-            url('fonts/Harbour-Bold.woff') format('woff'),
-            url('fonts/Harbour-Bold.woff2') format('woff2');
-    font-weight: 600;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Harbour';
-        src: url('fonts/Harbour-Light.ttf') format('truetype'),
-            url('fonts/Harbour-Light.woff') format('woff'),
-            url('fonts/Harbour-Light.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-}
+@import "shared";
 
 * {
     margin: 0;
@@ -104,12 +7,26 @@ $breakpoints: (phone: 640px, tablet: 768px, desktop: 1024px) !default;
 
 body {
     background: $beige;
-    // @include transition(background-color 0.5s ease);
-    // transform-origin: bottom;
 }
 
 li {
     list-style: none;
+}
+
+h1 {
+    font-family: "Harbour";
+    font-weight: 600;
+    text-align: left;
+    font-size: 62px;
+    line-height: 1.2;
+}
+
+p {
+    font-family: "Circular";
+    font-weight: 400;
+    text-align: left;
+    font-size: 20px;
+    line-height: 1.5;
 }
 
 #color-wipe {
@@ -152,47 +69,6 @@ li {
     position: fixed;
 }
 
-.btn {
-    width: 120px;
-    display: inline-block;
-    cursor: pointer;
-
-    // .purple, .orange, .orange-2 {
-    //     transition: all 0.1s ease-in-out;
-    // }
-    
-
-    // &:hover {
-    //     .purple {
-    //         fill: $orange;
-    //     }
-
-    //     .orange {
-    //         fill: $purple;
-    //     }
-
-    //     .orange, .orange-2 {
-    //         stroke: $purple;
-    //     }
-    // }
-}
-
-h1 {
-    font-family: "Harbour";
-    font-weight: 600;
-    text-align: left;
-    font-size: 62px;
-    line-height: 1.2;
-}
-
-p {
-    font-family: "Circular";
-    font-weight: 400;
-    text-align: left;
-    font-size: 20px;
-    line-height: 1.5;
-}
-
 .center-wrapper {
     width: 100%;
     text-align: center;
@@ -223,25 +99,29 @@ p {
     }
 }
 
-.heading-size svg {
-    height: 70px;     
+.next-btn {
+    // background: $purple;
+    // width: 50px;
+    // height: 50px;
+    // line-height: 50px;
+    // border-radius: 100%;
+    // display: inline-block;
+
+    svg {
+        width: 50px;
+        // @include transition(stroke 0.2s ease);
+    }
+
+    &:hover {
+        cursor: pointer;
+
+        // svg {
+        //     stroke: $purple;
+        // }
+    }
 }
 
-// .fruitTop {
-//     background-image: url("./assets/fruitTop.png");
-// }
 
-// .fruitBottom {
-//     background-image: url("./assets/fruitBottom.png");
-// }
-
-// .pineappleTop {
-//     background-image: url("./assets/pineappleTop.png");   
-// }
-
-// .fruit {
-//     background-repeat: no-repeat;
-// }
 
 #shared {
     .logo-letters {
@@ -345,107 +225,6 @@ p {
     .fruit {
         position: absolute;
         // display: none
-    }
-}
-
-#login {
-    font-family: 'Circular';
-
-    .subheading {
-        color: $orange;
-        margin: 30px 0px;
-        text-align: center;
-
-        span {
-            display: block;
-        }
-    }
-
-    .theSoundOf {
-        margin-bottom: 10px;
-
-        svg {
-            height: 57px;
-        }
-    }
-
-    .nectaron {
-        path, polygon, rect {
-            fill: $orange;
-            @include transition(fill 1s ease)
-        }
-    }
-
-    .fruits {
-        .fruit-top {
-            width: 140px;
-            right: 185px;
-            top: -220px;
-        }
-
-        .fruit-bottom {
-            width: 190px;
-            right: 160px;
-            top: -50px;
-        }
-
-        .pineapple-top {
-            width: 210px;
-            left: 140px;
-            top: -250px;
-
-            @include transform(rotate(-90deg));
-        }
-
-        .fruit-bottom-2 {
-            width: 190px;
-            left: 370px;
-            top: -160px;
-        
-            @include transform(rotate(-90deg));
-        }
-
-        .pineapple-burner {
-            width: 330px;
-            right: 250px;
-            bottom: -200px;
-        }
-
-        .fruit-whole {
-            width: 180px;
-            left: 300px;
-            bottom: -200px;        
-        }
-
-        // .fruit-top {
-        //     width: 140px;
-        //     right: 178px;
-        //     top: 71px;
-        // }
-
-        // .fruit-bottom {
-        //     width: 190px;
-        //     right: 160px;
-        //     top: 250px;
-        // }
-
-        // .pineapple-top {
-        //     width: 200px;
-        //     left: 0px;
-        //     top:0px;
-        // }
-
-        // .fruit-bottom-2 {
-        //     width: 200px;
-        //     left: 0px;
-        //     top:0px;
-        // }
-
-        // .pineapple-burner {
-        //     width: 300px;
-        //     right: 250px;
-        //     bottom: 100px;
-        // }
     }
 }
 
