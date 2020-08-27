@@ -7,7 +7,7 @@ $blue: #00C1F5;
 $letterSize: 50px;
 $letterPadding: 40px;
 
-$breakpoints: (phone: 640px, tablet: 768px, desktop: 1024px) !default;
+// $breakpoints: (phone: 640px, tablet: 768px, desktop: 1024px) !default;
 
 @function center($containerWidth, $elWidth) {
     @return calc(#{$containerWidth}/2 - (#{$elWidth}.2));
@@ -93,4 +93,66 @@ $breakpoints: (phone: 640px, tablet: 768px, desktop: 1024px) !default;
             url('fonts/Harbour-Light.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
+}
+
+$desktopXLargeWidth: 1920px;
+$desktopLargeWidth: 1366px;
+$desktopWidth: 1280px;
+$tabletLandscapeWidth: 1024px;
+$tabletPortraitWidth: 768px;
+$mobileLargeWidth: 640px;
+$mobileWidth: 480px;
+
+@mixin setBreakpoints($property, $s1, $s2, $s3, $s4, $s5, $s6, $s7, $s8){
+    // anything larger than 1920px
+    @media(min-width: #{$desktopXLargeWidth}) {
+      #{$property}: $s1
+    }
+  
+    // 1366 - 1920px
+    @media only screen and (min-width: #{$desktopLargeWidth}) and (max-width: #{$desktopXLargeWidth}) {
+      #{$property}: $s2
+    }
+
+    // 1280 - 1366px
+    @media only screen and (min-width: #{$desktopWidth}) and (max-width: #{$desktopLargeWidth}) {
+        #{$property}: $s3
+    }
+
+    // 1024 - 1280px
+    @media only screen and (min-width: #{$tabletLandscapeWidth}) and (max-width: #{$desktopWidth}) {
+        #{$property}: $s4
+    }
+
+    // 768 - 1024px
+    @media only screen and (min-width: #{$tabletPortraitWidth}) and (max-width: #{$tabletLandscapeWidth}) {
+        #{$property}: $s5
+    }
+
+    // 640 - 768px
+    @media only screen and (min-width: #{$mobileLargeWidth}) and (max-width: #{$tabletPortraitWidth}) {
+        #{$property}: $s6
+    }
+
+    // 480 - 640px
+    @media only screen and (min-width: #{$mobileWidth}) and (max-width: #{$mobileLargeWidth}) {
+        #{$property}: $s7
+    }
+
+    // up to 480px
+    @media only screen and (max-width: #{$mobileWidth}) {
+      #{$property}: $s8
+    }
+  }
+  
+@mixin minTablet {
+    @media only screen and (min-width: #{$mobileLargeWidth}) {
+        @content;
+      }
+}
+
+@mixin maxMobile {
+    @media only screen and (max-width: #{$mobileLargeWidth}) {
+        @content;
+    }
 }

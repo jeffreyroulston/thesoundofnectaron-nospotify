@@ -1,18 +1,47 @@
 @import 'shared';
 
 #landing {
+    .text-wrapper {
+        text-align: center;
+        @include transition(width 0.2s ease);       
+        @include setBreakpoints(width, 650px, 600px, 550px, 500px, 450px, 400px, 60%, 60%);
+
+        @include maxMobile {
+            max-width: 250px;
+        }
+    }
+
+    .logo, .logo-heading {
+        width: 100%;
+    }
+
+    .logo-mobile {
+        width: 80%;
+        @include maxMobile {
+            display: inline-block;
+        }
+    }
+
     .logo {
-        // NECTARON
-        height: 70px;
+        @include maxMobile {
+            display: none;
+        }
     }
 
     .subheading {
         color: $orange;
         margin: 30px 0px;
         text-align: center;
+        display: inline-block;
 
-        span {
-            display: block;
+        @include setBreakpoints(font-size, 20px, 20px, 20px, 18px, 18px, 16px, 14px, 14px);
+
+        @include minTablet {
+
+        }
+
+        @include maxMobile {
+            width: 80%;
         }
     }
 }
