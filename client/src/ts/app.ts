@@ -1,5 +1,5 @@
 import * as si from "./spotify-interface";
-import * as Questions from "./questions";
+// import * as Questions from "./questions";
 import * as THREE from 'three';
 import UI from "./ui";
 import ResourceManager from "./resource-manager";
@@ -25,7 +25,7 @@ export default class App {
     private ui: UI = new UI(this);
     private profile: si.UserProfile | undefined;
     private topArtists: si.Artist[] | undefined;
-    private answeredQuestions: Questions.Question[] = [];
+    // private answeredQuestions: Questions.Question[] = [];
 
     constructor() {
         this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
@@ -88,7 +88,7 @@ export default class App {
         }
     }
 
-    private QuestionAnswered(totalQuestions: number, questionNumber: number, question: Questions.Question) {
+    // private QuestionAnswered(totalQuestions: number, questionNumber: number, question: Questions.Question) {
         // this is where we aggregate query parameters
         // once we have all questions i.e. TotalQuestions == QuestionNumber, we can get recommendations and make the playlist
         // and the ui will get the recommendations, and playlist information through the data callback
@@ -114,7 +114,7 @@ export default class App {
         //         QueryParameters: params
         //     });
         // }
-    }
+    // }
 
     private OnAuthorised(): void {
         // we can only really get these when we're authorised

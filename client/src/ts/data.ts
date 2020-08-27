@@ -1,4 +1,3 @@
-import * as q from "./questions";
 import * as si from "./spotify-interface";
 import { Colors } from "three";
 
@@ -18,9 +17,44 @@ export const CONTRAST : { [id: string] : string } = {
     "#FFE700" : COLOURS.purple
 }
 
-// to do - random question order in round 3
+export enum QuestionType {
+    Slider,
+    MultiChoice,
+    QuickFire
+}
 
-export const ROUNDS : q.QuestionRound[] = [
+export interface QuestionRound {
+    round : number;
+    color: string;
+    numberColor: string,
+    btnTextColor: string,
+    btnPaddingColor: string,
+    text : string;
+}
+
+export interface Question {
+    params: si.QueryParameters;
+    question : string;
+}
+
+export interface SliderQuestion extends Question {
+    minValue : number,
+    maxValue : number,
+    minTextValue : string,
+    maxTextValue : string,
+    answer : number
+}
+
+export interface MCQuestion extends Question {
+    answer : string;
+}
+
+export interface QuickFireQuestion extends Question {
+    asked : boolean,
+    answer : boolean
+}
+
+export const ROUNDS : QuestionRound[] = [
     {
         round: 1,
         color: COLOURS.red,
@@ -47,10 +81,8 @@ export const ROUNDS : q.QuestionRound[] = [
     }
 ]
 
-export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuestion> = [
+export const sliderQuestions : Array<SliderQuestion> = [
     {
-        round:1,
-        type: q.QuestionType.Slider,
         params: si.QueryParameters.Valence,
         question : "What brew style are you after?",
         minValue : 0,
@@ -60,8 +92,6 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
         answer : 0
     },
     {
-        round:1,
-        type: q.QuestionType.Slider,
         params: si.QueryParameters.Valence,
         question : "How bitter would you like your brew?",
         minValue : 0,
@@ -71,8 +101,6 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
         answer : 0
     },
     {
-        round:1,
-        type: q.QuestionType.Slider,
         params: si.QueryParameters.Valence,
         question : "What mouthfeel would you like?",
         minValue : 0,
@@ -82,8 +110,6 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
         answer : 0
     },
     {
-        round:1,
-        type: q.QuestionType.Slider,
         params: si.QueryParameters.Valence,
         question : "How long would you like to boil for?",
         minValue : 0,
@@ -91,210 +117,102 @@ export var QUESTIONS : Array<q.SliderQuestion | q.MCQuestion | q.QuickFireQuesti
         minTextValue : "0 min",
         maxTextValue : "120 min",
         answer : 0
-    },
+    }
+]
+
+export const mcqQuestions : Array<MCQuestion> = [
     {
-        round:1,
-        type: q.QuestionType.Slider,
-        params: si.QueryParameters.Valence,
-        question : "How strong are the beer goggles on this one?",
-        minValue : 0,
-        maxValue : 100,
-        minTextValue : "Weak",
-        maxTextValue : "Strong",
-        answer : 0
-    },
-    {
-        round: 2,
-        type: q.QuestionType.MultiChoice,
         params: si.QueryParameters.Valence,
         question : "Choose your brewer",
-        options : [
-            {
-                value : "dino",
-                asset : ""
-            },
-            {
-                value : "dragon",
-                asset : ""
-            },
-            {
-                value : "unicorn",
-                asset : ""
-            },
-            {
-                value : "snake",
-                asset : ""
-            },
-            {
-                value : "person",
-                asset : ""
-            },
-        ],
         answer : ""
     },
     {
-        round: 2,
-        type: q.QuestionType.MultiChoice,
         params: si.QueryParameters.Valence,
         question : "Where is this best enjoyed?",
-        options : [
-            {
-                value : "scene1",
-                asset : ""
-            },
-            {
-                value : "scene2",
-                asset : ""
-            },
-            {
-                value : "scene3",
-                asset : ""
-            },
-            {
-                value : "scene4",
-                asset : ""
-            }
-        ],
         answer : ""
     },
     {
-        round: 2,
-        type: q.QuestionType.MultiChoice,
         params: si.QueryParameters.Valence,
         question : "Choose your drinking buddy",
-        options : [
-            {
-                value : "drinking-buddy-1",
-                asset : ""
-            },
-            {
-                value : "drinking-buddy-2",
-                asset : ""
-            }
-        ],
         answer : ""
     },
     {
-        round: 2,
-        type: q.QuestionType.MultiChoice,
         params: si.QueryParameters.Valence,
         question : "Perfect pairing?",
-        options : [
-            {
-                value : "pairing-sushi",
-                asset : ""
-            },
-            {
-                value : "pairing-pizza",
-                asset : ""
-            },
-            {
-                value : "pairing-avo",
-                asset : ""
-            }
-        ],
         answer : ""
     },
     {
-        round: 2,
-        type: q.QuestionType.MultiChoice,
         params: si.QueryParameters.Valence,
         question : "Choose your vessel",
-        options : [
-            {
-                value : "vessel-bottle",
-                asset : ""
-            },
-            {
-                value : "vessel-can",
-                asset : ""
-            },
-            {
-                value : "vessel-glass",
-                asset : ""
-            },
-            {
-                value : "vessel-tumbler",
-                asset : ""
-            }
-        ],
         answer : ""
-    },
+    }
+]
+
+export const qfQuestions : Array<QuickFireQuestion> = [
     {
-        round: 3,
-        type: q.QuestionType.QuickFire,
         params: si.QueryParameters.Valence,
         question: "I’ll have the usual?",
+        asked : false,
         answer: false
     },
     {
-        round: 3,
-        type: q.QuestionType.QuickFire,
         params: si.QueryParameters.Valence,
         question: "Beer in a can over a bottle?",
+        asked : false,
         answer: false
     },
     {
-        round: 3,
-        type: q.QuestionType.QuickFire,
         params: si.QueryParameters.Valence,
         question: "Ketchup should be kept in the fridge?",
+        asked : false,
         answer: false
     },
     {
-        round: 3,
-        type: q.QuestionType.QuickFire,
         params: si.QueryParameters.Valence,
         question: "Hazys over Lagers?",
+        asked : false,
         answer: false
     },
     {
-        round: 3,
-        type: q.QuestionType.QuickFire,
         params: si.QueryParameters.Valence,
         question: "Every Die Hard movie is good?",
+        asked : false,
         answer: false,
     },
     {
-        round: 3,
-        type: q.QuestionType.QuickFire,
         params: si.QueryParameters.Valence,
         question: "German beer over American beer?",
+        asked : false,
         answer: false
     },
     {
-        round: 3,
-        type: q.QuestionType.QuickFire,
         params: si.QueryParameters.Valence,
         question: "You wash your legs in the shower?",
+        asked : false,
         answer: false
     },
     {
-        round: 3,
-        type: q.QuestionType.QuickFire,
         params: si.QueryParameters.Valence,
         question: "Six pack over single serve?",
+        asked : false,
         answer: false
     },
     {
-        round: 3,
-        type: q.QuestionType.QuickFire,
         params: si.QueryParameters.Valence,
         question: "There was enough room for both Jack and Rose on the door?",
+        asked : false,
         answer: false
     },
     {
-        round: 3,
-        type: q.QuestionType.QuickFire,
         params: si.QueryParameters.Valence,
         question: "Brew bars over micro pub?",
+        asked : false,
         answer: false
     },
     {
-        round: 3,
-        type: q.QuestionType.QuickFire,
         params: si.QueryParameters.Valence,
         question: "The Karate Kid is the bad guy in the Karate Kid?",
+        asked : false,
         answer: false
     }
 ]

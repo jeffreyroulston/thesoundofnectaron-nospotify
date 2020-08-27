@@ -1,5 +1,4 @@
 import * as si from "./spotify-interface";
-import * as q from "./questions";
 import * as data from "./data";
 import Slider from "./slider";
 import MCQ from "./mcq";
@@ -23,10 +22,6 @@ enum PageType {
     EndFrame
 }
 
-const enum Anim { 
-    linear = "linear"
-};
-
 export default class UI {
     private app : App;
 
@@ -36,35 +31,29 @@ export default class UI {
 
     private logoLetters : HTMLElement[] = [];
     private currentPage : PageType = PageType.Login;
+
     private currentRoundIdx : number = 0;
-    private currentQuestionIdx : number = -1;
 
-    // private logoTimeline : TimelineMax;
-    // private lpTimeline : TimelineMax;
-
-    private recommendations: si.Track[] | undefined = [];
-    private queryParameters: {[key: string]: q.QueryParameter }  = {
-        "acousticness" : qDefault(),
-        "danceability" : qDefault(),
-        "energy" : qDefault(),
-        "instrumentalness" : qDefault(),
-        "liveness" : qDefault(),
-        "loudness" : qDefault(),
-        "speechiness" : qDefault(),
-        "valence" : qDefault(),
-        "tempo" : qDefault()
-    }
+    // private recommendations: si.Track[] | undefined = [];
+    // private queryParameters: {[key: string]: si.QueryParameter }  = {
+    //     "acousticness" : qDefault(),
+    //     "danceability" : qDefault(),
+    //     "energy" : qDefault(),
+    //     "instrumentalness" : qDefault(),
+    //     "liveness" : qDefault(),
+    //     "loudness" : qDefault(),
+    //     "speechiness" : qDefault(),
+    //     "valence" : qDefault(),
+    //     "tempo" : qDefault()
+    // }
     
     // PUBLIC VARIABLES
     public OnLoginPressed = () => {};
-    public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: q.Question): void}[] = [];
+    // public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: q.Question): void}[] = [];
 
     constructor(app : App) {
         // pass in the app to use for spotify interface
         this.app = app;
-
-        // create the animator
-        // this.animator = new Animator();
 
         // create the questions classes
         this.slider= new Slider(this, "#slider-q");
@@ -77,11 +66,10 @@ export default class UI {
         //   }
 
         // set button bindings
-        // el("#startBtn").addEventListener("click", this.Login.bind(this));
         el("#startBtn").addEventListener("click", this.next.bind(this));
         el(".next").addEventListener("click", this.next.bind(this));
         
-        // anim.landingPageIn.eventCallback("onComplete", this.showRoundName.bind(this))
+        // set bindings to animation
         anim.landingPageOut.eventCallback("onComplete", this.showRoundName.bind(this))
         anim.roundPageOut.eventCallback("onComplete", this.showQuestion.bind(this))
 
@@ -118,10 +106,6 @@ export default class UI {
         }
         
     }
-
-    // private showLogo() {
-    //     this.logoTimeline.play();
-    // }
 
     private showLanding() {
         anim.landingPageIn.play();
@@ -176,27 +160,26 @@ export default class UI {
     }
 
     private showQuestion() { 
-        console.log(this.currentQuestionIdx);
-        this.currentQuestionIdx++;
-        this.currentPage = PageType.Question;
-        var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
-        this.setBG(data.COLOURS.beige);
+        // console.log(this.currentQuestionIdx);
+        // this.currentQuestionIdx++;
+        // this.currentPage = PageType.Question;
+        // var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
+        // this.setBG(data.COLOURS.beige);
 
-        switch(currentQuestion.type) {
-            case q.QuestionType.Slider:
-                this.slider.set(<q.SliderQuestion>currentQuestion);
-                this.slider.show();
-                break;
-            case q.QuestionType.MultiChoice:
-                this.mcq.set(<q.MCQuestion>currentQuestion);
-                this.mcq.show();
-                break;
-            case q.QuestionType.QuickFire:
-                console.log("quick fire")
-                this.qfq.set(<q.QuickFireQuestion>currentQuestion);
-                this.qfq.show();
-                break;
-        }
+        // switch(currentQuestion.type) {
+        //     case q.QuestionType.Slider:
+        //         this.slider.set(<q.SliderQuestion>currentQuestion);
+        //         this.slider.show();
+        //         break;
+        //     case q.QuestionType.MultiChoice:
+        //         this.mcq.set(<q.MCQuestion>currentQuestion);
+        //         this.mcq.show();
+        //         break;
+        //     case q.QuestionType.QuickFire:
+        //         this.qfq.set(<q.QuickFireQuestion>currentQuestion);
+        //         this.qfq.show();
+        //         break;
+        // }
     }
 
     private next() {
@@ -210,24 +193,23 @@ export default class UI {
             
             case PageType.RoundName:
                 anim.roundPageOut.restart();
-                // anim.roundPageOut.play();
                 break;
             
             case PageType.Question:
-                var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
-                if (this.currentQuestionIdx < data.QUESTIONS.length-1) {
-                    // get next question
-                    var nextQuestion = data.QUESTIONS[this.currentQuestionIdx+1];
-                    // check if it's the same or a new round
-                    if (currentQuestion.round < nextQuestion.round) {
-                        this.showRoundName();
-                    } else {
-                        this.showQuestion();
-                    }
-                } else {
-                    // the end!
-                    console.log("the end has been reached");
-                }
+                // var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
+                // if (this.currentQuestionIdx < data.QUESTIONS.length-1) {
+                //     // get next question
+                //     var nextQuestion = data.QUESTIONS[this.currentQuestionIdx+1];
+                //     // check if it's the same or a new round
+                //     if (currentQuestion.round < nextQuestion.round) {
+                //         this.showRoundName();
+                //     } else {
+                //         this.showQuestion();
+                //     }
+                // } else {
+                //     // the end!
+                //     console.log("the end has been reached");
+                // }
                 break;
         }
     }
@@ -239,9 +221,9 @@ export default class UI {
     }
 
     public answerRetrieved(a : any) {
-        data.QUESTIONS[this.currentQuestionIdx].answer = a;
-        console.log(data.QUESTIONS[this.currentQuestionIdx]);
-        this.next();
+        // data.QUESTIONS[this.currentQuestionIdx].answer = a;
+        // console.log(data.QUESTIONS[this.currentQuestionIdx]);
+        // this.next();
     }
 
     public questionsCompleted() {
@@ -264,23 +246,23 @@ export default class UI {
 
     public OnUserData(type: si.DataType, data: si.Data): void {
 
-        switch(type) {
-            case si.DataType.UserProfile:
-                const profile: si.UserProfile = (data as si.UserProfile);
-                if (profile.images != null && profile.DisplayName != null) {
-                    this.ShowUserData(profile.images[0], profile.DisplayName);
-                }
+        // switch(type) {
+        //     case si.DataType.UserProfile:
+        //         const profile: si.UserProfile = (data as si.UserProfile);
+        //         if (profile.images != null && profile.DisplayName != null) {
+        //             this.ShowUserData(profile.images[0], profile.DisplayName);
+        //         }
 
-                break;
+        //         break;
 
-            case si.DataType.Recommendations:
-                this.recommendations = (data as si.Track[]);
-                break;
+        //     case si.DataType.Recommendations:
+        //         this.recommendations = (data as si.Track[]);
+        //         break;
 
-            case si.DataType.TopArtists:
-                // this.artists = (data as si.Artist[]);
-                break;
-        }
+        //     case si.DataType.TopArtists:
+        //         // this.artists = (data as si.Artist[]);
+        //         break;
+        // }
     }
 
 

@@ -2,6 +2,10 @@ export function el(e: string) : HTMLElement{
     return <HTMLElement>document.querySelector(e);
 }
 
+export function find(el : HTMLElement, e: string) {
+    return <HTMLElement>el.querySelector(e);
+}
+
 export function querySelector(query: string, el : HTMLElement | null = null) {
     return el ? el.querySelector<HTMLInputElement>(query) : document.querySelector<HTMLInputElement>(query);
 }
