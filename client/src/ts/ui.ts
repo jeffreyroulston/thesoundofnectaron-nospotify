@@ -73,59 +73,20 @@ export default class UI {
 
         // check if it's fucking internet explorer
         // if (!Modernizr.svg) {
-        //     $(".logo img").attr("src", "images/logo.png");
+        //     console.log("it's internet fucking explorer")
         //   }
-        
-        // get logo letters
-        // var letters = document.querySelectorAll(".logo-letters .letter polygon, .logo-letters .letter path, .logo-letters .letter rect");
-        // for(var i=0; i<letters.length; i++) {
-        //     this.logoLetters.push(<HTMLElement>letters[i]);
-        // }
 
         // set button bindings
         // el("#startBtn").addEventListener("click", this.Login.bind(this));
         el("#startBtn").addEventListener("click", this.next.bind(this));
         el(".next").addEventListener("click", this.next.bind(this));
         
-        // this.playLoader();
-        //  this.showLogin();
-        // this.showRoundName();
-        // this.showQuestion();
-        // this.showEndFrame();
+        // anim.landingPageIn.eventCallback("onComplete", this.showRoundName.bind(this))
+        anim.landingPageOut.eventCallback("onComplete", this.showRoundName.bind(this))
+        anim.roundPageOut.eventCallback("onComplete", this.showQuestion.bind(this))
 
-        // set timelines
-
-
-
-        // LOGO TIMELINE
-        // var offset = 100;
-        // this.logoTimeline = new TimelineMax({delay:0.5, onComplete: ()=> {
-        //     this.showLanding();
-        //     // do a check here
-        // }});
-
-        // this.logoTimeline
-        // .fromTo(".letter-N1", 0.2, {y:-offset}, {y:0})
-        // .from(".letter-E", 0.2, {y:-offset}, 0.1)
-        // .from(".letter-C", 0.2, {y:-offset}, 0.3)
-        // .from(".letter-T", 0.2, {x:-offset}, 0.4)
-        // .from(".letter-A", 0.2, {x:offset}, 0.5)
-        // .from(".letter-R", 0.2, {y:offset}, 0.6)
-        // .from(".letter-O", 0.2, {y:offset}, 0.7)
-        // .from(".letter-N2", 0.2, {y:offset}, 0.8)
-        // this.logoTimeline.pause();
-
-        // this.showLogo();
-
-        anim.landingPageIn.eventCallback("onComplete", ()=> {
-            console.log("landing page in");
-        })
-
-        anim.landingPageOut.eventCallback("onComplete", ()=> {
-            console.log("landing page out");
-        })
-
-        anim.landingPageIn.play();
+        // kick it off
+        this.showLanding();
     }
 
     private setBG(color : string) {
@@ -163,116 +124,15 @@ export default class UI {
     // }
 
     private showLanding() {
-        el("#login").style.display = "block";
-        // this.lpTimeline.play();
-    }
-
-    private showLogin() {
-        this.setBG(data.COLOURS.beige);
-        el("#login").style.display = "block";
-
-        this.showFruits();
-
-        // // bleed in the sound of
-        // TweenMax.from(".theSoundOf path", 0.75,{
-        //     alpha:0, y:-50, scale:0, transformOrigin: "bottom", stagger: {
-        //         each: 0.1, from:"random",
-        //     }
-        // });
-
-        // // bleed in nectaron
-        // TweenMax.from(".nectaron path, .nectaron polygon, .nectaron rect", 0.75, {
-        //     alpha:0, y:50, scale:0, transformOrigin: "top", stagger: {
-        //         each: 0.05, from:"random"
-        //     }
-        // });
-
-        // loop the bloods
-        // TweenMax.fromTo(".nectaron path, .nectaron polygon, .nectaron rect", 1, {
-        //     scale: 1
-        // }, {
-        //     scale:1.1, transformOrigin: "center", delay: 1, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear"
-        // });
-
-        // show subheading and button
-        // TweenMax.from("#login .subheading, #login .btn", 0.5, {
-        //     alpha:0, y:5, delay: 1.8
-        // });
-    }
-
-    private showFruits() {
-        var d = 1.8;
-
-        var fruitsIn = new TimelineMax();
-        fruitsIn.fromTo("#login .fruit", 0.5, {
-                alpha:0, scale:0.5
-            }, {
-                alpha:1, scale:1, stagger : {each: 0.05, from: "random"}
-            }).fromTo("#login .fruit-top", 1, {
-                x:-50, rotate:-30
-            }, {
-                x:50, rotate:30, repeat:-1, yoyo:true, ease: Anim.linear
-            }).fromTo("#login .fruit-bottom", 1, {
-                y:10, rotate:5
-            }, {
-                y:-10, rotate:-5, repeat:-1, yoyo:true, ease: Anim.linear
-            }).fromTo("#login .pineapple-top", 0.5, {
-                x:-10
-            }, {
-                x:10, repeat:-1, yoyo:true, ease: Anim.linear
-            }).fromTo("#login .fruit-bottom-2", 0.5, {
-                x:10
-            }, {
-                x:-10, repeat:-1, yoyo:true, ease: Anim.linear
-            })
-    
-
-        // bring in fruits
-        // TweenMax.from("#login .fruit", 0.5, {
-        //     alpha:0, scale:0.5, stagger : {
-        //         each: 0.05, from: "random"
-        //     }, delay:d
-        // })
-
-        // TweenMax.fromTo("#login .fruit-top", 1, {
-        //     x:-50, rotate:-30
-        // }, {
-        //     x:50, rotate:30, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
-        // })
-
-        // TweenMax.fromTo("#login .fruit-bottom", 1, {
-        //     y:10, rotate:5
-        // }, {
-        //     y:-10, rotate:-5, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
-        // })
-
-        // TweenMax.fromTo("#login .pineapple-top", 0.5, {
-        //     x:-10
-        // }, {
-        //     x:10, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
-        // })
-
-        // TweenMax.fromTo("#login .fruit-bottom-2", 0.5, {
-        //     x:10
-        // }, {
-        //     x:-10, repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
-        // })
-
-        TweenMax.fromTo("#login .fruit-whole", 5, {
-            rotate:0
-        }, {
-            rotate:360, repeat:-1, ease: "linear", delay:d
-        })
-
-        TweenMax.fromTo("#login .pineapple-burner", 0.1, {
-            rotate:-1
-        }, {
-            rotate:0, transformOrigin: "bottom", repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear", delay:d
-        })
+        anim.landingPageIn.play();
+        anim.fruitsIn.play();
     }
 
     private showRoundName() {
+        // set current page to be a round
         this.currentPage = PageType.RoundName;
+
+        // increment the current round
         this.currentRoundIdx++;
         var currentRound = data.ROUNDS[this.currentRoundIdx-1];
 
@@ -293,59 +153,25 @@ export default class UI {
             let e = <HTMLElement>elems[i];
             e.style.fill = currentRound.btnTextColor;
         }
-        
-        // set the things
+       
+        // do the background
         this.setBG(currentRound.color);
-        el("#round-name .description").innerHTML = currentRound.text;
-        el("#round-name").style.display = "block";
 
-        // bleed in round
-        TweenMax.fromTo(".round path", 0.75, {
-            alpha:0, y:-50, scale:0, transformOrigin: "bottom"
-        }, {
-            alpha:1, y:0, scale:1, stagger: {
-                each: 0.1, from:"random"
-        }});
+        // play animation
+        anim.roundPageIn.restart();
 
-        // swing in numbers
-        TweenMax.fromTo("#round-name .numbers li:first-child", 0.5, {
-            alpha:0, y:50
-        }, {
-            alpha:1, y:0, delay:0.4
-        });
-        
+        // bring in round number
         TweenMax.fromTo("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {
             alpha:0, scale:0.5, y:-50, rotate:-120
         }, {
             alpha:1, scale:1, y:0, rotate:0, delay:0.5
         });
 
-        // bring in the fruit
-        TweenMax.fromTo("#round-name .fruit-whole", 1, {
-            alpha: 0, y:-500, x:500, rotate:360
-        }, {
-            alpha:1, y:0, x:0, rotate:0, delay:0.5, ease: "linear"
-        })
-
-        // bop the fruit
-        TweenMax.fromTo("#round-name .fruit-whole", 1, {
-            rotate:0, y:0
-        }, {
-            rotate: -5, y:20, delay:1.5, repeat:-1, yoyo: true, yoyoEase: "linear"
-        })
-
         // show the round name
         TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.75, {
             display:"block", alpha:0, x:-50
         }, {
             alpha:1, x:0, delay:0.8
-        });
-
-        // show the description box
-        TweenMax.fromTo("#round-name .description, #round-name .btn", 0.6, {
-            alpha:0, y:20
-        }, {
-            alpha:1, y:0, delay:1
         });
     }
 
@@ -374,65 +200,17 @@ export default class UI {
     }
 
     private next() {
-        console.log("next");
-        // hide current page
-        // show next page
         switch (this.currentPage) {
             case PageType.Login:
-                //hide button
-                // TweenMax.to("#login .subheading, #login .btn", 0.3, {
-                //     alpha:0
-                // });
-                
-                // bleed out logo
-                // TweenMax.to("#login .bleed path, #login .bleed polygon, #login .bleed rect", 0.5, {
-                //     alpha:0, y:0, scale:0, transformOrigin: "center", stagger: {
-                //         each: 0.005, from:"random"
-                //     }
-                // });
-
-                // hide the fruits
-                // TweenMax.to("#login .fruit", 0.5, {
-                //     alpha:0, scale:0.5, stagger : {
-                //         each: 0.05, from: "random"
-                //     }
-                // })
-                
-                //hide login
-                // TweenMax.to("#login", 0, {
-                //     display: "none", delay: 0.5, onComplete: this.showRoundName.bind(this)
-                // });
+                anim.landingPageIn.pause();
+                anim.fruitsIn.pause();
 
                 anim.landingPageOut.play();
                 break;
             
             case PageType.RoundName:
-                //hide button
-                TweenMax.to("#round-name .description, #round-name .btn, #round-name .numbers li", 0.5, {
-                    alpha:0, y:20
-                });
-
-                TweenMax.to(".round-name-text li", 0.5, {
-                    alpha:0, x:-50
-                });
-
-                // bleed out round
-                TweenMax.to(".round path", 0.5, {
-                    alpha:0, y:0, scale:0, stagger: {
-                        each: 0.05, from:"random"
-                    }
-                });
-
-                // hide fruit {
-                TweenMax.to("#round-name .fruit-whole", 0.5, {
-                    rotate:0, y:-20, alpha:0
-                })
-
-                //hide login
-                TweenMax.to("#round-name", 0, {
-                    display: "none", delay: 0.5, onComplete: this.showQuestion.bind(this)
-                });
-
+                anim.roundPageOut.restart();
+                // anim.roundPageOut.play();
                 break;
             
             case PageType.Question:
@@ -457,28 +235,7 @@ export default class UI {
     private showEndFrame() {
         this.currentPage = PageType.EndFrame;
         this.setBG(data.COLOURS.beige);
-        el("#end-frame").style.display = "block";
-        
-        // slide in title
-        TweenMax.fromTo("#playlist-title", 0.3, {
-            alpha:0, x:-20
-        }, {
-            alpha:1, x:0, delay:0.4
-        })
-
-        // slide in description
-        TweenMax.fromTo("#playlist-desc", 0.3, {
-            alpha:0, x:-20
-        }, {
-            alpha:1, x:0, delay:0.5
-        })
-
-        // show playlist cover
-        TweenMax.fromTo("#album-cover", 0.3, {
-            alpha:0, scale:0.5
-        }, {
-            alpha: 1, scale:1, delay: 0.7
-        })
+        anim.endFrameIn.play();
     }
 
     public answerRetrieved(a : any) {
@@ -497,14 +254,9 @@ export default class UI {
 
     // CALLBACK FROM APP
     public loginSuccessful() {
-        // console.log("login successful");
         this.next();
         // this.showRoundName();
     }
-
-    // public showLanding() {
-    //     this.showLogo();
-    // }
 
     public startRounds() {
         this.showRoundName();
