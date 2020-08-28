@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import UI from "./ui";
 import ResourceManager from "./resource-manager";
 import Graphics from "./graphics";
+import { timeThursday } from "d3";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
 let REDIRECT_URI: string = "http://localhost:8888";
@@ -19,7 +20,7 @@ let SCOPES: string[] = [
 
 export default class App {
     private spotifyInterface: si.SpotifyInterface;
-    // private graphics: Graphics = new Graphics();
+    private graphics: Graphics = new Graphics();
     private resourceManager: ResourceManager = new ResourceManager();
     // private ui: UI = new UI(this.graphics);
     private ui: UI = new UI(this);
@@ -56,10 +57,14 @@ export default class App {
         // this.ui.OnLoginPressed = this.Login;
         // this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
 
-        // this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png").then(() => {
-        //     this.graphics.onInitResources(this.resourceManager);
-        // });
+        this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png").then(() => {
+            this.graphics.onInitResources(this.resourceManager);
+        });
 
+        // transition finished callback here
+        this.graphics.transitionedCallback = () => {
+            this.ui.bgTransitionComplete();
+        }
         // this below was just for testing
         // is also a great example for how to switch colour in the background
         // setInterval(() => {
@@ -72,6 +77,11 @@ export default class App {
         // this.resourceManager.loadResourceByPath(HTMLImageElement, "")
 
         // console.log("app initialised", this.spotifyInterface);
+        // this.switchGraphics();
+    }
+
+    public switchGraphics(color : THREE.Color) {
+        this.graphics.switchColor(color, 0.5)
     }
 
     public Login() {

@@ -32,6 +32,7 @@ export default class UI {
     private currentPage : PageType = PageType.Login;
     private currentRoundIdx : number = 0;
 
+    private graphicsEl = el("#canvas-container");
     private colorWipeEl = el("#color-wipe");
     private landingPageEl = el("#landing");
     private roundPageEl = el("#round-name");
@@ -78,35 +79,38 @@ export default class UI {
 
         // kick it off
         this.showLanding();
+        // this.showRoundName();
     }
 
     private setBG(color : string) {
-        // // sets background colour based on page
-        var origins = ["bottom", "right"];
-        // var origin = origins[Math.floor(Math.random() * origins.length)];
-        var origin = "bottom";
+        // // // sets background colour based on page
+        // var origins = ["bottom", "right"];
+        // // var origin = origins[Math.floor(Math.random() * origins.length)];
+        // var origin = "bottom";
 
-        // set the background colour
+        // // set the background colour
         el("body").style.backgroundColor = color;
 
-        // set logo colours - set it to the contrast of the background colour
-        this.logoLetters.forEach(el => {
-            el.style.fill = data.CONTRAST[color];
-        });
+        // // set logo colours - set it to the contrast of the background colour
+        // this.logoLetters.forEach(el => {
+        //     el.style.fill = data.CONTRAST[color];
+        // });
         
-        // to do - why doesn't top and left work?
-        // origin determines direction
-        if (origin == "top" || origin == "bottom") {
-            TweenMax.to(this.colorWipeEl, 5, {height: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
-                this.colorWipeEl.style.backgroundColor = color;
-                this.colorWipeEl.style.height = "100vh";
-            }})
-        } else {
-            TweenMax.to(this.colorWipeEl, 5, {width: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
-                this.colorWipeEl.style.backgroundColor = color;
-                this.colorWipeEl.style.width = "100%";
-            }})
-        }
+        // // to do - why doesn't top and left work?
+        // // origin determines direction
+        // if (origin == "top" || origin == "bottom") {
+        //     TweenMax.to(this.colorWipeEl, 5, {height: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
+        //         this.colorWipeEl.style.backgroundColor = color;
+        //         this.colorWipeEl.style.height = "100vh";
+        //     }})
+        // } else {
+        //     TweenMax.to(this.colorWipeEl, 5, {width: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
+        //         this.colorWipeEl.style.backgroundColor = color;
+        //         this.colorWipeEl.style.width = "100%";
+        //     }})
+        // }
+
+        this.app.switchGraphics(data.COLOURS_THREE[color]);
         
     }
 
@@ -126,6 +130,8 @@ export default class UI {
 
         // show the round page
         this.roundPageEl.style.display = "block";
+
+        // el("body").style.color = currentRound.color;
 
         // // reset the cookie
         // document.cookie = "showLanding"
@@ -149,21 +155,21 @@ export default class UI {
         this.setBG(currentRound.color);
 
         // // play animation
-        // anim.roundPageIn.restart();
+        anim.roundPageIn.restart();
 
         // // bring in round number
-        // TweenMax.fromTo("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {
-        //     alpha:0, scale:0.5, y:-50, rotate:-120
-        // }, {
-        //     alpha:1, scale:1, y:0, rotate:0, delay:0.5
-        // });
+        TweenMax.fromTo("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {
+            alpha:0, scale:0.5, y:-50, rotate:-120
+        }, {
+            alpha:1, scale:1, y:0, rotate:0, delay:0.5
+        });
 
-        // // show the round name
-        // TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.75, {
-        //     display:"block", alpha:0, x:-50
-        // }, {
-        //     alpha:1, x:0, delay:0.8
-        // });
+        // show the round name
+        TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.75, {
+            display:"block", alpha:0, x:-50
+        }, {
+            alpha:1, x:0, delay:0.8
+        });
     }
 
     private showQuestion() { 
@@ -194,7 +200,6 @@ export default class UI {
             case PageType.Login:
                 anim.landingPageIn.pause();
                 anim.fruitsIn.pause();
-
                 anim.landingPageOut.play();
                 break;
             
@@ -225,6 +230,11 @@ export default class UI {
         this.currentPage = PageType.EndFrame;
         this.setBG(data.COLOURS.beige);
         anim.endFrameIn.play();
+    }
+
+    public bgTransitionComplete() {
+        // this.graphicsEl.style.display = "none";
+        console.log("background transition complete");
     }
 
     public answerRetrieved(a : any) {

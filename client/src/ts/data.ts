@@ -1,5 +1,6 @@
 import * as si from "./spotify-interface";
 import { Colors } from "three";
+import * as THREE from 'three';
 
 export const COLOURS = {
     beige : "#FCF1DB",
@@ -7,6 +8,14 @@ export const COLOURS = {
     purple : "#88009D",
     blue : "#00C1F5",
     yellow: "#FFE700"
+}
+
+export const COLOURS_THREE : { [id: string] : THREE.Color } = {
+    "#FCF1DB" : new THREE.Color(0xFCF1DB),
+    "#FF2000" : new THREE.Color(0xFF2000),
+    "#88009D" : new THREE.Color(0x88009D),
+    "#00C1F5" : new THREE.Color(0x00C1F5),
+    "#FFE700" : new THREE.Color(0xFFE700)
 }
 
 export const CONTRAST : { [id: string] : string } = {

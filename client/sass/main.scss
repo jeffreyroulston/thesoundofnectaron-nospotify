@@ -1,4 +1,5 @@
 @import "shared";
+@import "round";
 
 * {
     margin: 0;
@@ -38,26 +39,26 @@ p {
 }
 
 #color-wipe {
-    height: 100vh; // make this compatible with iphone scroll
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: $beige;
+    // height: 100vh; // make this compatible with iphone scroll
+    // width: 100%;
+    // position: absolute;
+    // top: 0;
+    // left: 0;
+    // background-color: $beige;
 }
 
-// #canvas-container {
-//     background-color: $beige;
-//     position: absolute;
-//     height: 100vh; // make this compatible with iphone scroll
-//     width: 100%;
-// }
+#canvas-container {
+    background-color: $beige;
+    position: absolute;
+    height: 100vh; // make this compatible with iphone scroll
+    width: 100%;
+}
 
-// #graphics-canvas {
-//     display:block;
-//     height: 100vh !important; // make this compatible with iphone scroll
-//     width: 100% !important;
-// }
+#graphics-canvas {
+    display:block;
+    height: 100vh !important; // make this compatible with iphone scroll
+    width: 100% !important;
+}
 
 .container {
     position: relative;

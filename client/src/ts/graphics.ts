@@ -28,7 +28,7 @@ const fragShader = `
 
 
         vec2 aspectCorrectedUV = vUv * size;
-        vec4 texCol = texture2D(noiseTexture, aspectCorrectedUV * 0.02 * pixelRatio);
+        vec4 texCol = texture2D(noiseTexture, aspectCorrectedUV * 0.0015 * pixelRatio);
 
         float pixelValue = texCol.r * 0.8 + 0.1;
 
@@ -61,6 +61,9 @@ export default class Graphics {
     // colors
     private firstColor: THREE.Color = new THREE.Color(COLOURS.beige);
     private secondColor: THREE.Color = new THREE.Color(COLOURS.beige);
+
+    public transitionedCallback: () => void = () => {};
+    private transitionCallbackFired: boolean = false;
 
     constructor() {
         this.renderer = new THREE.WebGLRenderer({antialias: true});
@@ -126,6 +129,8 @@ export default class Graphics {
     }
 
     public switchColor(newColour: THREE.Color, time: number) {
+        this.transitionCallbackFired = false;
+
         this.firstColor.copy(this.secondColor);
         this.secondColor.copy(newColour);
 
@@ -165,7 +170,15 @@ export default class Graphics {
         const time = this.clock.getElapsedTime();
 
         this.currentLerp += this.lerpRate * dt;
-        this.currentLerp = Math.min(this.currentLerp, 1.0);
+        if (this.currentLerp > 1.0) {
+            if (this.transitionCallbackFired == false && this.transitionedCallback !== undefined) {
+                this.transitionCallbackFired = true;
+                this.transitionedCallback();
+            }
+
+            this.currentLerp = 1.0;
+        }
+        // this.currentLerp = Math.min(this.currentLerp, 1.0);
 
         this.material.uniforms.time.value = time;
         this.material.uniforms.lerp.value = this.currentLerp;
