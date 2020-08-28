@@ -1,22 +1,16 @@
 import Slider from "./slider-q";
 // import MCQ from "./mcQ";
 // import QuickFireQ from "./quickfireQ";
-// import {TweenMax, TimelineMax} from "gsap"
 import * as d3 from "d3";
 import { easeBounceInOut } from "d3";
 
-import { gsap } from "gsap";
-// import { ExpoScaleEase, RoughEase, SlowMo } from "gsap/EasePack";
-// import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-// import { TextPlugin } from "gsap/TextPlugin";
-// import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
-// import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
-// import { MotionPathHelper } from "gsap/MotionPathHelper";
-// import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
-// import { SplitText } from "gsap/SplitText";
+import gsap from "gsap";
+import {TimelineMax} from "gsap";
+import { DrawSVGPlugin } from "gsap/dist/DrawSVGPlugin";
+import { MorphSVGPlugin } from "gsap/dist/MorphSVGPlugin";
 
-// gsap.registerPlugin(MotionPathPlugin, TextPlugin, DrawSVGPlugin, MorphSVGPlugin, MotionPathHelper, ScrambleTextPlugin, SplitText, ExpoScaleEase, RoughEase, SlowMo);
-// gsap.to("#landing", {duration: 1, morphSVG:"#start-btn"});
+gsap.registerPlugin(DrawSVGPlugin, MorphSVGPlugin);
+// TweenMax.to("#landing", {duration: 1, morphSVG:"#start-btn"});
 
 const enum Anim { 
     linear = "linear",
@@ -27,30 +21,36 @@ const enum Anim {
 };
 
 // LANDING PAGE IN ANIMATION
-export const landingPageIn = new TimelineMax();
+export const landingPageIn = gsap.timeline({delay:0.5});
 landingPageIn.pause();
 
 landingPageIn.to("#landing", 0, {
     display: "block"
-}).from(".logo-head path:nth-child(even)", 0.8, {
-    alpha:0, scale:0, y:50, stagger: {
+}).from(".logo-head path:nth-child(even)", 1, {
+    alpha:0, scale:0, rotation:45, y:50, stagger: {
         each:0.1, from: Anim.random
     }
-}, 0).from(".logo-head path:nth-child(odd)", 0.8, {
-    alpha:0, scale:0, y:-50, stagger: {
+}, 0.5).from(".logo-head path:nth-child(odd)", 1, {
+    alpha:0, scale:0, rotation:-45, y:-200, stagger: {
         each:0.1, from: Anim.random
     }
-}, 0).from(".logo path, .logo polygon, .logo rect", 2, {
+}, 0.5).from(".logo path, .logo polygon, .logo rect", 1, {
     alpha:0, scale:0, transformOrigin: Anim.center, stagger: {
-        each:0.02, from: Anim.random
+        each:0.04, from: Anim.random
     }
-}).from("#landing .subheading", 0.3, {
+}, 0).from("#landing .subheading", 0.5, {
     alpha:0, y:5
-}, "+=0.5").from("#start-btn", 0.3, {
+}, "+=0.2").from("#start-btn", 0.5, {
     alpha:0, x:-10
-}).to("#start-btn", 0.3, {
+}).to("#start-btn *", 0.3, {
     x:-5, repeat: -1, yoyo: true
 })
+
+
+// var shapes = "path, rects, stroke";
+// landingPageIn.to("#circle", 2, {morphSVG: "#test"})
+// landingPageIn.to("#circle", {duration: 2, morphSVG: "#hippo"})
+// landingPageIn.from(shapes, 2, {alpha:0});
 
 
 // FRUITS IN LANDING PAGE
@@ -93,19 +93,19 @@ fruitsIn.pause();
 export const landingPageOut = new TimelineMax();
 landingPageOut.pause();
 
-landingPageOut.to("#login .subheading, #login .btn", 0.3, {
+landingPageOut.to("#landing .subheading, #login .btn", 0.3, {
     alpha:0
-}, 0).to("#login .bleed path, #login .bleed polygon, #login .bleed rect", 0.5, {
+}, 0).to("#landing .bleed path, #landing .bleed polygon, #landing .bleed rect", 0.5, {
     alpha:0, y:0, scale:0, transformOrigin: Anim.center, stagger: {
         each: 0.02, from: Anim.random
     }
-}, 0).to("#login .fruit", 0.5, {
+}, 0).to("#landing .fruit", 0.5, {
     alpha:0, scale:0.5, stagger : {
         each: 0.05, from: Anim.random
     }
-}, 0).from("#login .subheading, #login .btn", 0.5, {
+}, 0).from("#landing .subheading, #landing .btn", 0.5, {
     alpha:0, y:5
-}).to("#login", 0, {
+}).to("#landing", 0, {
     display: "none"
 });
 
@@ -115,9 +115,7 @@ landingPageOut.to("#login .subheading, #login .btn", 0.3, {
 export const roundPageIn = new TimelineMax();
 roundPageIn.pause();
 
-roundPageIn.to("#round-name", 0, {
-    display: "block"
-}).fromTo(".round path", 0.75, {
+roundPageIn.fromTo(".round path", 0.75, {
     alpha:0, y:-50, scale:0, transformOrigin: Anim.bottom
 }, {
     alpha:1, y:0, scale:1, stagger: {

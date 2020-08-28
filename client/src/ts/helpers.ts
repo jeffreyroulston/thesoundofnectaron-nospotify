@@ -6,8 +6,13 @@ export function find(el : HTMLElement, e: string) {
     return <HTMLElement>el.querySelector(e);
 }
 
-export function querySelector(query: string, el : HTMLElement | null = null) {
-    return el ? el.querySelector<HTMLInputElement>(query) : document.querySelector<HTMLInputElement>(query);
+export function elList(e: string) {
+    var elements : HTMLElement[] = [];
+    document.querySelectorAll(e).forEach(el => {
+        elements.push(<HTMLElement>el)
+    });
+    return elements;
+    
 }
 
 export function px (n : number) : string{
