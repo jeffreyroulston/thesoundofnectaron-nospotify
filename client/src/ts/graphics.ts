@@ -35,7 +35,7 @@ const fragShader = `
         float pixel = smoothstep(pixelValue - 0.05, pixelValue + 0.05, lerp);
         vec3 interpedColor = mix(firstColor, secondColor, pixel);
 
-        gl_FragColor = vec4(interpedColor, 1.0);
+        gl_FragColor = vec4(interpedColor, pixel);
         // gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
         // gl_FragColor = vec4(vec3(pixel), 0.0);
     }
@@ -67,7 +67,7 @@ export default class Graphics {
 
     constructor() {
         this.renderer = new THREE.WebGLRenderer({antialias: true});
-        // this.renderer.setClearColor(COLOURS.beige)
+        this.renderer.setClearAlpha(0.0);
         this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
 
