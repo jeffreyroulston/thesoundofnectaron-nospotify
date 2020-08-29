@@ -243,7 +243,7 @@ export default class Slider {
         this.imgs = [];
 
         // set perspective?
-        TweenMax.to(".slider-q3", 0, {perspective:800})
+        TweenMax.to(this.imgEl, 0, {perspective:800})
 
         // create children and add to images
         for (var i=1; i<this.count+1; i++) {
@@ -308,6 +308,44 @@ export default class Slider {
     private showQ4() {}
     private callbackQ4(e: any) {}
 
+    private showQ5() {
+        console.log("show question five");
+        
+        // HANDS
+        this.count = 5;
+
+        // set perspective?
+        TweenMax.to(this.imgEl, 0, {perspective:800})
+
+        // add all the different states (sun, clouds) to imgs
+        for (var i=1; i<this.count+1; i++) {
+            this.imgs.push(f.el(".slider-q5 li:nth-child(" + i.toString() + ")"));
+        }
+
+        // show the block
+        TweenMax.fromTo(".slider-q5 li:first-child", 5, {
+            alpha:0,rotationX:90,
+        }, {
+            alpha:1, rotationX:0, transformOrigin: "bottom", delay:this.delay+0.2
+        })
+    }
+
+    private callbackQ5(e: any) {
+        // get value from slider
+        this.sliderValue = e.srcElement.value;
+        var ratio = 100/this.count;
+        
+        var v = this.sliderValue / ratio;
+        var idx = Math.ceil(v);
+        idx = idx < 1 ? 1 : idx; // always at least zero
+
+        var max = idx * ratio;
+        var multiplier = (max - this.sliderValue)/ratio;
+
+        this.imgs[idx-1].style.opacity = multiplier.toString();
+        this.imgs[idx].style.opacity = ( 1- multiplier).toString();
+    }
+
     sliderChange(e: any){
         this.sliderValue = e.srcElement.value;
          this.sliderWidthEl = e.srcElement.clientWidth;
@@ -328,7 +366,7 @@ export default class Slider {
     }
 
     sliderValueSet(e:any) {
-        if (this.questionIdx < 2) {
+        if (this.questionIdx < 5) {
             // lock in slider value to answer
             this.questions[this.questionIdx].answer = e.srcElement.value;;
 
@@ -343,14 +381,16 @@ export default class Slider {
             this.showQ1.bind(this),
             this.showQ2.bind(this),
             this.showQ3.bind(this),
-            this.showQ4.bind(this)
+            this.showQ4.bind(this),
+            this.showQ5.bind(this)
         ];
 
         var callbackFunctions = [
             this.callbackQ1.bind(this),
             this.callbackQ2.bind(this),
             this.callbackQ3.bind(this),
-            this.callbackQ4.bind(this)
+            this.callbackQ4.bind(this),
+            this.callbackQ5.bind(this)
         ];
 
         if (this.questionIdx < this.questions.length-1) {

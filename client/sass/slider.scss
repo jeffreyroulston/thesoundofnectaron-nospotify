@@ -1,24 +1,29 @@
 @import "shared";
 
+$marginTop : 30vh;
+$marginTop2 : 10vh;
+
 #slider-q {
     .col-wrapper {
         &.text-column {
-            margin-top: 30vh;
+            margin-top: $marginTop;
         }
     }
 
-    .slider-q1 {
-        margin-top: 30vh;
-
+    .slider-q {
+        text-align: center;
+        display: none;
         width: 100%;
+    }
+
+    .slider-q1, .slider-q5 {
+        margin-top: $marginTop;
         position: relative;
 
         li {
             width: inherit;
             position: absolute;
             opacity: 0;
-            border: 1x solid blue;
-
             transform-origin: center;
 
             img {
@@ -28,9 +33,6 @@
     }
 
     .slider-q2 {
-        display: none;
-        width: 100%;
-
         .scale-top, .scale-bottom {
             height: 50vh;
             text-align: center;
@@ -60,10 +62,6 @@
     }
 
     .slider-q3 {
-        text-align: center;
-        display: none;
-        width: 100%;
-
         margin: 0;
         padding: 0;
         height: 100vh; // make this compatible with iphone scroll
@@ -93,18 +91,26 @@
             // }
 
             &.sharp {
-                background-image: url("./assets/round2/q0_1.png");
+                background-image: url("./assets/round2/q3_1.png");
                 background-size: auto 100%;
                 background-repeat: no-repeat;
                 background-position: center;
             }
 
             &.round {
-                background-image: url("./assets/round2/q0_0.png");
+                background-image: url("./assets/round2/q3_0.png");
                 background-size: 100% auto;
                 background-repeat: no-repeat;
                 background-position: center;
             }
+        }
+    }
+
+    .slider-q5 {
+        margin-top: $marginTop2;
+        li {
+            width: 120%;
+            left:-10%;
         }
     }
 
