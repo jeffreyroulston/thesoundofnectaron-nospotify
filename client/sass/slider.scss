@@ -29,6 +29,34 @@
 
     .slider-q2 {
         display: none;
+        width: 100%;
+
+        .scale-top, .scale-bottom {
+            height: 50vh;
+            text-align: center;
+            position: relative;
+
+            img {
+                @include horizontalAlign();
+                position: absolute;
+                display: inline-block;
+                width: 200px;
+            }
+        }
+
+        .scale-top {
+            img {
+                bottom: 0px;
+            }
+
+            z-index: 100;
+        }
+
+        .scale-bottom {
+            img {
+                top: 0px;
+            }
+        }
     }
 
     // .fruits {

@@ -14,13 +14,12 @@ export default class Slider {
     private delay = 0.7;
     private time = 0.3;
 
-    private sliderEl : HTMLElement;
+    private sliderEl : HTMLInputElement;
     private sliderThumbEl : HTMLElement;
     private sliderWidthEl : number = 0;
 
-
-    // private topFruitElement : HTMLElement;
-    // private bottomFruitElement : HTMLElement;
+    private topFruitElement : HTMLElement;
+    private bottomFruitElement : HTMLElement;
 
     private questionElement: HTMLElement;
     private minValueLabel : HTMLElement;
@@ -63,14 +62,15 @@ export default class Slider {
         this.maxValueLabel = f.find(this.el, "#max-value-label");
 
         // slider arrow
-        this.sliderEl = f.find(this.el, ".slider-input");
+        this.sliderEl = <HTMLInputElement>f.find(this.el, ".slider-input");
         this.sliderThumbEl = f.find(this.el, " .slider-thumb");
 
         this.showCurrentQuestion = this.showQ1.bind(this);
         this.callbackCurrentQuestion = this.callbackQ1.bind(this)
 
-        // this.topFruitElement = el(this.el+ " .fruit-top img");
-        // this.bottomFruitElement = el(this.el + " .fruit-bottom img");
+        // INITALISING FOR QUESTION TWO
+        this.topFruitElement = f.find(this.el, " .fruit-top img");
+        this.bottomFruitElement = f.find(this.el, " .fruit-bottom img");
         // this.questionElement = el(this.el + " .question");
 
         // // console.log(this.el, this.sliderEl, this.sliderThumb, this.topFruitElement, this.bottomFruitElement, this.questionElement);
@@ -98,6 +98,11 @@ export default class Slider {
             // set question labels
             this.minValueLabel.innerHTML = q.minTextValue.toString();
             this.maxValueLabel.innerHTML = q.maxTextValue.toString();
+
+            // set value to default
+            this.sliderValue = 50;
+            this.sliderEl.value = "50";
+            this.sliderReset();
 
             this.show();
             this.showCurrentQuestion();
@@ -143,6 +148,7 @@ export default class Slider {
     }
 
     private showQ1() {
+        // SUN AND CLOUDS
         TweenMax.fromTo(".slider-q1 li:first-child", 0.5, {
             alpha:0, y:-400, rotation:180, scale:1.2
         }, {
@@ -151,29 +157,33 @@ export default class Slider {
     }
 
     private showQ2() {
-        // TweenMax.fromTo(this.topFruitElement, 0.3, {
-        //     alpha:0
-        // }, {
-        //     alpha:1, delay: d
-        // });
+        console.log("show question two");
+        // PINEAPPLE AND HOPS
+        f.el(".slider-q2").style.display = "block";
+        
+        TweenMax.fromTo(this.topFruitElement, 0.3, {
+            alpha:0
+        }, {
+            alpha:1, delay: this.delay+0.2
+        });
 
-        // TweenMax.fromTo(this.bottomFruitElement, 0.3, {
-        //     alpha:0
-        // }, {
-        //     alpha:1, delay: d
-        // });
+        TweenMax.fromTo(this.bottomFruitElement, 0.3, {
+            alpha:0
+        }, {
+            alpha:1, delay: this.delay+0.3
+        });
 
-        // TweenMax.fromTo(this.topFruitElement, 0.8, {
-        //     y:-50
-        // }, {
-        //     y:0, ease:"bounce", delay : d
-        // });
+        TweenMax.fromTo(this.topFruitElement, 0.8, {
+            y:-50
+        }, {
+            y:0, ease:"bounce", delay : this.delay+0.2
+        });
 
-        // TweenMax.fromTo(this.bottomFruitElement, 0.8, {
-        //     y:50
-        // }, {
-        //     y:0, ease:"bounce", delay : d
-        // });
+        TweenMax.fromTo(this.bottomFruitElement, 0.8, {
+            y:50
+        }, {
+            y:0, ease:"bounce", delay : this.delay+0.3
+        });
     }
 
     private showQ3() {}
@@ -221,6 +231,14 @@ export default class Slider {
         this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidthEl)) - this.sliderThumbEl.getBoundingClientRect().width/2);
 
         this.callbackCurrentQuestion(e);
+    }
+
+    sliderReset(){
+        this.sliderWidthEl = this.sliderEl.clientWidth;
+
+        // // get the next position of the arrow
+        // move the triangle to match the position of the slider thumb
+        this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidthEl)) - this.sliderThumbEl.getBoundingClientRect().width/2);
     }
 
     sliderValueSet(e:any) {
