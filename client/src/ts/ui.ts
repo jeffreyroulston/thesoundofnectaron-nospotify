@@ -89,7 +89,7 @@ export default class UI {
         // var origin = "bottom";
 
         // // set the background colour
-        el("body").style.backgroundColor = color;
+        // el("body").style.backgroundColor = color;
 
         // // set logo colours - set it to the contrast of the background colour
         // this.logoLetters.forEach(el => {
@@ -110,7 +110,11 @@ export default class UI {
         //     }})
         // }
 
-        // this.app.switchGraphics(data.COLOURS_THREE[color]);
+        this.graphicsEl.style.zIndex = "200";
+        this.app.switchGraphics(data.COLOURS_THREE[color]);
+        setTimeout(()=> {
+            el("body").style.backgroundColor = color;
+        }, 400);
         
     }
 
@@ -154,22 +158,22 @@ export default class UI {
         // // do the background
         this.setBG(currentRound.color);
 
-        // // play animation
-        anim.roundPageIn.restart();
+        // // // play animation
+        // anim.roundPageIn.restart();
 
-        // // bring in round number
-        TweenMax.fromTo("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {
-            display:"none", alpha:0, scale:0.5, y:-50, rotate:-120
-        }, {
-            display:"inline-block", alpha:1, scale:1, y:0, rotate:0, delay:0.5
-        });
+        // // // bring in round number
+        // TweenMax.fromTo("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {
+        //     display:"none", alpha:0, scale:0.5, y:-50, rotate:-120
+        // }, {
+        //     display:"inline-block", alpha:1, scale:1, y:0, rotate:0, delay:0.5
+        // });
 
-        // show the round name
-        TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.75, {
-            display:"none", alpha:0, x:-50
-        }, {
-            display:"inline-block", alpha:1, x:0, delay:0.8
-        });
+        // // show the round name
+        // TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.75, {
+        //     display:"none", alpha:0, x:-50
+        // }, {
+        //     display:"inline-block", alpha:1, x:0, delay:0.8
+        // });
     }
 
     private showQuestion() { 
@@ -200,7 +204,8 @@ export default class UI {
             case PageType.Login:
                 anim.landingPageIn.pause();
                 anim.fruitsIn.pause();
-                anim.landingPageOut.play();
+                this.showRoundName();
+                // anim.landingPageOut.play();
                 break;
             
             case PageType.RoundName:
