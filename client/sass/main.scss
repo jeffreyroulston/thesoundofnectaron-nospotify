@@ -124,8 +124,10 @@ p {
 }
 
 .next-btn {
+    width: 50px;
+
     svg {
-        width: 50px;
+        width: inherit;
     }
 
     &:hover {
