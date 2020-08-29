@@ -15,8 +15,8 @@ export default class Slider {
     private time = 0.3;
 
     private sliderEl : HTMLElement;
-    private sliderThumb : HTMLElement;
-    private sliderWidth : number = 0;
+    private sliderThumbEl : HTMLElement;
+    private sliderWidthEl : number = 0;
 
 
     // private topFruitElement : HTMLElement;
@@ -32,6 +32,8 @@ export default class Slider {
     // starts in the middle
     private sliderValue : number = 50;
     private previousValue : number = 50;
+
+    private initiated = false;
 
     // private fruitDefaultWidth : number;
     // private topFruitDefaultBottomValue : number;
@@ -62,7 +64,7 @@ export default class Slider {
 
         // slider arrow
         this.sliderEl = f.find(this.el, ".slider-input");
-        this.sliderThumb = f.find(this.el, " .slider-thumb");
+        this.sliderThumbEl = f.find(this.el, " .slider-thumb");
 
         this.showCurrentQuestion = this.showQ1.bind(this);
         this.callbackCurrentQuestion = this.callbackQ1.bind(this)
@@ -96,9 +98,7 @@ export default class Slider {
             // set question labels
             this.minValueLabel.innerHTML = q.minTextValue.toString();
             this.maxValueLabel.innerHTML = q.maxTextValue.toString();
-    
-            // var questions = [this.showQ1.bind(this)];
-            // var callbacks = [this.callbackQ1.bind(this)];
+
             this.show();
             this.showCurrentQuestion();
 
@@ -108,29 +108,45 @@ export default class Slider {
     }
 
     private show() {
+        var delay = this.initiated ? 0 : 1;
+        this.initiated = true;
         this.el.style.display = "block";
 
         // show the question
         TweenMax.fromTo(this.questionElement, this.time, {
             alpha:0, x:-20
         }, {
-            alpha:1, x:0, delay: this.delay
+            alpha:1, x:0, delay: delay
         });
 
         // show the line
         TweenMax.fromTo(" .slider-line", this.time, {
-            scaleX:0, transformOrigin: "left"
+            scaleX:0, transformOrigin: "right"
         }, {
-            scaleX:1, delay: this.delay+0.2
+            scaleX:1, delay: delay
+        });
+
+        // show the labels
+        TweenMax.fromTo([this.minValueLabel, this.maxValueLabel], this.time, {
+            alpha: 0, y:-20
+        }, {
+            alpha: 1, y:0, delay: delay+ 0.1
+        })
+
+        // show the thumb
+        TweenMax.fromTo(this.sliderThumbEl, this.time, {
+            alpha:0, y:20
+        }, {
+            alpha:1, y:0, delay: delay + 0.2
         });
 
     }
 
     private showQ1() {
-        TweenMax.fromTo(".slider-q1 li:first-child", 1, {
-            alpha:0, y:1000, scale:0
+        TweenMax.fromTo(".slider-q1 li:first-child", 0.5, {
+            alpha:0, y:-400, rotation:180, scale:1.2
         }, {
-            alpha:1, y:0, scale:1, ease:easeBounceIn, delay:this.delay+0.6
+            alpha:1, rotation:0, y:0, scale:1, delay:this.delay+0.2
         })
     }
 
@@ -198,11 +214,11 @@ export default class Slider {
 
     sliderChange(e: any){
         this.sliderValue = e.srcElement.value;
-         this.sliderWidth = e.srcElement.clientWidth;
+         this.sliderWidthEl = e.srcElement.clientWidth;
 
         // // get the next position of the arrow
         // move the triangle to match the position of the slider thumb
-        this.sliderThumb.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumb.getBoundingClientRect().width/2);
+        this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidthEl)) - this.sliderThumbEl.getBoundingClientRect().width/2);
 
         this.callbackCurrentQuestion(e);
     }
@@ -236,9 +252,37 @@ export default class Slider {
             this.questionIdx++;
             // transition out
 
-            this.set();
             this.showCurrentQuestion = showFunctions[this.questionIdx];
             this.callbackCurrentQuestion = callbackFunctions[this.questionIdx];
+
+            // hide out the things
+            TweenMax.to(".slider-q" + this.questionIdx.toString(), this.time, {
+                alpha:0, scale:0.9, transformOrigin: "bottom", display: "none", onComplete : ()=> {
+                    this.set();
+                }
+            });
+
+            // show the question
+            TweenMax.to(this.questionElement, this.time, {
+                alpha:0, x:-20
+            });
+
+            // hide the line
+            TweenMax.to(" .slider-line", this.time, {
+                scaleX:0, transformOrigin: "right"
+            });;
+
+            // hide the labels
+            TweenMax.to([this.minValueLabel, this.maxValueLabel], this.time, {
+                alpha: 0, y:20
+            })
+
+            // hide the thumb
+            TweenMax.to(this.sliderThumbEl, this.time, {
+                alpha:0, y:20
+            });
+
+            console.log(".slider-q" + this.questionIdx.toString())
 
         } else {
             console.log("current question: " + this.questionIdx.toString() + ", end of this section ")
