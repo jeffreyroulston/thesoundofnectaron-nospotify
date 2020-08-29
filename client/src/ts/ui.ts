@@ -78,8 +78,8 @@ export default class UI {
         anim.roundPageOut.eventCallback("onComplete", this.showQuestion.bind(this))
 
         // kick it off
-        // this.showLanding();
-        this.showRoundName();
+        this.showLanding();
+        // this.showRoundName();
     }
 
     private setBG(color : string) {

@@ -48,11 +48,11 @@ p {
 }
 
 #canvas-container {
-    background-color: $beige;
+    // background-color: $beige;
     position: absolute;
     height: 100vh; // make this compatible with iphone scroll
     width: 100%;
-    display: none;
+    // display: none;
 }
 
 #graphics-canvas {
