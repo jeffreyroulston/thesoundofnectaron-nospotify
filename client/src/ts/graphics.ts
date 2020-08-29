@@ -98,7 +98,8 @@ export default class Graphics {
                 secondColor: {value: this.secondColor},
                 pixelRatio: {value: 1.0 / devicePixelRatio},
                 lerp: {value: 0.0}
-            }
+            },
+            transparent: true
         });
 
         this.clock = new THREE.Clock();
