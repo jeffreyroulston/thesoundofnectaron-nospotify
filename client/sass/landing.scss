@@ -3,17 +3,21 @@
 #landing {
     .text-wrapper {
         text-align: center;
-        @include transition(width 0.2s ease);       
-        @include setBreakpoints(width, 800px, 700px, 600px, 500px, 400px, 400px, 60%, 60%);
+        // @include transition(width 0.2s ease);       
+        // @include setBreakpoints(width, 800px, 700px, 600px, 500px, 400px, 400px, 60%, 60%);
 
-        @include maxMobile {
-            max-width: 250px;
-        }
+        // @include maxMobile {
+        //     max-width: 250px;
+        // }
     }
 
     .logo, .logo-head {
         width: 100%;
         overflow: visible;
+    }
+
+    .logo {
+        @include setBreakpoints(height, 70px, 70px, 70px, 70px, 70px, 70px, 70px, 70px);
     }
 
     .logo-mobile {

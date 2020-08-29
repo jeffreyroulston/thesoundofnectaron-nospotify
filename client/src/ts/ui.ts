@@ -78,8 +78,8 @@ export default class UI {
         anim.roundPageOut.eventCallback("onComplete", this.showQuestion.bind(this))
 
         // kick it off
-        this.showLanding();
-        // this.showRoundName();
+        // this.showLanding();
+        this.showRoundName();
     }
 
     private setBG(color : string) {
@@ -110,7 +110,7 @@ export default class UI {
         //     }})
         // }
 
-        this.app.switchGraphics(data.COLOURS_THREE[color]);
+        // this.app.switchGraphics(data.COLOURS_THREE[color]);
         
     }
 
@@ -159,16 +159,16 @@ export default class UI {
 
         // // bring in round number
         TweenMax.fromTo("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {
-            alpha:0, scale:0.5, y:-50, rotate:-120
+            display:"none", alpha:0, scale:0.5, y:-50, rotate:-120
         }, {
-            alpha:1, scale:1, y:0, rotate:0, delay:0.5
+            display:"inline-block", alpha:1, scale:1, y:0, rotate:0, delay:0.5
         });
 
         // show the round name
         TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.75, {
-            display:"block", alpha:0, x:-50
+            display:"none", alpha:0, x:-50
         }, {
-            alpha:1, x:0, delay:0.8
+            display:"inline-block", alpha:1, x:0, delay:0.8
         });
     }
 

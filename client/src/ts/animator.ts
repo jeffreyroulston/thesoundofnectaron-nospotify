@@ -117,9 +117,9 @@ roundPageIn.fromTo(".round path", 0.75, {
     alpha:1, y:0, scale:1, stagger: {
         each: 0.1, from: Anim.random
 }}).fromTo("#round-name .numbers li:first-child", 0.5, {
-    alpha:0, y:50
+    display: "none", alpha:0, y:50
 }, {
-    alpha:1, y:0
+    display: "inline-block", alpha:1, y:0
 }, 0.4).fromTo("#round-name .fruit-whole", 1, {
     alpha: 0, y:-500, x:500, rotate:360
 }, {
