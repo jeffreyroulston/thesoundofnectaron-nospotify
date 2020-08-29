@@ -41,6 +41,11 @@ const fragShader = `
     }
 `
 
+enum TransitionState {
+    Ready,
+    Transition
+}
+
 export default class Graphics {
 
     private renderer: THREE.WebGLRenderer;
@@ -65,8 +70,11 @@ export default class Graphics {
     public transitionedCallback: () => void = () => {};
     private transitionCallbackFired: boolean = false;
 
+    private state: TransitionState = TransitionState.Ready;
+
     constructor() {
-        this.renderer = new THREE.WebGLRenderer({antialias: true});
+        this.renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+        this.renderer.setClearColor( 0x000000, 0 ); // the default
         this.renderer.setClearAlpha(0.0);
         this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -98,7 +106,8 @@ export default class Graphics {
                 secondColor: {value: this.secondColor},
                 pixelRatio: {value: 1.0 / devicePixelRatio},
                 lerp: {value: 0.0}
-            }
+            },
+            transparent: true
         });
 
         this.clock = new THREE.Clock();
@@ -129,7 +138,12 @@ export default class Graphics {
     }
 
     public switchColor(newColour: THREE.Color, time: number) {
+        if (this.state !== TransitionState.Ready) {
+            return;
+        }
+        
         this.transitionCallbackFired = false;
+        this.state = TransitionState.Transition;
 
         this.firstColor.copy(this.secondColor);
         this.secondColor.copy(newColour);
@@ -169,19 +183,25 @@ export default class Graphics {
         const dt = this.clock.getDelta();
         const time = this.clock.getElapsedTime();
 
-        this.currentLerp += this.lerpRate * dt;
-        if (this.currentLerp > 1.0) {
-            if (this.transitionCallbackFired == false && this.transitionedCallback !== undefined) {
-                this.transitionCallbackFired = true;
-                this.transitionedCallback();
-            }
+        if (this.state === TransitionState.Transition) {
 
-            this.currentLerp = 1.0;
+            this.currentLerp += this.lerpRate * dt;
+
+            if (this.currentLerp > 1.0) {
+
+                this.state = TransitionState.Ready;
+                this.currentLerp = 0.0;
+
+                if (this.transitionedCallback !== undefined) {
+
+                    this.transitionedCallback();
+                }
+            }
         }
-        // this.currentLerp = Math.min(this.currentLerp, 1.0);
 
         this.material.uniforms.time.value = time;
         this.material.uniforms.lerp.value = this.currentLerp;
+
 
         this.renderer.render(this.scene, this.camera);
     }
