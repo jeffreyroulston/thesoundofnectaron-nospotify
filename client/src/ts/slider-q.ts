@@ -218,16 +218,16 @@ export default class Slider {
 
         f.shuffle(elements);
         for(var x=0; x<elements.length; x++) {
-            TweenMax.fromTo(elements[x], 5, {
+            TweenMax.fromTo(elements[x], 3, {
                 y: window.innerHeight/2,
-                rotationY:-45
+                rotationY:-10
             }, {
                 y: -window.innerHeight,
                 ease: "linear",
                 repeat:-1,
                 repeatDelay:0,
-                delay:x*1,
-                rotationY:45
+                delay:x*0.5,
+                rotationY:10,
             })
         }
     }
