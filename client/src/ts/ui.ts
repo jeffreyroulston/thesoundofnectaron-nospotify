@@ -234,14 +234,17 @@ export default class UI {
         // this.currentPage = PageType.Question;
         // var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
         this.setBG(data.COLOURS.beige);
-
+        console.log(this.currentRoundIdx);
         switch(this.currentRoundIdx) {
             case 0:
                 this.slider.set();
+                break;
             case 1:
                 this.mcq.show();
+                break;
             case 2:
                 this.qfq.show();
+                break;
             default:
                 console.log("why are we here?", this.currentRoundIdx);
         }

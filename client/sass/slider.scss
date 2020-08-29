@@ -59,6 +59,55 @@
         }
     }
 
+    .slider-q3 {
+        text-align: center;
+        display: none;
+        width: 100%;
+
+        margin: 0;
+        padding: 0;
+        height: 100vh; // make this compatible with iphone scroll
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        li {
+            width: 5vw;
+            height: 10vw;
+            // border: 1px solid black;
+            position: absolute;
+            bottom: 0px;
+            // img {
+            //     width: 100%;
+            // }
+
+            // &.q3-round {
+            //     width: 225px;
+            //     transform: rotate(-17deg);
+            // }
+
+            // &.q3-sharp {
+            //     width: 100px;
+            //     transform: rotate(209deg);
+            // }
+
+            &.sharp {
+                background-image: url("./assets/round2/q0_1.png");
+                background-size: auto 100%;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+            &.round {
+                background-image: url("./assets/round2/q0_0.png");
+                background-size: 100% auto;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+        }
+    }
+
     // .fruits {
     //     .fruit-top, .fruit-bottom {
     //         height: 50vh;

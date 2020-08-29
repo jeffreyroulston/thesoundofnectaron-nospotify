@@ -114,8 +114,8 @@ export const sliderQuestions : Array<SliderQuestion> = [
         question : "What mouthfeel would you like?",
         minValue : 0,
         maxValue : 100,
-        minTextValue : "Light",
-        maxTextValue : "Heavy",
+        minTextValue : "Sharp",
+        maxTextValue : "Roundy",
         answer : 0
     },
     {
@@ -125,6 +125,15 @@ export const sliderQuestions : Array<SliderQuestion> = [
         maxValue : 100,
         minTextValue : "0 min",
         maxTextValue : "120 min",
+        answer : 0
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question : "How strong are the beer goggles on this one??",
+        minValue : 0,
+        maxValue : 100,
+        minTextValue : "Weak",
+        maxTextValue : "Strong",
         answer : 0
     }
 ]

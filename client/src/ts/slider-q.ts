@@ -1,6 +1,6 @@
 import UI from "./ui";
 import * as f from "./helpers";
-import {TweenMax} from "gsap"
+import gsap, {TweenMax} from "gsap"
 import {sliderQuestions, SliderQuestion } from "./data";
 import { easeBounceIn } from "d3";
 
@@ -148,6 +148,7 @@ export default class Slider {
     }
 
     private showQ1() {
+        console.log("show question one");
         // SUN AND CLOUDS
         TweenMax.fromTo(".slider-q1 li:first-child", 0.5, {
             alpha:0, y:-400, rotation:180, scale:1.2
@@ -186,7 +187,51 @@ export default class Slider {
         });
     }
 
-    private showQ3() {}
+    private showQ3() {
+        console.log("show question three");
+        // GLOVES AND DART
+        var container = <HTMLUListElement>f.el(".slider-q3");
+        container.style.display = "block";
+        var count = 10;
+        var elements :HTMLElement[]= []
+
+        // set perspective?
+        TweenMax.to(".slider-q3", 0, {perspective:800})
+
+        // create children
+        for (var i=1; i<count+1; i++) {
+            let el = document.createElement("li");
+            let htmlEl = <HTMLElement>el;
+            elements.push(htmlEl)
+            
+            htmlEl.style.left = + ((i-1) * 7).toString() + "vw";
+            container.appendChild(el)
+
+            if (i<(count/2)) {
+                htmlEl.className = "sharp";
+            } else {
+                htmlEl.className = "round";
+            }
+
+            TweenMax.to(htmlEl, 0, {transformStyle:"preserve-3d"})
+        }
+
+        f.shuffle(elements);
+        for(var x=0; x<elements.length; x++) {
+            TweenMax.fromTo(elements[x], 5, {
+                y: window.innerHeight/2,
+                rotationY:-45
+            }, {
+                y: -window.innerHeight,
+                ease: "linear",
+                repeat:-1,
+                repeatDelay:0,
+                delay:x*1,
+                rotationY:45
+            })
+        }
+    }
+
     private showQ4() {}
 
     private callbackQ1(e: any) {
@@ -219,7 +264,34 @@ export default class Slider {
     }
 
     private callbackQ2(e: any) {}
-    private callbackQ3(e: any) {}
+    private callbackQ3(e: any) {
+
+        console.log("Callback");
+        // get value from slider
+        this.sliderValue = e.srcElement.value;
+        var count = 10;
+        var imgs : HTMLElement[] = [];
+
+        for (var i=1; i<count+1; i++) {
+            imgs.push(f.el(".slider-q3 li:nth-child(" + i.toString() + ")"));
+        }
+
+        console.log(imgs);
+
+        var sharp = (Math.ceil(this.sliderValue / count) * count)/10;
+        var round = (100 - sharp)/10;
+
+        for (var i=0; i<count; i++) {
+            if (i<sharp) {
+                imgs[i].className = "sharp"
+            } else {
+                imgs[i].className = "round"
+            }
+        }
+
+        console.log("slider value: " + this.sliderValue.toString() + " sharp counter: " + sharp.toString() + " round counter: " + round.toString());
+
+    }
     private callbackQ4(e: any) {}
 
     sliderChange(e: any){
@@ -242,12 +314,14 @@ export default class Slider {
     }
 
     sliderValueSet(e:any) {
-        // lock in slider value to answer
-        this.questions[this.questionIdx].answer = e.srcElement.value;;
+        if (this.questionIdx < 2) {
+            // lock in slider value to answer
+            this.questions[this.questionIdx].answer = e.srcElement.value;;
 
-        console.log(this.questions[this.questionIdx]);
+            console.log(this.questions[this.questionIdx]);
 
-        this.getNextQuestion();
+            this.getNextQuestion();
+        }
     }
 
     getNextQuestion() {
@@ -272,6 +346,7 @@ export default class Slider {
 
             this.showCurrentQuestion = showFunctions[this.questionIdx];
             this.callbackCurrentQuestion = callbackFunctions[this.questionIdx];
+            console.log(this.callbackCurrentQuestion);
 
             // hide out the things
             TweenMax.to(".slider-q" + this.questionIdx.toString(), this.time, {
