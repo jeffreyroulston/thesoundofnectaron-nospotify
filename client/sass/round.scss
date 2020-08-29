@@ -24,10 +24,17 @@
     }
 
     .round-name-text {
-        width: 200px;
+        width: 166px;
         top:-100px;
+
         svg {
             height: 47px;
+        }
+
+        li {
+            &:first-child {
+                left:-32px
+            }
         }
     }
 
@@ -77,16 +84,24 @@
         bottom: 89px;
         right: 0px;
     }
+
+    .fruit-whole {
+        width: 180px;
+        display: block;
+        position: absolute;
+        right: 278px;
+        top: -152px;
+    }
 }
 
 
 #round-name {
-    .fruit-whole {
+    // .fruit-whole {
         // width: 180px;
         // left: 767px;
         // top: -80px;   
-        width: 0px;   
-    }
+    //     width: 0px;   
+    // }
 
     // .round {
     //     display: inline-block;

@@ -204,8 +204,15 @@ export default class UI {
             })
         }
 
+        // bring in the fruit
+        TweenMax.fromTo("#round-name .fruit-whole", 0.6, {
+            scale:0.8, alpha:0, y:-500, rotation:-45
+        }, {
+            scale:1, alpha:1, y:0, rotation:0, delay:2*d+0.6
+        })
+
         // show the round name
-        TweenMax.fromTo(nextRoundName, 0.75, {
+        TweenMax.fromTo(nextRoundName, 0.6, {
             display:"none", alpha:0, x:-50
         }, {
             display:"inline-block", alpha:1, x:0, delay:2*d+0.8
@@ -226,9 +233,9 @@ export default class UI {
         });
 
         // bounce the arrow
-        TweenMax.to("#round-name .next-btn", 0.3, {
-            x:-10, repeat: -1, yoyo: true, delay:2*d+1.5
-        });
+        // TweenMax.to("#round-name .next-btn", 0.3, {
+        //     x:-10, repeat: -1, yoyo: true, delay:2*d+1.5
+        // });
 
 
     }
