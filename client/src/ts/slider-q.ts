@@ -14,23 +14,30 @@ export default class Slider {
     private delay = 0.7;
     private time = 0.3;
 
+    // shared elements
     private sliderEl : HTMLInputElement;
     private sliderThumbEl : HTMLElement;
     private sliderWidthEl : number = 0;
-
-    private topFruitElement : HTMLElement;
-    private bottomFruitElement : HTMLElement;
-
     private questionElement: HTMLElement;
     private minValueLabel : HTMLElement;
     private maxValueLabel : HTMLElement;
 
+    // from question
     private minValue : number = 0;
     private maxValue : number = 100;
 
     // starts in the middle
     private sliderValue : number = 50;
     private previousValue : number = 50;
+
+    // these change per question
+    private imgs : HTMLElement[] = [];
+    private imgEl : HTMLElement = f.el(".slider-q1");
+    private count : number = 0;
+
+    // q2 (scale)
+    private topFruitElement : HTMLElement;
+    private bottomFruitElement : HTMLElement;
 
     private initiated = false;
 
@@ -104,6 +111,8 @@ export default class Slider {
             this.sliderEl.value = "50";
             this.sliderReset();
 
+
+            // show it
             this.show();
             this.showCurrentQuestion();
 
@@ -116,6 +125,9 @@ export default class Slider {
         var delay = this.initiated ? 0 : 1;
         this.initiated = true;
         this.el.style.display = "block";
+        
+        // show the element with images
+        this.imgEl.style.display = "block";
 
         // show the question
         TweenMax.fromTo(this.questionElement, this.time, {
@@ -149,7 +161,16 @@ export default class Slider {
 
     private showQ1() {
         console.log("show question one");
+        
         // SUN AND CLOUDS
+        this.count = 5;
+
+        // add all the different states (sun, clouds) to imgs
+        for (var i=1; i<this.count+1; i++) {
+            this.imgs.push(f.el(".slider-q1 li:nth-child(" + i.toString() + ")"));
+        }
+
+        // show the block
         TweenMax.fromTo(".slider-q1 li:first-child", 0.5, {
             alpha:0, y:-400, rotation:180, scale:1.2
         }, {
@@ -157,11 +178,34 @@ export default class Slider {
         })
     }
 
+    private callbackQ1(e: any) {
+        // get value from slider
+        this.sliderValue = e.srcElement.value;
+
+        // 5 image states
+        //  console.log(this.sliderValue);
+        
+        var v = this.sliderValue / 25;
+        var idx = Math.ceil(v);
+        idx = idx < 1 ? 1 : idx; // always at least zero
+
+        var max = idx * 25;
+        var multiplier = (max - this.sliderValue)/25;
+
+        // console.log(idx)
+        // if (multiplier < 0.5) {
+        //     imgs[idx-1].style.opacity = "1"
+        // } else {
+        //     imgs[idx-1].style.opacity = ((multiplier - 0.5)/25).toString();
+        // }
+        this.imgs[idx-1].style.opacity = multiplier.toString();
+        this.imgs[idx].style.opacity = ( 1- multiplier).toString();
+    }
+
     private showQ2() {
         console.log("show question two");
-        // PINEAPPLE AND HOPS
-        f.el(".slider-q2").style.display = "block";
         
+        // PINEAPPLE AND HOPS
         TweenMax.fromTo(this.topFruitElement, 0.3, {
             alpha:0
         }, {
@@ -187,111 +231,81 @@ export default class Slider {
         });
     }
 
+    private callbackQ2(e: any) {}
+
     private showQ3() {
         console.log("show question three");
+        
         // GLOVES AND DART
-        var container = <HTMLUListElement>f.el(".slider-q3");
+        var container = <HTMLUListElement>this.imgEl;
         container.style.display = "block";
-        var count = 10;
-        var elements :HTMLElement[]= []
+        this.count = 10;
+        this.imgs = [];
 
         // set perspective?
         TweenMax.to(".slider-q3", 0, {perspective:800})
 
-        // create children
-        for (var i=1; i<count+1; i++) {
+        // create children and add to images
+        for (var i=1; i<this.count+1; i++) {
             let el = document.createElement("li");
             let htmlEl = <HTMLElement>el;
-            elements.push(htmlEl)
             
-            htmlEl.style.left = + ((i-1) * 7).toString() + "vw";
+            // store item to images list
+            this.imgs.push(htmlEl)
+
+            // add list item to EL element
             container.appendChild(el)
 
-            if (i<(count/2)) {
-                htmlEl.className = "sharp";
-            } else {
-                htmlEl.className = "round";
-            }
-
+            htmlEl.className = i<=(this.count/2) ? "sharp" : "round";
             TweenMax.to(htmlEl, 0, {transformStyle:"preserve-3d"})
         }
 
+        // position them within the box
+        this.q3Resize();
+
+        // animate things out in a random order
+        var elements = this.imgs;
         f.shuffle(elements);
-        for(var x=0; x<elements.length; x++) {
-            TweenMax.fromTo(elements[x], 3, {
-                y: window.innerHeight/2,
-                rotationY:-10
-            }, {
-                y: -window.innerHeight,
-                ease: "linear",
-                repeat:-1,
-                repeatDelay:0,
-                delay:x*0.5,
-                rotationY:10,
-            })
-        }
-    }
 
-    private showQ4() {}
-
-    private callbackQ1(e: any) {
-        // get value from slider
-        this.sliderValue = e.srcElement.value;
-        var imgs = [];
-
-        for (var i=1; i<6; i++) {
-            imgs.push(f.el(".slider-q1 li:nth-child(" + i.toString() + ")"));
-        }
-
-        // 5 image states
-         console.log(this.sliderValue);
-        
-        var v = this.sliderValue / 25;
-        var idx = Math.ceil(v);
-        idx = idx < 1 ? 1 : idx; // always at least zero
-
-        var max = idx * 25;
-        var multiplier = (max - this.sliderValue)/25;
-
-        // console.log(idx)
-        // if (multiplier < 0.5) {
-        //     imgs[idx-1].style.opacity = "1"
-        // } else {
-        //     imgs[idx-1].style.opacity = ((multiplier - 0.5)/25).toString();
+        // for(var x=0; x<elements.length; x++) {
+        //     TweenMax.fromTo(elements[x], 1.5, {
+        //         y: window.innerHeight/2,
+        //         rotationY:-10,
+        //     }, {
+        //         y: -window.innerHeight,
+        //         ease: "linear",
+        //         repeat:-1,
+        //         repeatDelay:0,
+        //         delay:x*0.2,
+        //         rotationY:10,
+        //     })
         // }
-        imgs[idx-1].style.opacity = multiplier.toString();
-        imgs[idx].style.opacity = ( 1- multiplier).toString();
     }
 
-    private callbackQ2(e: any) {}
     private callbackQ3(e: any) {
 
         console.log("Callback");
         // get value from slider
         this.sliderValue = e.srcElement.value;
-        var count = 10;
-        var imgs : HTMLElement[] = [];
 
-        for (var i=1; i<count+1; i++) {
-            imgs.push(f.el(".slider-q3 li:nth-child(" + i.toString() + ")"));
-        }
+        var round= Math.round((this.sliderValue / this.maxValue)*10);
+        var sharp = this.count - round;
 
-        console.log(imgs);
-
-        var sharp = (Math.ceil(this.sliderValue / count) * count)/10;
-        var round = (100 - sharp)/10;
-
-        for (var i=0; i<count; i++) {
-            if (i<sharp) {
-                imgs[i].className = "sharp"
-            } else {
-                imgs[i].className = "round"
-            }
+        for (var i=0; i<this.count; i++) {
+            this.imgs[i].className = i<sharp ? "sharp" : "round";
         }
 
         console.log("slider value: " + this.sliderValue.toString() + " sharp counter: " + sharp.toString() + " round counter: " + round.toString());
-
     }
+
+    private q3Resize() {
+        var width = this.imgEl.getBoundingClientRect().width;
+        for (var i=0; i<this.count; i++) {
+            this.imgs[i].style.left = f.px(width/this.count * i)
+        }
+    }
+
+    private showQ4() {}
     private callbackQ4(e: any) {}
 
     sliderChange(e: any){
@@ -344,8 +358,17 @@ export default class Slider {
             this.questionIdx++;
             // transition out
 
+            // reset values
+            this.imgs = [];
+            this.imgEl = f.find(this.el, ".slider-q" + (this.questionIdx+1).toString());
+            this.count = 0;
+
+            // resent bindings
             this.showCurrentQuestion = showFunctions[this.questionIdx];
             this.callbackCurrentQuestion = callbackFunctions[this.questionIdx];
+
+            console.log(this.imgEl);
+            console.log(this.showCurrentQuestion);
             console.log(this.callbackCurrentQuestion);
 
             // hide out the things
