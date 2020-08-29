@@ -108,7 +108,7 @@ landingPageOut.to("#landing .bleed path, #landing .bleed polygon, #landing .blee
 
 
 // ROUND NAME IN
-export const roundPageIn = new TimelineMax({delay:0.6});
+export const roundPageIn = new TimelineMax({delay:0.5});
 roundPageIn.pause();
 
 // roundPageIn.fromTo(".round path", 0.75, {
@@ -133,27 +133,19 @@ roundPageIn.pause();
 // }, {
 //     alpha:1, y:0
 // }, 1);
-
-roundPageIn.from("#round-name", 0, {
-    display:"none"
-}).fromTo(".round path", 0.75, {
-    alpha:0, y:-50, scale:0, transformOrigin: Anim.bottom
-}, {
-    alpha:1, y:0, scale:1, stagger: {
-        each: 0.1, from: Anim.random
-}}).fromTo("#round-name .numbers li:first-child", 0.5, {
-    display: "none", alpha:0, y:50
-}, {
-    display: "inline-block", alpha:1, y:0
-}, 0.4).fromTo("#round-name .fruit-whole", 1, {
-    alpha: 0, y:-500, x:500, rotate:360
-}, {
-    alpha:1, y:0, x:0, rotate:0, ease: Anim.linear
-}, 0.5).fromTo("#round-name .description, #round-name .btn", 0.6, {
-    alpha:0, y:20
-}, {
-    alpha:1, y:0
-}, 1);
+// roundPageIn.fromTo("#round-name .numbers li:first-child path", 2, {
+//     drawSVG: "0"
+// }, {
+//     drawSVG: "100%"
+// }, 0.4).fromTo("#round-name .fruit-whole", 1, {
+//     alpha: 0, y:-500, x:500, rotate:360
+// }, {
+//     alpha:1, y:0, x:0, rotate:0, ease: Anim.linear
+// }, 0.5).fromTo("#round-name .description", 0.6, {
+//     alpha:0, y:20, rotation:-17
+// }, {
+//     alpha:1, y:0, rotation:-17
+// }, 1.2);
 
 
 

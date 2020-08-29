@@ -4,6 +4,7 @@
     .round, .round-name-text, .numbers, .description {
         display: inline-block;
         position: relative; 
+        // border: 1px solid black;
 
         li {
             display: none;
@@ -13,11 +14,14 @@
 
     .round {
         svg {
+            overflow: visible;
             height: 70px;
         }
     }
 
     .round-name-text {
+        width: 200px;
+        top:-100px;
         svg {
             height: 47px;
         }
@@ -25,10 +29,19 @@
 
     .numbers {
         display: block;
+        top: -30px;
+        left: 63px;
 
         svg {
             height: 226px;
+            overflow: visible;
         }
+
+        // li {
+        //     &:first-child {
+        //         left:-33px;
+        //     }
+        // }
     }
 
     .description {
@@ -39,7 +52,9 @@
         width: 270px;
         height: 135px;
         padding: 20px;
-        transform: rotate(-17deg);
+
+        top:-145px;
+        left:-15px;
 
         p {
             font-size: 12px;
@@ -61,9 +76,10 @@
 
 #round-name {
     .fruit-whole {
-        width: 180px;
-        left: 767px;
-        top: -80px;      
+        // width: 180px;
+        // left: 767px;
+        // top: -80px;   
+        width: 0px;   
     }
 
     // .round {

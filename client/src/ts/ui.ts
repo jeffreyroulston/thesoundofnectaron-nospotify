@@ -3,7 +3,7 @@ import * as data from "./data";
 import Slider from "./slider-q";
 import MCQ from "./mc-q";
 import QuickFireQ from "./quickfire-q";
-import {el, elList} from "./helpers";
+import {el, elList, getRandom} from "./helpers";
 import {TweenMax, TimelineMax} from "gsap"
 import App from "./app";
 import * as anim from "./animator"
@@ -12,6 +12,11 @@ import * as d3 from "d3";
 
 // import Graphics from "./graphics";
 // import * as THREE from 'three';
+
+import gsap from "gsap";
+import { DrawSVGPlugin } from "gsap/dist/DrawSVGPlugin";
+import { forceY, easeCircleIn, easeCircleInOut } from "d3";
+gsap.registerPlugin(DrawSVGPlugin);
 
 var qDefault = function() { return { value: 0, include: false } };
 
@@ -30,11 +35,11 @@ export default class UI {
     private qfq : QuickFireQ;
 
     private currentPage : PageType = PageType.Login;
-    private currentRoundIdx : number = 0;
+    private currentRoundIdx : number = -1;
 
     private graphicsEl = el("#canvas-container");
     private sharedEl = el("#shared");
-    private colorWipeEl = el("#color-wipe");
+    // private colorWipeEl = el("#color-wipe");
     private landingPageEl = el("#landing");
     private roundPageEl = el("#round-name");
     private logoLetters : HTMLElement[] = elList(".loto-letters letter");
@@ -79,8 +84,8 @@ export default class UI {
         anim.roundPageOut.eventCallback("onComplete", this.showQuestion.bind(this))
 
         // kick it off
-        this.showLanding();
-        // this.showRoundName();
+        // this.showLanding();
+        this.showRoundName();
     }
 
     private setBG(color : string) {
@@ -111,7 +116,9 @@ export default class UI {
         //     }})
         // }
 
+        // these are the border elements that stay on top
         this.sharedEl.style.zIndex = "201";
+        // put the pixel graphics on top of the others
         this.graphicsEl.style.zIndex = "200";
         this.app.switchGraphics(data.COLOURS_THREE[color]);
     }
@@ -128,7 +135,7 @@ export default class UI {
 
         // // increment the current round
         this.currentRoundIdx++;
-        var currentRound = data.ROUNDS[this.currentRoundIdx-1];
+        var currentRound = data.ROUNDS[this.currentRoundIdx];
 
         // show the round page
         this.roundPageEl.style.display = "block";
@@ -156,22 +163,76 @@ export default class UI {
         // // do the background
         this.setBG(currentRound.color);
 
+        // show elements
+        var nextRoundNumber = "#round-name .numbers li:nth-child(" + (this.currentRoundIdx +2).toString() + ")";
+        var nextRoundName = ".round-name-text li:nth-child(" + (this.currentRoundIdx +1).toString() + ")"
+
+        var roundPageHiddenBlocks = "#round-name";
+        var roundPageHiddenInline = "#round-name .numbers li:first-child" + ", " + nextRoundNumber + ", " + nextRoundName;
+
+        TweenMax.fromTo(roundPageHiddenBlocks, 0, {
+            display: "none"
+        }, {
+            display: "block"
+        })
+
+        TweenMax.fromTo(roundPageHiddenInline, 0, {
+            display: "none"
+        }, {
+            display: "inline-block"
+        })
+
         // // // play animation
         anim.roundPageIn.play();
 
-        // // // bring in round number
-        // TweenMax.fromTo("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {
-        //     display:"none", alpha:0, scale:0.5, y:-50, rotate:-120
+        // // bring in round number
+        // TweenMax.fromTo(nextRoundNumber, 0.5, {
+        //     alpha:0, y:-50, rotate:-120
         // }, {
-        //     display:"inline-block", alpha:1, scale:1, y:0, rotate:0, delay:0.5
+        //     alpha:1, y:0, rotate:0, delay:1
         // });
 
-        // // show the round name
-        // TweenMax.fromTo(".round-name-text li:nth-child(" + this.currentRoundIdx.toString() + ")", 0.75, {
-        //     display:"none", alpha:0, x:-50
-        // }, {
-        //     display:"inline-block", alpha:1, x:0, delay:0.8
-        // });
+        var d = 0.7;
+
+        TweenMax.fromTo("#round-name .numbers li:first-child path", 2, {
+            drawSVG : "0"
+        }, {
+            drawSVG : "100%", ease: easeCircleInOut, delay: d
+        });
+
+        TweenMax.fromTo(nextRoundNumber + " path", 2, {
+           drawSVG : "0"
+        }, {
+            drawSVG : "100%", ease: easeCircleInOut, delay: d
+        });
+
+        var paths = document.querySelectorAll(".round path");
+        console.log(paths);
+        for (var i=0; i<paths.length; i++) {
+            let xVal = getRandom(-300, 300)
+            let yVal = getRandom(-300, 300);
+            let r = getRandom(-180, 180);
+
+            TweenMax.fromTo(paths[i], 0.8, {
+                alpha:0, scale:0, x:xVal, y: yVal, rotation: r
+            }, {
+                alpha:1, scale:1, x:0, y:0, rotation:0, delay:2*d + i*0.1
+            })
+        }
+
+        // show the round name
+        TweenMax.fromTo(nextRoundName, 0.75, {
+            display:"none", alpha:0, x:-50
+        }, {
+            display:"inline-block", alpha:1, x:0, delay:2*d+0.8
+        });
+
+        // show the description box
+        TweenMax.fromTo("#round-name .description", 0.6, {
+                alpha:0, y:20, rotation:-17
+            }, {
+                alpha:1, y:0, rotation:-17, delay:2*d+1
+            });
     }
 
     private showQuestion() { 
@@ -200,10 +261,17 @@ export default class UI {
     private next() {
         switch (this.currentPage) {
             case PageType.Login:
+                // stop the animations
                 anim.landingPageIn.pause();
                 anim.fruitsIn.pause();
+
+                // show the round name
                 this.showRoundName();
-                // anim.landingPageOut.play();
+
+                // hide landing page after 300ms (graphics transition = 300ms)
+                // setTimeout(()=> {
+                //     this.landingPageEl.style.display = "none";
+                // }, 300);
                 break;
             
             case PageType.RoundName:
@@ -235,15 +303,24 @@ export default class UI {
         anim.endFrameIn.play();
     }
 
+    // call back from graphics/app
     public bgTransitionComplete() {
-        // this.graphicsEl.style.display = "none";
-        console.log("background transition complete");
-        var currentRound = data.ROUNDS[this.currentRoundIdx-1];
-        this.landingPageEl.style.display = "none";
+        // set the body colour
+        var currentRound = data.ROUNDS[this.currentRoundIdx];
         el("body").style.backgroundColor = currentRound.color;
-        this.sharedEl.style.zIndex = "100";
-        this.graphicsEl.style.zIndex = "0";
-        this.app.resetGraphics();
+
+        this.landingPageEl.style.display = "none";
+
+        setTimeout(()=> {
+            // moved shared element back so things can be interacted with
+            this.sharedEl.style.zIndex = "100";
+            
+            // prepare to hide graphics element
+            this.graphicsEl.style.zIndex = "0";
+
+            // convert graphics element to transparent
+            this.app.resetGraphics();
+        }, 100)
     }
 
     public answerRetrieved(a : any) {

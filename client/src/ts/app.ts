@@ -81,7 +81,7 @@ export default class App {
     }
 
     public switchGraphics(color : THREE.Color) {
-        this.graphics.switchColorForward(color, 0.3)
+        this.graphics.switchColorForward(color, 0.5)
     }
 
     public resetGraphics() {

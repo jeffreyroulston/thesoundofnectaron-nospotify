@@ -22,3 +22,7 @@ export function px (n : number) : string{
 export function pxToInt(s : string) : number {
     return parseInt(s.replace(/[^\d-]/g, ""));
 }
+
+export function getRandom(min:number, max:number) {
+    return Math.random() * (max - min) + min;
+}
