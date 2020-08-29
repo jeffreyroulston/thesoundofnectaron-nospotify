@@ -166,7 +166,7 @@ $mobileWidth: 480px;
  }
 
  @mixin maxW($screen) {
-    @media (min-width: $screen) {
+    @media (max-width: $screen) {
         @content;
     }
  }
