@@ -28,7 +28,7 @@ const fragShader = `
 
 
         vec2 aspectCorrectedUV = vUv * size;
-        vec4 texCol = texture2D(noiseTexture, aspectCorrectedUV * 0.0015 * pixelRatio);
+        vec4 texCol = texture2D(noiseTexture, aspectCorrectedUV * 0.0005 * pixelRatio);
 
         float pixelValue = texCol.r * 0.8 + 0.1;
 
@@ -151,7 +151,7 @@ export default class Graphics {
         this.currentLerp = 0.0;
     }
 
-    public switchColorBackward(newColour: THREE.Color, time: number) {
+    public switchColorBackward() {
         this.currentLerp = 0.0;
     }
 

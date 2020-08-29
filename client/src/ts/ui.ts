@@ -33,6 +33,7 @@ export default class UI {
     private currentRoundIdx : number = 0;
 
     private graphicsEl = el("#canvas-container");
+    private sharedEl = el("#shared");
     private colorWipeEl = el("#color-wipe");
     private landingPageEl = el("#landing");
     private roundPageEl = el("#round-name");
@@ -110,12 +111,9 @@ export default class UI {
         //     }})
         // }
 
+        this.sharedEl.style.zIndex = "201";
         this.graphicsEl.style.zIndex = "200";
         this.app.switchGraphics(data.COLOURS_THREE[color]);
-        setTimeout(()=> {
-            el("body").style.backgroundColor = color;
-        }, 400);
-        
     }
 
     private showLanding() {
@@ -159,7 +157,7 @@ export default class UI {
         this.setBG(currentRound.color);
 
         // // // play animation
-        // anim.roundPageIn.restart();
+        anim.roundPageIn.play();
 
         // // // bring in round number
         // TweenMax.fromTo("#round-name .numbers li:nth-child(" + (this.currentRoundIdx+1).toString() + ")", 0.5, {
@@ -240,6 +238,12 @@ export default class UI {
     public bgTransitionComplete() {
         // this.graphicsEl.style.display = "none";
         console.log("background transition complete");
+        var currentRound = data.ROUNDS[this.currentRoundIdx-1];
+        this.landingPageEl.style.display = "none";
+        el("body").style.backgroundColor = currentRound.color;
+        this.sharedEl.style.zIndex = "100";
+        this.graphicsEl.style.zIndex = "0";
+        this.app.resetGraphics();
     }
 
     public answerRetrieved(a : any) {

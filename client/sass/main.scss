@@ -141,7 +141,7 @@ p {
 
 
 #shared {
-    z-index: 300;
+    z-index: 100;
     .logo-letters {
         polygon, path {
             @include transition(fill 0.5s ease);

@@ -108,7 +108,7 @@ landingPageOut.to("#landing .bleed path, #landing .bleed polygon, #landing .blee
 
 
 // ROUND NAME IN
-export const roundPageIn = new TimelineMax();
+export const roundPageIn = new TimelineMax({delay:0.6});
 roundPageIn.pause();
 
 // roundPageIn.fromTo(".round path", 0.75, {
@@ -134,7 +134,9 @@ roundPageIn.pause();
 //     alpha:1, y:0
 // }, 1);
 
-roundPageIn.fromTo(".round path", 0.75, {
+roundPageIn.from("#round-name", 0, {
+    display:"none"
+}).fromTo(".round path", 0.75, {
     alpha:0, y:-50, scale:0, transformOrigin: Anim.bottom
 }, {
     alpha:1, y:0, scale:1, stagger: {
