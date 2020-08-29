@@ -152,17 +152,7 @@ export default class Graphics {
     }
 
     public switchColorBackward(newColour: THREE.Color, time: number) {
-        if (this.state !== TransitionState.Ready) {
-            return;
-        }
-        
-        this.state = TransitionState.TransitionBack;
-
-        this.firstColor.copy(this.secondColor);
-        this.secondColor.copy(newColour);
-
-        this.lerpRate = -1.0 / time;
-        this.currentLerp = 1.0;
+        this.currentLerp = 0.0;
     }
 
     private checkResize(): void {
@@ -206,22 +196,10 @@ export default class Graphics {
                 this.currentLerp = 1.0;
 
                 if (this.transitionedCallback !== undefined) {
-
                     this.transitionedCallback();
                 }
             }
         }        
-        
-        if (this.state === TransitionState.TransitionBack) {
-
-            this.currentLerp += this.lerpRate * dt;
-
-            if (this.currentLerp < 0.0) {
-
-                this.state = TransitionState.Ready;
-                this.currentLerp = 0.0;
-            }
-        }
 
         this.material.uniforms.time.value = time;
         this.material.uniforms.lerp.value = this.currentLerp;
