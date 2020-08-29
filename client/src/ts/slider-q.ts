@@ -1,7 +1,7 @@
 import UI from "./ui";
 import * as f from "./helpers";
 import {TweenMax} from "gsap"
-import {sliderQuestions } from "./data";
+import {sliderQuestions, SliderQuestion } from "./data";
 import { easeBounceIn } from "d3";
 
 export default class Slider {
@@ -10,6 +10,7 @@ export default class Slider {
     private el : HTMLElement;
 
     private questionIdx : number = 0;
+    private questions : SliderQuestion[] = sliderQuestions;
     private delay = 0.7;
     private time = 0.3;
 
@@ -81,25 +82,29 @@ export default class Slider {
 
         // // set bindings
         this.sliderEl.addEventListener("input",this.sliderChange.bind(this));
-        // this.sliderEl.addEventListener("change", this.sliderValueSet.bind(this));
+        this.sliderEl.addEventListener("change", this.sliderValueSet.bind(this));
     }
 
     public set() {
         // called from the ui and internally to set the question
-        var q = sliderQuestions[this.questionIdx];
+        if (this.questionIdx < this.questions.length) {
+            var q = sliderQuestions[this.questionIdx];
 
-        // set the question copy
-        this.questionElement.innerHTML = q.question;
+            // set the question copy
+            this.questionElement.innerHTML = q.question;
+    
+            // set question labels
+            this.minValueLabel.innerHTML = q.minTextValue.toString();
+            this.maxValueLabel.innerHTML = q.maxTextValue.toString();
+    
+            // var questions = [this.showQ1.bind(this)];
+            // var callbacks = [this.callbackQ1.bind(this)];
+            this.show();
+            this.showCurrentQuestion();
 
-        // set question labels
-        this.minValueLabel.innerHTML = q.minTextValue.toString();
-        this.maxValueLabel.innerHTML = q.maxTextValue.toString();
-
-        // var questions = [this.showQ1.bind(this)];
-        // var callbacks = [this.callbackQ1.bind(this)];
-        this.show();
-        this.showCurrentQuestion();
-
+        } else {
+            console.log("beemo");
+        }
     }
 
     private show() {
@@ -155,6 +160,9 @@ export default class Slider {
         // });
     }
 
+    private showQ3() {}
+    private showQ4() {}
+
     private callbackQ1(e: any) {
         // get value from slider
         this.sliderValue = e.srcElement.value;
@@ -184,6 +192,10 @@ export default class Slider {
         imgs[idx].style.opacity = ( 1- multiplier).toString();
     }
 
+    private callbackQ2(e: any) {}
+    private callbackQ3(e: any) {}
+    private callbackQ4(e: any) {}
+
     sliderChange(e: any){
         this.sliderValue = e.srcElement.value;
          this.sliderWidth = e.srcElement.clientWidth;
@@ -193,6 +205,44 @@ export default class Slider {
         this.sliderThumb.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumb.getBoundingClientRect().width/2);
 
         this.callbackCurrentQuestion(e);
+    }
+
+    sliderValueSet(e:any) {
+        // lock in slider value to answer
+        this.questions[this.questionIdx].answer = e.srcElement.value;;
+
+        console.log(this.questions[this.questionIdx]);
+
+        this.getNextQuestion();
+    }
+
+    getNextQuestion() {
+        var showFunctions = [
+            this.showQ1.bind(this),
+            this.showQ2.bind(this),
+            this.showQ3.bind(this),
+            this.showQ4.bind(this)
+        ];
+
+        var callbackFunctions = [
+            this.callbackQ1.bind(this),
+            this.callbackQ2.bind(this),
+            this.callbackQ3.bind(this),
+            this.callbackQ4.bind(this)
+        ];
+
+        if (this.questionIdx < this.questions.length-1) {
+            console.log("current question: " + this.questionIdx.toString() + ", next question: " + (this.questionIdx+1).toString())
+            this.questionIdx++;
+            // transition out
+
+            this.set();
+            this.showCurrentQuestion = showFunctions[this.questionIdx];
+            this.callbackCurrentQuestion = callbackFunctions[this.questionIdx];
+
+        } else {
+            console.log("current question: " + this.questionIdx.toString() + ", end of this section ")
+        }
     }
 
     // set(q : SliderQuestion) {
