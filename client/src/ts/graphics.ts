@@ -43,7 +43,8 @@ const fragShader = `
 
 enum TransitionState {
     Ready,
-    Transition
+    TransitionForward,
+    TransitionBack,
 }
 
 export default class Graphics {
@@ -68,7 +69,6 @@ export default class Graphics {
     private secondColor: THREE.Color = new THREE.Color(COLOURS.beige);
 
     public transitionedCallback: () => void = () => {};
-    private transitionCallbackFired: boolean = false;
 
     private state: TransitionState = TransitionState.Ready;
 
@@ -137,19 +137,32 @@ export default class Graphics {
         this.render();
     }
 
-    public switchColor(newColour: THREE.Color, time: number) {
+    public switchColorForward(newColour: THREE.Color, time: number) {
         if (this.state !== TransitionState.Ready) {
             return;
         }
         
-        this.transitionCallbackFired = false;
-        this.state = TransitionState.Transition;
+        this.state = TransitionState.TransitionForward;
 
         this.firstColor.copy(this.secondColor);
         this.secondColor.copy(newColour);
 
         this.lerpRate = 1.0 / time;
         this.currentLerp = 0.0;
+    }
+
+    public switchColorBackward(newColour: THREE.Color, time: number) {
+        if (this.state !== TransitionState.Ready) {
+            return;
+        }
+        
+        this.state = TransitionState.TransitionBack;
+
+        this.firstColor.copy(this.secondColor);
+        this.secondColor.copy(newColour);
+
+        this.lerpRate = -1.0 / time;
+        this.currentLerp = 1.0;
     }
 
     private checkResize(): void {
@@ -183,19 +196,30 @@ export default class Graphics {
         const dt = this.clock.getDelta();
         const time = this.clock.getElapsedTime();
 
-        if (this.state === TransitionState.Transition) {
+        if (this.state === TransitionState.TransitionForward) {
 
             this.currentLerp += this.lerpRate * dt;
 
             if (this.currentLerp > 1.0) {
 
                 this.state = TransitionState.Ready;
-                this.currentLerp = 0.0;
+                this.currentLerp = 1.0;
 
                 if (this.transitionedCallback !== undefined) {
 
                     this.transitionedCallback();
                 }
+            }
+        }        
+        
+        if (this.state === TransitionState.TransitionBack) {
+
+            this.currentLerp += this.lerpRate * dt;
+
+            if (this.currentLerp < 0.0) {
+
+                this.state = TransitionState.Ready;
+                this.currentLerp = 0.0;
             }
         }
 
