@@ -1,5 +1,6 @@
 @import "shared";
 @import "round";
+@import "slider";
 
 * {
     margin: 0;
@@ -38,21 +39,10 @@ p {
     line-height: 1.5;
 }
 
-#color-wipe {
-    // height: 100vh; // make this compatible with iphone scroll
-    // width: 100%;
-    // position: absolute;
-    // top: 0;
-    // left: 0;
-    // background-color: $beige;
-}
-
 #canvas-container {
-    // background-color: $beige;
     position: absolute;
     height: 100vh; // make this compatible with iphone scroll
     width: 100%;
-    // display: none;
     z-index: 0;
 }
 
@@ -87,10 +77,6 @@ p {
     text-align: center;
     position: relative;
     @include verticalAlign();
-
-    // @include minTablet {
-    //     @include transform(translateY(-180px));
-    // }
 }
 
 .text-wrapper {
@@ -99,22 +85,25 @@ p {
     display: inline-block;
     position: relative;
 
+    // this is for responsivemess
     @include transition(transform 0.2s ease);
 }
 
+// USED FOR QUESTIONS
 .wrapper {
     width: calc(100% - 400px);
     position: relative;
     margin: 0 auto;
 }
 
+// USED FOR QUESTIONS
 .col-wrapper {
     float: left;
     width: 50%;
 
-    &.text-column {
-        margin-top: 20vh;
-    }
+    // &.text-column {
+    //     margin-top: 20vh;
+    // }
 }
 
 .mobile {
@@ -262,87 +251,6 @@ p {
     }
 }
 
-#slider-q {
-    .col-wrapper {
-        &.text-column {
-            margin-top: 30vh;
-        }
-    }
-
-    .fruits {
-        .fruit-top, .fruit-bottom {
-            height: 50vh;
-            text-align: center;
-            position: relative;
-
-            img {
-                @include horizontalAlign();
-                position: absolute;
-                display: inline-block;
-                width: 200px;
-            }
-        }
-
-        .fruit-top {
-            img {
-                bottom: 0px;
-            }
-
-            z-index: 100;
-        }
-
-        .fruit-bottom {
-            img {
-                top: 0px;
-            }
-        }
-    }
-
-    .slide-container {
-        position: relative;
-        // width: 465px;
-        width: 100%;
-        left: 10px;
-
-        border-top: 2px solid $purple;
-    }
-
-    .slider-thumb {
-        width: 0;
-        height: 0;
-        border-left: 11px solid transparent;
-        border-right: 11px solid transparent;
-        border-bottom: 16px solid $purple;
-        position: absolute;
-        left: calc(50% - 9px);
-
-    }
-
-    .slider-label {
-        position: absolute;
-        top: -35px;
-        color: $purple;
-    }
-
-    #min-value-label {
-        left:-20px
-    }
-
-    #max-value-label {
-        right: -20px;
-    }
-
-    .slider-input {
-        width: 100%;
-        opacity: 0;
-        position: relative;
-    }
-
-    .slider-thumb, .slider-input {
-        top: 17px;
-        cursor: pointer;
-    }
-}
 
 #mc-q {
     text-align: center;

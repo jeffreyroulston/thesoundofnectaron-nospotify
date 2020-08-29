@@ -90,26 +90,26 @@ fruitsIn.pause();
 
 
 // LANDING PAGE OUT ANIMATION
-export const landingPageOut = new TimelineMax();
-landingPageOut.pause();
+// export const landingPageOut = new TimelineMax();
+// landingPageOut.pause();
 
-landingPageOut.to("#landing .bleed path, #landing .bleed polygon, #landing .bleed rect", 0.5, {
-    alpha:0, scale:0, transformOrigin: Anim.center, stagger: {
-        each: 0.005, from: Anim.random
-    }
-}, 0).to("#landing .subheading", 0.5, {
-    alpha:0, y:5
-}, 0).to("#start-btn", 0.5, {
-    alpha:0, x:5
-}, 0).to("#landing", 0, {
-    display: "none"
-});
+// landingPageOut.to("#landing .bleed path, #landing .bleed polygon, #landing .bleed rect", 0.5, {
+//     alpha:0, scale:0, transformOrigin: Anim.center, stagger: {
+//         each: 0.005, from: Anim.random
+//     }
+// }, 0).to("#landing .subheading", 0.5, {
+//     alpha:0, y:5
+// }, 0).to("#start-btn", 0.5, {
+//     alpha:0, x:5
+// }, 0).to("#landing", 0, {
+//     display: "none"
+// });
 
 
 
 // ROUND NAME IN
-export const roundPageIn = new TimelineMax({delay:0.5});
-roundPageIn.pause();
+// export const roundPageIn = new TimelineMax({delay:0.5});
+// roundPageIn.pause();
 
 // roundPageIn.fromTo(".round path", 0.75, {
 //     alpha:0, y:-50, scale:0, transformOrigin: Anim.bottom
@@ -150,23 +150,26 @@ roundPageIn.pause();
 
 
 // ROUND NAME OUT
-export const roundPageOut = new TimelineMax();
-roundPageOut.pause();
+// export const roundPageOut = new TimelineMax();
+// roundPageOut.pause();
 
-roundPageOut.to("#round-name .description, #round-name .btn, #round-name .numbers li", 0.5, {
-    alpha:0, y:20
-}).to(".round-name-text li", 0.5, {
-    alpha:0, x:-50
-}).to(".round path", 0.5, {
-    alpha:0, y:0, scale:0, stagger: {
-        each: 0.05, from:"random"
-    }
-}).to("#round-name .fruit-whole", 0.5, {
-    rotate:0, y:-20, alpha:0
-}).to("#round-name", 0, {
-    display: "none"
-});
+// roundPageOut.to("#round-name .description, #round-name .btn, #round-name .numbers li", 0.5, {
+//     alpha:0, y:20
+// }).to(".round-name-text li", 0.5, {
+//     alpha:0, x:-50
+// }).to(".round path", 0.5, {
+//     alpha:0, y:0, scale:0, stagger: {
+//         each: 0.05, from:"random"
+//     }
+// }).to("#round-name .fruit-whole", 0.5, {
+//     rotate:0, y:-20, alpha:0
+// }).to("#round-name", 0, {
+//     display: "none"
+// });
 
+
+// SLIDER IN
+// export const sliderIn = new TimelineMax();
 
 
 // SHOW END FRAME

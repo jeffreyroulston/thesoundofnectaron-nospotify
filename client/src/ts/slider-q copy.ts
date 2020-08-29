@@ -1,36 +1,20 @@
 import UI from "./ui";
 import * as f from "./helpers";
+import {SliderQuestion} from "./data";
 import {TweenMax} from "gsap"
-import {sliderQuestions } from "./data";
-import { easeBounceIn } from "d3";
 
 export default class Slider {
     private ui : UI;
     private id : string;
     private el : HTMLElement;
 
-    private questionIdx : number = 0;
-    private delay = 0.7;
-    private time = 0.3;
-
-    private sliderEl : HTMLElement;
-    private sliderThumb : HTMLElement;
-    private sliderWidth : number = 0;
-
-
+    // private sliderEl : HTMLInputElement;
+    // private sliderThumb : HTMLElement;
     // private topFruitElement : HTMLElement;
     // private bottomFruitElement : HTMLElement;
-
-    private questionElement: HTMLElement;
-    private minValueLabel : HTMLElement;
-    private maxValueLabel : HTMLElement;
-
-    private minValue : number = 0;
-    private maxValue : number = 100;
-
-    // starts in the middle
-    private sliderValue : number = 50;
-    private previousValue : number = 50;
+    // private questionElement: HTMLElement;
+    // private minValueLabel : HTMLElement;
+    // private maxValueLabel : HTMLElement;
 
     // private fruitDefaultWidth : number;
     // private topFruitDefaultBottomValue : number;
@@ -41,34 +25,22 @@ export default class Slider {
     // private mid : number = 0;
     // private value : number = 0;
     // private prevValue : number = 0
+    // private sliderWidth : number = 0;
 
     // private initialised : boolean = false;
-
-    private showCurrentQuestion: () => void;
-    private callbackCurrentQuestion : (e:any) => void;
 
     constructor(ui : UI, id: string) {
         this.ui = ui;
         this.id = id;
         this.el = f.el(this.id);
 
-        // question copy
-        this.questionElement = f.find(this.el, ".question");
-
-        // labels
-        this.minValueLabel = f.find(this.el, "#min-value-label");
-        this.maxValueLabel = f.find(this.el, "#max-value-label");
-
-        // slider arrow
-        this.sliderEl = f.find(this.el, ".slider-input");
-        this.sliderThumb = f.find(this.el, " .slider-thumb");
-
-        this.showCurrentQuestion = this.showQ1.bind(this);
-        this.callbackCurrentQuestion = this.callbackQ1.bind(this)
-
+        // this.sliderEl = <HTMLInputElement>el(this.el + " .slider-input");
+        // this.sliderThumb = el(this.el + " .slider-thumb");
         // this.topFruitElement = el(this.el+ " .fruit-top img");
         // this.bottomFruitElement = el(this.el + " .fruit-bottom img");
         // this.questionElement = el(this.el + " .question");
+        // this.minValueLabel = el("#min-value-label");
+        // this.maxValueLabel = el("#max-value-label");
 
         // // console.log(this.el, this.sliderEl, this.sliderThumb, this.topFruitElement, this.bottomFruitElement, this.questionElement);
 
@@ -80,122 +52,11 @@ export default class Slider {
         // // console.log(this.fruitDefaultWidth, this.topFruitDefaultBottomValue, this.bottomFruitDefaultTopValue);
 
         // // set bindings
-        this.sliderEl.addEventListener("input",this.sliderChange.bind(this));
+        // this.sliderEl.addEventListener("input",this.sliderChange.bind(this));
         // this.sliderEl.addEventListener("change", this.sliderValueSet.bind(this));
     }
 
-    public set() {
-        // called from the ui and internally to set the question
-        var q = sliderQuestions[this.questionIdx];
-
-        // set the question copy
-        this.questionElement.innerHTML = q.question;
-
-        // set question labels
-        this.minValueLabel.innerHTML = q.minTextValue.toString();
-        this.maxValueLabel.innerHTML = q.maxTextValue.toString();
-
-        // var questions = [this.showQ1.bind(this)];
-        // var callbacks = [this.callbackQ1.bind(this)];
-        this.show();
-        this.showCurrentQuestion();
-
-    }
-
-    private show() {
-        this.el.style.display = "block";
-
-        // show the question
-        TweenMax.fromTo(this.questionElement, this.time, {
-            alpha:0, x:-20
-        }, {
-            alpha:1, x:0, delay: this.delay
-        });
-
-        // show the line
-        TweenMax.fromTo(" .slider-line", this.time, {
-            scaleX:0, transformOrigin: "left"
-        }, {
-            scaleX:1, delay: this.delay+0.2
-        });
-
-    }
-
-    private showQ1() {
-        TweenMax.fromTo(".slider-q1 li:first-child", 1, {
-            alpha:0, y:1000, scale:0
-        }, {
-            alpha:1, y:0, scale:1, ease:easeBounceIn, delay:this.delay+0.6
-        })
-    }
-
-    private showQ2() {
-        // TweenMax.fromTo(this.topFruitElement, 0.3, {
-        //     alpha:0
-        // }, {
-        //     alpha:1, delay: d
-        // });
-
-        // TweenMax.fromTo(this.bottomFruitElement, 0.3, {
-        //     alpha:0
-        // }, {
-        //     alpha:1, delay: d
-        // });
-
-        // TweenMax.fromTo(this.topFruitElement, 0.8, {
-        //     y:-50
-        // }, {
-        //     y:0, ease:"bounce", delay : d
-        // });
-
-        // TweenMax.fromTo(this.bottomFruitElement, 0.8, {
-        //     y:50
-        // }, {
-        //     y:0, ease:"bounce", delay : d
-        // });
-    }
-
-    private callbackQ1(e: any) {
-        // get value from slider
-        this.sliderValue = e.srcElement.value;
-        var imgs = [];
-
-        for (var i=1; i<6; i++) {
-            imgs.push(f.el(".slider-q1 li:nth-child(" + i.toString() + ")"));
-        }
-
-        // 5 image states
-         console.log(this.sliderValue);
-        
-        var v = this.sliderValue / 25;
-        var idx = Math.ceil(v);
-        idx = idx < 1 ? 1 : idx; // always at least zero
-
-        var max = idx * 25;
-        var multiplier = (max - this.sliderValue)/25;
-
-        // console.log(idx)
-        // if (multiplier < 0.5) {
-        //     imgs[idx-1].style.opacity = "1"
-        // } else {
-        //     imgs[idx-1].style.opacity = ((multiplier - 0.5)/25).toString();
-        // }
-        imgs[idx-1].style.opacity = multiplier.toString();
-        imgs[idx].style.opacity = ( 1- multiplier).toString();
-    }
-
-    sliderChange(e: any){
-        this.sliderValue = e.srcElement.value;
-         this.sliderWidth = e.srcElement.clientWidth;
-
-        // // get the next position of the arrow
-        // move the triangle to match the position of the slider thumb
-        this.sliderThumb.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumb.getBoundingClientRect().width/2);
-
-        this.callbackCurrentQuestion(e);
-    }
-
-    // set(q : SliderQuestion) {
+    set(q : SliderQuestion) {
         // this.min = q.minValue;
         // this.max = q.maxValue;
 
@@ -224,9 +85,9 @@ export default class Slider {
 
         // // show element
         // el(this.el).style.display = "block";
-    // }
+    }
 
-    // show() {
+    show() {
         // var d = this.initialised ? 0.2 : 0.4;
         // this.initialised = true;
 
@@ -277,9 +138,9 @@ export default class Slider {
         // }, {
         //     alpha:1, y:0, delay: d + 0.2
         // });
-    // }
+    }
 
-    // sliderChange(e: any){
+    sliderChange(e: any){
         // // get the width and the value of the slider 
         // this.sliderWidth = e.srcElement.clientWidth;
         // this.value= e.srcElement.value;
@@ -302,21 +163,21 @@ export default class Slider {
         //     }
         // }
 
-    // }
+    }
 
-    // scaleTopFruit() {
+    scaleTopFruit() {
         // this.topFruitElement.style.width = px(3*(this.value - this.mid) + this.fruitDefaultWidth);
         // this.topFruitElement.style.bottom = px(this.topFruitDefaultBottomValue - 0.5 * (this.value - this.mid));
         // this.prevValue = this.value;
-    // }
+    }
 
-    // scaleBottomFruit() {
+    scaleBottomFruit() {
         // this.bottomFruitElement.style.width = px(3*(this.mid - this.value) + this.fruitDefaultWidth);
         // this.bottomFruitElement.style.top = px(this.bottomFruitDefaultTopValue - 0.5 * (this.mid - this.value));
         // this.prevValue = this.value;
-    // }
+    }
 
-    // sliderValueSet(e: any) {
+    sliderValueSet(e: any) {
         // this.value= e.srcElement.value;
         // var d = 0.1;
 
@@ -343,10 +204,10 @@ export default class Slider {
         // TweenMax.to(this.el + " .question", 0.2, {
         //     alpha:0, x:-20, delay:d, onComplete: this.answerRetrieved.bind(this)
         // });
-    // }
+    }
 
-    // answerRetrieved() {
+    answerRetrieved() {
         // el(this.el).style.display = "none";
         // this.ui.answerRetrieved(this.value);
-    // }
+    }
 }

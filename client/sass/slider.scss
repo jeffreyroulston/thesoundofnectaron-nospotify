@@ -1,0 +1,110 @@
+@import "shared";
+
+#slider-q {
+    .col-wrapper {
+        &.text-column {
+            margin-top: 30vh;
+        }
+    }
+
+    .slider-q1 {
+        margin-top: 30vh;
+
+        width: 100%;
+        position: relative;
+
+        li {
+            width: inherit;
+            position: absolute;
+            opacity: 0;
+            border: 1x solid blue;
+
+            transform-origin: center;
+
+            img {
+                width: inherit;
+            }
+        }
+    }
+
+    .slider-q2 {
+        display: none;
+    }
+
+    // .fruits {
+    //     .fruit-top, .fruit-bottom {
+    //         height: 50vh;
+    //         text-align: center;
+    //         position: relative;
+
+    //         img {
+    //             @include horizontalAlign();
+    //             position: absolute;
+    //             display: inline-block;
+    //             width: 200px;
+    //         }
+    //     }
+
+    //     .fruit-top {
+    //         img {
+    //             bottom: 0px;
+    //         }
+
+    //         z-index: 100;
+    //     }
+
+    //     .fruit-bottom {
+    //         img {
+    //             top: 0px;
+    //         }
+    //     }
+    // }
+
+    .slide-container {
+        position: relative;
+        width: 100%;
+        left: 10px;
+    }
+
+    .slider-thumb {
+        width: 0;
+        height: 0;
+        border-left: 11px solid transparent;
+        border-right: 11px solid transparent;
+        border-bottom: 16px solid $purple;
+        position: absolute;
+        left: calc(50% - 9px);
+
+    }
+
+    .slider-label {
+        position: absolute;
+        top: -35px;
+        color: $purple;
+    }
+
+    #min-value-label {
+        left:-20px
+    }
+
+    #max-value-label {
+        right: -20px;
+    }
+
+    .slider-line {
+        width:inherit;
+        display: block;
+        border-top: 2px solid $purple;
+    }
+
+    .slider-input {
+        width: 100%;
+        // opacity: 0;
+        position: relative;
+    }
+
+    .slider-thumb, .slider-input {
+        top: 17px;
+        cursor: pointer;
+    }
+}

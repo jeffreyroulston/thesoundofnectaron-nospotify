@@ -39,7 +39,6 @@ export default class UI {
 
     private graphicsEl: HTMLElement = el("#canvas-container");
     private sharedEl: HTMLElement = el("#shared");
-    // private colorWipeEl = el("#color-wipe");
     private landingPageEl: HTMLElement = el("#landing");
     private roundPageEl: HTMLElement = el("#round-name");
     private logoLetters: HTMLElement[] = elList(".loto-letters letter");
@@ -87,50 +86,28 @@ export default class UI {
         btns.forEach(e => {
             e.addEventListener("click", this.next.bind(this))
         })
-        
-        // set bindings to animation
-        anim.landingPageOut.eventCallback("onComplete", this.showRoundName.bind(this))
-        anim.roundPageOut.eventCallback("onComplete", this.showQuestion.bind(this))
 
         // kick it off
-        this.showLanding();
-        // this.showRoundName();
+        // this.showLanding();
+        this.showRoundName();
     }
 
     private setBG(color : string) {
-        console.log("set background");
+        // set the next background color to turn the body in the graphics callback
         this.nextBgColor = color;
-        // // // sets background colour based on page
-        // var origins = ["bottom", "right"];
-        // // var origin = origins[Math.floor(Math.random() * origins.length)];
-        // var origin = "bottom";
-
-        // // set the background colour
-        // el("body").style.backgroundColor = color;
 
         // // set logo colours - set it to the contrast of the background colour
         this.logoLetters.forEach(el => {
             el.style.fill = data.CONTRAST[color];
         });
-        
-        // // to do - why doesn't top and left work?
-        // // origin determines direction
-        // if (origin == "top" || origin == "bottom") {
-        //     TweenMax.to(this.colorWipeEl, 5, {height: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
-        //         this.colorWipeEl.style.backgroundColor = color;
-        //         this.colorWipeEl.style.height = "100vh";
-        //     }})
-        // } else {
-        //     TweenMax.to(this.colorWipeEl, 5, {width: 0, transformOrigin:origin, ease:"linear", onComplete: function() {
-        //         this.colorWipeEl.style.backgroundColor = color;
-        //         this.colorWipeEl.style.width = "100%";
-        //     }})
-        // }
 
         // these are the border elements that stay on top
         this.sharedEl.style.zIndex = "201";
+
         // put the pixel graphics on top of the others
         this.graphicsEl.style.zIndex = "200";
+
+        // pixels!
         this.app.switchGraphics(data.COLOURS_THREE[color]);
     }
 
@@ -168,18 +145,18 @@ export default class UI {
         }
 
         // show elements
+        this.roundPageEl.style.display = "block";
+
+        // this is the round number (1, 2, 3)
         var nextRoundNumber = "#round-name .numbers li:nth-child(" + (this.currentRoundIdx +2).toString() + ")";
+
+        // this is the name of the round
         var nextRoundName = ".round-name-text li:nth-child(" + (this.currentRoundIdx +1).toString() + ")"
 
-        var roundPageHiddenBlocks = "#round-name";
+        // hidden inline elements to prevent janky transition
         var roundPageHiddenInline = "#round-name .numbers li:first-child" + ", " + nextRoundNumber + ", " + nextRoundName;
 
-        TweenMax.fromTo(roundPageHiddenBlocks, 0, {
-            display: "none"
-        }, {
-            display: "block"
-        })
-
+        // set hidden inline elements to visible
         TweenMax.fromTo(roundPageHiddenInline, 0, {
             display: "none"
         }, {
@@ -193,7 +170,7 @@ export default class UI {
             drawSVG : "100%", ease: easeCircleInOut, delay: d
         });
 
-        // show variable round number
+        // show variable round number (1,2,3)
         TweenMax.fromTo(nextRoundNumber + " path", 2, {
            drawSVG : "0"
         }, {
@@ -257,6 +234,17 @@ export default class UI {
         // this.currentPage = PageType.Question;
         // var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
         this.setBG(data.COLOURS.beige);
+
+        switch(this.currentRoundIdx) {
+            case 0:
+                this.slider.set();
+            case 1:
+                this.mcq.show();
+            case 2:
+                this.qfq.show();
+            default:
+                console.log("why are we here?", this.currentRoundIdx);
+        }
 
         // switch(currentQuestion.type) {
         //     case q.QuestionType.Slider:
