@@ -37,12 +37,15 @@ export default class UI {
     private currentPage : PageType = PageType.Login;
     private currentRoundIdx : number = -1;
 
-    private graphicsEl = el("#canvas-container");
-    private sharedEl = el("#shared");
+    private graphicsEl: HTMLElement = el("#canvas-container");
+    private sharedEl: HTMLElement = el("#shared");
     // private colorWipeEl = el("#color-wipe");
-    private landingPageEl = el("#landing");
-    private roundPageEl = el("#round-name");
-    private logoLetters : HTMLElement[] = elList(".loto-letters letter");
+    private landingPageEl: HTMLElement = el("#landing");
+    private roundPageEl: HTMLElement = el("#round-name");
+    private logoLetters: HTMLElement[] = elList(".loto-letters letter");
+
+    private lastVisibleEl : HTMLElement;
+    private nextBgColor : string = "";
 
     // private recommendations: si.Track[] | undefined = [];
     // private queryParameters: {[key: string]: si.QueryParameter }  = {
@@ -70,6 +73,9 @@ export default class UI {
         this.mcq = new MCQ(this, "#mc-q");
         this.qfq = new QuickFireQ(this, "#quickfire-q");
 
+        // set the page to be hidden in graphics callback
+        this.lastVisibleEl = this.landingPageEl;
+
         // check if it's fucking internet explorer
         // if (!Modernizr.svg) {
         //     console.log("it's internet fucking explorer")
@@ -77,18 +83,23 @@ export default class UI {
 
         // set button bindings
         // el("#startBtn").addEventListener("click", this.next.bind(this));
-        el(".next-btn").addEventListener("click", this.next.bind(this));
+        var btns = elList(".next-btn");
+        btns.forEach(e => {
+            e.addEventListener("click", this.next.bind(this))
+        })
         
         // set bindings to animation
         anim.landingPageOut.eventCallback("onComplete", this.showRoundName.bind(this))
         anim.roundPageOut.eventCallback("onComplete", this.showQuestion.bind(this))
 
         // kick it off
-        // this.showLanding();
-        this.showRoundName();
+        this.showLanding();
+        // this.showRoundName();
     }
 
     private setBG(color : string) {
+        console.log("set background");
+        this.nextBgColor = color;
         // // // sets background colour based on page
         // var origins = ["bottom", "right"];
         // // var origin = origins[Math.floor(Math.random() * origins.length)];
@@ -144,17 +155,17 @@ export default class UI {
         // document.cookie = "showLanding"
         // console.log(document.cookie);
 
-        // // if round 3, change the colour of zero
-        // if (this.currentRoundIdx == 3) {
-        //     el("#round-name .numbers li:first-child path").style.stroke = data.COLOURS.purple;
-        // }
-
         // // do the background
         this.setBG(currentRound.color);
 
         // set the arrow colour
         find(this.roundPageEl, ".arrow-line").style.stroke = data.CONTRAST[currentRound.color];
         find(this.roundPageEl, ".arrow-head").style.fill = data.CONTRAST[currentRound.color];
+
+        // if round 3, change the colour of zero
+        if (this.currentRoundIdx == 3) {
+            el("#round-name .numbers li:first-child path").style.stroke = data.COLOURS.purple;
+        }
 
         // show elements
         var nextRoundNumber = "#round-name .numbers li:nth-child(" + (this.currentRoundIdx +2).toString() + ")";
@@ -245,7 +256,7 @@ export default class UI {
         // this.currentQuestionIdx++;
         // this.currentPage = PageType.Question;
         // var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
-        // this.setBG(data.COLOURS.beige);
+        this.setBG(data.COLOURS.beige);
 
         // switch(currentQuestion.type) {
         //     case q.QuestionType.Slider:
@@ -264,6 +275,7 @@ export default class UI {
     }
 
     private next() {
+        console.log("next");
         switch (this.currentPage) {
             case PageType.Login:
                 // stop the animations
@@ -272,15 +284,14 @@ export default class UI {
 
                 // show the round name
                 this.showRoundName();
-
-                // hide landing page after 300ms (graphics transition = 300ms)
-                // setTimeout(()=> {
-                //     this.landingPageEl.style.display = "none";
-                // }, 300);
                 break;
             
             case PageType.RoundName:
-                // anim.roundPageOut.restart();
+                // set the page to be hidden in graphics callback
+                this.lastVisibleEl = this.roundPageEl;
+
+                console.log("test");
+                this.showQuestion();
                 break;
             
             case PageType.Question:
@@ -310,11 +321,12 @@ export default class UI {
 
     // call back from graphics/app
     public bgTransitionComplete() {
-        // set the body colour
-        var currentRound = data.ROUNDS[this.currentRoundIdx];
-        el("body").style.backgroundColor = currentRound.color;
+        console.log("background transition complete");
 
-        this.landingPageEl.style.display = "none";
+        // set the body colour
+        el("body").style.backgroundColor = this.nextBgColor;
+
+        this.lastVisibleEl.style.display = "none";
 
         setTimeout(()=> {
             // moved shared element back so things can be interacted with
