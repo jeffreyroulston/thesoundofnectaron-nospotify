@@ -40,7 +40,7 @@ landingPageIn.to("#landing", 0, {
     }
 }, 0).from("#landing .subheading", 0.5, {
     alpha:0, y:5
-}, "+=0.2").from("#start-btn", 0.5, {
+}, "+=0.2").from("#start-btn", 0.3, {
     alpha:0, x:-5
 }).to("#start-btn *", 0.3, {
     x:-5, repeat: -1, yoyo: true

@@ -3,7 +3,7 @@ import * as data from "./data";
 import Slider from "./slider-q";
 import MCQ from "./mc-q";
 import QuickFireQ from "./quickfire-q";
-import {el, elList, getRandom} from "./helpers";
+import {el, find, elList, getRandom} from "./helpers";
 import {TweenMax, TimelineMax} from "gsap"
 import App from "./app";
 import * as anim from "./animator"
@@ -98,9 +98,9 @@ export default class UI {
         // el("body").style.backgroundColor = color;
 
         // // set logo colours - set it to the contrast of the background colour
-        // this.logoLetters.forEach(el => {
-        //     el.style.fill = data.CONTRAST[color];
-        // });
+        this.logoLetters.forEach(el => {
+            el.style.fill = data.CONTRAST[color];
+        });
         
         // // to do - why doesn't top and left work?
         // // origin determines direction
@@ -130,17 +130,15 @@ export default class UI {
     }
 
     private showRoundName() {
+        // set delay time
+        var d = 0.7;
+
         // // set current page to be a round
         this.currentPage = PageType.RoundName;
 
         // // increment the current round
         this.currentRoundIdx++;
         var currentRound = data.ROUNDS[this.currentRoundIdx];
-
-        // show the round page
-        this.roundPageEl.style.display = "block";
-
-        // el("body").style.color = currentRound.color;
 
         // // reset the cookie
         // document.cookie = "showLanding"
@@ -151,17 +149,12 @@ export default class UI {
         //     el("#round-name .numbers li:first-child path").style.stroke = data.COLOURS.purple;
         // }
 
-        // // change the colour of the button
-        // el("#round-name .btn .orange-2").style.stroke = currentRound.btnTextColor;
-        // el("#round-name .btn .purple").style.fill = currentRound.btnPaddingColor;
-        // var elems = document.querySelectorAll("#round-name .btn .orange");
-        // for (var i=0; i<elems.length; i++) {
-        //     let e = <HTMLElement>elems[i];
-        //     e.style.fill = currentRound.btnTextColor;
-        // }
-       
         // // do the background
         this.setBG(currentRound.color);
+
+        // set the arrow colour
+        find(this.roundPageEl, ".arrow-line").style.stroke = data.CONTRAST[currentRound.color];
+        find(this.roundPageEl, ".arrow-head").style.fill = data.CONTRAST[currentRound.color];
 
         // show elements
         var nextRoundNumber = "#round-name .numbers li:nth-child(" + (this.currentRoundIdx +2).toString() + ")";
@@ -182,30 +175,21 @@ export default class UI {
             display: "inline-block"
         })
 
-        // // // play animation
-        anim.roundPageIn.play();
-
-        // // bring in round number
-        // TweenMax.fromTo(nextRoundNumber, 0.5, {
-        //     alpha:0, y:-50, rotate:-120
-        // }, {
-        //     alpha:1, y:0, rotate:0, delay:1
-        // });
-
-        var d = 0.7;
-
+        // show round number "0"
         TweenMax.fromTo("#round-name .numbers li:first-child path", 2, {
             drawSVG : "0"
         }, {
             drawSVG : "100%", ease: easeCircleInOut, delay: d
         });
 
+        // show variable round number
         TweenMax.fromTo(nextRoundNumber + " path", 2, {
            drawSVG : "0"
         }, {
             drawSVG : "100%", ease: easeCircleInOut, delay: d
         });
 
+        // float in 'round'
         var paths = document.querySelectorAll(".round path");
         console.log(paths);
         for (var i=0; i<paths.length; i++) {
@@ -229,10 +213,24 @@ export default class UI {
 
         // show the description box
         TweenMax.fromTo("#round-name .description", 0.6, {
-                alpha:0, y:20, rotation:-17
-            }, {
-                alpha:1, y:0, rotation:-17, delay:2*d+1
-            });
+            alpha:0, y:20, rotation:-17
+        }, {
+            alpha:1, y:0, rotation:-17, delay:2*d+1
+        });
+
+        // show the arrow
+        TweenMax.fromTo("#round-name .next-btn", 0.3, {
+            alpha:0, x:-10
+        }, {
+            alpha:1, x:0, delay:2*d+1.2
+        });
+
+        // bounce the arrow
+        TweenMax.to("#round-name .next-btn", 0.3, {
+            x:-10, repeat: -1, yoyo: true, delay:2*d+1.5
+        });
+
+
     }
 
     private showQuestion() { 
