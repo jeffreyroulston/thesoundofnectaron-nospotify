@@ -103,6 +103,8 @@ $tabletPortraitWidth: 768px;
 $mobileLargeWidth: 640px;
 $mobileWidth: 480px;
 
+
+
 @mixin setBreakpoints($property, $s1, $s2, $s3, $s4, $s5, $s6, $s7, $s8){
     // anything larger than 1920px
     @media(min-width: #{$desktopXLargeWidth}) {
@@ -159,6 +161,18 @@ $mobileWidth: 480px;
 
 @mixin rwd($screen) {
     @media (min-width: $screen+'px') {
+        @content;
+    }
+ }
+
+ @mixin maxW($screen) {
+    @media (min-width: $screen) {
+        @content;
+    }
+ }
+
+ @mixin minW($screen) {
+    @media (min-width: $screen) {
         @content;
     }
  }

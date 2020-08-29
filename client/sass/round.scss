@@ -1,74 +1,30 @@
 @import 'shared';
 
 #round-name {
-    .round svg {
-        @include setBreakpoints(height, 70px, 70px, 70px, 70px, 70px, 70px, 70px, 70px);
-    }
-
-    .box {
+    .round, .round-name-text, .numbers, .description {
         display: inline-block;
-        border: 1px solid black;
-    }
-
-    .description {
-        p {
-            font-size: 12px;
-        }
-    }
-}
-
-
-#round-name {
-    .fruit-whole {
-        width: 180px;
-        left: 767px;
-        top: -80px;      
-    }
-
-    .round {
-        display: inline-block;
-        position: relative;
-
-        // margin-top: 76px;
-    }
-
-    .round-name-text {
-        display: inline-block;
-        // position: relative;
-        // top: 130px;
-        // left: -15px;
-        // z-index: 50;
-        // width:210px;
+        position: relative; 
 
         li {
             display: none;
-            // position: absolute;
-            // top: -48px;
-            // right: 5px;
+            position: relative;
         }
+    }
 
+    .round {
+        svg {
+            height: 70px;
+        }
+    }
+
+    .round-name-text {
         svg {
             height: 47px;
         }
     }
 
     .numbers {
-        // position: absolute;
-        // left: 78px;
-        // top: 126px;
-
-        li {
-            display: inline-block;
-            position: relative;
-            // opacity: 0;
-            display: none;
-
-            &:nth-child(n+2) {
-                // left: 17px;
-                // top: -10px
-                // position: absolute;
-            }
-        }
+        display: block;
 
         svg {
             height: 226px;
@@ -85,10 +41,14 @@
         padding: 20px;
         transform: rotate(-17deg);
 
-        position: relative;
+        p {
+            font-size: 12px;
+        }
+    }
+
+    .box {
         display: inline-block;
-        // top: 79px;
-        // left: -28px;
+        border: 1px solid black;
     }
 
     .btn {
@@ -96,4 +56,137 @@
         bottom: -147px;
         right: 16px;
     }
+}
+
+
+#round-name {
+    .fruit-whole {
+        width: 180px;
+        left: 767px;
+        top: -80px;      
+    }
+
+    // .round {
+    //     display: inline-block;
+    //     position: relative;
+
+    //     // margin-top: 76px;
+    // }
+
+    // .round-name-text {
+    //     display: inline-block;
+    //     position: relative; 
+    //     // top: 130px;
+    //     // left: -15px;
+    //     // z-index: 50;
+    //     // width:210px;
+
+    //     li {
+    //         display: none;
+    //         // position: absolute;
+    //         // top: -48px;
+    //         // right: 5px;
+    //     }
+
+    //     svg {
+    //         height: 47px;
+    //     }
+    // }
+
+    // .numbers {
+    //     // position: absolute;
+    //     // left: 78px;
+    //     // top: 126px;
+    //     display: inline-block;
+
+    //     li {
+    //         display: inline-block;
+    //         position: relative;
+    //         // opacity: 0;
+    //         display: none;
+
+    //         &:nth-child(n+2) {
+    //             // left: 17px;
+    //             // top: -10px
+    //             // position: absolute;
+    //         }
+    //     }
+
+    //     svg {
+    //         height: 226px;
+    //     }
+    // }
+
+    // .description {
+    //     background-color: $beige;
+    //     font-family: 'Circular';
+    //     color: $purple;
+    //     font-size: 12px;
+    //     width: 270px;
+    //     height: 135px;
+    //     padding: 20px;
+    //     transform: rotate(-17deg);
+
+    //     position: relative;
+    //     display: inline-block;
+    //     // top: 79px;
+    //     // left: -28px;
+    // }
+
+    // .btn {
+    //     position: absolute;
+    //     bottom: -147px;
+    //     right: 16px;
+    // }
+}
+
+// >1920px
+@include minW($desktopXLargeWidth) {
+
+}
+
+//1920px;
+@include maxW($desktopXLargeWidth) {
+
+}
+
+//1366px
+@include maxW($desktopLargeWidth) {
+
+}
+
+//1280px
+@include maxW($desktopWidth) {
+
+}
+
+//768px;
+@include maxW($tabletPortraitWidth) {
+
+}
+
+//640px
+@include maxW($mobileLargeWidth) {
+    .round-name {
+        .round svg {
+            height: 50px;
+        }
+    }
+
+    .round-name-text {
+        svg {
+            height: 40px;
+        }
+    }
+
+    .numbers {
+        svg {
+            height: 100px;
+        }
+    }
+}
+
+//480px;
+@include maxW($mobileWidth) {
+
 }
