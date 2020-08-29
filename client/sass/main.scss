@@ -98,6 +98,8 @@ p {
     font-weight: 600;
     display: inline-block;
     position: relative;
+
+    @include transition(transform 0.2s ease);
 }
 
 .wrapper {

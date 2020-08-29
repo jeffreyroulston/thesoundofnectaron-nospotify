@@ -1,10 +1,6 @@
 @import 'shared';
 
 #round-name {
-    .text-wrapper {
-        @include transition(transform 0.2s ease);
-    }
-
     .round, .round-name-text, .numbers, .description {
         display: inline-block;
         position: relative; 
