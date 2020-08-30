@@ -181,24 +181,20 @@ export default class Slider {
     private callbackQ1(e: any) {
         // get value from slider
         this.sliderValue = e.srcElement.value;
-
-        // 5 image states
-        //  console.log(this.sliderValue);
+        var ratio = 25
         
-        var v = this.sliderValue / 25;
+        var v = this.sliderValue / ratio;
         var idx = Math.ceil(v);
         idx = idx < 1 ? 1 : idx; // always at least zero
 
-        var max = idx * 25;
-        var multiplier = (max - this.sliderValue)/25;
+        var max = idx * ratio;
+        var multiplier = (max - this.sliderValue)/ratio;
 
-        // console.log(idx)
-        // if (multiplier < 0.5) {
-        //     imgs[idx-1].style.opacity = "1"
-        // } else {
-        //     imgs[idx-1].style.opacity = ((multiplier - 0.5)/25).toString();
-        // }
-        this.imgs[idx-1].style.opacity = multiplier.toString();
+        if (multiplier >= 0.5) {
+            this.imgs[idx-1].style.opacity = "1";
+        } else {
+            this.imgs[idx-1].style.opacity = (multiplier*2).toString();
+        }
         this.imgs[idx].style.opacity = ( 1- multiplier).toString();
     }
 
@@ -313,6 +309,9 @@ export default class Slider {
         
         // HANDS
         this.count = 5;
+        this.sliderValue = 0;
+        this.sliderEl.value = "0";
+        this.sliderReset();
 
         // set perspective?
         TweenMax.to(this.imgEl, 0, {perspective:800})
@@ -333,7 +332,7 @@ export default class Slider {
     private callbackQ5(e: any) {
         // get value from slider
         this.sliderValue = e.srcElement.value;
-        var ratio = 100/this.count;
+        var ratio = 25;
         
         var v = this.sliderValue / ratio;
         var idx = Math.ceil(v);
@@ -341,8 +340,8 @@ export default class Slider {
 
         var max = idx * ratio;
         var multiplier = (max - this.sliderValue)/ratio;
-
-        this.imgs[idx-1].style.opacity = multiplier.toString();
+        
+        this.imgs[idx-1].style.opacity = "1";
         this.imgs[idx].style.opacity = ( 1- multiplier).toString();
     }
 
