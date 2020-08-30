@@ -53,6 +53,7 @@ export interface SliderQuestion extends Question {
 }
 
 export interface MCQuestion extends Question {
+    options: number,
     answer : string;
 }
 
@@ -130,26 +131,31 @@ export const mcqQuestions : Array<MCQuestion> = [
     {
         params: si.QueryParameters.Valence,
         question : "Choose your brewer",
+        options: 6,
         answer : ""
     },
     {
         params: si.QueryParameters.Valence,
-        question : "Where is this best enjoyed?",
+        question : "Where is you Nectaron brew savoured?",
+        options: 4,
         answer : ""
     },
     {
         params: si.QueryParameters.Valence,
         question : "Choose your drinking buddy",
+        options: 6,
         answer : ""
     },
     {
         params: si.QueryParameters.Valence,
         question : "Perfect pairing?",
+        options: 6,
         answer : ""
     },
     {
         params: si.QueryParameters.Valence,
         question : "Choose your vessel",
+        options: 6,
         answer : ""
     }
 ]

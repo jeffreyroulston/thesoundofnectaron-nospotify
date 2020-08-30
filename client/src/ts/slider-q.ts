@@ -328,8 +328,6 @@ export default class Slider {
     }
 
     private callbackQ3(e: any) {
-
-        console.log("Callback");
         // get value from slider
         this.sliderValue = e.srcElement.value;
 
@@ -340,7 +338,7 @@ export default class Slider {
             this.imgs[i].className = i<sharp ? "sharp" : "round";
         }
 
-        console.log("slider value: " + this.sliderValue.toString() + " sharp counter: " + sharp.toString() + " round counter: " + round.toString());
+        // console.log("slider value: " + this.sliderValue.toString() + " sharp counter: " + sharp.toString() + " round counter: " + round.toString());
     }
 
     private q3Resize() {

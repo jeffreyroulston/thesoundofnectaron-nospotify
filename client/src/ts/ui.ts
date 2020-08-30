@@ -233,16 +233,17 @@ export default class UI {
         // this.currentQuestionIdx++;
         // this.currentPage = PageType.Question;
         // var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
-        this.setBG(data.COLOURS.beige);
         this.currentPage = PageType.Question;
+        this.setBG(data.COLOURS.beige);
         console.log(this.currentRoundIdx);
 
         switch(this.currentRoundIdx) {
             case 0:
-                this.slider.set();
+                // this.slider.set();
+                this.mcq.set();
                 break;
             case 1:
-                this.mcq.show();
+                this.mcq.set();
                 break;
             case 2:
                 this.qfq.show();
@@ -282,29 +283,12 @@ export default class UI {
             case PageType.RoundName:
                 // set the page to be hidden in graphics callback
                 this.lastVisibleEl = this.roundPageEl;
-
-                console.log("test");
                 this.showQuestion();
                 break;
             
             case PageType.Question:
                 // show the round name
                 this.showRoundName();
-
-                // var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
-                // if (this.currentQuestionIdx < data.QUESTIONS.length-1) {
-                //     // get next question
-                //     var nextQuestion = data.QUESTIONS[this.currentQuestionIdx+1];
-                //     // check if it's the same or a new round
-                //     if (currentQuestion.round < nextQuestion.round) {
-                //         this.showRoundName();
-                //     } else {
-                //         this.showQuestion();
-                //     }
-                // } else {
-                //     // the end!
-                //     console.log("the end has been reached");
-                // }
                 break;
         }
     }
@@ -321,8 +305,14 @@ export default class UI {
 
         // set the body colour
         el("body").style.backgroundColor = this.nextBgColor;
-
         this.lastVisibleEl.style.display = "none";
+
+        if (this.currentPage == PageType.Question) {
+            // hide the round number elements
+            TweenMax.to(".round-name-text li, .numbers li", 0, {
+                display: "none"
+            })
+        }
 
         setTimeout(()=> {
             // moved shared element back so things can be interacted with
