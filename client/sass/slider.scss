@@ -8,6 +8,10 @@ $marginTop2 : 10vh;
         &.text-column {
             margin-top: $marginTop;
         }
+
+        &.full-width {
+            width: 100%;
+        }
     }
 
     .slider-q {
@@ -33,30 +37,29 @@ $marginTop2 : 10vh;
     }
 
     .slider-q2 {
-        .scale-top, .scale-bottom {
+        li {
             height: 50vh;
             text-align: center;
             position: relative;
-
             img {
                 @include horizontalAlign();
                 position: absolute;
                 display: inline-block;
                 width: 200px;
             }
-        }
 
-        .scale-top {
-            img {
-                bottom: 0px;
+            &:first-child {
+                img {
+                    bottom: 0px;
+                }
+    
+                z-index: 100;
             }
 
-            z-index: 100;
-        }
-
-        .scale-bottom {
-            img {
-                top: 0px;
+            &:nth-child(2) {
+                img {
+                    top: 0px;
+                }
             }
         }
     }
@@ -109,7 +112,7 @@ $marginTop2 : 10vh;
     .slider-q5 {
         margin-top: $marginTop2;
         z-index: -1;
-        
+
         li {
             width: 120%;
             left:-10%;

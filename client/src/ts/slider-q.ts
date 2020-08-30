@@ -29,6 +29,7 @@ export default class Slider {
     // starts in the middle
     private sliderValue : number = 50;
     private previousValue : number = 50;
+    private midValue = 50;
 
     // these change per question
     private imgs : HTMLElement[] = [];
@@ -36,10 +37,14 @@ export default class Slider {
     private count : number = 0;
 
     // q2 (scale)
-    private topFruitElement : HTMLElement;
-    private bottomFruitElement : HTMLElement;
+    private topFruitDefaultBottomValue : number = 0;
+    private bottomFruitDefaultTopValue : number = 0;
+    private fruitDefaultWidth : number = 200;
 
     private initiated = false;
+
+    // for looping animations
+    private loopingAnimations : TweenMax[] = [];
 
     // private fruitDefaultWidth : number;
     // private topFruitDefaultBottomValue : number;
@@ -76,8 +81,8 @@ export default class Slider {
         this.callbackCurrentQuestion = this.callbackQ1.bind(this)
 
         // INITALISING FOR QUESTION TWO
-        this.topFruitElement = f.find(this.el, " .fruit-top img");
-        this.bottomFruitElement = f.find(this.el, " .fruit-bottom img");
+        // this.topFruitElement = f.find(this.el, " .fruit-top img");
+        // this.bottomFruitElement = f.find(this.el, " .fruit-bottom img");
         // this.questionElement = el(this.el + " .question");
 
         // // console.log(this.el, this.sliderEl, this.sliderThumb, this.topFruitElement, this.bottomFruitElement, this.questionElement);
@@ -110,7 +115,6 @@ export default class Slider {
             this.sliderValue = 50;
             this.sliderEl.value = "50";
             this.sliderReset();
-
 
             // show it
             this.show();
@@ -172,9 +176,9 @@ export default class Slider {
 
         // show the block
         TweenMax.fromTo(".slider-q1 li:first-child", 0.5, {
-            alpha:0, y:-400, rotation:180, scale:1.2
+            alpha:0, y:400, scale:1.5
         }, {
-            alpha:1, rotation:0, y:0, scale:1, delay:this.delay+0.2
+            alpha:1, y:0, scale:1, delay:this.delay+0.2
         })
     }
 
@@ -196,38 +200,77 @@ export default class Slider {
             this.imgs[idx-1].style.opacity = (multiplier*2).toString();
         }
         this.imgs[idx].style.opacity = ( 1- multiplier).toString();
+        for (var i=idx+1; i<this.imgs.length; i++) {
+            this.imgs[i].style.opacity = "0";
+        }
     }
 
     private showQ2() {
         console.log("show question two");
         
         // PINEAPPLE AND HOPS
-        TweenMax.fromTo(this.topFruitElement, 0.3, {
+        this.imgs = f.elList(".slider-q2 li img");
+
+        this.topFruitDefaultBottomValue = f.pxToInt(getComputedStyle(this.imgs[0]).bottom);
+        this.bottomFruitDefaultTopValue = f.pxToInt(getComputedStyle(this.imgs[1]).top);
+
+        TweenMax.fromTo(this.imgs, 0.3, {
             alpha:0
         }, {
-            alpha:1, delay: this.delay+0.2
+            alpha:1
         });
 
-        TweenMax.fromTo(this.bottomFruitElement, 0.3, {
-            alpha:0
+        TweenMax.fromTo(this.imgs[0], 0.8, {
+            y:-100
         }, {
-            alpha:1, delay: this.delay+0.3
+            y:0, ease:"bounce"
         });
 
-        TweenMax.fromTo(this.topFruitElement, 0.8, {
-            y:-50
+        TweenMax.fromTo(this.imgs[1], 0.8, {
+            y:100
         }, {
-            y:0, ease:"bounce", delay : this.delay+0.2
+            y:0, ease:"bounce"
         });
 
-        TweenMax.fromTo(this.bottomFruitElement, 0.8, {
-            y:50
-        }, {
-            y:0, ease:"bounce", delay : this.delay+0.3
-        });
+        this.loopingAnimations.push(TweenMax.to(this.imgs[0], 0.5, {
+            y:-20, repeat:-1, yoyo:true, delay:0.8
+        }))
+
+        this.loopingAnimations.push(TweenMax.to(this.imgs[1], 0.5, {
+            y:20, repeat:-1, yoyo:true, delay:0.8
+        }))
     }
 
-    private callbackQ2(e: any) {}
+    private callbackQ2(e: any) {
+        this.sliderValue = e.srcElement.value;
+
+        // // scale fruit
+        if (this.sliderValue > this.midValue) {
+            this.scaleTopFruit();
+        } else if (this.sliderValue  < this.midValue) {
+            this.scaleBottomFruit();
+        } else {
+            //mid point
+            if (this.previousValue > this.midValue) {
+                this.scaleTopFruit();
+            } else {
+                this.scaleBottomFruit();
+            }
+        }
+    }
+
+    scaleTopFruit() {
+
+        this.imgs[0].style.width = f.px(3*(this.sliderValue - this.midValue) + this.fruitDefaultWidth);
+        this.imgs[0].style.bottom = f.px(this.topFruitDefaultBottomValue - 0.5 * (this.sliderValue - this.midValue));
+        this.previousValue = this.sliderValue;
+    }
+
+    scaleBottomFruit() {
+        this.imgs[1].style.width = f.px(3*(this.midValue - this.sliderValue) + this.fruitDefaultWidth);
+        this.imgs[1].style.top = f.px(this.bottomFruitDefaultTopValue - 0.5 * (this.midValue - this.sliderValue));
+        this.previousValue = this.sliderValue;
+    }
 
     private showQ3() {
         console.log("show question three");
@@ -237,6 +280,9 @@ export default class Slider {
         container.style.display = "block";
         this.count = 10;
         this.imgs = [];
+
+        // make it full width
+        f.el(".col-wrapper").classList.toggle("full-width");
 
         // set perspective?
         TweenMax.to(this.imgEl, 0, {perspective:800})
@@ -263,19 +309,20 @@ export default class Slider {
         var elements = this.imgs;
         f.shuffle(elements);
 
-        // for(var x=0; x<elements.length; x++) {
-        //     TweenMax.fromTo(elements[x], 1.5, {
-        //         y: window.innerHeight/2,
-        //         rotationY:-10,
-        //     }, {
-        //         y: -window.innerHeight,
-        //         ease: "linear",
-        //         repeat:-1,
-        //         repeatDelay:0,
-        //         delay:x*0.2,
-        //         rotationY:10,
-        //     })
-        // }
+        for(var x=0; x<elements.length; x++) {
+            this.loopingAnimations.push(TweenMax.fromTo(elements[x], 1.5, {
+                y: window.innerHeight/2,
+                rotationY:-10,
+            }, {
+                y: -window.innerHeight,
+                x: f.getRandom(-300, 300),
+                ease: "linear",
+                repeat:-1,
+                repeatDelay:0,
+                delay:x*0.2,
+                rotationY:10,
+            }));
+        }
     }
 
     private callbackQ3(e: any) {
@@ -301,7 +348,10 @@ export default class Slider {
         }
     }
 
-    private showQ4() {}
+    private showQ4() {
+        // make it not full width
+        f.el(".col-wrapper").classList.toggle("full-width");
+    }
     private callbackQ4(e: any) {}
 
     private showQ5() {
@@ -329,11 +379,11 @@ export default class Slider {
         }
 
         for(var i=0; i<this.imgs.length; i++) {
-            TweenMax.fromTo(this.imgs[i], 1, {
+            this.loopingAnimations.push(TweenMax.fromTo(this.imgs[i], 1, {
                 rotate:5, transformOrigin: "50% 100%"
             }, {
-                rotate:-10, transformOrigin: "50% 100%", repeat:-1, yoyo:true, delay: 0.05 * i
-            })
+                rotate:-10, transformOrigin: "50% 100%", repeat:-1, yoyo:true, delay: 0.08 * i
+            }));
         }
     }
 
@@ -351,6 +401,9 @@ export default class Slider {
         
         this.imgs[idx-1].style.opacity = "1";
         this.imgs[idx].style.opacity = ( 1- multiplier).toString();
+        for (var i=idx+1; i<this.imgs.length; i++) {
+            this.imgs[i].style.opacity = "0";
+        }
     }
 
     sliderChange(e: any){
@@ -373,7 +426,7 @@ export default class Slider {
     }
 
     sliderValueSet(e:any) {
-        if (this.questionIdx < 5) {
+        if (this.questionIdx < 1) {
             // lock in slider value to answer
             this.questions[this.questionIdx].answer = e.srcElement.value;;
 
@@ -409,6 +462,13 @@ export default class Slider {
             this.imgs = [];
             this.imgEl = f.find(this.el, ".slider-q" + (this.questionIdx+1).toString());
             this.count = 0;
+
+            // stop all loopinng animations
+            this.loopingAnimations.forEach((anim) => {
+                anim.kill();
+            })
+
+            this.loopingAnimations = [];
 
             // resent bindings
             this.showCurrentQuestion = showFunctions[this.questionIdx];

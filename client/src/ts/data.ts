@@ -47,8 +47,6 @@ export interface Question {
 }
 
 export interface SliderQuestion extends Question {
-    minValue : number,
-    maxValue : number,
     minTextValue : string,
     maxTextValue : string,
     answer : number
@@ -94,8 +92,6 @@ export const sliderQuestions : Array<SliderQuestion> = [
     {
         params: si.QueryParameters.Valence,
         question : "What brew style are you after?",
-        minValue : 0,
-        maxValue : 100,
         minTextValue : "Light",
         maxTextValue : "Dark",
         answer : 0
@@ -103,8 +99,6 @@ export const sliderQuestions : Array<SliderQuestion> = [
     {
         params: si.QueryParameters.Valence,
         question : "How bitter would you like your brew?",
-        minValue : 0,
-        maxValue : 100,
         minTextValue : "0 IBU",
         maxTextValue : "100 IBU",
         answer : 0
@@ -112,17 +106,13 @@ export const sliderQuestions : Array<SliderQuestion> = [
     {
         params: si.QueryParameters.Valence,
         question : "What mouthfeel would you like?",
-        minValue : 0,
-        maxValue : 100,
         minTextValue : "Sharp",
-        maxTextValue : "Roundy",
+        maxTextValue : "Round",
         answer : 0
     },
     {
         params: si.QueryParameters.Valence,
         question : "How long would you like to boil for?",
-        minValue : 0,
-        maxValue : 100,
         minTextValue : "0 min",
         maxTextValue : "120 min",
         answer : 0
@@ -130,8 +120,6 @@ export const sliderQuestions : Array<SliderQuestion> = [
     {
         params: si.QueryParameters.Valence,
         question : "How strong are the beer goggles on this one??",
-        minValue : 0,
-        maxValue : 100,
         minTextValue : "Weak",
         maxTextValue : "Strong",
         answer : 0
