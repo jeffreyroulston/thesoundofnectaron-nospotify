@@ -5,9 +5,10 @@ import {sliderQuestions, SliderQuestion } from "./data";
 import { easeBounceIn, easeBounceInOut } from "d3";
 
 export default class Slider {
+    public el : HTMLElement;
+
     private ui : UI;
     private id : string;
-    private el : HTMLElement;
 
     private questionIdx : number = 0;
     private questions : SliderQuestion[] = sliderQuestions;
@@ -42,6 +43,7 @@ export default class Slider {
     private fruitDefaultWidth : number = 200;
 
     private initiated = false;
+    private completed = false;
 
     // for looping animations
     private loopingAnimations : TweenMax[] = [];
@@ -223,21 +225,21 @@ export default class Slider {
         TweenMax.fromTo(this.imgs[0], 0.8, {
             y:-100
         }, {
-            y:0, ease:"bounce"
+            y:0
         });
 
         TweenMax.fromTo(this.imgs[1], 0.8, {
             y:100
         }, {
-            y:0, ease:"bounce"
+            y:0
         });
 
         this.loopingAnimations.push(TweenMax.to(this.imgs[0], 0.5, {
-            y:-20, repeat:-1, yoyo:true, delay:0.8
+            y:-20, repeat:-1, yoyo:true, delay:0.7
         }))
 
         this.loopingAnimations.push(TweenMax.to(this.imgs[1], 0.5, {
-            y:20, repeat:-1, yoyo:true, delay:0.8
+            y:20, repeat:-1, yoyo:true, delay:0.7
         }))
     }
 
@@ -426,14 +428,17 @@ export default class Slider {
     }
 
     sliderValueSet(e:any) {
-        if (this.questionIdx < 1) {
-            // lock in slider value to answer
-            this.questions[this.questionIdx].answer = e.srcElement.value;;
+        // if (this.questionIdx < 1) {
+        //     // lock in slider value to answer
+        //     this.questions[this.questionIdx].answer = e.srcElement.value;;
 
-            console.log(this.questions[this.questionIdx]);
+        //     console.log(this.questions[this.questionIdx]);
 
-            this.getNextQuestion();
-        }
+        //     this.getNextQuestion();
+        // }
+
+        this.questions[this.questionIdx].answer = e.srcElement.value;;
+        this.getNextQuestion();
     }
 
     getNextQuestion() {
@@ -453,6 +458,11 @@ export default class Slider {
             this.callbackQ5.bind(this)
         ];
 
+        // stop all loopinng animations
+        this.loopingAnimations.forEach((anim) => {
+            anim.kill();
+        })
+
         if (this.questionIdx < this.questions.length-1) {
             console.log("current question: " + this.questionIdx.toString() + ", next question: " + (this.questionIdx+1).toString())
             this.questionIdx++;
@@ -462,54 +472,56 @@ export default class Slider {
             this.imgs = [];
             this.imgEl = f.find(this.el, ".slider-q" + (this.questionIdx+1).toString());
             this.count = 0;
-
-            // stop all loopinng animations
-            this.loopingAnimations.forEach((anim) => {
-                anim.kill();
-            })
-
             this.loopingAnimations = [];
 
             // resent bindings
             this.showCurrentQuestion = showFunctions[this.questionIdx];
             this.callbackCurrentQuestion = callbackFunctions[this.questionIdx];
 
-            console.log(this.imgEl);
-            console.log(this.showCurrentQuestion);
-            console.log(this.callbackCurrentQuestion);
-
             // hide out the things
-            TweenMax.to(".slider-q" + this.questionIdx.toString(), this.time, {
-                alpha:0, scale:0.9, transformOrigin: "bottom", display: "none", onComplete : ()=> {
-                    this.set();
-                }
-            });
-
-            // show the question
-            TweenMax.to(this.questionElement, this.time, {
-                alpha:0, x:-20
-            });
-
-            // hide the line
-            TweenMax.to(" .slider-line", this.time, {
-                scaleX:0, transformOrigin: "right"
-            });;
-
-            // hide the labels
-            TweenMax.to([this.minValueLabel, this.maxValueLabel], this.time, {
-                alpha: 0, y:-20
-            })
-
-            // hide the thumb
-            TweenMax.to(this.sliderThumbEl, this.time, {
-                alpha:0, y:20
-            });
-
-            console.log(".slider-q" + this.questionIdx.toString())
+            this.hide();
 
         } else {
             console.log("current question: " + this.questionIdx.toString() + ", end of this section ")
+            this.completed = true;
+            this.hide();
+            this.ui.roundComplete(this.el);
         }
+    }
+
+    hide() {
+        // hide out the things
+        TweenMax.to(".slider-q" + this.questionIdx.toString(), this.time, {
+            alpha:0, scale:0.9, transformOrigin: "bottom", display: "none", onComplete : ()=> {
+                if (!this.completed) this.set();
+            }
+        });
+
+        // show the question
+        TweenMax.to(this.questionElement, this.time, {
+            alpha:0, x:-20
+        });
+
+        // hide the line
+        TweenMax.to(" .slider-line", this.time, {
+            scaleX:0, transformOrigin: "right"
+        });;
+
+        // hide the labels
+        TweenMax.to([this.minValueLabel, this.maxValueLabel], this.time, {
+            alpha: 0, y:-20
+        })
+
+        // hide the thumb
+        TweenMax.to(this.sliderThumbEl, this.time, {
+            alpha:0, y:20
+        });
+
+        // set display non
+    }
+
+    complete() {
+        this.el.style.display = "none";
     }
 
     // set(q : SliderQuestion) {

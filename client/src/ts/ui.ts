@@ -234,7 +234,9 @@ export default class UI {
         // this.currentPage = PageType.Question;
         // var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
         this.setBG(data.COLOURS.beige);
+        this.currentPage = PageType.Question;
         console.log(this.currentRoundIdx);
+
         switch(this.currentRoundIdx) {
             case 0:
                 this.slider.set();
@@ -286,6 +288,9 @@ export default class UI {
                 break;
             
             case PageType.Question:
+                // show the round name
+                this.showRoundName();
+
                 // var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
                 // if (this.currentQuestionIdx < data.QUESTIONS.length-1) {
                 //     // get next question
@@ -335,6 +340,11 @@ export default class UI {
         // data.QUESTIONS[this.currentQuestionIdx].answer = a;
         // console.log(data.QUESTIONS[this.currentQuestionIdx]);
         // this.next();
+    }
+
+    public roundComplete(el: HTMLElement) {
+        this.lastVisibleEl = el;
+        this.next();
     }
 
     public questionsCompleted() {
