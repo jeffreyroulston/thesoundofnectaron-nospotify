@@ -2,7 +2,7 @@ import UI from "./ui";
 import * as f from "./helpers";
 import gsap, {TweenMax} from "gsap"
 import {sliderQuestions, SliderQuestion } from "./data";
-import { easeBounceIn } from "d3";
+import { easeBounceIn, easeBounceInOut } from "d3";
 
 export default class Slider {
     private ui : UI;
@@ -316,17 +316,25 @@ export default class Slider {
         // set perspective?
         TweenMax.to(this.imgEl, 0, {perspective:800})
 
-        // add all the different states (sun, clouds) to imgs
-        for (var i=1; i<this.count+1; i++) {
+        // show the block
+        TweenMax.fromTo(".slider-q5 li:first-child", 0.5, {
+            alpha:0,rotationX:90,
+        }, {
+            alpha:1, rotationX:0, transformOrigin: "bottom", 
+        })
+
+         // add all the different states of hands to imgs
+         for (var i=1; i<this.count+1; i++) {
             this.imgs.push(f.el(".slider-q5 li:nth-child(" + i.toString() + ")"));
         }
 
-        // show the block
-        TweenMax.fromTo(".slider-q5 li:first-child", 5, {
-            alpha:0,rotationX:90,
-        }, {
-            alpha:1, rotationX:0, transformOrigin: "bottom", delay:this.delay+0.2
-        })
+        for(var i=0; i<this.imgs.length; i++) {
+            TweenMax.fromTo(this.imgs[i], 1, {
+                rotate:5, transformOrigin: "50% 100%"
+            }, {
+                rotate:-10, transformOrigin: "50% 100%", repeat:-1, yoyo:true, delay: 0.05 * i
+            })
+        }
     }
 
     private callbackQ5(e: any) {
@@ -429,7 +437,7 @@ export default class Slider {
 
             // hide the labels
             TweenMax.to([this.minValueLabel, this.maxValueLabel], this.time, {
-                alpha: 0, y:20
+                alpha: 0, y:-20
             })
 
             // hide the thumb

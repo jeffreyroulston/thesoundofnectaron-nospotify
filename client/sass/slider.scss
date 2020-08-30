@@ -108,9 +108,12 @@ $marginTop2 : 10vh;
 
     .slider-q5 {
         margin-top: $marginTop2;
+        z-index: -1;
+        
         li {
             width: 120%;
             left:-10%;
+            @include transition(opacity 0.2s ease);
         }
     }
 
