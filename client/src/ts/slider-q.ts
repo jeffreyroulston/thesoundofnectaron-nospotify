@@ -2,7 +2,10 @@ import UI from "./ui";
 import * as f from "./helpers";
 import gsap, {TweenMax} from "gsap"
 import {COLOURS, sliderQuestions, SliderQuestion } from "./data";
-import { easeBounceIn, easeBounceInOut } from "d3";
+import { DrawSVGPlugin } from "gsap/dist/DrawSVGPlugin";
+import { MorphSVGPlugin } from "gsap/dist/MorphSVGPlugin";
+
+gsap.registerPlugin(DrawSVGPlugin, MorphSVGPlugin);
 
 export default class Slider {
     public el : HTMLElement;
@@ -41,6 +44,7 @@ export default class Slider {
     private colorWipeEl :HTMLElement = f.el("#color-wipe");
     private colour1 = f.convertHexToRgb("FCF1DB");
     private colour2 = f.convertHexToRgb("281333");
+    private imgs2 : HTMLElement[] = [];
 
     // q2 (scale)
     private topFruitDefaultBottomValue : number = 0;
@@ -86,6 +90,32 @@ export default class Slider {
 
         this.showCurrentQuestion = this.showQ1.bind(this);
         this.callbackCurrentQuestion = this.callbackQ1.bind(this)
+
+        // Initialising for question one
+        // var lines = f.elList(".sun-rays .cls-2.line");
+        // var stars = f.elList(".sun-rays .cls-2.star");
+        // f.shuffle(lines);
+        // f.shuffle(stars);
+
+        // for(var i=0; i<lines.length; i++) {
+        //     let line = lines[i];
+        //     let star = stars[i]
+        //     let idx = i;
+
+        //     setTimeout(()=> {
+        //         line.classList.toggle("animate");
+        //         star.classList.toggle("animate");
+        //     }, 1000 * idx)
+        // }
+
+        // for(var i=0; i<lines.length; i++) {
+        //     lines[i].style.transitionDelay = (1000*i).toString() +"ms";
+        //     stars[i].style.transitionDelay = (1000*i).toString() +"ms";
+
+        //     lines[i].classList.toggle("animate");
+        //     stars[i].classList.toggle("animate");
+        // }
+
 
         // INITALISING FOR QUESTION TWO
         // this.topFruitElement = f.find(this.el, " .fruit-top img");
@@ -202,21 +232,86 @@ export default class Slider {
         //     y:-50, repeat:-1, yoyo:true, delay:this.delay+0.5
         // }))
 
-        TweenMax.fromTo(".sun-rays", 100, {
-            rotation:0
+        TweenMax.fromTo(".sun-rays", this.time, {
+            alpha:0
         }, {
-            rotation:360, transformOrigin: "center", ease:"linear", repeat:-1
+            alpha:1, delay:this.delay, ease:"linear"
         })
+
+        // this.loopingAnimations.push(
+        //     TweenMax.fromTo(".sun-rays .lines", 100, {
+        //         rotation:0
+        //     }, {
+        //         rotation:360, transformOrigin: "center", ease:"linear", repeat:-1
+        //     })
+        // )
+
+        // var nodes = f.elList(".sun-rays .cls-2.line");
+        // console.log(nodes);
+
+        this.imgs = f.elList(".sun-rays .cls-2.line");
+        this.imgs2 = f.elList(".sun-rays .cls-2.star");
+
+        // for(var i=0; i<this.imgs.length; i++) {
+        //     // TweenMax.to(".sun-rays .cls-2.line:nth-child(" + i.toString() + ")", 0.1, {
+        //     //     morphSVG: ".sun-rays .cls-2.star:nth-child(" + i.toString() + ")", delay:1*i
+        //     // })
+        //     // TweenMax.to(this.imgs[i], 5, {
+        //     //     scale: 1.1, yoyo: true, repeat:-1, delay:i*0.1
+        //     // })
+        //     let img = this.imgs[i];
+
+        //     setTimeout(()=> {
+        //         img.classList.toggle("animate");
+        //     }, 100 * i)
+        // }
+        // TweenMax.to(this.imgs, 1, {
+        //     scale: 1.1, yoyo:true, repeat:-1, stagger: {
+        //         each: 0.1
+        //     }
+        // })
+        
     }
 
     private callbackQ1(e: any) {
         // get value from slider
         this.sliderValue = e.srcElement.value;
-        console.log(this.sliderValue);
+        // console.log(this.sliderValue);
 
         var colour = f.rgb(f.findColorBetween(this.colour1, this.colour2, this.sliderValue));
         console.log(colour);
         this.colorWipeEl.style.backgroundColor = colour;
+
+        // turn it round proportional to the thing
+        var ratio = this.sliderValue/this.maxValue;
+        var rotation = 360 * ratio;
+
+        TweenMax.to(this.imgEl, 0, {
+            rotation: rotation
+        })
+
+        // hide rays and show stars 
+        var rayCount = Math.round(ratio * this.imgs.length);
+        var starCount = this.imgs.length - rayCount;
+
+        // console.log("ray count: " + rayCount.toString() + ", star count: " + starCount.toString());
+
+        var lineOpacity = (1-ratio) - ratio;
+        lineOpacity = lineOpacity < 0 ? 0 : lineOpacity;
+        this.imgs.forEach((line)=> {
+            line.style.opacity = (lineOpacity).toString();
+        })
+
+        console.log("value: " + this.sliderValue.toString() + ", line opacity: " + lineOpacity.toString());
+
+        var starOpacity = (ratio - (1-ratio));
+        starOpacity = starOpacity < 0 ? 0 : starOpacity;
+        this.imgs2.forEach((star)=> {
+            star.style.opacity = starOpacity.toString();
+        })
+
+        // f.find(this.imgEl, ".moon-center").style.opacity = ratio.toString();
+        f.find(this.imgEl, ".moon-center").style.opacity = ratio.toString();
 
         // var ratio = 25
         
@@ -238,6 +333,15 @@ export default class Slider {
         // for (var i=0; i<this.imgs.length; i++) {
         //     if (i!=idx && i!=(idx-1))
         //     this.imgs[i].style.opacity = "0";
+        // }
+
+        // var nodes = f.elList(".sun-rays .cls-2.line");
+        // console.log(nodes);
+
+        // for(var i=1; i<nodes.length+1; i++) {
+        //     TweenMax.to(".sun-rays .cls-2.line:nth-child(" + i.toString() + ")", 0.1, {
+        //         morphSVG: ".sun-rays .cls-2.star:nth-child(" + i.toString() + ")", delay:1*i
+        //     })
         // }
     }
 
@@ -523,7 +627,7 @@ export default class Slider {
     hide() {
         // hide out the things
         TweenMax.to(".slider-q" + this.questionIdx.toString(), this.time, {
-            alpha:0, scale: 1.2, display: "none", onComplete : ()=> {
+            alpha:0, scale: 1.1, display: "none", onComplete : ()=> {
                 if (!this.completed) this.set();
             }
         });
