@@ -1,6 +1,10 @@
 @import "shared";
 
 #slider-q {
+    .wrapper {
+        height: 100vh
+    }
+
     .col-wrapper {
         &.text-column {
             margin-top: $marginTop;
@@ -8,6 +12,15 @@
 
         &.full-width {
             width: 100%;
+            float: none;
+            margin:0;
+            @include verticalAlign();
+            position: absolute;
+
+            h1 {
+                text-align: center;
+            }
+
         }
     }
 
@@ -17,7 +30,7 @@
         width: 100%;
     }
 
-    .slider-q1, .slider-q5 {
+    .slider-q5 {
         margin-top: $marginTop;
         position: relative;
 
@@ -61,7 +74,16 @@
         }
     }
 
-    .slider-q3 {
+    .sun-rays {
+        height: 150vh;
+        top: -25vh;
+        @include horizontalAlign();
+        position: absolute;
+        z-index: -1;
+        opacity: 0.5;
+    }
+
+    .slider-q2, .slider-q3 {
         margin: 0;
         padding: 0;
         height: 100vh; // make this compatible with iphone scroll
@@ -69,7 +91,9 @@
         position: absolute;
         top: 0;
         left: 0;
+    }
 
+    .slider-q3 {
         li {
             width: 5vw;
             height: 10vw;
