@@ -266,7 +266,7 @@ export default class Slider {
     private callbackQ2(e: any) {}
     private callbackQ3(e: any) {
 
-        console.log("Callback");
+        // console.log("Callback");
         // get value from slider
         this.sliderValue = e.srcElement.value;
         var count = 10;
@@ -276,7 +276,7 @@ export default class Slider {
             imgs.push(f.el(".slider-q3 li:nth-child(" + i.toString() + ")"));
         }
 
-        console.log(imgs);
+        // console.log(imgs);
 
         var sharp = (Math.ceil(this.sliderValue / count) * count)/10;
         var round = (100 - sharp)/10;
@@ -289,7 +289,7 @@ export default class Slider {
             }
         }
 
-        console.log("slider value: " + this.sliderValue.toString() + " sharp counter: " + sharp.toString() + " round counter: " + round.toString());
+        // console.log("slider value: " + this.sliderValue.toString() + " sharp counter: " + sharp.toString() + " round counter: " + round.toString());
 
     }
     private callbackQ4(e: any) {}

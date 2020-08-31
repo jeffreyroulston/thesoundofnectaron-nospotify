@@ -1,6 +1,8 @@
 import ResourceManager from "./resource-manager";
 import * as THREE from 'three';
 import {COLOURS} from "./data";
+import Squiggles from "./squiggles";
+import { BufferAttribute } from "three";
 
 const vertShader = `
     varying vec2 vUv;
@@ -49,6 +51,21 @@ enum TransitionState {
 
 export default class Graphics {
 
+    private squiggles: Squiggles = new Squiggles();
+
+    // squiggles
+    private squiggleMesh: THREE.LineSegments;
+    private squiggleGeo: THREE.BufferGeometry;
+    private squiggleMaterial: THREE.LineBasicMaterial;
+    private squiggleBuffer: THREE.BufferAttribute;
+
+    private squiggleRenderer: THREE.WebGLRenderer;
+    private squiggleScene: THREE.Scene;
+
+    // squiggle timing
+    private squiggleUpdateInterval: number = 1.0 / 5.0;
+    private currentSquiggleTime: number = 0;
+
     private renderer: THREE.WebGLRenderer;
     private scene: THREE.Scene;
     private camera: THREE.OrthographicCamera;
@@ -79,11 +96,11 @@ export default class Graphics {
         this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-        const container = document.getElementById('canvas-container');
-        if (container !== null) {
-            container.append(this.renderer.domElement);
-            this.renderer.domElement.id = "graphics-canvas";
-        }
+        // const container = document.getElementById('canvas-container');
+        // if (container !== null) {
+        //     container.append(this.renderer.domElement);
+        //     this.renderer.domElement.id = "graphics-canvas";
+        // }
 
         window.onresize = () => {
             this.frameResized = true;
@@ -91,6 +108,7 @@ export default class Graphics {
 
         this.scene = new THREE.Scene();
         this.camera = new THREE.OrthographicCamera(-2, 2, 2, -2, 0, 2);
+        this.camera.position.z = 1;
 
         this.currentRendererSize = new THREE.Vector2();
         this.lastScreenSize = new THREE.Vector2();
@@ -109,6 +127,30 @@ export default class Graphics {
             },
             transparent: true
         });
+        
+        // squiggles
+        this.squiggles.update();
+
+        this.squiggleGeo = new THREE.BufferGeometry();
+        const defaultArray = new Float32Array(this.squiggles.maxVertices * 3);
+        this.squiggleBuffer = new THREE.BufferAttribute(defaultArray, 3);
+        this.squiggleGeo.setAttribute('position', this.squiggleBuffer);
+        this.squiggleMaterial = new THREE.LineBasicMaterial({color: 0xffffff});
+        this.squiggleMesh = new THREE.LineSegments(this.squiggleGeo, this.squiggleMaterial);
+
+        this.squiggleScene = new THREE.Scene();
+        this.squiggleScene.add(this.squiggleMesh);
+
+        this.squiggleRenderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+        this.renderer.setPixelRatio(devicePixelRatio);
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.squiggleRenderer.setClearColor(this.firstColor, 1);
+
+        const container = document.getElementById('canvas-container');
+        if (container !== null) {
+            container.append(this.squiggleRenderer.domElement);
+            this.squiggleRenderer.domElement.id = "graphics-canvas";
+        }
 
         this.clock = new THREE.Clock();
 
@@ -162,8 +204,8 @@ export default class Graphics {
 
         this.frameResized = false;
 
-        const currentWidth = this.renderer.domElement.clientWidth;// * window.devicePixelRatio;
-        const currentHeight = this.renderer.domElement.clientHeight;// * window.devicePixelRatio;
+        const currentWidth = this.squiggleRenderer.domElement.clientWidth;// * window.devicePixelRatio;
+        const currentHeight = this.squiggleRenderer.domElement.clientHeight;// * window.devicePixelRatio;
 
         if (this.lastScreenSize.x !== currentWidth || this.lastScreenSize.y !== currentHeight) {
             this.resize(currentWidth, currentHeight);
@@ -175,16 +217,36 @@ export default class Graphics {
         this.renderer.setSize(width, height);
         this.renderer.getDrawingBufferSize(this.currentRendererSize);
 
+        this.squiggleRenderer.setSize(width, height);
+        // this.squiggleRenderer.getDrawingBufferSize(this.currentRendererSize);
+
         this.material.uniforms.size.value.copy(this.currentRendererSize);
     }
 
     private render(): void {
         requestAnimationFrame(this.render.bind(this));
 
-        this.checkResize();
-
         const dt = this.clock.getDelta();
         const time = this.clock.getElapsedTime();
+
+        this.checkResize();
+
+        this.currentSquiggleTime += Math.min(dt, 1.0 / 30.0);
+        if (this.currentSquiggleTime > this.squiggleUpdateInterval) {
+            this.currentSquiggleTime -= this.squiggleUpdateInterval;
+
+            this.squiggles.update();
+
+            const verts = this.squiggles.vertices;
+            if (this.squiggleGeo.attributes.position instanceof BufferAttribute) {
+                for(let i = 0; i < verts.length; i++) {
+                    this.squiggleGeo.attributes.position.copyArray(verts);
+                    this.squiggleGeo.attributes.position.needsUpdate = true;
+                }
+            }
+    
+            this.squiggleGeo.setDrawRange(0, this.squiggles.size);
+        }
 
         if (this.state === TransitionState.TransitionForward) {
 
@@ -205,6 +267,6 @@ export default class Graphics {
         this.material.uniforms.lerp.value = this.currentLerp;
 
 
-        this.renderer.render(this.scene, this.camera);
+        this.squiggleRenderer.render(this.squiggleScene, this.camera);
     }
 }
