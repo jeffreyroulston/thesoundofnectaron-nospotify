@@ -1,7 +1,7 @@
 import UI from "./ui";
 import * as f from "./helpers";
 import gsap, {TweenMax} from "gsap"
-import {sliderQuestions, SliderQuestion } from "./data";
+import {COLOURS, sliderQuestions, SliderQuestion } from "./data";
 import { easeBounceIn, easeBounceInOut } from "d3";
 
 export default class Slider {
@@ -36,6 +36,11 @@ export default class Slider {
     private imgs : HTMLElement[] = [];
     private imgEl : HTMLElement = f.el(".slider-q1");
     private count : number = 0;
+
+    //q1 (color slider)
+    private colorWipeEl :HTMLElement = f.el("#color-wipe");
+    private colour1 = f.convertHexToRgb("FCF1DB");
+    private colour2 = f.convertHexToRgb("281333");
 
     // q2 (scale)
     private topFruitDefaultBottomValue : number = 0;
@@ -153,23 +158,32 @@ export default class Slider {
         TweenMax.fromTo([this.minValueLabel, this.maxValueLabel], this.time, {
             alpha: 0, y:-20
         }, {
-            alpha: 1, y:0, delay: delay+ 0.1
+            alpha: 1, y:0, delay: delay
         })
 
         // show the thumb
         TweenMax.fromTo(this.sliderThumbEl, this.time, {
             alpha:0, y:20
         }, {
-            alpha:1, y:0, delay: delay + 0.2
+            alpha:1, y:0, delay: delay
         });
 
     }
 
     private showQ1() {
         console.log("show question one");
+        TweenMax.fromTo(this.colorWipeEl, 0.2, {
+            display:"none", alpha:0
+        }, {
+            display:"block", alpha:1, delay: this.delay
+        })
+        this.colorWipeEl.style.backgroundColor = f.rgb(this.colour1);
         
-        // SUN AND CLOUDS
+        // // SUN AND CLOUDS
         this.count = 5;
+
+        // make it full width
+        // f.el(".col-wrapper").classList.toggle("full-width");
 
         // add all the different states (sun, clouds) to imgs
         for (var i=1; i<this.count+1; i++) {
@@ -177,16 +191,27 @@ export default class Slider {
         }
 
         // show the block
-        TweenMax.fromTo(".slider-q1 li:first-child", 0.5, {
+        TweenMax.fromTo(this.imgs[0], 0.5, {
             alpha:0, y:400, scale:1.5
         }, {
-            alpha:1, y:0, scale:1, delay:this.delay+0.2
+            alpha:1, y:0, scale:1, delay:this.delay
         })
+
+        // bop
+        this.loopingAnimations.push(TweenMax.to(this.imgs, 1, {
+            y:-50, repeat:-1, yoyo:true, delay:this.delay+0.5
+        }))
     }
 
     private callbackQ1(e: any) {
         // get value from slider
         this.sliderValue = e.srcElement.value;
+        console.log(this.sliderValue);
+
+        var colour = f.rgb(f.findColorBetween(this.colour1, this.colour2, this.sliderValue));
+        console.log(colour);
+        this.colorWipeEl.style.backgroundColor = colour;
+
         var ratio = 25
         
         var v = this.sliderValue / ratio;
@@ -202,7 +227,10 @@ export default class Slider {
             this.imgs[idx-1].style.opacity = (multiplier*2).toString();
         }
         this.imgs[idx].style.opacity = ( 1- multiplier).toString();
-        for (var i=idx+1; i<this.imgs.length; i++) {
+        
+        // reset the other things
+        for (var i=0; i<this.imgs.length; i++) {
+            if (i!=idx && i!=(idx-1))
             this.imgs[i].style.opacity = "0";
         }
     }
@@ -235,11 +263,11 @@ export default class Slider {
         });
 
         this.loopingAnimations.push(TweenMax.to(this.imgs[0], 0.5, {
-            y:-20, repeat:-1, yoyo:true, delay:0.7
+            y:-20, repeat:-1, yoyo:true, delay:0.8
         }))
 
         this.loopingAnimations.push(TweenMax.to(this.imgs[1], 0.5, {
-            y:20, repeat:-1, yoyo:true, delay:0.7
+            y:20, repeat:-1, yoyo:true, delay:0.8
         }))
     }
 
@@ -312,7 +340,7 @@ export default class Slider {
         f.shuffle(elements);
 
         for(var x=0; x<elements.length; x++) {
-            this.loopingAnimations.push(TweenMax.fromTo(elements[x], 1.5, {
+            this.loopingAnimations.push(TweenMax.fromTo(elements[x], 2.5, {
                 y: window.innerHeight/2,
                 rotationY:-10,
             }, {
@@ -379,10 +407,10 @@ export default class Slider {
         }
 
         for(var i=0; i<this.imgs.length; i++) {
-            this.loopingAnimations.push(TweenMax.fromTo(this.imgs[i], 1, {
+            this.loopingAnimations.push(TweenMax.fromTo(this.imgs[i], 1.5, {
                 rotate:5, transformOrigin: "50% 100%"
             }, {
-                rotate:-10, transformOrigin: "50% 100%", repeat:-1, yoyo:true, delay: 0.08 * i
+                rotate:-10, transformOrigin: "50% 100%", repeat:-1, yoyo:true, delay: 0.06 * i
             }));
         }
     }
@@ -427,16 +455,13 @@ export default class Slider {
 
     sliderValueSet(e:any) {
         // if (this.questionIdx < 1) {
-        //     // lock in slider value to answer
-        //     this.questions[this.questionIdx].answer = e.srcElement.value;;
+            // lock in slider value to answer
+            this.questions[this.questionIdx].answer = e.srcElement.value;;
 
-        //     console.log(this.questions[this.questionIdx]);
+            console.log(this.questions[this.questionIdx]);
 
-        //     this.getNextQuestion();
+            this.getNextQuestion();
         // }
-
-        this.questions[this.questionIdx].answer = e.srcElement.value;;
-        this.getNextQuestion();
     }
 
     getNextQuestion() {
@@ -490,7 +515,7 @@ export default class Slider {
     hide() {
         // hide out the things
         TweenMax.to(".slider-q" + this.questionIdx.toString(), this.time, {
-            alpha:0, scale:0.9, transformOrigin: "bottom", display: "none", onComplete : ()=> {
+            alpha:0, scale: 1.2, display: "none", onComplete : ()=> {
                 if (!this.completed) this.set();
             }
         });

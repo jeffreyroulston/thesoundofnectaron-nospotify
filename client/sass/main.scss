@@ -40,6 +40,13 @@ p {
     line-height: 1.5;
 }
 
+#color-wipe {
+    position: absolute;
+    height: 100vh; // make this compatible with iphone scroll
+    width: 100%;
+    display: none,
+}
+
 #canvas-container {
     position: absolute;
     height: 100vh; // make this compatible with iphone scroll
