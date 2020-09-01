@@ -149,7 +149,7 @@ export default class UI {
         find(this.roundPageEl, ".arrow-head").style.fill = data.CONTRAST[currentRound.color];
 
         // if round 3, change the colour of zero
-        if (this.currentRoundIdx == 3) {
+        if (this.currentRoundIdx == 2) {
             el("#round-name .numbers li:first-child path").style.stroke = data.COLOURS.purple;
         }
 
