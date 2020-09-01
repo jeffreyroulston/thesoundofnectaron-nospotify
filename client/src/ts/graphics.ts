@@ -223,6 +223,10 @@ export default class Graphics {
         // this.squiggleRenderer.getDrawingBufferSize(this.currentRendererSize);
 
         this.material.uniforms.size.value.copy(this.currentRendererSize);
+
+        const aspect = width / height;
+        this.camera.left = -aspect;
+        this.camera.right = aspect;
     }
 
     private render(): void {
