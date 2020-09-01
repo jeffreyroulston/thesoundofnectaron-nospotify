@@ -13,6 +13,10 @@ export default class QuickFireQ {
     // private timerCount : number = 20;
     // private timerStarted : boolean = false;
 
+    // called from ui
+    public initiated = false;
+    public isComplete = false;
+
     constructor(ui : UI, elementName: string) {
         this.ui = ui;
         this.el = elementName;
@@ -26,12 +30,16 @@ export default class QuickFireQ {
         // }
     }
 
-    set(q : QuickFireQuestion) {
-        // this.questionElement.innerHTML = q.question;
+    set() {
 
-        // // show element
-        // el(this.el).style.display = "block";
     }
+
+    // set(q : QuickFireQuestion) {
+    //     // this.questionElement.innerHTML = q.question;
+
+    //     // // show element
+    //     // el(this.el).style.display = "block";
+    // }
 
     show() {
         // var d = 0.4;
@@ -96,5 +104,9 @@ export default class QuickFireQ {
     answerRetrieved(e: any) {
     //     var value = e.srcElement.data == "true";
     //     this.ui.answerRetrieved(value);
+    }
+
+    completed(){
+
     }
 }
