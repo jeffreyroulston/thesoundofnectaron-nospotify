@@ -2,6 +2,7 @@
 @import "round";
 @import "slider";
 @import "mcq";
+@import "qfq";
 
 * {
     margin: 0;
@@ -265,70 +266,6 @@ p {
     .question-wrapper {
         max-width: 600px;
         margin: 0 auto;
-    }
-}
-
-#quickfire-q {
-    .question {
-        color: $purple;
-    }
-
-    .question-wrapper {
-        max-width: 700px;
-    }
-
-    #timer {
-        // border: 1px solid black;
-        font-family: "Harbour";
-        font-weight: 600;
-        text-align: right;
-        // font-size: 1000px;
-        font-size: 50vw;
-        color: $blue;
-
-        position: relative;
-        width: 100%;
-
-        li {
-            // width: 750px;
-            right: 0;
-            width: 37vw;
-            line-height: calc(100vh + 5vw);
-            position: absolute;
-
-            &:first-child {
-                // letter-spacing: -350px;
-                right: 33vw;
-            }
-        }
-    }
-
-    #answer-wrapper {
-        margin-left: 10px;
-
-        li {
-            background-color: $purple;
-            font-family: "Harbour";
-            font-weight: 600;
-            color: $orange;
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 50px;
-            cursor: pointer;
-            position: relative;
-            top:0px;
-
-            @include transition(top 0.2s ease);
-            
-            &:first-child {
-                margin-right: 20px;
-            }
-
-            &:active {
-                background-color: $orange;
-                color: $purple;
-            }
-        }
     }
 }
 

@@ -58,7 +58,7 @@ export interface MCQuestion extends Question {
 }
 
 export interface QuickFireQuestion extends Question {
-    asked : boolean,
+    answered : boolean,
     answer : boolean
 }
 
@@ -69,7 +69,7 @@ export const ROUNDS : QuestionRound[] = [
         numberColor: COLOURS.yellow,
         btnTextColor : COLOURS.red,
         btnPaddingColor : COLOURS.purple,
-        text : "All about the science of brewing. It's the details and the process - the part the brewers will really sing their teeth into. What's the brew style? What flavours are you heroing? Is it light or dark? These slider centric questions will be accompanied by 5 hero images that change based on the answer - all in the style of Nectaron 'visual collision,' half fruit - half something else." 
+        text : "Light? dark? Hazies? Lagers? There’s a science to it. Slide the dial to show what you’re in to..." 
     },
     {
         round : 2,
@@ -77,7 +77,7 @@ export const ROUNDS : QuestionRound[] = [
         numberColor: COLOURS.yellow,
         btnTextColor : COLOURS.purple,
         btnPaddingColor : COLOURS.red,
-        text: "Now we've covered the basics, it's time to get experimental. Section Two is where we see mastery and mystery come into play. This section is all about imbuing their brew with personality. These questions will come to life visually through an 8 bit style. This will resonate with brewers as it borros from the nostalgia of retro gaming - something that brewers love."
+        text: "It’s time to imbue some of your personality into this thing. What makes you, you?"
     },
     {
         round: 3,
@@ -85,7 +85,7 @@ export const ROUNDS : QuestionRound[] = [
         numberColor: COLOURS.purple,
         btnTextColor : COLOURS.red,
         btnPaddingColor : COLOURS.purple,
-        text: "Section Three is all about instinct. Every question is phrased as a statement - controversial by design. Brewers can answer either yes or no to these statements. To elicit their sharpest instincts, they’ll have 20 seconds to get through 15 questions in the climax of the experience."
+        text: "OK, for this part switch off your brain. Don’t think. Just follow your instinct."
     }
 ]
 
@@ -163,68 +163,284 @@ export const mcqQuestions : Array<MCQuestion> = [
 export const qfQuestions : Array<QuickFireQuestion> = [
     {
         params: si.QueryParameters.Valence,
+        question: "Pineapple belongs on pizza?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "British version of The Office is better than the American?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "New Zealand invented the pavlova?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Do you remember Ben Lummis?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Rollerblading is cooler than roller skating?",
+        answered : false,
+        answer: false,
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Do you enjoy your own farts?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Wipe from front to back over back to front?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Take your shoes off in the house?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "You should always finish your plate?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Never kiss on a first date?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "BK is better than McDonald's?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Kevin Hart is funnier than Dave Chappelle?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "An eye for an eye?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Who Wants to Be a Millionaire is better than The Chase?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "It’s OK to park in a disabled spot if you’ll “be quick”?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Gingers have no soul?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Freedom doesn’t exist?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "The Big Bang Theory is better than Modern Family?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Marijuana should be legal?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Apple is better than Samsung?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Biggie & 2Pac are still alive?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Macaulay Culkin is not telling the truth?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "In a marriage, everything becomes 50% off?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Jesus is an effective form of contraceptive?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Last GoT episode was horseshit?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Is the Earth flat?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "You should clap along to the Friends intro?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "You should clap along to the Friends intro?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "The Rock is greater than Stone Cold?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Street Fighter over Tekken?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Socks and sandals are only for school kids?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Pants shouldn’t ride higher than your belly button?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Front door over back door?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "East Coast over West Coast?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Mountains over lakes?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Aliens exist?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Vaccines cause Autism?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "The Big Bang did not create Earth?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Mona Lisa is overrated?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
+        question: "Paper straws are better than plastic straws?",
+        answered : false,
+        answer: false
+    },
+    {
+        params: si.QueryParameters.Valence,
         question: "I’ll have the usual?",
-        asked : false,
+        answered : false,
         answer: false
     },
     {
         params: si.QueryParameters.Valence,
         question: "Beer in a can over a bottle?",
-        asked : false,
+        answered : false,
         answer: false
     },
     {
         params: si.QueryParameters.Valence,
-        question: "Ketchup should be kept in the fridge?",
-        asked : false,
+        question: "Ketchup should be left in the fridge?",
+        answered : false,
         answer: false
     },
     {
         params: si.QueryParameters.Valence,
-        question: "Hazys over Lagers?",
-        asked : false,
+        question: "Hazys over lagers?",
+        answered : false,
         answer: false
-    },
-    {
-        params: si.QueryParameters.Valence,
-        question: "Every Die Hard movie is good?",
-        asked : false,
-        answer: false,
     },
     {
         params: si.QueryParameters.Valence,
         question: "German beer over American beer?",
-        asked : false,
+        answered : false,
         answer: false
     },
     {
         params: si.QueryParameters.Valence,
         question: "You wash your legs in the shower?",
-        asked : false,
+        answered : false,
         answer: false
     },
     {
         params: si.QueryParameters.Valence,
-        question: "Six pack over single serve?",
-        asked : false,
+        question: "Brew bar over micro pub?",
+        answered : false,
         answer: false
     },
-    {
-        params: si.QueryParameters.Valence,
-        question: "There was enough room for both Jack and Rose on the door?",
-        asked : false,
-        answer: false
-    },
-    {
-        params: si.QueryParameters.Valence,
-        question: "Brew bars over micro pub?",
-        asked : false,
-        answer: false
-    },
-    {
-        params: si.QueryParameters.Valence,
-        question: "The Karate Kid is the bad guy in the Karate Kid?",
-        asked : false,
-        answer: false
-    }
 ]

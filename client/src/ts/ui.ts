@@ -76,7 +76,8 @@ export default class UI {
         this.qfq = new QuickFireQ(this, "#quickfire-q");
 
         // set the order (lol)
-        this.questionGroups = [this.slider, this.mcq, this.qfq];
+        // this.questionGroups = [this.slider, this.mcq, this.qfq];
+        this.questionGroups = [this.qfq, this.slider, this.mcq];
 
         // set initial question
         this.currentQuestionGroup = this.slider;
