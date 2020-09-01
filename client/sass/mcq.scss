@@ -7,6 +7,8 @@
         max-width: unset;
         text-align: center;
 
+        transition: background-color 0.5s ease;
+
         h1 {
             text-align: center;
             height: auto;
@@ -14,10 +16,21 @@
             max-width: 600px;
             display: inline-block;
         }
+
+        &.boxed {
+            // width: 700px;
+            // background-color: $beige;
+            // padding: 60px 0px;
+            h1 {
+                text-shadow: 11px 6px 19px #000000;
+                color: white;
+            }
+
+        }
     }
 
     .col-wrapper {
-        margin-top: 20vh;
+        margin-top: $marginTop;
         text-align: center;
         // &.text-column {
         //     margin-top: $marginTop;
@@ -61,8 +74,8 @@
             // position: absolute;
             // background-size: 100% auto;
             // background-repeat: no-repeat;
-            width: 100px;
-            height: 140px;
+            width: 50px;
+            height: 100px;
             // height: 300px;
             display: inline-block;
             cursor: pointer;
@@ -118,11 +131,26 @@
         position: relative;
     }
 
-    .head, .vessel, .food {
+    .head, .vessel{
         width: 200px;
         height: 200px;
-        position: absolute;
     }
+
+    .food {
+        width: 400px;
+        height: 400px;
+    }
+
+    #food1 {
+        left: 100px;
+        bottom: 0px;
+        display: none;
+    }
+
+    // #food2 {
+    //     right: 100px;
+    //     bottom: 0px;
+    // }
 
     .head {
         width: 100px;

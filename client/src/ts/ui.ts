@@ -80,7 +80,7 @@ export default class UI {
 
         // set the order (lol)
         this.questionGroups = [this.slider, this.mcq, this.qfq];
-        // this.questionGroups = [this.qfq, this.slider, this.mcq];
+        // this.questionGroups = [this.mcq, this.slider, this.mcq];
 
         // set initial question
         this.currentQuestionGroup = this.slider;
@@ -133,6 +133,77 @@ export default class UI {
         // // reset the cookie
         document.cookie = "landingShown"
         console.log(document.cookie);
+
+        var d = 2;
+        var t1 = 0.3;
+        var t2 = 1;
+        var distance = 50;
+
+        // show the fruits 
+        TweenMax.from("#landing .fruit-top", t1, {
+            alpha: 0, delay:d
+        })
+
+        TweenMax.from("#landing .fruit-bottom", t1, {
+            alpha: 0, delay:d+0.2
+        })
+
+        TweenMax.from("#landing .pineapple-top", t1, {
+            alpha: 0, delay:d+0.4
+        })
+        TweenMax.from("#landing .fruit-bottom-2", t1, {
+            alpha: 0, delay:d+0.6
+        })
+
+        TweenMax.from("#landing .fruit-whole", t1, {
+            alpha: 0, delay:d+0.8
+        })
+
+        TweenMax.from("#landing .pineapple-burner", t1, {
+            alpha: 0, delay:d+1
+        })
+
+        this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-top", t2, {
+            rotate:-30
+        },{
+            y:-50, scale:1.3, rotate:30, repeat:-1, yoyo:true, ease:"linear"
+        }))
+
+        this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-bottom", t2, {
+            rotate:30
+        },{
+            y:50, scale:1.3, rotate:-30, repeat:-1, yoyo:true, ease:"linear"
+        }))
+
+        this.loopingAnimations.push(TweenMax.fromTo("#landing .pineapple-top", t2, {
+            x:-50
+        },{
+            x:10, scale:1.3, repeat:-1, yoyo:true, ease:"linear"
+        }))
+
+        this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-bottom-2", t2, {
+            x:50
+        },{
+            x:10, scale:1.3, repeat:-1, yoyo:true, ease:"linear"
+        }))
+
+        this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-whole", t2*2, {
+            rotate:0
+        },{
+            rotate:360, repeat:-1, ease:"linear"
+        }))
+
+        this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-whole", t2, {
+            scale:1
+        },{
+           scale:1.3, repeat:-1, yoyo:true
+        }))
+
+        this.loopingAnimations.push(TweenMax.fromTo("#landing .pineapple-burner", 0.1, {
+            rotate:-1
+        },{
+            rotate:0, transformOrigin: "bottom", repeat:-1, ease:"linear", yoyo:true
+        }))
     }
 
     public showRoundName() {

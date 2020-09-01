@@ -325,12 +325,6 @@ export const qfQuestions : Array<QuickFireQuestion> = [
     },
     {
         params: si.QueryParameters.Valence,
-        question: "You should clap along to the Friends intro?",
-        answered : false,
-        answer: false
-    },
-    {
-        params: si.QueryParameters.Valence,
         question: "The Rock is greater than Stone Cold?",
         answered : false,
         answer: false

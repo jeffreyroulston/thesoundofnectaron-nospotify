@@ -159,25 +159,29 @@
 
 // >1920px
 @include minW($desktopXLargeWidth) {
-
+    #landing .text-wrapper {
+        @include transform(scale(1.2));
+    }
 }
 
 //1920px;
 @include maxW($desktopXLargeWidth) {
-
+    #landing .text-wrapper {
+        @include transform(scale(1.1));
+    }
 }
 
 //1366px
 @include maxW($desktopLargeWidth) {
     #landing .text-wrapper {
-        @include transform(scale(0.9));
+        @include transform(scale(1));
     }
 }
 
 //1280px
 @include maxW($desktopWidth) {
     #landing .text-wrapper {
-        @include transform(scale(0.8));
+        @include transform(scale(0.9));
     }
 }
 
@@ -185,7 +189,7 @@
 @include maxW($tabletPortraitWidth) {
     #landing {
         .text-wrapper  {
-            @include transform(scale(0.7));
+            @include transform(scale(0.8));
         }
         .subheading span{
             display: inline-block;
