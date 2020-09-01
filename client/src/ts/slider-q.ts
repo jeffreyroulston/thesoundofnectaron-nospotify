@@ -1,38 +1,57 @@
 import UI from "./ui";
 import * as f from "./helpers";
 import gsap, {TweenMax} from "gsap"
-import {sliderQuestions, SliderQuestion } from "./data";
-import { easeBounceIn } from "d3";
+import {COLOURS, sliderQuestions, SliderQuestion } from "./data";
+import { easeBounceIn, easeBounceInOut } from "d3";
 
 export default class Slider {
+    public el : HTMLElement;
+
     private ui : UI;
     private id : string;
-    private el : HTMLElement;
 
     private questionIdx : number = 0;
     private questions : SliderQuestion[] = sliderQuestions;
     private delay = 0.7;
     private time = 0.3;
 
+    // shared elements
     private sliderEl : HTMLInputElement;
     private sliderThumbEl : HTMLElement;
     private sliderWidthEl : number = 0;
-
-    private topFruitElement : HTMLElement;
-    private bottomFruitElement : HTMLElement;
-
     private questionElement: HTMLElement;
     private minValueLabel : HTMLElement;
     private maxValueLabel : HTMLElement;
 
+    // from question
     private minValue : number = 0;
     private maxValue : number = 100;
 
     // starts in the middle
     private sliderValue : number = 50;
     private previousValue : number = 50;
+    private midValue = 50;
+
+    // these change per question
+    private imgs : HTMLElement[] = [];
+    private imgEl : HTMLElement = f.el(".slider-q1");
+    private count : number = 0;
+
+    //q1 (color slider)
+    private colorWipeEl :HTMLElement = f.el("#color-wipe");
+    private colour1 = f.convertHexToRgb("FCF1DB");
+    private colour2 = f.convertHexToRgb("281333");
+
+    // q2 (scale)
+    private topFruitDefaultBottomValue : number = 0;
+    private bottomFruitDefaultTopValue : number = 0;
+    private fruitDefaultWidth : number = 200;
 
     private initiated = false;
+    private completed = false;
+
+    // for looping animations
+    private loopingAnimations : TweenMax[] = [];
 
     // private fruitDefaultWidth : number;
     // private topFruitDefaultBottomValue : number;
@@ -69,8 +88,8 @@ export default class Slider {
         this.callbackCurrentQuestion = this.callbackQ1.bind(this)
 
         // INITALISING FOR QUESTION TWO
-        this.topFruitElement = f.find(this.el, " .fruit-top img");
-        this.bottomFruitElement = f.find(this.el, " .fruit-bottom img");
+        // this.topFruitElement = f.find(this.el, " .fruit-top img");
+        // this.bottomFruitElement = f.find(this.el, " .fruit-bottom img");
         // this.questionElement = el(this.el + " .question");
 
         // // console.log(this.el, this.sliderEl, this.sliderThumb, this.topFruitElement, this.bottomFruitElement, this.questionElement);
@@ -104,6 +123,7 @@ export default class Slider {
             this.sliderEl.value = "50";
             this.sliderReset();
 
+            // show it
             this.show();
             this.showCurrentQuestion();
 
@@ -113,9 +133,12 @@ export default class Slider {
     }
 
     private show() {
-        var delay = this.initiated ? 0 : 1;
+        var delay = this.initiated ? 0 : this.delay;
         this.initiated = true;
         this.el.style.display = "block";
+        
+        // show the element with images
+        this.imgEl.style.display = "block";
 
         // show the question
         TweenMax.fromTo(this.questionElement, this.time, {
@@ -135,164 +158,289 @@ export default class Slider {
         TweenMax.fromTo([this.minValueLabel, this.maxValueLabel], this.time, {
             alpha: 0, y:-20
         }, {
-            alpha: 1, y:0, delay: delay+ 0.1
+            alpha: 1, y:0, delay: delay
         })
 
         // show the thumb
         TweenMax.fromTo(this.sliderThumbEl, this.time, {
             alpha:0, y:20
         }, {
-            alpha:1, y:0, delay: delay + 0.2
+            alpha:1, y:0, delay: delay
         });
 
     }
 
     private showQ1() {
         console.log("show question one");
-        // SUN AND CLOUDS
-        TweenMax.fromTo(".slider-q1 li:first-child", 0.5, {
-            alpha:0, y:-400, rotation:180, scale:1.2
+        TweenMax.fromTo(this.colorWipeEl, 0.2, {
+            display:"none", alpha:0
         }, {
-            alpha:1, rotation:0, y:0, scale:1, delay:this.delay+0.2
+            display:"block", alpha:1, delay: this.delay
+        })
+        this.colorWipeEl.style.backgroundColor = f.rgb(this.colour1);
+        
+        // // SUN AND CLOUDS
+        this.count = 5;
+
+        // make it full width
+        f.el(".col-wrapper").classList.toggle("full-width");
+
+        // add all the different states (sun, clouds) to imgs
+        for (var i=1; i<this.count+1; i++) {
+            this.imgs.push(f.el(".slider-q1 li:nth-child(" + i.toString() + ")"));
+        }
+
+        // show the block
+        // TweenMax.fromTo(this.imgs[0], 0.5, {
+        //     alpha:0, y:400, scale:1.5
+        // }, {
+        //     alpha:1, y:0, scale:1, delay:this.delay
+        // })
+
+        // bop
+        // this.loopingAnimations.push(TweenMax.to(this.imgs, 1, {
+        //     y:-50, repeat:-1, yoyo:true, delay:this.delay+0.5
+        // }))
+
+        TweenMax.fromTo(".sun-rays", 100, {
+            rotation:0
+        }, {
+            rotation:360, transformOrigin: "center", ease:"linear", repeat:-1
         })
     }
-
-    private showQ2() {
-        console.log("show question two");
-        // PINEAPPLE AND HOPS
-        f.el(".slider-q2").style.display = "block";
-        
-        TweenMax.fromTo(this.topFruitElement, 0.3, {
-            alpha:0
-        }, {
-            alpha:1, delay: this.delay+0.2
-        });
-
-        TweenMax.fromTo(this.bottomFruitElement, 0.3, {
-            alpha:0
-        }, {
-            alpha:1, delay: this.delay+0.3
-        });
-
-        TweenMax.fromTo(this.topFruitElement, 0.8, {
-            y:-50
-        }, {
-            y:0, ease:"bounce", delay : this.delay+0.2
-        });
-
-        TweenMax.fromTo(this.bottomFruitElement, 0.8, {
-            y:50
-        }, {
-            y:0, ease:"bounce", delay : this.delay+0.3
-        });
-    }
-
-    private showQ3() {
-        console.log("show question three");
-        // GLOVES AND DART
-        var container = <HTMLUListElement>f.el(".slider-q3");
-        container.style.display = "block";
-        var count = 10;
-        var elements :HTMLElement[]= []
-
-        // set perspective?
-        TweenMax.to(".slider-q3", 0, {perspective:800})
-
-        // create children
-        for (var i=1; i<count+1; i++) {
-            let el = document.createElement("li");
-            let htmlEl = <HTMLElement>el;
-            elements.push(htmlEl)
-            
-            htmlEl.style.left = + ((i-1) * 7).toString() + "vw";
-            container.appendChild(el)
-
-            if (i<(count/2)) {
-                htmlEl.className = "sharp";
-            } else {
-                htmlEl.className = "round";
-            }
-
-            TweenMax.to(htmlEl, 0, {transformStyle:"preserve-3d"})
-        }
-
-        f.shuffle(elements);
-        for(var x=0; x<elements.length; x++) {
-            TweenMax.fromTo(elements[x], 3, {
-                y: window.innerHeight/2,
-                rotationY:-10
-            }, {
-                y: -window.innerHeight,
-                ease: "linear",
-                repeat:-1,
-                repeatDelay:0,
-                delay:x*0.5,
-                rotationY:10,
-            })
-        }
-    }
-
-    private showQ4() {}
 
     private callbackQ1(e: any) {
         // get value from slider
         this.sliderValue = e.srcElement.value;
-        var imgs = [];
+        console.log(this.sliderValue);
 
-        for (var i=1; i<6; i++) {
-            imgs.push(f.el(".slider-q1 li:nth-child(" + i.toString() + ")"));
-        }
+        var colour = f.rgb(f.findColorBetween(this.colour1, this.colour2, this.sliderValue));
+        console.log(colour);
+        this.colorWipeEl.style.backgroundColor = colour;
 
-        // 5 image states
-         console.log(this.sliderValue);
+        // var ratio = 25
         
-        var v = this.sliderValue / 25;
-        var idx = Math.ceil(v);
-        idx = idx < 1 ? 1 : idx; // always at least zero
+        // var v = this.sliderValue / ratio;
+        // var idx = Math.ceil(v);
+        // idx = idx < 1 ? 1 : idx; // always at least zero
 
-        var max = idx * 25;
-        var multiplier = (max - this.sliderValue)/25;
+        // var max = idx * ratio;
+        // var multiplier = (max - this.sliderValue)/ratio;
 
-        // console.log(idx)
-        // if (multiplier < 0.5) {
-        //     imgs[idx-1].style.opacity = "1"
+        // if (multiplier >= 0.5) {
+        //     this.imgs[idx-1].style.opacity = "1";
         // } else {
-        //     imgs[idx-1].style.opacity = ((multiplier - 0.5)/25).toString();
+        //     this.imgs[idx-1].style.opacity = (multiplier*2).toString();
         // }
-        imgs[idx-1].style.opacity = multiplier.toString();
-        imgs[idx].style.opacity = ( 1- multiplier).toString();
+        // this.imgs[idx].style.opacity = ( 1- multiplier).toString();
+        
+        // // reset the other things
+        // for (var i=0; i<this.imgs.length; i++) {
+        //     if (i!=idx && i!=(idx-1))
+        //     this.imgs[i].style.opacity = "0";
+        // }
     }
 
-    private callbackQ2(e: any) {}
-    private callbackQ3(e: any) {
+    private showQ2() {
+        console.log("show question two");
+        
+        // PINEAPPLE AND HOPS
+        this.imgs = f.elList(".slider-q2 li img");
 
-        // console.log("Callback");
-        // get value from slider
+        // Make it not full width
+        f.el(".col-wrapper").classList.toggle("full-width");
+
+        this.topFruitDefaultBottomValue = f.pxToInt(getComputedStyle(this.imgs[0]).bottom);
+        this.bottomFruitDefaultTopValue = f.pxToInt(getComputedStyle(this.imgs[1]).top);
+
+        TweenMax.fromTo(this.imgs, 0.3, {
+            alpha:0
+        }, {
+            alpha:1
+        });
+
+        TweenMax.fromTo(this.imgs[0], 0.8, {
+            y:-100
+        }, {
+            y:0
+        });
+
+        TweenMax.fromTo(this.imgs[1], 0.8, {
+            y:100
+        }, {
+            y:0
+        });
+
+        this.loopingAnimations.push(TweenMax.to(this.imgs[0], 0.5, {
+            y:-20, repeat:-1, yoyo:true, delay:0.8
+        }))
+
+        this.loopingAnimations.push(TweenMax.to(this.imgs[1], 0.5, {
+            y:20, repeat:-1, yoyo:true, delay:0.8
+        }))
+    }
+
+    private callbackQ2(e: any) {
         this.sliderValue = e.srcElement.value;
-        var count = 10;
-        var imgs : HTMLElement[] = [];
 
-        for (var i=1; i<count+1; i++) {
-            imgs.push(f.el(".slider-q3 li:nth-child(" + i.toString() + ")"));
+        // // scale fruit
+        if (this.sliderValue > this.midValue) {
+            this.scaleTopFruit();
+        } else if (this.sliderValue  < this.midValue) {
+            this.scaleBottomFruit();
+        } else {
+            //mid point
+            if (this.previousValue > this.midValue) {
+                this.scaleTopFruit();
+            } else {
+                this.scaleBottomFruit();
+            }
+        }
+    }
+
+    scaleTopFruit() {
+
+        this.imgs[0].style.width = f.px(3*(this.sliderValue - this.midValue) + this.fruitDefaultWidth);
+        this.imgs[0].style.bottom = f.px(this.topFruitDefaultBottomValue - 0.5 * (this.sliderValue - this.midValue));
+        this.previousValue = this.sliderValue;
+    }
+
+    scaleBottomFruit() {
+        this.imgs[1].style.width = f.px(3*(this.midValue - this.sliderValue) + this.fruitDefaultWidth);
+        this.imgs[1].style.top = f.px(this.bottomFruitDefaultTopValue - 0.5 * (this.midValue - this.sliderValue));
+        this.previousValue = this.sliderValue;
+    }
+
+    private showQ3() {
+        console.log("show question three");
+        
+        // GLOVES AND DART
+        var container = <HTMLUListElement>this.imgEl;
+        container.style.display = "block";
+        this.count = 10;
+        this.imgs = [];
+
+        // make it full width
+        f.el(".col-wrapper").classList.toggle("full-width");
+
+        // set perspective?
+        // TweenMax.to(this.imgEl, 0, {perspective:800})
+
+        // create children and add to images
+        for (var i=1; i<this.count+1; i++) {
+            let el = document.createElement("li");
+            let htmlEl = <HTMLElement>el;
+            
+            // store item to images list
+            this.imgs.push(htmlEl)
+
+            // add list item to EL element
+            container.appendChild(el)
+
+            htmlEl.className = i<=(this.count/2) ? "sharp" : "round";
+            TweenMax.to(htmlEl, 0, {transformStyle:"preserve-3d"})
         }
 
-        // console.log(imgs);
+        // position them within the box
+        this.q3Resize();
 
-        var sharp = (Math.ceil(this.sliderValue / count) * count)/10;
-        var round = (100 - sharp)/10;
+        // animate things out in a random order
+        var elements = this.imgs;
+        f.shuffle(elements);
 
-        for (var i=0; i<count; i++) {
-            if (i<sharp) {
-                imgs[i].className = "sharp"
-            } else {
-                imgs[i].className = "round"
-            }
+        for(var x=0; x<elements.length; x++) {
+            this.loopingAnimations.push(TweenMax.fromTo(elements[x], 3.5, {
+                y: window.innerHeight/2,
+                rotationY:-10,
+            }, {
+                y: -window.innerHeight*1.5,
+                x: f.getRandom(-300, 300),
+                ease: "linear",
+                repeat:-1,
+                repeatDelay:0,
+                delay:x*0.3,
+            }));
+        }
+    }
+
+    private callbackQ3(e: any) {
+        // get value from slider
+        this.sliderValue = e.srcElement.value;
+
+        var round= Math.round((this.sliderValue / this.maxValue)*10);
+        var sharp = this.count - round;
+
+        for (var i=0; i<this.count; i++) {
+            this.imgs[i].className = i<sharp ? "sharp" : "round";
         }
 
         // console.log("slider value: " + this.sliderValue.toString() + " sharp counter: " + sharp.toString() + " round counter: " + round.toString());
+    }
 
+    private q3Resize() {
+        var width = this.imgEl.getBoundingClientRect().width;
+        for (var i=0; i<this.count; i++) {
+            this.imgs[i].style.left = f.px(width/this.count * i)
+        }
+    }
+
+    private showQ4() {
+        // make it not full width
+        f.el(".col-wrapper").classList.toggle("full-width");
     }
     private callbackQ4(e: any) {}
+
+    private showQ5() {
+        console.log("show question five");
+        
+        // HANDS
+        this.count = 5;
+        this.sliderValue = 0;
+        this.sliderEl.value = "0";
+        this.sliderReset();
+
+        // set perspective?
+        TweenMax.to(this.imgEl, 0, {perspective:800})
+
+        // show the block
+        TweenMax.fromTo(".slider-q5 li:first-child", 0.5, {
+            alpha:0,rotationX:90,
+        }, {
+            alpha:1, rotationX:0, transformOrigin: "bottom", 
+        })
+
+         // add all the different states of hands to imgs
+         for (var i=1; i<this.count+1; i++) {
+            this.imgs.push(f.el(".slider-q5 li:nth-child(" + i.toString() + ")"));
+        }
+
+        for(var i=0; i<this.imgs.length; i++) {
+            this.loopingAnimations.push(TweenMax.fromTo(this.imgs[i], 1.5, {
+                rotate:5, transformOrigin: "50% 100%"
+            }, {
+                rotate:-10, transformOrigin: "50% 100%", repeat:-1, yoyo:true, delay: 0.06 * i
+            }));
+        }
+    }
+
+    private callbackQ5(e: any) {
+        // get value from slider
+        this.sliderValue = e.srcElement.value;
+        var ratio = 25;
+        
+        var v = this.sliderValue / ratio;
+        var idx = Math.ceil(v);
+        idx = idx < 1 ? 1 : idx; // always at least zero
+
+        var max = idx * ratio;
+        var multiplier = (max - this.sliderValue)/ratio;
+        
+        this.imgs[idx-1].style.opacity = "1";
+        this.imgs[idx].style.opacity = ( 1- multiplier).toString();
+        for (var i=idx+1; i<this.imgs.length; i++) {
+            this.imgs[i].style.opacity = "0";
+        }
+    }
 
     sliderChange(e: any){
         this.sliderValue = e.srcElement.value;
@@ -314,14 +462,14 @@ export default class Slider {
     }
 
     sliderValueSet(e:any) {
-        if (this.questionIdx < 2) {
+        // if (this.questionIdx < 1) {
             // lock in slider value to answer
             this.questions[this.questionIdx].answer = e.srcElement.value;;
 
             console.log(this.questions[this.questionIdx]);
 
             this.getNextQuestion();
-        }
+        // }
     }
 
     getNextQuestion() {
@@ -329,57 +477,87 @@ export default class Slider {
             this.showQ1.bind(this),
             this.showQ2.bind(this),
             this.showQ3.bind(this),
-            this.showQ4.bind(this)
+            this.showQ4.bind(this),
+            this.showQ5.bind(this)
         ];
 
         var callbackFunctions = [
             this.callbackQ1.bind(this),
             this.callbackQ2.bind(this),
             this.callbackQ3.bind(this),
-            this.callbackQ4.bind(this)
+            this.callbackQ4.bind(this),
+            this.callbackQ5.bind(this)
         ];
+
+        // stop all loopinng animations
+        this.loopingAnimations.forEach((anim) => {
+            anim.kill();
+        })
 
         if (this.questionIdx < this.questions.length-1) {
             console.log("current question: " + this.questionIdx.toString() + ", next question: " + (this.questionIdx+1).toString())
             this.questionIdx++;
             // transition out
 
+            // reset values
+            this.imgs = [];
+            this.imgEl = f.find(this.el, ".slider-q" + (this.questionIdx+1).toString());
+            this.count = 0;
+            this.loopingAnimations = [];
+
+            // resent bindings
             this.showCurrentQuestion = showFunctions[this.questionIdx];
             this.callbackCurrentQuestion = callbackFunctions[this.questionIdx];
-            console.log(this.callbackCurrentQuestion);
 
             // hide out the things
-            TweenMax.to(".slider-q" + this.questionIdx.toString(), this.time, {
-                alpha:0, scale:0.9, transformOrigin: "bottom", display: "none", onComplete : ()=> {
-                    this.set();
-                }
-            });
-
-            // show the question
-            TweenMax.to(this.questionElement, this.time, {
-                alpha:0, x:-20
-            });
-
-            // hide the line
-            TweenMax.to(" .slider-line", this.time, {
-                scaleX:0, transformOrigin: "right"
-            });;
-
-            // hide the labels
-            TweenMax.to([this.minValueLabel, this.maxValueLabel], this.time, {
-                alpha: 0, y:20
-            })
-
-            // hide the thumb
-            TweenMax.to(this.sliderThumbEl, this.time, {
-                alpha:0, y:20
-            });
-
-            console.log(".slider-q" + this.questionIdx.toString())
+            this.hide();
 
         } else {
             console.log("current question: " + this.questionIdx.toString() + ", end of this section ")
+            this.completed = true;
+            this.hide();
+            this.ui.roundComplete(this.el);
         }
+    }
+
+    hide() {
+        // hide out the things
+        TweenMax.to(".slider-q" + this.questionIdx.toString(), this.time, {
+            alpha:0, scale: 1.2, display: "none", onComplete : ()=> {
+                if (!this.completed) this.set();
+            }
+        });
+
+        // show the question
+        TweenMax.to(this.questionElement, this.time, {
+            alpha:0, x:-20
+        });
+
+        // hide the line
+        TweenMax.to(" .slider-line", this.time, {
+            scaleX:0, transformOrigin: "right"
+        });;
+
+        // hide the labels
+        TweenMax.to([this.minValueLabel, this.maxValueLabel], this.time, {
+            alpha: 0, y:-20
+        })
+
+        // hide the thumb
+        TweenMax.to(this.sliderThumbEl, this.time, {
+            alpha:0, y:20
+        });
+
+        // for question 1
+        if (this.colorWipeEl.style.display == "block") {
+            TweenMax.to(this.colorWipeEl, this.time, {
+                width: 0, transformOrigin:"left", display:"none"
+            })
+        }
+    }
+
+    complete() {
+        this.el.style.display = "none";
     }
 
     // set(q : SliderQuestion) {

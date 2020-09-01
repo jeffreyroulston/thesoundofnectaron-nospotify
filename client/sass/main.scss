@@ -1,6 +1,7 @@
 @import "shared";
 @import "round";
 @import "slider";
+@import "mcq";
 
 * {
     margin: 0;
@@ -37,6 +38,13 @@ p {
     text-align: left;
     font-size: 20px;
     line-height: 1.5;
+}
+
+#color-wipe {
+    position: absolute;
+    height: 100vh; // make this compatible with iphone scroll
+    width: 100%;
+    display: none,
 }
 
 #canvas-container {
@@ -255,56 +263,6 @@ p {
     .question-wrapper {
         max-width: 600px;
         margin: 0 auto;
-    }
-}
-
-
-#mc-q {
-    text-align: center;
-
-    .col-wrapper {
-        float: none;
-    }
-
-    .question {
-        height: 200px;
-    }
-
-    // #mc-dino {
-    //     background-image: url("./assets/dino.png");
-    // }
-
-    // #mc-dragon {
-    //     background-image: url("./assets/dragon.png");
-    // }
-
-    // #mc-snake{
-    //     background-image: url("./assets/snake.png");
-    // }
-
-    // #mc-person {
-    //     background-image: url("./assets/person.png");
-    // }
-
-    // #mc-unicorn {
-    //     background-image: url("./assets/unicorn.png");
-    // }
-
-    .mc-options {
-        // border: 1px solid black;
-        position: relative;
-        display: inline-block;
-
-        li {
-            // border: 1px solid black;
-            // position: absolute;
-            // background-size: 100% auto;
-            // background-repeat: no-repeat;
-            width: 250px;
-            // height: 300px;
-            display: none;
-            cursor: pointer;
-        }
     }
 }
 

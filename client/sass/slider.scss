@@ -1,24 +1,43 @@
 @import "shared";
 
 #slider-q {
+    .wrapper {
+        height: 100vh
+    }
+
     .col-wrapper {
         &.text-column {
-            margin-top: 30vh;
+            margin-top: $marginTop;
+        }
+
+        &.full-width {
+            width: 100%;
+            float: none;
+            margin:0;
+            @include verticalAlign();
+            position: absolute;
+
+            h1 {
+                text-align: center;
+            }
+
         }
     }
 
-    .slider-q1 {
-        margin-top: 30vh;
-
+    .slider-q {
+        text-align: center;
+        display: none;
         width: 100%;
+    }
+
+    .slider-q5 {
+        margin-top: $marginTop;
         position: relative;
 
         li {
             width: inherit;
             position: absolute;
             opacity: 0;
-            border: 1x solid blue;
-
             transform-origin: center;
 
             img {
@@ -28,42 +47,43 @@
     }
 
     .slider-q2 {
-        display: none;
-        width: 100%;
-
-        .scale-top, .scale-bottom {
+        li {
             height: 50vh;
             text-align: center;
             position: relative;
-
             img {
                 @include horizontalAlign();
                 position: absolute;
                 display: inline-block;
                 width: 200px;
             }
-        }
 
-        .scale-top {
-            img {
-                bottom: 0px;
+            &:first-child {
+                img {
+                    bottom: 0px;
+                }
+    
+                z-index: 100;
             }
 
-            z-index: 100;
-        }
-
-        .scale-bottom {
-            img {
-                top: 0px;
+            &:nth-child(2) {
+                img {
+                    top: 0px;
+                }
             }
         }
     }
 
-    .slider-q3 {
-        text-align: center;
-        display: none;
-        width: 100%;
+    .sun-rays {
+        height: 150vh;
+        top: -25vh;
+        @include horizontalAlign();
+        position: absolute;
+        z-index: -1;
+        opacity: 0.5;
+    }
 
+    .slider-q2, .slider-q3 {
         margin: 0;
         padding: 0;
         height: 100vh; // make this compatible with iphone scroll
@@ -71,7 +91,9 @@
         position: absolute;
         top: 0;
         left: 0;
+    }
 
+    .slider-q3 {
         li {
             width: 5vw;
             height: 10vw;
@@ -93,18 +115,29 @@
             // }
 
             &.sharp {
-                background-image: url("./assets/round2/q0_1.png");
+                background-image: url("./assets/round2/q3_1.png");
                 background-size: auto 100%;
                 background-repeat: no-repeat;
                 background-position: center;
             }
 
             &.round {
-                background-image: url("./assets/round2/q0_0.png");
+                background-image: url("./assets/round2/q3_0.png");
                 background-size: 100% auto;
                 background-repeat: no-repeat;
                 background-position: center;
             }
+        }
+    }
+
+    .slider-q5 {
+        margin-top: $marginTop2;
+        z-index: -1;
+
+        li {
+            width: 120%;
+            left:-10%;
+            @include transition(opacity 0.2s ease);
         }
     }
 
