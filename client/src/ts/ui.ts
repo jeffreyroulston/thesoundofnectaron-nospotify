@@ -63,7 +63,7 @@ export default class UI {
     // }
     
     // PUBLIC VARIABLES
-    public OnLoginPressed = () => {};
+    // public OnLoginPressed = () => {};
     // public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: q.Question): void}[] = [];
 
     constructor(app : App) {
@@ -91,15 +91,16 @@ export default class UI {
         //   }
 
         // set button bindings
-        // el("#startBtn").addEventListener("click", this.next.bind(this));
-        var btns = elList(".next-btn");
+        el("#start-btn").addEventListener("click", this.login.bind(this));
+        
+        var btns = elList(".next-btn:not(#start-btn)");
         btns.forEach(e => {
             e.addEventListener("click", this.next.bind(this))
         })
 
         // kick it off
         // this.showLanding();
-        this.showRoundName();
+        // this.showRoundName();
     }
 
     private setBG(color : string) {
@@ -121,13 +122,20 @@ export default class UI {
         this.app.switchGraphics(data.COLOURS_THREE[color]);
     }
 
-    private showLanding() {
+    public showLanding() {
         this.landingPageEl.style.display = "block";
         anim.landingPageIn.play();
-        // anim.fruitsIn.play();
+
+        // // reset the cookie
+        document.cookie = "landingShown"
+        console.log(document.cookie);
     }
 
-    private showRoundName() {
+    public showRoundName() {
+        window.onbeforeunload = ()=> {
+            document.cookie = "showLanding"
+        }
+        
         // set delay time
         var d = 0.7;
 
@@ -137,10 +145,6 @@ export default class UI {
         // // increment the current round
         this.currentRoundIdx++;
         var currentRound = data.ROUNDS[this.currentRoundIdx];
-
-        // // reset the cookie
-        // document.cookie = "showLanding"
-        // console.log(document.cookie);
 
         // // do the background
         this.setBG(currentRound.color);
@@ -244,6 +248,10 @@ export default class UI {
         
         this.currentQuestionGroup = this.questionGroups[this.currentRoundIdx];
         this.currentQuestionGroup.set();
+    }
+
+    private login() {
+        this.app.Login();
     }
 
     private next() {
@@ -360,9 +368,9 @@ export default class UI {
     }
 
 
-    public Login() {
-        this.OnLoginPressed();
-    }
+    // public Login() {
+    //     this.OnLoginPressed();
+    // }
     
     public ShowUserData(imageURL: string, displayName: string): void {
     }

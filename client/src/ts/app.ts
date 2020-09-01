@@ -31,10 +31,10 @@ export default class App {
     constructor() {
         this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
 
-        // var cookie = document.cookie;
-        // console.log(cookie, this.spotifyInterface.Authorized);
+        var cookie = document.cookie;
+        console.log(cookie, this.spotifyInterface.Authorized);
 
-        // if (cookie == "showLanding" || cookie == "") {
+        // if (cookie == "") {
         //     document.cookie = "showLanding"
         //     this.ui.showLanding();
         // } else {
@@ -46,6 +46,16 @@ export default class App {
         //         this.ui.showLanding();
         //     }
         // }
+
+        if (this.spotifyInterface.Authorized) {
+            if (document.cookie == "landingShown") {
+                this.ui.startRounds();
+            } else {
+                this.ui.showLanding();
+            }
+        } else {
+            this.ui.showLanding();
+        }
 
         // // we need these binds to make sure and 'this' in callbacks is bound to the correct object
         // this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
@@ -72,7 +82,7 @@ export default class App {
         // }, 2000);
         
         // UI BINDINGS
-        this.ui.OnLoginPressed = this.Login.bind(this);
+        // this.ui.OnLoginPressed = this.Login.bind(this);
         // this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
         // this.resourceManager.loadResourceByPath(HTMLImageElement, "")
 
