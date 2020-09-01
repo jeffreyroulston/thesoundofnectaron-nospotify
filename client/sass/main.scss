@@ -43,7 +43,14 @@ p {
     position: absolute;
     height: 100vh; // make this compatible with iphone scroll
     width: 100%;
-    z-index: 10000;
+    z-index: 0;
+}
+
+#canvas-container-background {
+    position: absolute;
+    height: 100vh; // make this compatible with iphone scroll
+    width: 100%;
+    z-index: -1000;
 }
 
 #graphics-canvas {
