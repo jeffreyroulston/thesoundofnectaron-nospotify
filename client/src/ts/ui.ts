@@ -329,7 +329,11 @@ export default class UI {
 
     public roundComplete(el: HTMLElement) {
         this.lastVisibleEl = el;
-        this.next();
+        if (this.currentRoundIdx == this.questionGroups.length-1) {
+            this.questionsCompleted();
+        } else {
+            this.next();
+        }
     }
 
     public questionsCompleted() {
