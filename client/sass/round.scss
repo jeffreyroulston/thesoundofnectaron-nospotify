@@ -29,15 +29,15 @@
 
         li {
             &:first-child {
-                left:-32px;
+                left:-20px;
             }
 
             &:nth-child(2) {
-                left:-81px;
+                left:-63px;
             }
 
             &:nth-child(3) {
-                left:-84px;
+                left:-66px;
             }
         }
     }
@@ -63,17 +63,25 @@
         background-color: $beige;
         font-family: 'Circular';
         color: $purple;
-        font-size: 12px;
         width: 270px;
-        height: 135px;
         padding: 20px;
         z-index: -1;
 
-        top:-145px;
-        left:-15px;
+        top: -185px;
+        left: -12px;
+        height: 135px;
+        max-height: 135px;;
+
+        top: -190px;
+        left: -6px;
+
+        text-align: center;
 
         p {
-            font-size: 12px;
+            @include verticalAlign();
+            font-size: 18px;
+            line-height: 1.5;
+            text-align: center;
         }
     }
 
@@ -93,7 +101,7 @@
         width: 180px;
         display: block;
         position: absolute;
-        right: 278px;
+        right: 295px;
         top: -152px;
     }
 }

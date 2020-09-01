@@ -49,7 +49,7 @@ export default class Slider {
     // q2 (scale)
     private topFruitDefaultBottomValue : number = 0;
     private bottomFruitDefaultTopValue : number = 0;
-    private fruitDefaultWidth : number = 200;
+    private fruitDefaultWidth : number = 300;
 
     // for looping animations
     private loopingAnimations : TweenMax[] = [];

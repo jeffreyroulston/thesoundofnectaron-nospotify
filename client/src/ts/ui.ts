@@ -42,6 +42,7 @@ export default class UI {
     private landingPageEl: HTMLElement = el("#landing");
     private roundPageEl: HTMLElement = el("#round-name");
     private logoLetters: HTMLElement[] = elList(".loto-letters letter");
+    private descriptionEl : HTMLElement = el("#round-name .description p");
 
     private lastVisibleEl : HTMLElement;
     private nextBgColor : string = "";
@@ -76,8 +77,8 @@ export default class UI {
         this.qfq = new QuickFireQ(this, "#quickfire-q");
 
         // set the order (lol)
-        // this.questionGroups = [this.slider, this.mcq, this.qfq];
-        this.questionGroups = [this.qfq, this.slider, this.mcq];
+        this.questionGroups = [this.slider, this.mcq, this.qfq];
+        // this.questionGroups = [this.qfq, this.slider, this.mcq];
 
         // set initial question
         this.currentQuestionGroup = this.slider;
@@ -135,7 +136,7 @@ export default class UI {
         window.onbeforeunload = ()=> {
             document.cookie = "showLanding"
         }
-        
+
         // set delay time
         var d = 0.7;
 
@@ -148,6 +149,9 @@ export default class UI {
 
         // // do the background
         this.setBG(currentRound.color);
+
+        // set round copy
+        this.descriptionEl.innerHTML = currentRound.text;
 
         // set the arrow colour
         find(this.roundPageEl, ".arrow-line").style.stroke = data.CONTRAST[currentRound.color];

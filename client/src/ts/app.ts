@@ -30,22 +30,7 @@ export default class App {
 
     constructor() {
         this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
-
         var cookie = document.cookie;
-        console.log(cookie, this.spotifyInterface.Authorized);
-
-        // if (cookie == "") {
-        //     document.cookie = "showLanding"
-        //     this.ui.showLanding();
-        // } else {
-        //     if (this.spotifyInterface.Authorized) {
-        //         this.ui.startRounds();
-        //         this.spotifyInterface.GetUserProfile();
-        //         console.log(this.profile);
-        //     } else {
-        //         this.ui.showLanding();
-        //     }
-        // }
 
         if (this.spotifyInterface.Authorized) {
             if (document.cookie == "landingShown") {
