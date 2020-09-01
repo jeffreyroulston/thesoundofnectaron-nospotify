@@ -63,7 +63,7 @@ export default class Graphics {
     private squiggleScene: THREE.Scene;
 
     // squiggle timing
-    private squiggleUpdateInterval: number = 1.0 / 5.0;
+    private squiggleUpdateInterval: number = 1.0 / 10.0;
     private currentSquiggleTime: number = 0;
 
     private renderer: THREE.WebGLRenderer;

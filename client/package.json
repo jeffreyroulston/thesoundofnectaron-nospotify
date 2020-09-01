@@ -28,6 +28,7 @@
     "gsap": "file:src/js/gsap-bonus.tgz",
     "gulp-cli": "^2.3.0",
     "gulp-watch": "^5.0.1",
+    "simplex-noise": "^2.4.0",
     "three": "^0.118.3"
   }
 }
