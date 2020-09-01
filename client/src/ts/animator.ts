@@ -42,7 +42,7 @@ landingPageIn.to("#landing", 0, {
     alpha:0, y:5
 }, "+=0.2").from("#start-btn", 0.3, {
     alpha:0, x:-5
-}).to("#start-btn *", 0.3, {
+}).to("#start-btn", 0.3, {
     x:-5, repeat: -1, yoyo: true
 })
 
@@ -57,35 +57,35 @@ landingPageIn.to("#landing", 0, {
 export const fruitsIn = new TimelineMax();
 fruitsIn.pause();
 
-// fruitsIn.fromTo("#login .fruit", 0.5, {
-//     alpha:0, scale:0.5
-// }, {
-//     alpha:1, scale:1, stagger : {each: 0.05, from: "random"}
-// }).fromTo("#login .fruit-top", 1, {
-//     x:-50, rotate:-30
-// }, {
-//     x:50, rotate:30, repeat:-1, yoyo:true, ease: Anim.linear
-// }).fromTo("#login .fruit-bottom", 1, {
-//     y:10, rotate:5
-// }, {
-//     y:-10, rotate:-5, repeat:-1, yoyo:true, ease: Anim.linear
-// }).fromTo("#login .pineapple-top", 0.5, {
-//     x:-10
-// }, {
-//     x:10, repeat:-1, yoyo:true, ease: Anim.linear
-// }).fromTo("#login .fruit-bottom-2", 0.5, {
-//     x:10
-// }, {
-//     x:-10, repeat:-1, yoyo:true, ease: Anim.linear
-// }).fromTo("#login .fruit-whole", 5, {
-//     rotate:0
-// }, {
-//     rotate:360, repeat:-1, ease: "linear"
-// }).fromTo("#login .pineapple-burner", 0.1, {
-//     rotate:-1
-// }, {
-//     rotate:0, transformOrigin: "bottom", repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear"
-// })
+fruitsIn.fromTo("#landing .fruit", 0.5, {
+    alpha:0, scale:0.5
+}, {
+    alpha:1, scale:1, stagger : {each: 0.1, from: "random"}, delay:1
+}).fromTo("#landing .fruit-top", 1, {
+    x:-50, rotate:-30
+}, {
+    x:50, rotate:30, repeat:-1, yoyo:true, ease: Anim.linear
+}).fromTo("#landing .fruit-bottom", 1, {
+    y:10, rotate:5
+}, {
+    y:-10, rotate:-5, repeat:-1, yoyo:true, ease: Anim.linear
+}).fromTo("#landing .pineapple-top", 0.5, {
+    x:-10
+}, {
+    x:10, repeat:-1, yoyo:true, ease: Anim.linear
+}).fromTo("#landing .fruit-bottom-2", 0.5, {
+    x:10
+}, {
+    x:-10, repeat:-1, yoyo:true, ease: Anim.linear
+}).fromTo("#landing .fruit-whole", 5, {
+    rotate:0
+}, {
+    rotate:360, repeat:-1, ease: "linear"
+}).fromTo("#landing .pineapple-burner", 0.1, {
+    rotate:-1
+}, {
+    rotate:0, transformOrigin: "bottom", repeat:-1, yoyo:true, ease: "linear", yoyoEase : "linear"
+})
 
 
 

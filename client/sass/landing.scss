@@ -83,77 +83,77 @@
 //         }
 //     }
 
-//     .fruits {
-//         .fruit-top {
-//             width: 140px;
-//             right: 185px;
-//             top: -220px;
-//         }
+    .fruits {
+        .fruit-top {
+            width: 140px;
+            right: 185px;
+            top: -220px;
+        }
 
-//         .fruit-bottom {
-//             width: 190px;
-//             right: 160px;
-//             top: -50px;
-//         }
+        .fruit-bottom {
+            width: 190px;
+            right: 160px;
+            top: -50px;
+        }
 
-//         .pineapple-top {
-//             width: 210px;
-//             left: 140px;
-//             top: -250px;
+        .pineapple-top {
+            width: 210px;
+            left: 140px;
+            top: -250px;
 
-//             @include transform(rotate(-90deg));
-//         }
+            @include transform(rotate(-90deg));
+        }
 
-//         .fruit-bottom-2 {
-//             width: 190px;
-//             left: 370px;
-//             top: -160px;
+        .fruit-bottom-2 {
+            width: 190px;
+            left: 370px;
+            top: -160px;
         
-//             @include transform(rotate(-90deg));
-//         }
+            @include transform(rotate(-90deg));
+        }
 
-//         .pineapple-burner {
-//             width: 330px;
-//             right: 250px;
-//             bottom: -200px;
-//         }
+        .pineapple-burner {
+            width: 330px;
+            right: 250px;
+            bottom: -200px;
+        }
 
-//         .fruit-whole {
-//             width: 180px;
-//             left: 300px;
-//             bottom: -200px;        
-//         }
+        .fruit-whole {
+            width: 180px;
+            left: 300px;
+            bottom: -200px;        
+        }
 
-//         // .fruit-top {
-//         //     width: 140px;
-//         //     right: 178px;
-//         //     top: 71px;
-//         // }
+        // .fruit-top {
+        //     width: 140px;
+        //     right: 178px;
+        //     top: 71px;
+        // }
 
-//         // .fruit-bottom {
-//         //     width: 190px;
-//         //     right: 160px;
-//         //     top: 250px;
-//         // }
+        // .fruit-bottom {
+        //     width: 190px;
+        //     right: 160px;
+        //     top: 250px;
+        // }
 
-//         // .pineapple-top {
-//         //     width: 200px;
-//         //     left: 0px;
-//         //     top:0px;
-//         // }
+        // .pineapple-top {
+        //     width: 200px;
+        //     left: 0px;
+        //     top:0px;
+        // }
 
-//         // .fruit-bottom-2 {
-//         //     width: 200px;
-//         //     left: 0px;
-//         //     top:0px;
-//         // }
+        // .fruit-bottom-2 {
+        //     width: 200px;
+        //     left: 0px;
+        //     top:0px;
+        // }
 
-//         // .pineapple-burner {
-//         //     width: 300px;
-//         //     right: 250px;
-//         //     bottom: 100px;
-//         // }
-//     }
+        // .pineapple-burner {
+        //     width: 300px;
+        //     right: 250px;
+        //     bottom: 100px;
+        // }
+    }
 // }
 
 

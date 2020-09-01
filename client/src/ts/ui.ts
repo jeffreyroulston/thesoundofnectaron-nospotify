@@ -50,6 +50,8 @@ export default class UI {
     private questionGroups : any[] = [];
     private currentQuestionGroup: Slider | MCQ | QuickFireQ;
 
+    private loopingAnimations: TweenMax[] = [];
+
     // private recommendations: si.Track[] | undefined = [];
     // private queryParameters: {[key: string]: si.QueryParameter }  = {
     //     "acousticness" : qDefault(),
@@ -126,6 +128,7 @@ export default class UI {
     public showLanding() {
         this.landingPageEl.style.display = "block";
         anim.landingPageIn.play();
+        // anim.fruitsIn.play();
 
         // // reset the cookie
         document.cookie = "landingShown"
