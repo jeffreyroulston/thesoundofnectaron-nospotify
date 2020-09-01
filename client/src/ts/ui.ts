@@ -239,8 +239,8 @@ export default class UI {
 
         switch(this.currentRoundIdx) {
             case 0:
-                this.slider.set();
-                // this.mcq.set();
+                // this.slider.set();
+                this.mcq.set();
                 break;
             case 1:
                 this.mcq.set();

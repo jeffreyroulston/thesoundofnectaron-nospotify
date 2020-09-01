@@ -15,6 +15,7 @@ export default class MCQ {
     private time = 0.3;
 
     private questionElement: HTMLElement;
+    private bgEl : HTMLElement = f.el("#icon-bg");
     private imgEl : HTMLUListElement = <HTMLUListElement>f.el(".mc-options");
     private imgs : HTMLElement[] = [];
     
@@ -72,6 +73,8 @@ export default class MCQ {
                     let el = document.createElement("li");
                     el.addEventListener("mouseover", ()=> {
                         console.log("mouse enter")
+                        // console.log(el.style.backgroundImage.replace(".png", "_grey.png"));
+                        // this.bgEl.style.backgroundImage = el.style.backgroundImage.replace(".png", "_grey.png");
                         TweenMax.to(el, 0.2, {
                             scale:1.3
                         })
@@ -111,12 +114,12 @@ export default class MCQ {
                     alpha:1, delay:d
                 });
 
-                this.loopingAnimations.push(
-                    // add to list of tweens to kill
-                    TweenMax.to(this.imgs[x], 0.5, {
-                        y:-50, repeat:-1, yoyo:true, delay:d
-                    })
-                )
+                // this.loopingAnimations.push(
+                //     // add to list of tweens to kill
+                //     TweenMax.to(this.imgs[x], 0.5, {
+                //         y:-50, repeat:-1, yoyo:true, delay:d
+                //     })
+                // )
             }
 
 
