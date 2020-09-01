@@ -135,7 +135,7 @@ export default class Graphics {
         const defaultArray = new Float32Array(this.squiggles.maxVertices * 3);
         this.squiggleBuffer = new THREE.BufferAttribute(defaultArray, 3);
         this.squiggleGeo.setAttribute('position', this.squiggleBuffer);
-        this.squiggleMaterial = new THREE.LineBasicMaterial({color: 0xffffff});
+        this.squiggleMaterial = new THREE.LineBasicMaterial({color: 0xffffff, transparent: true});
         this.squiggleMesh = new THREE.LineSegments(this.squiggleGeo, this.squiggleMaterial);
 
         this.squiggleScene = new THREE.Scene();
@@ -144,15 +144,15 @@ export default class Graphics {
         this.squiggleRenderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
         this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.squiggleRenderer.setClearColor(this.firstColor, 1);
+        this.squiggleRenderer.setClearColor(0x000000, 0);
 
         // UNCOMMENT THESE LINES TO ADD THE SQUIGGLES
 
-        // const bgcontainer = document.getElementById('canvas-container-background');
-        // if (bgcontainer !== null) {
-        //     bgcontainer.append(this.squiggleRenderer.domElement);
-        //     this.squiggleRenderer.domElement.id = "graphics-canvas";
-        // }
+        const bgcontainer = document.getElementById('canvas-container-background');
+        if (bgcontainer !== null) {
+            bgcontainer.append(this.squiggleRenderer.domElement);
+            this.squiggleRenderer.domElement.id = "graphics-canvas";
+        }
 
         this.clock = new THREE.Clock();
 
