@@ -227,6 +227,7 @@ export default class Graphics {
         const aspect = width / height;
         this.camera.left = -aspect;
         this.camera.right = aspect;
+        this.camera.updateProjectionMatrix();
     }
 
     private render(): void {
