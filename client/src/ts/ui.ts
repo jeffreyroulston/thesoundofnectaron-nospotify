@@ -46,6 +46,9 @@ export default class UI {
     private lastVisibleEl : HTMLElement;
     private nextBgColor : string = "";
 
+    private questionGroups : any[] = [];
+    private currentQuestionGroup: Slider | MCQ | QuickFireQ;
+
     // private recommendations: si.Track[] | undefined = [];
     // private queryParameters: {[key: string]: si.QueryParameter }  = {
     //     "acousticness" : qDefault(),
@@ -71,6 +74,12 @@ export default class UI {
         this.slider= new Slider(this, "#slider-q");
         this.mcq = new MCQ(this, "#mc-q");
         this.qfq = new QuickFireQ(this, "#quickfire-q");
+
+        // set the order (lol)
+        this.questionGroups = [this.slider, this.mcq, this.qfq];
+
+        // set initial question
+        this.currentQuestionGroup = this.slider;
 
         // set the page to be hidden in graphics callback
         this.lastVisibleEl = this.landingPageEl;
@@ -229,43 +238,11 @@ export default class UI {
     }
 
     private showQuestion() { 
-        // console.log(this.currentQuestionIdx);
-        // this.currentQuestionIdx++;
-        // this.currentPage = PageType.Question;
-        // var currentQuestion = data.QUESTIONS[this.currentQuestionIdx];
         this.currentPage = PageType.Question;
         this.setBG(data.COLOURS.beige);
-        console.log(this.currentRoundIdx);
-
-        switch(this.currentRoundIdx) {
-            case 0:
-                // this.slider.set();
-                this.mcq.set();
-                break;
-            case 1:
-                this.mcq.set();
-                break;
-            case 2:
-                this.qfq.show();
-                break;
-            default:
-                console.log("why are we here?", this.currentRoundIdx);
-        }
-
-        // switch(currentQuestion.type) {
-        //     case q.QuestionType.Slider:
-        //         this.slider.set(<q.SliderQuestion>currentQuestion);
-        //         this.slider.show();
-        //         break;
-        //     case q.QuestionType.MultiChoice:
-        //         this.mcq.set(<q.MCQuestion>currentQuestion);
-        //         this.mcq.show();
-        //         break;
-        //     case q.QuestionType.QuickFire:
-        //         this.qfq.set(<q.QuickFireQuestion>currentQuestion);
-        //         this.qfq.show();
-        //         break;
-        // }
+        
+        this.currentQuestionGroup = this.questionGroups[this.currentRoundIdx];
+        this.currentQuestionGroup.set();
     }
 
     private next() {
@@ -313,6 +290,11 @@ export default class UI {
                 display: "none"
             })
         }
+
+        // set completed callback
+        console.log("heeeeeeere");
+        console.log(this.currentQuestionGroup.isComplete);
+        if (this.currentQuestionGroup.isComplete) this.currentQuestionGroup.completed();
 
         setTimeout(()=> {
             // moved shared element back so things can be interacted with

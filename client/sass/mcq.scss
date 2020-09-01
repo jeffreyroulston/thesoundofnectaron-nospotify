@@ -16,17 +16,8 @@
         }
     }
 
-    .icon-bg {
-        width: 100%;
-        height: 100vh;
-        position: absolute;
-        left: 0;
-        top: 0;
-        opacity:0.3;
-    }
-
     .col-wrapper {
-        margin-top: $marginTop;
+        margin-top: $marginTop2;
         text-align: center;
         // &.text-column {
         //     margin-top: $marginTop;
@@ -83,5 +74,60 @@
                 margin-right: 20px;
             }
         }
+    }
+}
+
+.scene-wrapper, #scene-bg {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top:0;
+    left: 0;
+}
+
+.scene-wrapper {
+    li {
+        // border: 1px solid black;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        position: absolute;
+
+        &.pairing {
+            width: 100px;
+            height: 100px;
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            bottom: -200px;
+        }
+    }
+
+    .body-container {
+        width: 200px;
+        height: 500px;
+        background-image: url("./assets/round3/body.png");
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        
+        @include horizontalAlign();
+        position: absolute;
+        bottom: 0px;
+        display: none;
+    }
+
+    .body {
+        position: relative;
+    }
+
+    .head, .vessel, .food {
+        width: 200px;
+        height: 200px;
+        position: absolute;
+    }
+
+    .head {
+        width: 100px;
+        height: 100px;
+        top: -100px;
+        left: 50px;
     }
 }

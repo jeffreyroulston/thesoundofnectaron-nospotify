@@ -15,18 +15,19 @@ export default class MCQ {
     private time = 0.3;
 
     private questionElement: HTMLElement;
-    private bgEl : HTMLElement = f.el("#icon-bg");
+    private bgEl : HTMLElement = f.el(".scene-wrapper");
     private imgEl : HTMLUListElement = <HTMLUListElement>f.el(".mc-options");
     private imgs : HTMLElement[] = [];
-    
-    private initiated : boolean = false;
-    private completed = false;
 
     // do this
     private interactable = true;
 
     // for looping animations
     private loopingAnimations : TweenMax[] = [];
+
+    // called from ui
+    public initiated = false;
+    public isComplete = false;
 
     constructor(ui : UI, id: string) {
         this.ui = ui;
@@ -47,11 +48,20 @@ export default class MCQ {
     }
 
     getNextQuestion() {
-        if (this.questionIdx < mcqQuestions.length) {
+        console.log("get next question:")
+        if (this.questionIdx < mcqQuestions.length-1) {
+            console.log("progress");
             this.questionIdx++;
             this.set();
         } else {
-
+            console.log("stop");
+            this.isComplete = true;
+            setTimeout(()=> {
+                this.loopingAnimations.forEach((anim)=> {
+                    anim.pause();
+                })
+                    this.ui.roundComplete(this.el);
+                }, 1000)
         }
     }
 
@@ -96,7 +106,8 @@ export default class MCQ {
 
             // set images
             for (var x=0; x<this.imgs.length; x++) {
-                var data = "./assets/round3/" + (this.questionIdx+1).toString() + "_" + x.toString() + ".png";
+                var data = "./assets/round3/" + (this.questionIdx+1).toString() + "_" + x.toString();
+                data = data + (this.questionIdx == 1 ? ".svg" : ".png");
                 let src = "url(" + data + ")";
 
                 this.imgs[x].style.backgroundImage = src;
@@ -146,7 +157,6 @@ export default class MCQ {
             // this.showCurrentQuestion();
 
         } else {
-            console.log("beemo");
         }
     }
 
@@ -173,12 +183,6 @@ export default class MCQ {
             }
         })
 
-        this.loopingAnimations.forEach((anim) => {
-            anim.kill();
-        })
-
-        this.loopingAnimations = [];
-
         TweenMax.to(this.imgs, this.time, {
             alpha:0
         });
@@ -188,8 +192,128 @@ export default class MCQ {
         // this is the element that's been clicked
         console.log(e);
         mcqQuestions[this.questionIdx].answer = e.style.backgroundImage;
+        switch (this.questionIdx) {
+            case 0:
+                // body
+                f.el("#head1").style.backgroundImage = e.style.backgroundImage;
+
+                // displace buddy
+                TweenMax.to("#drinker2", 0, {
+                    x:200
+                })
+
+                // pop out drinker 1
+                f.el("#drinker1").style.display = "block";
+                TweenMax.from("#drinker1", 0.5, {
+                    y:1000
+                })
+
+                this.loopingAnimations.push(
+                    TweenMax.to("#drinker1", 0.5, {
+                        y:-100, repeat:-1, yoyo: true, delay:0.5
+                    })
+                )
+                
+                break;
+            case 1:
+                // location
+                f.el("#scene-bg").style.backgroundImage = e.style.backgroundImage;
+                break;
+            case 2:
+                // buddy
+                f.el("#head2").style.backgroundImage = e.style.backgroundImage;
+
+                // displace drinker 1
+                TweenMax.to("#drinker1", 0.5, {
+                    x:-200
+                })
+
+                // pop out buddy
+                f.el("#drinker2").style.display = "block";
+                TweenMax.from("#drinker2", 0.5, {
+                    y:1000
+                });
+
+                this.loopingAnimations.push(
+                    TweenMax.to("#drinker2", 0.5, {
+                        y:-50, repeat:-1, yoyo: true, delay:0.5
+                    })
+                )
+                break;
+            case 3:
+                // pairing
+                var count = 10;
+                var container = f.el("#pairings")
+                var elements : HTMLElement[] = [];
+
+                for (var i=1; i<count+1; i++) {
+                    let el = document.createElement("li");
+                    elements.push(el);
+
+                    el.className = "pairing";
+                    el.style.backgroundImage = e.style.backgroundImage;
+                    el.style.left = f.px(i* (window.innerWidth/count));
+                    container.appendChild(el)
+                }
+
+                f.shuffle(elements);
+                for (var x=0; x<elements.length; x++) {
+                    this.loopingAnimations.push(
+                        TweenMax.fromTo(elements[x], f.getRandom(2, 5), {
+                            y:window.innerHeight
+                        }, {
+                            y:-window.innerHeight, ease:"linear", delay:i*0.1, repeat:-1 
+                        })
+                    )
+                }
+
+                // f.el("#food1").style.backgroundImage = e.style.backgroundImage;
+                // f.el("#food2").style.backgroundImage = e.style.backgroundImage;
+                break;
+            case 4:
+                // vessel
+                var count = 10;
+                var container = f.el("#pairings")
+                var elements : HTMLElement[] = [];
+
+                for (var i=1; i<count+1; i++) {
+                    let el = document.createElement("li");
+                    elements.push(el);
+
+                    el.className = "pairing";
+                    el.style.backgroundImage = e.style.backgroundImage;
+                    el.style.left = f.px(i* (window.innerWidth/count));
+                    container.appendChild(el)
+                }
+
+                f.shuffle(elements);
+                for (var x=0; x<elements.length; x++) {
+                    this.loopingAnimations.push(
+                        TweenMax.fromTo(elements[x], f.getRandom(2, 5), {
+                            y:window.innerHeight
+                        }, {
+                            y:-window.innerHeight, ease:"linear", delay:i*0.1, repeat:-1 
+                        })
+                    )
+                    
+                }
+                // f.el("#vessel1").style.backgroundImage = e.style.backgroundImage;
+                // f.el("#vessel2").style.backgroundImage = e.style.backgroundImage;
+                break;
+
+        }
         this.hide();
     }
+
+    completed() {
+        console.log("completed!!");
+        this.bgEl.style.display = "none";
+        this.el.style.display = "none";
+    }
+
+
+    
+    
 
     // set(q : MCQuestion) {
         // this.questionElement.innerHTML = q.question;

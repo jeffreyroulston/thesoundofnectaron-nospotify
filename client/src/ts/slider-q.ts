@@ -51,9 +51,6 @@ export default class Slider {
     private bottomFruitDefaultTopValue : number = 0;
     private fruitDefaultWidth : number = 200;
 
-    private initiated = false;
-    private completed = false;
-
     // for looping animations
     private loopingAnimations : TweenMax[] = [];
 
@@ -71,6 +68,10 @@ export default class Slider {
 
     private showCurrentQuestion: () => void;
     private callbackCurrentQuestion : (e:any) => void;
+
+    // called from ui
+    public initiated = false;
+    public isComplete = false;
 
     constructor(ui : UI, id: string) {
         this.ui = ui;
@@ -157,9 +158,7 @@ export default class Slider {
             this.show();
             this.showCurrentQuestion();
 
-        } else {
-            console.log("beemo");
-        }
+        } else {}
     }
 
     private show() {
@@ -569,9 +568,7 @@ export default class Slider {
         // if (this.questionIdx < 1) {
             // lock in slider value to answer
             this.questions[this.questionIdx].answer = e.srcElement.value;;
-
             console.log(this.questions[this.questionIdx]);
-
             this.getNextQuestion();
         // }
     }
@@ -617,8 +614,8 @@ export default class Slider {
             this.hide();
 
         } else {
-            console.log("current question: " + this.questionIdx.toString() + ", end of this section ")
-            this.completed = true;
+            console.log("current question: " + this.questionIdx.toString() + ", end of this section ");
+            this.isComplete = true;
             this.hide();
             this.ui.roundComplete(this.el);
         }
@@ -628,7 +625,7 @@ export default class Slider {
         // hide out the things
         TweenMax.to(".slider-q" + this.questionIdx.toString(), this.time, {
             alpha:0, scale: 1.1, display: "none", onComplete : ()=> {
-                if (!this.completed) this.set();
+                if (!this.isComplete) this.set();
             }
         });
 
@@ -660,162 +657,8 @@ export default class Slider {
         }
     }
 
-    complete() {
+    completed() {
+        console.log("completed");
         this.el.style.display = "none";
     }
-
-    // set(q : SliderQuestion) {
-        // this.min = q.minValue;
-        // this.max = q.maxValue;
-
-        // // set slider value to the middle
-        // this.mid = (this.max - this.min)/2;
-        // this.value = this.mid;
-        // this.prevValue = this.mid;
-        // this.sliderThumb.style.left = "calc(50% - 9px)";
-
-        // // reset fruit {
-        // this.topFruitElement.style.width = px(this.fruitDefaultWidth);
-        // this.bottomFruitElement.style.width = px(this.fruitDefaultWidth);
-        // this.bottomFruitElement.style.top = px(this.bottomFruitDefaultTopValue);
-        // this.topFruitElement.style.bottom = px(this.topFruitDefaultBottomValue);
-
-
-        // // apply to slider element
-        // this.sliderEl.min = this.min.toString();
-        // this.sliderEl.max = this.max.toString();
-        // this.sliderEl.value = this.mid.toString();
-
-        // // add copy
-        // this.questionElement.innerHTML = q.question;
-        // this.minValueLabel.innerHTML = q.minTextValue;
-        // this.maxValueLabel.innerHTML = q.maxTextValue;
-
-        // // show element
-        // el(this.el).style.display = "block";
-    // }
-
-    // show() {
-        // var d = this.initialised ? 0.2 : 0.4;
-        // this.initialised = true;
-
-        // TweenMax.fromTo(this.el + " .question", 0.3, {
-        //     alpha:0, x:-20
-        // }, {
-        //     alpha:1, x:0, delay: d
-        // });
-
-        // TweenMax.fromTo(this.el + " .slide-container", 0.3, {
-        //     scaleX:0, transformOrigin: "right"
-        // }, {
-        //     scaleX:1, delay: d
-        // });
-        
-        // TweenMax.fromTo(this.topFruitElement, 0.3, {
-        //     alpha:0
-        // }, {
-        //     alpha:1, delay: d
-        // });
-
-        // TweenMax.fromTo(this.bottomFruitElement, 0.3, {
-        //     alpha:0
-        // }, {
-        //     alpha:1, delay: d
-        // });
-
-        // TweenMax.fromTo(this.topFruitElement, 0.8, {
-        //     y:-50
-        // }, {
-        //     y:0, ease:"bounce", delay : d
-        // });
-
-        // TweenMax.fromTo(this.bottomFruitElement, 0.8, {
-        //     y:50
-        // }, {
-        //     y:0, ease:"bounce", delay : d
-        // });
-
-        // TweenMax.fromTo([this.minValueLabel, this.maxValueLabel], 0.2, {
-        //     alpha: 0, y:-20
-        // }, {
-        //     alpha: 1, y:0, delay: d + 0.2
-        // })
-
-        // TweenMax.fromTo(this.el + " .slider-thumb", 0.2, {
-        //     alpha:0, y:20
-        // }, {
-        //     alpha:1, y:0, delay: d + 0.2
-        // });
-    // }
-
-    // sliderChange(e: any){
-        // // get the width and the value of the slider 
-        // this.sliderWidth = e.srcElement.clientWidth;
-        // this.value= e.srcElement.value;
-
-        // // get the next position of the arrow
-        // // move the triangle to match the position of the slider thumb
-        // this.sliderThumb.style.left = px(((this.value - this.min) / (this.max - this.min) * (this.sliderWidth)) - this.sliderThumb.getBoundingClientRect().width/2);
-
-        // // scale fruit
-        // if (this.value > this.mid) {
-        //     this.scaleTopFruit();
-        // } else if (this.value < this.mid) {
-        //     this.scaleBottomFruit();
-        // } else {
-        //     //mid point
-        //     if (this.prevValue > this.mid) {
-        //         this.scaleTopFruit();
-        //     } else {
-        //         this.scaleBottomFruit();
-        //     }
-        // }
-
-    // }
-
-    // scaleTopFruit() {
-        // this.topFruitElement.style.width = px(3*(this.value - this.mid) + this.fruitDefaultWidth);
-        // this.topFruitElement.style.bottom = px(this.topFruitDefaultBottomValue - 0.5 * (this.value - this.mid));
-        // this.prevValue = this.value;
-    // }
-
-    // scaleBottomFruit() {
-        // this.bottomFruitElement.style.width = px(3*(this.mid - this.value) + this.fruitDefaultWidth);
-        // this.bottomFruitElement.style.top = px(this.bottomFruitDefaultTopValue - 0.5 * (this.mid - this.value));
-        // this.prevValue = this.value;
-    // }
-
-    // sliderValueSet(e: any) {
-        // this.value= e.srcElement.value;
-        // var d = 0.1;
-
-        // TweenMax.to(this.el + " .slider-thumb", 0.1, {
-        //     alpha:0, y:20
-        // });
-
-        // TweenMax.to([this.minValueLabel, this.maxValueLabel], 0.1, {
-        //     alpha:0, y:-20
-        // });
-
-        // TweenMax.to(this.topFruitElement, 0.2, {
-        //     alpha: 0, y:-50, delay:d
-        // });
-
-        // TweenMax.to(this.bottomFruitElement, 0.2, {
-        //     alpha:0, y:50, delay:d
-        // });
-
-        // TweenMax.to(this.el + " .slide-container", 0.2, {
-        //     scaleX:0, transformOrigin: "right", delay:d
-        // });
-
-        // TweenMax.to(this.el + " .question", 0.2, {
-        //     alpha:0, x:-20, delay:d, onComplete: this.answerRetrieved.bind(this)
-        // });
-    // }
-
-    // answerRetrieved() {
-        // el(this.el).style.display = "none";
-        // this.ui.answerRetrieved(this.value);
-    // }
 }
