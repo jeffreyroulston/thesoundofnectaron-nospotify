@@ -45,15 +45,15 @@ export default class Squiggles {
             let squiggle = undefined;
 
             if (selection == 0) {
-                squiggle = new RandomSquiggle(Math.ceil(Math.random() * 10 + 10), position);
+                squiggle = new RandomSquiggle(Math.ceil(Math.random() * 20 + 10), position);
             }
 
             if (selection == 1) {
-                squiggle = new CircleSquiggle(Math.ceil(Math.random() * 10 + 10), position);
+                squiggle = new CircleSquiggle(Math.ceil(Math.random() * 20 + 10), position);
             }
 
             if (selection == 2) {
-                squiggle = new TriangleSquiggle(Math.ceil(Math.random() * 10 + 10), position);
+                squiggle = new TriangleSquiggle(Math.ceil(Math.random() * 20 + 10), position);
             }
 
             if (squiggle !== undefined) {
