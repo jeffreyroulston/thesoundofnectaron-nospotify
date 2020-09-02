@@ -78,6 +78,27 @@ export default class UI {
         this.mcq = new MCQ(this, "#mc-q");
         this.qfq = new QuickFireQ(this, "#quickfire-q");
 
+        // get the logo letters
+        var polygons = elList(".logo-letters .letter polygon");
+        var paths = elList(".logo-letters .letter path");
+        var lines = elList(".logo-letters .letter lines");
+        var rect = elList(".logo-letters .letter rect");
+        polygons.forEach((p1=> {
+            this.logoLetters.push(p1)
+        }))
+       paths.forEach((p2=> {
+            this.logoLetters.push(p2)
+        }))
+        lines.forEach((l=> {
+            this.logoLetters.push(l)
+        }))
+        rect.forEach((r=> {
+            this.logoLetters.push(r)
+        }))
+
+        console.log("logo letters");
+        console.log(this.logoLetters)
+
         // set the order (lol)
         this.questionGroups = [this.slider, this.mcq, this.qfq];
         // this.questionGroups = [this.mcq, this.slider, this.mcq];
