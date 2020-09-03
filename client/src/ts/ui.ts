@@ -136,33 +136,33 @@ export default class UI {
         var hopTop = find(this.loaderEl, ".hop-bottom")
 
         TweenMax.fromTo(fruitTop, t, {
-            disply:"block", y:-y1
+            opacity:0, y:-y1
         }, {
-            y:0, delay: t
+            opacity:1, y:0, delay: t
         })
 
         TweenMax.fromTo(hopTop, t, {
-            disply:"block", y:y1
+            opacity:0, y:y1
         }, {
-            y:0, delay: t
+            opacity:1, y:0, delay: t
         })
 
-        TweenMax.fromTo("#loader-bar, #loader .letter", t, {
-            disply:"block", scale:0
+        TweenMax.fromTo("#loader-bar, #loader .letter", t/2, {
+            opacity:0, scale:0.5
         }, {
-            scale:1, delay: t, onComplete: ()=> {
+            opacity:1, scale:1, delay: t+t/2, onComplete: ()=> {
                 this.incrementLoaderGradient();
             }
         })
 
         this.loopingAnimations.push(
-            TweenMax.to(fruitTop, t/2, {
+            TweenMax.to(fruitTop, t, {
                 y:-y2, repeat:-1, yoyo:true, delay:t*2
             })
         )
 
         this.loopingAnimations.push(
-            TweenMax.to(hopTop, t/2, {
+            TweenMax.to(hopTop, t, {
                 y:y2, repeat:-1, yoyo:true, delay:t*2
             })
         )
@@ -182,15 +182,15 @@ export default class UI {
         })
 
         TweenMax.to(fruitTop, t, {
-            y:-y1, alpha:0
+            y:-y1/2, alpha:0
         })
 
         TweenMax.to(hopTop, t, {
-            y:y1, alpha:0
+            y:y1/2, alpha:0
         })
 
         TweenMax.to("#loader-bar, #loader .letter", t, {
-            alpha:0, scale:0, onComplete: this.showLanding.bind(this)
+            alpha:0, scale:0.5, onComplete: this.showLanding.bind(this)
         })
 
     }

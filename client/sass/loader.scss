@@ -11,11 +11,14 @@ $framePadding : 20px;
     #loader {
         position: relative;
 
+        li, #loader-bar, .letter {
+            opacity:0;
+        }
+
         li {
             display: block;
             position: absolute;
             width: 200px;
-
             &.letter {
                 height: 200px;
 
