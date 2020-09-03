@@ -6,7 +6,6 @@ import QuickFireQ from "./quickfire-q";
 import {el, find, elList, getRandom} from "./helpers";
 import {TweenMax, TimelineMax} from "gsap"
 import App from "./app";
-import * as anim from "./animator"
 
 import * as d3 from "d3";
 
@@ -119,18 +118,17 @@ export default class UI {
         // loader
         this.loaderRedFill = find(this.loaderEl, ".loader-fill-a");
         this.loaderPurpleFill = find(this.loaderEl, ".loader-fill-b");
-        console.log(this.loaderRedFill);
 
-        this.loaderInit();
+        // this.loaderInit();
 
         // kick it off
-        // this.showLanding();
+        this.showLanding();
         // this.showRoundName();
     }
 
     private loaderInit() {
         var y1 = window.innerHeight;
-        var y2 = 20
+        var y2 = 10
         var t = 0.6;
         var fruitTop = find(this.loaderEl, ".fruit-top");
         var hopTop = find(this.loaderEl, ".hop-bottom")
@@ -167,7 +165,19 @@ export default class UI {
             })
         )
 
-        this.incrementLoader();
+        this.loopingAnimations.push(
+            TweenMax.to(find(this.loaderEl, ".top"), t, {
+                y:-y2, x:y2, repeat:-1, yoyo:true, delay:t*2
+            })
+        )
+
+        this.loopingAnimations.push(
+            TweenMax.to(find(this.loaderEl, ".bottom"), t, {
+                y:y2, x:-y2, repeat:-1, yoyo:true, delay:t*2
+            })
+        )
+
+        // this.incrementLoader();
     }
 
     private loaderOut() {
@@ -254,13 +264,40 @@ export default class UI {
     }
 
     public showLanding() {
-        this.landingPageEl.style.display = "block";
-        anim.landingPageIn.play();
-        // anim.fruitsIn.play();
-
         // // reset the cookie
         document.cookie = "landingShown"
         console.log(document.cookie);
+        this.landingPageEl.style.display = "block";
+
+        TweenMax.from(".logo path, .logo polygon, .logo rect", 1, {
+            alpha:0, scale:0, transformOrigin: "center", delay:0.5, stagger: {
+                each:0.04, from: "random"
+            }
+        })
+        
+        TweenMax.from(".logo-head path:nth-child(even)", 1, {
+            alpha:0, scale:0, rotation:45, y:50, delay:1, stagger: {
+                each:0.1, from: "random"
+            }
+        })
+        
+        TweenMax.from(".logo-head path:nth-child(odd)", 1, {
+            alpha:0, scale:0, rotation:-45, y:-200, delay:1, stagger: {
+                each:0.1, from: "random"
+            }
+        })
+        
+        TweenMax.from("#landing .subheading", 0.5, {
+            alpha:0, y:5, delay:3
+        })
+        
+        TweenMax.from("#start-btn", 0.3, {
+            alpha:0, delay:4
+        })
+        
+        TweenMax.to("#start-btn", 0.3, {
+            x:-5, repeat: -1, delay:4, yoyo: true
+        })
 
         var d = 2;
         var t1 = 0.3;
@@ -500,8 +537,8 @@ export default class UI {
         switch (this.currentPage) {
             case PageType.Login:
                 // stop the animations
-                anim.landingPageIn.pause();
-                anim.fruitsIn.pause();
+                // anim.landingPageIn.pause();
+                // anim.fruitsIn.pause();
 
                 // show the round name
                 this.showRoundName();
@@ -523,7 +560,22 @@ export default class UI {
     private showEndFrame() {
         this.currentPage = PageType.EndFrame;
         this.setBG(data.COLOURS.beige);
-        anim.endFrameIn.play();
+        // anim.endFrameIn.play();
+        // endFrameIn.to("#end-frame", 0, {
+        //     display: "block"
+        // }).fromTo("#playlist-title", 0.3, {
+        //     alpha:0, x:-20
+        // }, {
+        //     alpha:1, x:0
+        // }, 0.4).fromTo("#playlist-desc", 0.3, {
+        //     alpha:0, x:-20
+        // }, {
+        //     alpha:1, x:0
+        // }, 0.5).fromTo("#album-cover", 0.3, {
+        //     alpha:0, scale:0.5
+        // }, {
+        //     alpha: 1, scale:1, delay: 0.7
+        // }, 0.7)
     }
 
     // call back from graphics/app

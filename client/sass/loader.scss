@@ -1,12 +1,13 @@
 @import "shared";
 
 $framePadding : 20px;
+$loaderDimensions : 200px;
 
 #loader-container {
     @include centerAlign();
     position:absolute;
-    width:00px;
-    height: 200px;
+    width: $loaderDimensions;
+    height: $loaderDimensions;
 
     #loader {
         position: relative;
@@ -18,13 +19,13 @@ $framePadding : 20px;
         li {
             display: block;
             position: absolute;
-            width: 200px;
+            width: $loaderDimensions;
             &.letter {
-                height: 200px;
+                height: $loaderDimensions;
 
                 svg {
-                    height: 200px;
-                    width: 200px
+                    height: $loaderDimensions;
+                    width: $loaderDimensions;
                 }
             }
 
@@ -42,7 +43,7 @@ $framePadding : 20px;
             &.hop-bottom {
                 background-image: url("./assets/loader/hopBottom.png");
                 top: 90px;
-                height: 200px;
+                height: $loaderDimensions;
             }
 
             background-size: 100% auto;
