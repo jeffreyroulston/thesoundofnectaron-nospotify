@@ -44,6 +44,17 @@ export default class UI {
     private logoLetters: HTMLElement[] = elList(".loto-letters letter");
     private descriptionEl : HTMLElement = el("#round-name .description p");
 
+    // loader elements
+    private loaderProgress = 0;
+    private loaderEl : HTMLElement = el("#loader");
+    private loaderRedFill : HTMLElement;
+    private loaderPurpleFill : HTMLElement;
+
+    private loaderRedFillTargetVal : number = 1;
+    private loaderPurpleFillTargetVal : number = 1;
+    private loaderRedFillCurrentVal : number = 1;
+    private loaderPurpleFillCurrentVal : number = 1;
+
     private lastVisibleEl : HTMLElement;
     private nextBgColor : string = "";
 
@@ -79,25 +90,7 @@ export default class UI {
         this.qfq = new QuickFireQ(this, "#quickfire-q");
 
         // get the logo letters
-        var polygons = elList(".logo-letters .letter polygon");
-        var paths = elList(".logo-letters .letter path");
-        var lines = elList(".logo-letters .letter lines");
-        var rect = elList(".logo-letters .letter rect");
-        polygons.forEach((p1=> {
-            this.logoLetters.push(p1)
-        }))
-       paths.forEach((p2=> {
-            this.logoLetters.push(p2)
-        }))
-        lines.forEach((l=> {
-            this.logoLetters.push(l)
-        }))
-        rect.forEach((r=> {
-            this.logoLetters.push(r)
-        }))
-
-        console.log("logo letters");
-        console.log(this.logoLetters)
+        var polygons = elList(".logo-letters .purple");
 
         // set the order (lol)
         this.questionGroups = [this.slider, this.mcq, this.qfq];
@@ -115,16 +108,130 @@ export default class UI {
         //   }
 
         // set button bindings
-        el("#start-btn").addEventListener("click", this.login.bind(this));
+        // el("#start-btn").addEventListener("click", this.login.bind(this));
         
-        var btns = elList(".next-btn:not(#start-btn)");
+        // var btns = elList(".next-btn:not(#start-btn)");
+        var btns = elList(".next-btn");
         btns.forEach(e => {
             e.addEventListener("click", this.next.bind(this))
         })
 
+        // loader
+        this.loaderRedFill = find(this.loaderEl, ".loader-fill-a");
+        this.loaderPurpleFill = find(this.loaderEl, ".loader-fill-b");
+        console.log(this.loaderRedFill);
+
+        this.loaderInit();
+
         // kick it off
         // this.showLanding();
         // this.showRoundName();
+    }
+
+    private loaderInit() {
+        var y1 = window.innerHeight;
+        var y2 = 20
+        var t = 0.6;
+        var fruitTop = find(this.loaderEl, ".fruit-top");
+        var hopTop = find(this.loaderEl, ".hop-bottom")
+
+        TweenMax.fromTo(fruitTop, t, {
+            disply:"block", y:-y1
+        }, {
+            y:0, delay: t
+        })
+
+        TweenMax.fromTo(hopTop, t, {
+            disply:"block", y:y1
+        }, {
+            y:0, delay: t
+        })
+
+        TweenMax.fromTo("#loader-bar, #loader .letter", t, {
+            disply:"block", scale:0
+        }, {
+            scale:1, delay: t, onComplete: ()=> {
+                this.incrementLoaderGradient();
+            }
+        })
+
+        this.loopingAnimations.push(
+            TweenMax.to(fruitTop, t/2, {
+                y:-y2, repeat:-1, yoyo:true, delay:t*2
+            })
+        )
+
+        this.loopingAnimations.push(
+            TweenMax.to(hopTop, t/2, {
+                y:y2, repeat:-1, yoyo:true, delay:t*2
+            })
+        )
+
+        this.incrementLoader();
+    }
+
+    private loaderOut() {
+        var y1 = window.innerHeight;
+        var y2 = 20;
+        var t = 0.3;
+        var fruitTop = find(this.loaderEl, ".fruit-top");
+        var hopTop = find(this.loaderEl, ".hop-bottom");
+
+        this.loopingAnimations.forEach((anim)=> {
+            anim.kill();
+        })
+
+        TweenMax.to(fruitTop, t, {
+            y:-y1, alpha:0
+        })
+
+        TweenMax.to(hopTop, t, {
+            y:y1, alpha:0
+        })
+
+        TweenMax.to("#loader-bar, #loader .letter", t, {
+            alpha:0, scale:0, onComplete: this.showLanding.bind(this)
+        })
+
+    }
+
+    private incrementLoader() {
+        console.log(this.loaderProgress);
+        if (this.loaderProgress < 1) {
+            this.loaderProgress += 1/20;
+            // console.log(this.loaderProgress);
+            if (this.loaderProgress < 0.5) {
+                this.loaderRedFillTargetVal = 1-this.loaderProgress*2;
+                // console.log("red", this.loaderRedFillTargetVal);
+                // this.loaderRedFill.setAttribute("offset", (1-this.loaderProgress*2).toString())
+            } else {
+                this.loaderPurpleFillTargetVal = 1-(this.loaderProgress*2-1);
+                // console.log("purple", this.loaderPurpleFillTargetVal)
+                // this.loaderPurpleFill.setAttribute("offset", (1-(this.loaderProgress*2-1)).toString())
+            }
+    
+            // console.log(this.loaderProgress, this.loaderRedFill, this.loaderPurpleFill);
+            // console.log("*")
+    
+            setTimeout(this.incrementLoader.bind(this), 500)
+        } else {
+           this.loaderOut();
+        }
+    }
+
+    private incrementLoaderGradient() {
+        var increment = 0.01;
+        if (this.loaderRedFillCurrentVal > this.loaderRedFillTargetVal) {
+            this.loaderRedFillCurrentVal-= increment;
+            this.loaderRedFill.setAttribute("offset", this.loaderRedFillCurrentVal.toString())
+        }
+
+        if (this.loaderPurpleFillCurrentVal > this.loaderPurpleFillTargetVal) {
+            this.loaderPurpleFillCurrentVal-= increment;
+            this.loaderPurpleFill.setAttribute("offset", this.loaderPurpleFillCurrentVal.toString())
+        }
+
+        setTimeout(this.incrementLoaderGradient.bind(this), 10)
     }
 
     private setBG(color : string) {
@@ -160,71 +267,106 @@ export default class UI {
         var t2 = 1;
         var distance = 50;
 
-        // show the fruits 
-        TweenMax.from("#landing .fruit-top", t1, {
-            alpha: 0, delay:d
-        })
+        // // the title sequence
+        // TweenMax.from(".logo path, .logo polygon, .logo rect", 1, {
+        //     alpha:0, scale:0, transformOrigin: "center", stagger: {
+        //         each:0.04, from: "random"
+        //     }
+        // })
 
-        TweenMax.from("#landing .fruit-bottom", t1, {
-            alpha: 0, delay:d+0.2
-        })
+        // TweenMax.from(".logo-head path:nth-child(even)", 1, {
+        //     alpha:0, scale:0, rotation:45, y:50, delay:0.5, stagger: {
+        //         each:0.1, from: "random"
+        //     }
+        // });
 
-        TweenMax.from("#landing .pineapple-top", t1, {
-            alpha: 0, delay:d+0.4
-        })
-        TweenMax.from("#landing .fruit-bottom-2", t1, {
-            alpha: 0, delay:d+0.6
-        })
+        // TweenMax.from("#landing .subheading", 0.5, {
+        //     alpha:0, y:5, delay:1.2
+        // })
+        
+        // TweenMax.from(".logo-head path:nth-child(odd)", 1, {
+        //     alpha:0, scale:0, rotation:-45, y:-200, delay:0.5, stagger: {
+        //         each:0.1, from: "random"
+        //     }
+        // })
+        
+        // TweenMax.from(".logo path, .logo polygon, .logo rect", 1, {
+        //     alpha:0, scale:0, transformOrigin: Anim.center, stagger: {
+        //         each:0.04, from: Anim.random
+        //     }
+        // }, 0).from("#landing .subheading", 0.5, {
+        //     alpha:0, y:5
+        // }, "+=0.2").from("#start-btn", 0.3, {
+        //     alpha:0, x:-5
+        // }).to("#start-btn", 0.3, {
+        //     x:-5, repeat: -1, yoyo: true
+        // })
 
-        TweenMax.from("#landing .fruit-whole", t1, {
-            alpha: 0, delay:d+0.8
-        })
+        // // show the fruits 
+        // TweenMax.from("#landing .fruit-top", t1, {
+        //     alpha: 0, delay:d
+        // })
 
-        TweenMax.from("#landing .pineapple-burner", t1, {
-            alpha: 0, delay:d+1
-        })
+        // TweenMax.from("#landing .fruit-bottom", t1, {
+        //     alpha: 0, delay:d+0.2
+        // })
 
-        this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-top", t2, {
-            rotate:-30
-        },{
-            y:-50, scale:1.3, rotate:30, repeat:-1, yoyo:true, ease:"linear"
-        }))
+        // TweenMax.from("#landing .pineapple-top", t1, {
+        //     alpha: 0, delay:d+0.4
+        // })
+        // TweenMax.from("#landing .fruit-bottom-2", t1, {
+        //     alpha: 0, delay:d+0.6
+        // })
 
-        this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-bottom", t2, {
-            rotate:30
-        },{
-            y:50, scale:1.3, rotate:-30, repeat:-1, yoyo:true, ease:"linear"
-        }))
+        // TweenMax.from("#landing .fruit-whole", t1, {
+        //     alpha: 0, delay:d+0.8
+        // })
 
-        this.loopingAnimations.push(TweenMax.fromTo("#landing .pineapple-top", t2, {
-            x:-50
-        },{
-            x:10, scale:1.3, repeat:-1, yoyo:true, ease:"linear"
-        }))
+        // TweenMax.from("#landing .pineapple-burner", t1, {
+        //     alpha: 0, delay:d+1
+        // })
 
-        this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-bottom-2", t2, {
-            x:50
-        },{
-            x:10, scale:1.3, repeat:-1, yoyo:true, ease:"linear"
-        }))
+        // this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-top", t2, {
+        //     rotate:-30
+        // },{
+        //     y:-50, scale:1.3, rotate:30, repeat:-1, yoyo:true, ease:"linear"
+        // }))
 
-        this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-whole", t2*2, {
-            rotate:0
-        },{
-            rotate:360, repeat:-1, ease:"linear"
-        }))
+        // this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-bottom", t2, {
+        //     rotate:30
+        // },{
+        //     y:50, scale:1.3, rotate:-30, repeat:-1, yoyo:true, ease:"linear"
+        // }))
 
-        this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-whole", t2, {
-            scale:1
-        },{
-           scale:1.3, repeat:-1, yoyo:true
-        }))
+        // this.loopingAnimations.push(TweenMax.fromTo("#landing .pineapple-top", t2, {
+        //     x:-50
+        // },{
+        //     x:10, scale:1.3, repeat:-1, yoyo:true, ease:"linear"
+        // }))
 
-        this.loopingAnimations.push(TweenMax.fromTo("#landing .pineapple-burner", 0.1, {
-            rotate:-1
-        },{
-            rotate:0, transformOrigin: "bottom", repeat:-1, ease:"linear", yoyo:true
-        }))
+        // this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-bottom-2", t2, {
+        //     x:50
+        // },{
+        //     x:10, scale:1.3, repeat:-1, yoyo:true, ease:"linear"
+        // }))
+
+        // this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-whole", t2*2, {
+        //     rotate:0
+        // },{
+        //     rotate:360, repeat:-1, ease:"linear"
+        // }))
+
+        // this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-whole", t2, {
+        //     scale:1
+        // },{
+        //    scale:1.3, repeat:-1, yoyo:true
+        // }))
+
+        // this.loopingAnimations.push(TweenMax.fromTo("#landing .pineapple-burner", 0.1, {
+        //     rotate:-1
+        // },{
+        //     rotate:0, transformOrigin: "bottom", repeat:-1, ease:"linear", yoyo:true
+        // }))
     }
 
     public showRoundName() {

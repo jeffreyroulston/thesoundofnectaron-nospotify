@@ -32,15 +32,15 @@ export default class App {
         this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
         var cookie = document.cookie;
 
-        if (this.spotifyInterface.Authorized) {
-            if (document.cookie == "landingShown") {
-                this.ui.startRounds();
-            } else {
-                this.ui.showLanding();
-            }
-        } else {
-            this.ui.showLanding();
-        }
+        // if (this.spotifyInterface.Authorized) {
+        //     if (document.cookie == "landingShown") {
+        //         this.ui.startRounds();
+        //     } else {
+        //         this.ui.showLanding();
+        //     }
+        // } else {
+        //     this.ui.showLanding();
+        // }
 
         // // we need these binds to make sure and 'this' in callbacks is bound to the correct object
         // this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
