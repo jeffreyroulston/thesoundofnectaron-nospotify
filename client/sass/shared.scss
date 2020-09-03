@@ -4,8 +4,7 @@ $orange: #FF1900;
 $beige: #FCF1DB;
 $blue: #00C1F5;
 
-$letterSize: 50px;
-$letterPadding: 40px;
+$letterSize: 70px;
 $marginTop : 30vh;
 $marginTop2 : 10vh;
 
@@ -15,14 +14,14 @@ $marginTop2 : 10vh;
     @return calc(#{$containerWidth}/2 - (#{$elWidth}.2));
 }
 
-@mixin verticalAlign {
-    position: relative;
+@mixin verticalAlign($value) {
+    position: $value;
     top: 50%;
     transform: translateY(-50%);
 }
 
-@mixin horizontalAlign {
-    position: relative;
+@mixin horizontalAlign($value) {
+    position: $value;
     left: 50%;
     transform: translateX(-50%);
 }

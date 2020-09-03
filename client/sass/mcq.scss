@@ -121,8 +121,7 @@
         background-size: 100% auto;
         background-repeat: no-repeat;
         
-        @include horizontalAlign();
-        position: absolute;
+        @include horizontalAlign(absolute);
         bottom: 0px;
         display: none;
     }

@@ -1,0 +1,36 @@
+
+@import "shared";
+
+$framePadding : 20px;
+
+#logo-letters {
+    // display: none;
+    .letter {
+        position: absolute;
+        width: $letterSize;
+
+        &.left {
+            left: $framePadding;
+        }
+
+        &.right {
+            right: $framePadding
+        }
+
+        &.top {
+            top: $framePadding;
+        }
+        
+        &.bottom {
+            bottom: $framePadding;
+        }
+
+        &.center {
+            @include horizontalAlign(absolute);
+        }
+
+        &.middle {
+            @include verticalAlign(absolute);
+        }
+    }
+}

@@ -1,5 +1,6 @@
 @import "shared";
 @import "loader";
+@import "letters";
 @import "round";
 @import "slider";
 @import "mcq";
@@ -79,7 +80,7 @@ p {
 .section {
     display: none;
     max-width: 2500px;
-    @include horizontalAlign();
+    @include horizontalAlign(relative);
 }
 
 .full-page {
@@ -94,8 +95,7 @@ p {
 .center-wrapper {
     width: 100%;
     text-align: center;
-    position: relative;
-    @include verticalAlign();
+    @include verticalAlign(relative);
 }
 
 .text-wrapper {
@@ -151,6 +151,9 @@ p {
     }
 }
 
+.letter {
+    height: $letterSize;
+}
 
 .fruits {
     .fruit {

@@ -37,10 +37,11 @@ export default class UI {
     private currentRoundIdx : number = -1;
 
     private graphicsEl: HTMLElement = el("#canvas-container");
-    private sharedEl: HTMLElement = el("#shared");
+    // private sharedEl: HTMLElement = el("#shared");
     private landingPageEl: HTMLElement = el("#landing");
     private roundPageEl: HTMLElement = el("#round-name");
-    private logoLetters: HTMLElement[] = elList(".loto-letters letter");
+    private borderEl : HTMLElement = el("#logo-letters");
+    private borderLetters: HTMLElement[] = elList("#logo-letters .letter");
     private descriptionEl : HTMLElement = el("#round-name .description p");
 
     // loader elements
@@ -125,6 +126,14 @@ export default class UI {
         this.showLanding();
         // this.showRoundName();
     }
+
+    // private loaderInit2() {
+    //     var e = el("#loader-2");
+    //     var count = 50;
+    //     for (var i=0; i<count; i++) {
+    //         document.crea
+    //     }
+    // }
 
     private loaderInit() {
         var y1 = window.innerHeight;
@@ -249,12 +258,12 @@ export default class UI {
         this.nextBgColor = color;
 
         // // set logo colours - set it to the contrast of the background colour
-        this.logoLetters.forEach(el => {
+        this.borderLetters.forEach(el => {
             el.style.fill = data.CONTRAST[color];
         });
 
         // these are the border elements that stay on top
-        this.sharedEl.style.zIndex = "201";
+        // this.sharedEl.style.zIndex = "201";
 
         // put the pixel graphics on top of the others
         this.graphicsEl.style.zIndex = "200";
@@ -600,7 +609,7 @@ export default class UI {
 
         setTimeout(()=> {
             // moved shared element back so things can be interacted with
-            this.sharedEl.style.zIndex = "100";
+            // this.sharedEl.style.zIndex = "100";
             
             // prepare to hide graphics element
             this.graphicsEl.style.zIndex = "0";

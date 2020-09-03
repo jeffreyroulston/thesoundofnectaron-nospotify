@@ -15,7 +15,6 @@
     .round {
         svg {
             overflow: visible;
-            height: 70px;
         }
     }
 
@@ -67,21 +66,22 @@
         padding: 20px;
         z-index: -1;
 
-        top: -185px;
-        left: -12px;
         height: 135px;
         max-height: 135px;;
 
-        top: -190px;
+        top: -110px;
         left: -6px;
 
         text-align: center;
+        position: relative;
 
         p {
-            @include verticalAlign();
-            font-size: 18px;
+            @include verticalAlign(absolute);
+            left:0px;
+            font-size: 16px;
             line-height: 1.5;
             text-align: center;
+            padding: 0px 30px;
         }
     }
 

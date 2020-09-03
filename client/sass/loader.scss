@@ -1,7 +1,9 @@
 @import "shared";
-
-$framePadding : 20px;
 $loaderDimensions : 200px;
+
+// #loader-2 {
+//     background: black;
+// }
 
 #loader-container {
     @include centerAlign();
@@ -68,58 +70,6 @@ $loaderDimensions : 200px;
         // width: 200px;
         // clip-path: url(#myClip);
         // clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-    }
-}
-
-#logo-letters {
-    display: none;
-    .letter {
-        position: absolute;
-        height: 100px;
-        width: 100px;
-    }
-
-    &.frame {
-        .letter {
-            &:first-child {
-                // N
-                top: $framePadding;
-                left: $framePadding;
-            }
-    
-            &:nth-child(2) {
-                // E
-            }
-    
-            &:nth-child(3) {
-                // C
-            }
-    
-            &:nth-child(4) {
-                // T
-            }
-    
-            &:nth-child(5) {
-                // A
-            }
-    
-            &:nth-child(6) {
-                // R
-            }
-    
-            &:nth-child(7) {
-                // O
-            }
-    
-            &:last-child {
-                // N
-            }
-        }
-
-    }
-
-    &.loader {
-
     }
 }
 
