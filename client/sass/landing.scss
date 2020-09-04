@@ -216,35 +216,35 @@
 
 // >1920px
 @include minW($desktopXLargeWidth) {
-     .text-wrapper, #frame-letters .letter {
+     .text-wrapper {
         @include transform(scale(1.2));
     }
 }
 
 //1920px;
 @include maxW($desktopXLargeWidth) {
-    .text-wrapper, #frame-letters .letter {
+    .text-wrapper {
         @include transform(scale(1.1));
     }
 }
 
 //1366px
 @include maxW($desktopLargeWidth) {
-    .text-wrapper, #frame-letters .letter {
+    .text-wrapper {
         @include transform(scale(1));
     }
 }
 
 //1280px
 @include maxW($desktopWidth) {
-    .text-wrapper, #frame-letters .letter {
+    .text-wrapper {
         @include transform(scale(0.9));
     }
 }
 
 //768px;
 @include maxW($tabletPortraitWidth) {
-    .text-wrapper, #frame-letters .letter  {
+    .text-wrapper {
         @include transform(scale(0.7));
     }
     .subheading span{
@@ -256,10 +256,6 @@
 @include maxW($mobileLargeWidth) {
     #landing .text-wrapper {
         @include transform(scale(1));
-    }
-
-    #frame-letters {
-        display: none;
     }
 
     #landing {

@@ -123,8 +123,8 @@ export default class UI {
         // this.loaderInit();
 
         // kick it off
-        this.showLanding();
-        // this.showRoundName();
+        // this.showLanding();
+        this.showRoundName();
     }
 
     // private loaderInit2() {
@@ -494,11 +494,11 @@ export default class UI {
         }
 
         // bring in the fruit
-        TweenMax.fromTo("#round-name .fruit-whole", 0.6, {
-            scale:0.8, alpha:0, y:-500, rotation:-45
-        }, {
-            scale:1, alpha:1, y:0, rotation:0, delay:2*d+0.6
-        })
+        // TweenMax.fromTo("#round-name .fruit-whole", 0.6, {
+        //     scale:0.8, alpha:0, y:-500, rotation:-45
+        // }, {
+        //     scale:1, alpha:1, y:0, rotation:0, delay:2*d+0.6
+        // })
 
         // show the round name
         TweenMax.fromTo(nextRoundName, 0.6, {

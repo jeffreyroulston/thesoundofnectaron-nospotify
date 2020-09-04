@@ -35,4 +35,8 @@ $frameLetterSize : 50px;
             @include verticalAlign(absolute);
         }
     }
+
+    @include maxW($tabletPortraitWidth) {
+        display: none;
+    }
 }

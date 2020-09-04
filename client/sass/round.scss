@@ -1,6 +1,10 @@
 @import 'shared';
 
 #round-name {
+    .text-wrapper {
+        width: 100%;
+    }
+
     .round, .round-name-text, .numbers, .description {
         display: inline-block;
         position: relative; 
@@ -58,9 +62,6 @@
 
     .next-btn {
         display: block;
-        position: absolute;
-        bottom: 89px;
-        right: 0px;
     }
 
     .fruit-whole {
@@ -127,26 +128,28 @@
                 left:0px;
             }
         }
+
+        .next-btn {
+            position: absolute;
+            bottom: 89px;
+            right: 0px;
+        }
     }
 }
 
 // 900px
 @include maxPxW(900) {
     #round-name {
-        .text-wrapper {
-            @include transform(scale(0.8));
-        }
-
         .box, .round-name-text, .description {
             display: block;
         }
 
         .round {
-            left:-60px
+            left:-40px
         }
 
         .numbers {
-            left: 60px;
+            left: 40px;
             top: -70px
         }
 
@@ -167,89 +170,44 @@
         }
 
         .description {
-            top : -80px;
+            top : -40px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
 
             p {
                 display: inline-block;
-                width: 300px;
                 padding: 30px;
+                font-size: 20px;
             }
+        }
+
+        .next-btn {
+            display: block;
+        }
+
+        .next-btn {
+            width: 100%;
+
+            svg {
+                width: 70px;
+            }
+        }
+
+        .fruit-whole {
+            display: none;
         }
     }
 }
 
 //768px;
 @include maxW($tabletPortraitWidth) {
-
 }
 
 //640px
 @include maxW($mobileLargeWidth) {
-    // .round-name {
-    //     .round svg {
-    //         height: 50px;
-    //     }
-    // }
-
-    // .round-name-text {
-    //     svg {
-    //         height: 40px;
-    //     }
-    // }
-
-    // .numbers {
-    //     svg {
-    //         height: 100px;
-    //     }
-    // }
-
-    // #round-name {
-    //     .text-wrapper {
-    //         @include transform(scale(0.8));
-    //     }
-
-    //     .box, .round-name-text, .description {
-    //         display: block;
-    //     }
-
-    //     .round {
-    //         left:-40px
-    //     }
-
-    //     .numbers {
-    //         left: 40px;
-    //         top: -70px
-    //     }
-
-    //     .round-name-text {
-    //         width: 100%;
-    //         text-align: center;
-    //         // right: -65px;
-    //         // width: 166px;
-    //         top: -95px;
-
-    //         svg {
-    //             height: 60px;
-    //         }
-
-    //         li {
-    //             right: 0px;
-    //         }
-    //     }
-
-    //     .description {
-    //         p {
-    //             display: inline-block;
-    //             width: 300px;
-    //             padding: 30px;
-    //         }
-    //     }
-    // }
 }
 
 //480px;
 @include maxW($mobileWidth) {
-    .text-wrapper {
-        @include transform(scale(0.7));
-    }
 }
