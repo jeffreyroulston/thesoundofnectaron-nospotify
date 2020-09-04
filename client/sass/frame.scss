@@ -2,12 +2,14 @@
 @import "shared";
 
 $framePadding : 20px;
+$frameLetterSize : 50px;
 
-#logo-letters {
+#frame-letters {
     // display: none;
-    .letter {
+    li {
         position: absolute;
-        width: $letterSize;
+        height: $frameLetterSize;
+        width: $frameLetterSize;
 
         &.left {
             left: $framePadding;

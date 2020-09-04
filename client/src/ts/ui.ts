@@ -304,9 +304,9 @@ export default class UI {
             alpha:0, delay:4
         })
         
-        TweenMax.to("#start-btn", 0.3, {
-            x:-5, repeat: -1, delay:4, yoyo: true
-        })
+        // TweenMax.to("#start-btn", 0.3, {
+        //     x:-5, repeat: -1, delay:4, yoyo: true
+        // })
 
         var d = 2;
         var t1 = 0.3;
@@ -502,16 +502,16 @@ export default class UI {
 
         // show the round name
         TweenMax.fromTo(nextRoundName, 0.6, {
-            display:"none", alpha:0, x:-50
+            alpha:0, x:-50
         }, {
-            display:"inline-block", alpha:1, x:0, delay:2*d+0.8
+            alpha:1, x:0, delay:2*d+0.8
         });
 
         // show the description box
         TweenMax.fromTo("#round-name .description", 0.6, {
-            alpha:0, y:20, rotation:-17
+            alpha:0, y:20
         }, {
-            alpha:1, y:0, rotation:-17, delay:2*d+1
+            alpha:1, y:0, delay:2*d+1
         });
 
         // show the arrow

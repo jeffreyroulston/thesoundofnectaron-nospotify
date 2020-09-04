@@ -4,7 +4,6 @@
     .round, .round-name-text, .numbers, .description {
         display: inline-block;
         position: relative; 
-        // border: 1px solid black;
 
         li {
             display: none;
@@ -25,20 +24,6 @@
         svg {
             height: 47px;
         }
-
-        li {
-            &:first-child {
-                left:-20px;
-            }
-
-            &:nth-child(2) {
-                left:-63px;
-            }
-
-            &:nth-child(3) {
-                left:-66px;
-            }
-        }
     }
 
     .numbers {
@@ -50,38 +35,19 @@
             height: 226px;
             overflow: visible;
         }
-
-        // li {
-        //     &:first-child {
-        //         left:-33px;
-        //     }
-        // }
     }
 
     .description {
         background-color: $beige;
         font-family: 'Circular';
         color: $purple;
-        width: 270px;
-        padding: 20px;
-        z-index: -1;
-
-        height: 135px;
-        max-height: 135px;;
-
-        top: -110px;
-        left: -6px;
-
         text-align: center;
         position: relative;
 
         p {
-            @include verticalAlign(absolute);
-            left:0px;
             font-size: 16px;
             line-height: 1.5;
             text-align: center;
-            padding: 0px 30px;
         }
     }
 
@@ -107,88 +73,6 @@
 }
 
 
-#round-name {
-    // .fruit-whole {
-        // width: 180px;
-        // left: 767px;
-        // top: -80px;   
-    //     width: 0px;   
-    // }
-
-    // .round {
-    //     display: inline-block;
-    //     position: relative;
-
-    //     // margin-top: 76px;
-    // }
-
-    // .round-name-text {
-    //     display: inline-block;
-    //     position: relative; 
-    //     // top: 130px;
-    //     // left: -15px;
-    //     // z-index: 50;
-    //     // width:210px;
-
-    //     li {
-    //         display: none;
-    //         // position: absolute;
-    //         // top: -48px;
-    //         // right: 5px;
-    //     }
-
-    //     svg {
-    //         height: 47px;
-    //     }
-    // }
-
-    // .numbers {
-    //     // position: absolute;
-    //     // left: 78px;
-    //     // top: 126px;
-    //     display: inline-block;
-
-    //     li {
-    //         display: inline-block;
-    //         position: relative;
-    //         // opacity: 0;
-    //         display: none;
-
-    //         &:nth-child(n+2) {
-    //             // left: 17px;
-    //             // top: -10px
-    //             // position: absolute;
-    //         }
-    //     }
-
-    //     svg {
-    //         height: 226px;
-    //     }
-    // }
-
-    // .description {
-    //     background-color: $beige;
-    //     font-family: 'Circular';
-    //     color: $purple;
-    //     font-size: 12px;
-    //     width: 270px;
-    //     height: 135px;
-    //     padding: 20px;
-    //     transform: rotate(-17deg);
-
-    //     position: relative;
-    //     display: inline-block;
-    //     // top: 79px;
-    //     // left: -28px;
-    // }
-
-    // .btn {
-    //     position: absolute;
-    //     bottom: -147px;
-    //     right: 16px;
-    // }
-}
-
 // >1920px
 @include minW($desktopXLargeWidth) {
 
@@ -201,47 +85,171 @@
 
 //1366px
 @include maxW($desktopLargeWidth) {
-    #round-name .text-wrapper {
-        @include transform(scale(0.9));
-    }
 }
 
 //1280px
 @include maxW($desktopWidth) {
-    #round-name .text-wrapper {
-        @include transform(scale(0.8));
+
+}
+
+// 901px
+@include minPxW(901) {
+    #round-name {
+        .round-name-text {
+            li {
+                &:first-child {
+                    left:-20px;
+                }
+    
+                &:nth-child(2) {
+                    left:-63px;
+                }
+    
+                &:nth-child(3) {
+                    left:-66px;
+                }
+            }
+        }
+
+        .description {
+            padding: 20px;
+            width: 270px;
+            z-index: -1;
+
+            height: 135px;
+            max-height: 135px;;
+            top: -110px;
+            left: -6px;
+
+            p {
+                @include verticalAlign(absolute);
+                padding: 0px 30px;
+                left:0px;
+            }
+        }
+    }
+}
+
+// 900px
+@include maxPxW(900) {
+    #round-name {
+        .text-wrapper {
+            @include transform(scale(0.8));
+        }
+
+        .box, .round-name-text, .description {
+            display: block;
+        }
+
+        .round {
+            left:-60px
+        }
+
+        .numbers {
+            left: 60px;
+            top: -70px
+        }
+
+        .round-name-text {
+            width: 100%;
+            text-align: center;
+            // right: -65px;
+            // width: 166px;
+            top: -95px;
+
+            svg {
+                height: 60px;
+            }
+
+            li {
+                right: 0px;
+            }
+        }
+
+        .description {
+            top : -80px;
+
+            p {
+                display: inline-block;
+                width: 300px;
+                padding: 30px;
+            }
+        }
     }
 }
 
 //768px;
 @include maxW($tabletPortraitWidth) {
-    #round-name .text-wrapper {
-        @include transform(scale(0.7));
-    }
+
 }
 
 //640px
 @include maxW($mobileLargeWidth) {
-    .round-name {
-        .round svg {
-            height: 50px;
-        }
-    }
+    // .round-name {
+    //     .round svg {
+    //         height: 50px;
+    //     }
+    // }
 
-    .round-name-text {
-        svg {
-            height: 40px;
-        }
-    }
+    // .round-name-text {
+    //     svg {
+    //         height: 40px;
+    //     }
+    // }
 
-    .numbers {
-        svg {
-            height: 100px;
-        }
-    }
+    // .numbers {
+    //     svg {
+    //         height: 100px;
+    //     }
+    // }
+
+    // #round-name {
+    //     .text-wrapper {
+    //         @include transform(scale(0.8));
+    //     }
+
+    //     .box, .round-name-text, .description {
+    //         display: block;
+    //     }
+
+    //     .round {
+    //         left:-40px
+    //     }
+
+    //     .numbers {
+    //         left: 40px;
+    //         top: -70px
+    //     }
+
+    //     .round-name-text {
+    //         width: 100%;
+    //         text-align: center;
+    //         // right: -65px;
+    //         // width: 166px;
+    //         top: -95px;
+
+    //         svg {
+    //             height: 60px;
+    //         }
+
+    //         li {
+    //             right: 0px;
+    //         }
+    //     }
+
+    //     .description {
+    //         p {
+    //             display: inline-block;
+    //             width: 300px;
+    //             padding: 30px;
+    //         }
+    //     }
+    // }
 }
 
 //480px;
 @include maxW($mobileWidth) {
-
+    .text-wrapper {
+        @include transform(scale(0.7));
+    }
 }

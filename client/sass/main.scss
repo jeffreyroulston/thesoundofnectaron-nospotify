@@ -1,6 +1,6 @@
 @import "shared";
 @import "loader";
-@import "letters";
+@import "frame";
 @import "round";
 @import "slider";
 @import "mcq";
@@ -125,13 +125,13 @@ p {
     // }
 }
 
-.mobile {
-    display: none;
+// .mobile {
+//     display: none;
 
-    @include maxMobile {
-        display: block;
-    }
-}
+//     @include maxW($mobileLargeWidth) {
+//         display: inline-block;
+//     }
+// }
 
 .next-btn {
     width: 50px;
@@ -151,7 +151,7 @@ p {
     }
 }
 
-.letter {
+svg.letter, .letter svg{
     height: $letterSize;
 }
 
