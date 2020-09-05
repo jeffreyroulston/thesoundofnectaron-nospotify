@@ -1,0 +1,39 @@
+
+@import "shared";
+
+#frame-letters {
+    // display: none;
+    li {
+        position: absolute;
+        height: $frameLetterSize;
+        width: $frameLetterSize;
+
+        &.left {
+            left: $framePadding;
+        }
+
+        &.right {
+            right: $framePadding
+        }
+
+        &.top {
+            top: $framePadding;
+        }
+        
+        &.bottom {
+            bottom: $framePadding;
+        }
+
+        &.center {
+            @include horizontalAlign(absolute);
+        }
+
+        &.middle {
+            @include verticalAlign(absolute);
+        }
+    }
+
+    @include maxW($tabletPortraitWidth) {
+        display: none;
+    }
+}

@@ -1,133 +1,188 @@
-
+ 
 @import "shared";
 
-#questions #mc-q {
-    .question-wrapper {
-        width: 100%;
-        max-width: unset;
-        text-align: center;
-
-        h1 {
-            text-align: center;
-            height: auto;
-            margin-bottom: 100px;
-            max-width: 600px;
-            display: inline-block;
-        }
+#mc-q {
+    .wrapper {
+        height: 100vh
     }
 
     .col-wrapper {
-        margin-top: $marginTop2;
-        text-align: center;
-        // &.text-column {
-        //     margin-top: $marginTop;
-        // }
+        &.text-column {
+            margin-top: $marginTop_30;
+        }
 
-        &.full-width {
-            width: 100%;
+        h1 {
+            height: auto;
         }
     }
 
-
-    // #mc-dino {
-    //     background-image: url("./assets/dino.png");
-    // }
-
-    // #mc-dragon {
-    //     background-image: url("./assets/dragon.png");
-    // }
-
-    // #mc-snake{
-    //     background-image: url("./assets/snake.png");
-    // }
-
-    // #mc-person {
-    //     background-image: url("./assets/person.png");
-    // }
-
-    // #mc-unicorn {
-    //     background-image: url("./assets/unicorn.png");
-    // }
-
-    .mc-options {
-        // border: 1px solid black;
+    .scene-wrapper {
+        height: calc(100vh - 200px);
+        border: 1px solid black;
         position: relative;
-        display: inline-block;
-        // width: 100%;
-        // height: 100vh;
+        top: 100px;
+        margin: 0 auto;
 
-        li {
-            // border: 1px solid black;
-            // position: absolute;
-            // background-size: 100% auto;
-            // background-repeat: no-repeat;
-            width: 100px;
-            height: 140px;
-            // height: 300px;
-            display: inline-block;
-            cursor: pointer;
-            background-size: 100% auto;
+        #label, label li {
             background-repeat: no-repeat;
-            margin-left: 20px;
+            background-position: center;
+            border: 1px solid red;
+        }
 
-            &:first-child {
-                margin-right: 20px;
+        #label {
+            width: 100%;
+            background-image: url("./assets/round3/2_1.png");
+            background-size: 100% auto;
+            position: relative;
+
+            li {
+                position: absolute;
+            }
+        }
+
+        #bottle-img {
+            position: absolute;
+            height: 100%;
+            top: 0;
+            left: 0;
+
+            img {
+                height: 100%;
             }
         }
     }
-}
 
-.scene-wrapper, #scene-bg {
-    width: 100%;
-    height: 100vh;
-    position: absolute;
-    top:0;
-    left: 0;
-}
+    .mc-options {
+        position: relative;
+        display: inline-block;
+        margin-top: 50px;
 
-.scene-wrapper {
-    li {
-        // border: 1px solid black;
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-        position: absolute;
+        //< 768px;
+        @include maxW($tabletPortraitWidth) {
+            text-align: center;
+        }
 
-        &.pairing {
-            width: 100px;
+        li {
+            width: 50px;
             height: 100px;
+            display: inline-block;
             background-size: 100% auto;
             background-repeat: no-repeat;
-            bottom: -200px;
+            margin-left: 20px;
+            cursor: pointer;
+
+            // < 1024px
+            @include maxW($tabletLandscapeWidth) {
+                margin-left: 10px;
+            }
+
+            //< 768px;
+            @include maxW($tabletPortraitWidth) {
+                margin-left: 10px;
+            }
+
+            // < 640px
+            @include maxW($mobileLargeWidth) {
+            }
+
+            // < 480px;
+            @include maxW($mobileWidth) {
+                margin-left: 5px;
+                width: 30px;
+            }
+
+            &:first-child {
+                margin-right: 20px;
+
+                // < 1024px
+                @include maxW($tabletLandscapeWidth) {
+                    margin-right: 10px;
+                }
+
+                // < 768px;
+                @include maxW($tabletPortraitWidth) {
+                    margin-right: 10px;
+                }
+
+                // < 640px
+                @include maxW($mobileLargeWidth) {
+                }
+
+                // < 480px;
+                @include maxW($mobileWidth) {
+                    margin-right: 5px;
+                }
+            }
+
         }
     }
-
-    .body-container {
-        width: 200px;
-        height: 500px;
-        background-image: url("./assets/round3/body.png");
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-        
-        @include horizontalAlign();
-        position: absolute;
-        bottom: 0px;
-        display: none;
-    }
-
-    .body {
-        position: relative;
-    }
-
-    .head, .vessel, .food {
-        width: 200px;
-        height: 200px;
-        position: absolute;
-    }
-
-    .head {
-        width: 100px;
-        height: 100px;
-        top: -100px;
-        left: 50px;
-    }
 }
+
+// .scene-wrapper, #scene-bg {
+//     width: 100%;
+//     height: 100vh;
+//     position: absolute;
+//     top:0;
+//     left: 0;
+// }
+
+// .scene-wrapper {
+//     li {
+//         // border: 1px solid black;
+//         background-size: 100% auto;
+//         background-repeat: no-repeat;
+//         position: absolute;
+
+//         &.pairing {
+//             width: 100px;
+//             height: 100px;
+//             background-size: 100% auto;
+//             background-repeat: no-repeat;
+//             bottom: -200px;
+//         }
+//     }
+
+//     .body-container {
+//         width: 200px;
+//         height: 500px;
+//         background-image: url("./assets/round3/body.png");
+//         background-size: 100% auto;
+//         background-repeat: no-repeat;
+        
+//         @include horizontalAlign(absolute);
+//         bottom: 0px;
+//         display: none;
+//     }
+
+//     .body {
+//         position: relative;
+//     }
+
+//     .head, .vessel{
+//         width: 200px;
+//         height: 200px;
+//     }
+
+//     .food {
+//         width: 400px;
+//         height: 400px;
+//     }
+
+//     #food1 {
+//         left: 100px;
+//         bottom: 0px;
+//         display: none;
+//     }
+
+//     // #food2 {
+//     //     right: 100px;
+//     //     bottom: 0px;
+//     // }
+
+//     .head {
+//         width: 100px;
+//         height: 100px;
+//         top: -100px;
+//         left: 50px;
+//     }
+// }

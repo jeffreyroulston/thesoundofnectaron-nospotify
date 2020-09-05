@@ -7,15 +7,14 @@
 
     .col-wrapper {
         &.text-column {
-            margin-top: $marginTop;
+            margin-top: $marginTop_30;
         }
 
         &.full-width {
             width: 100%;
             float: none;
             margin:0;
-            @include verticalAlign();
-            position: absolute;
+            @include verticalAlign(absolute);
 
             h1 {
                 text-align: center;
@@ -34,8 +33,7 @@
         .sun-rays{
             height: 150vh;
             top: -25vh;
-            @include horizontalAlign();
-            position: absolute;
+            @include horizontalAlign(absolute);
             z-index: -1;
             opacity: 0.5;
             overflow: visible;
@@ -70,10 +68,9 @@
             text-align: center;
             position: relative;
             img {
-                @include horizontalAlign();
-                position: absolute;
+                @include horizontalAlign(absolute);
                 display: inline-block;
-                width: 200px;
+                width: 300px;
             }
 
             &:first-child {
@@ -151,7 +148,7 @@
     // }
 
     .slider-q5 {
-        margin-top: $marginTop;
+        margin-top: $marginTop_20;
         position: relative;
 
         li {
@@ -241,6 +238,31 @@
     .slider-thumb, .slider-input {
         top: 17px;
         cursor: pointer;
+    }
+
+    @include maxW($tabletPortraitWidth) {
+        .slider-q2 {
+            li {
+                img {
+                    width: 50%;
+                }
+            }
+        }
+    
+        .slider-q5 {
+            margin:0;
+            width: 120%;
+            left:-35%;
+        }
+    }
+
+    // height < 600px
+    @include maxPxH(600) {
+        .question-wrapper {
+            .slide-container {
+                bottom: 50px;
+            }
+        }
     }
 }
 

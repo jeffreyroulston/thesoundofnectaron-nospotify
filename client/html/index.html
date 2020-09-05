@@ -11,80 +11,116 @@
     <!-- <div id="canvas-container"></div> -->
     <div id="color-wipe"></div>
     <div id="icon-bg"></div>
-    <div class="scene-wrapper">
-      <ul class="scene">
-        <li id="scene-bg"></li>
-        <li>
-          <ul id="pairings"></ul>
+
+    <!-- LOADER -->
+    <!-- <div id="loader-2" class="full-page"></div> -->
+    <div id="loader-container">
+      <div id="loader">
+        <li class="letter" id="loader-bar">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.18 43.37">
+            <linearGradient id="loader-fill">
+              <stop class="loader-fill-a" offset="1" />
+              <stop class="loader-fill-b" offset="1" />
+            </linearGradient>
+            <polygon fill="url(#loader-fill)" points="41.7 30.13 14.2 0 0 0 0 0.54 38.95 43.37 41.7 43.37 41.7 30.13"/>
+          </svg>
         </li>
-        <li id="drinker1" class="body-container">
-          <ul class="body">
-            <li id="head1" class="head"></li>
-            <li id="vessel1" class="vessel"></li>
-            <li id="food1" class="food"></li>
-          </ul>
+        <!-- <li class="hop-top"></li> -->
+        <li class="hop-bottom"></li>
+        <li class="fruit-top"></li>
+        <li class="letter top">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.18 43.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="logo-letter-fill" points="31.46 0 31.46 0.54 40.29 11.99 49.18 0.54 49.18 0 31.46 0"/></g></g></svg>
         </li>
-        <li id="drinker2" class="body-container">
-          <ul class="body">
-            <li id="head2" class="head"></li>
-            <li id="vessel2" class="vessel"></li>
-            <li id="food2" class="food"></li>
-          </ul>
+        <li class="letter bottom">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.18 43.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="logo-letter-fill" points="17.72 40.24 17.72 40.24 7.26 26.67 7.26 34.98 1.58 42.3 1.58 42.83 19.3 42.83 19.3 42.3 17.72 40.24"/></g></g></svg>
         </li>
-      </ul>
+      </div>
     </div>
-    <!-- SHARED ELEMENTS -->
-    <div id="shared" class="full-page">
-      <!-- <ul class="logo-letters loader letters"> -->
-      <ul class="logo-letters border letters">
-        <li class="letter letter-N1">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.18 43.37"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="purple" points="17.72 40.24 17.72 40.24 7.26 26.67 7.26 34.98 1.58 42.3 1.58 42.83 19.3 42.83 19.3 42.3 17.72 40.24"/><polygon class="purple" points="41.7 30.13 14.2 0 0 0 0 0.54 38.95 43.37 41.7 43.37 41.7 30.13"/><polygon class="purple" points="31.46 0 31.46 0.54 40.29 11.99 49.18 0.54 49.18 0 31.46 0"/></g></g></svg>
-        </li>
-        <li class="letter letter-E">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38.82 42.83"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="purple" points="0 0 0 0.54 7.76 11.24 7.76 31.59 0 42.3 0 42.83 18.47 42.83 18.47 0 0 0"/><polygon class="purple" points="29.55 12.58 21.36 21.42 29.55 30.09 29.98 30.09 29.98 12.58 29.55 12.58"/><polygon class="purple" points="23.08 0 37 14.51 37.48 14.51 37.48 0 23.08 0"/><polygon class="purple" points="38.82 42.83 38.82 27.14 38.28 27.14 23.88 42.83 38.82 42.83"/></g></g></svg>
-        </li>
-        <li class="letter letter-C">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34.21 44.76"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><path class="purple" d="M7.79,3.67A21.72,21.72,0,0,0,3.45,8.86,23.43,23.43,0,0,0,.86,15.18,29,29,0,0,0,0,22.27a29.6,29.6,0,0,0,.86,7.15,24,24,0,0,0,2.57,6.4,20.73,20.73,0,0,0,10.44,8.94V0A20.9,20.9,0,0,0,7.79,3.67Z"/><polygon class="purple" points="34.21 16.6 34.21 0.91 19.27 0.91 33.68 16.6 34.21 16.6"/><polygon class="purple" points="34.21 43.74 34.21 28.05 33.68 28.05 19.27 43.74 34.21 43.74"/></g></g></svg>
-        </li>
-        <li class="letter letter-T">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37.59 42.83"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><rect class="purple" width="37.59" height="9.53"/><polygon class="purple" points="5.67 42.3 5.67 42.83 31.91 42.83 31.91 42.3 24.15 31.59 24.15 17.13 13.44 17.13 13.44 31.59 5.67 42.3"/></g></g></svg>
-        </li>
-        <li class="letter letter-A"> 
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.53 44.17"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="purple" points="17.72 44.17 17.72 43.64 8.89 32.18 0 43.64 0 44.17 17.72 44.17"/><polygon class="purple" points="18.9 11.67 29.02 32.93 21.58 43.64 21.58 44.17 49.52 44.17 49.52 43.64 40.91 32.93 25.32 0 18.9 11.67"/></g></g></svg>
-        </li>
-        <li class="letter letter-R">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46.53 43.37"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="purple" points="0 0.54 0 1.07 7.76 11.78 7.76 32.12 0 42.83 0 43.37 18.47 43.37 18.47 0.54 0 0.54"/><path class="purple" d="M38.25,18.1a10.42,10.42,0,0,0,2.15-3.35,10.26,10.26,0,0,0,0-7.55,10.62,10.62,0,0,0-2.17-3.37,12,12,0,0,0-3.59-2.55,15.15,15.15,0,0,0-5-1.28V21.9a15.21,15.21,0,0,0,5.06-1.29A11.52,11.52,0,0,0,38.25,18.1Z"/><polygon class="purple" points="46.53 43.37 46.53 42.83 30.2 25.7 29.66 25.7 29.66 43.37 46.53 43.37"/></g></g></svg>
-        </li>
-        <li class="letter letter-O">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42.51 44.76"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><path class="purple" d="M3.45,8.86A23.43,23.43,0,0,0,.86,15.18,29,29,0,0,0,0,22.27a29.6,29.6,0,0,0,.86,7.15,24,24,0,0,0,2.57,6.4,20.73,20.73,0,0,0,10.44,8.94V0A20.9,20.9,0,0,0,7.79,3.67,21.72,21.72,0,0,0,3.45,8.86Z"/><path class="purple" d="M34.72,41.07a22,22,0,0,0,4.34-5.25,23.68,23.68,0,0,0,2.59-6.4,29.11,29.11,0,0,0,.86-7.15,28.51,28.51,0,0,0-.86-7.09,23.43,23.43,0,0,0-2.59-6.32,21.72,21.72,0,0,0-4.34-5.19A20.9,20.9,0,0,0,28.64,0V44.76A20.73,20.73,0,0,0,34.72,41.07Z"/></g></g></svg>
-        </li>
-        <li class="letter letter-N2">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.18 43.37"><defs><style>.purple{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="purple" points="17.72 40.24 17.72 40.24 7.26 26.67 7.26 34.98 1.58 42.3 1.58 42.83 19.3 42.83 19.3 42.3 17.72 40.24"/><polygon class="purple" points="41.7 30.13 14.2 0 0 0 0 0.54 38.95 43.37 41.7 43.37 41.7 30.13"/><polygon class="purple" points="31.46 0 31.46 0.54 40.29 11.99 49.18 0.54 49.18 0 31.46 0"/></g></g></svg>
-        </li>
-      </ul>
-    </div>
+<!-- 
+    <svg width="0" height="0">
+      <clipPath id="cloud02" >
+        <polygon points="41.7 30.13 14.2 0 0 0 0 0.54 38.95 43.37 41.7 43.37 41.7 30.13"/>
+      </clipPath>
+    </svg> -->
+
+    <!-- LOGO LETTERS FOR LOADER AND FRAME -->
+    <ul id="frame-letters">
+      <li class="top left">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.18 43.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="logo-letter-fill" points="17.72 40.24 17.72 40.24 7.26 26.67 7.26 34.98 1.58 42.3 1.58 42.83 19.3 42.83 19.3 42.3 17.72 40.24"/><polygon class="logo-letter-fill" points="41.7 30.13 14.2 0 0 0 0 0.54 38.95 43.37 41.7 43.37 41.7 30.13"/><polygon class="logo-letter-fill" points="31.46 0 31.46 0.54 40.29 11.99 49.18 0.54 49.18 0 31.46 0"/></g></g></svg>
+      </li>
+      <li class="top center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -0.7 49.18 44.3"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="logo-letter-fill" points="0 0 0 0.54 7.76 11.24 7.76 31.59 0 42.3 0 42.83 18.47 42.83 18.47 0 0 0"/><polygon class="logo-letter-fill" points="29.55 12.58 21.36 21.42 29.55 30.09 29.98 30.09 29.98 12.58 29.55 12.58"/><polygon class="logo-letter-fill" points="23.08 0 37 14.51 37.48 14.51 37.48 0 23.08 0"/><polygon class="logo-letter-fill" points="38.82 42.83 38.82 27.14 38.28 27.14 23.88 42.83 38.82 42.83"/></g></g></svg>
+      </li>
+      <li class="top right">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-5.5 0.5 48.18 44.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><path class="logo-letter-fill" d="M7.79,3.67A21.72,21.72,0,0,0,3.45,8.86,23.43,23.43,0,0,0,.86,15.18,29,29,0,0,0,0,22.27a29.6,29.6,0,0,0,.86,7.15,24,24,0,0,0,2.57,6.4,20.73,20.73,0,0,0,10.44,8.94V0A20.9,20.9,0,0,0,7.79,3.67Z"/><polygon class="logo-letter-fill" points="34.21 16.6 34.21 0.91 19.27 0.91 33.68 16.6 34.21 16.6"/><polygon class="logo-letter-fill" points="34.21 43.74 34.21 28.05 33.68 28.05 19.27 43.74 34.21 43.74"/></g></g></svg>
+      </li>
+      <li class="middle left">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -1.5 50.18 45.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><rect class="logo-letter-fill" width="37.59" height="9.53"/><polygon class="logo-letter-fill" points="5.67 42.3 5.67 42.83 31.91 42.83 31.91 42.3 24.15 31.59 24.15 17.13 13.44 17.13 13.44 31.59 5.67 42.3"/></g></g></svg>
+      </li>
+      <li class="middle right"> 
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 0 51.18 44.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="logo-letter-fill" points="17.72 44.17 17.72 43.64 8.89 32.18 0 43.64 0 44.17 17.72 44.17"/><polygon class="logo-letter-fill" points="18.9 11.67 29.02 32.93 21.58 43.64 21.58 44.17 49.52 44.17 49.52 43.64 40.91 32.93 25.32 0 18.9 11.67"/></g></g></svg>
+      </li>
+      <li class="bottom left">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 0.5 50.18 42.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="logo-letter-fill" points="0 0.54 0 1.07 7.76 11.78 7.76 32.12 0 42.83 0 43.37 18.47 43.37 18.47 0.54 0 0.54"/><path class="logo-letter-fill" d="M38.25,18.1a10.42,10.42,0,0,0,2.15-3.35,10.26,10.26,0,0,0,0-7.55,10.62,10.62,0,0,0-2.17-3.37,12,12,0,0,0-3.59-2.55,15.15,15.15,0,0,0-5-1.28V21.9a15.21,15.21,0,0,0,5.06-1.29A11.52,11.52,0,0,0,38.25,18.1Z"/><polygon class="logo-letter-fill" points="46.53 43.37 46.53 42.83 30.2 25.7 29.66 25.7 29.66 43.37 46.53 43.37"/></g></g></svg>
+      </li>
+      <li class="bottom center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-4.5 0.5 51.18 43.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><path class="logo-letter-fill" d="M3.45,8.86A23.43,23.43,0,0,0,.86,15.18,29,29,0,0,0,0,22.27a29.6,29.6,0,0,0,.86,7.15,24,24,0,0,0,2.57,6.4,20.73,20.73,0,0,0,10.44,8.94V0A20.9,20.9,0,0,0,7.79,3.67,21.72,21.72,0,0,0,3.45,8.86Z"/><path class="logo-letter-fill" d="M34.72,41.07a22,22,0,0,0,4.34-5.25,23.68,23.68,0,0,0,2.59-6.4,29.11,29.11,0,0,0,.86-7.15,28.51,28.51,0,0,0-.86-7.09,23.43,23.43,0,0,0-2.59-6.32,21.72,21.72,0,0,0-4.34-5.19A20.9,20.9,0,0,0,28.64,0V44.76A20.73,20.73,0,0,0,34.72,41.07Z"/></g></g></svg>
+      </li>
+      <li class="bottom right">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.18 43.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="logo-letter-fill" points="17.72 40.24 17.72 40.24 7.26 26.67 7.26 34.98 1.58 42.3 1.58 42.83 19.3 42.83 19.3 42.3 17.72 40.24"/><polygon class="logo-letter-fill" points="41.7 30.13 14.2 0 0 0 0 0.54 38.95 43.37 41.7 43.37 41.7 30.13"/><polygon class="logo-letter-fill" points="31.46 0 31.46 0.54 40.29 11.99 49.18 0.54 49.18 0 31.46 0"/></g></g></svg>
+      </li>
+    </ul>
 
     <!-- LOGIN/LANDING PAGE -->
     <div id="landing" class="full-page section">
       <div class="center-wrapper">
-        <!-- <div class="fruits">
+        <div class="fruits">
           <img src="./assets/fruitBottom.png" class="fruit fruit-bottom" />
           <img src="./assets/fruitTop.png" class="fruit fruit-top" />
           <img src="./assets/fruitBottom.png" class="fruit fruit-bottom-2" />
           <img src="./assets/pineappleTop.png" class="fruit pineapple-top" />
           <img src="./assets/pineappleBurner.png" class="fruit pineapple-burner" />
           <img src="./assets/fruit.png" class="fruit fruit-whole" />
-        </div> -->
+        </div>
         <!-- SVG OF LOGO -->
         <div class="text-wrapper">
+          <div class="logo-wrapper-large">
             <svg class="logo-head bleed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 804.87 64.49"><defs><style>.cls-1{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery"><path class="cls-1" d="M353.46,20.22a7.13,7.13,0,0,1-2.24,5.34,7.52,7.52,0,0,1-5.4,2.16,14.94,14.94,0,0,1-8.36-2.39l3.55-3,6.7,3.85a6.14,6.14,0,0,0,2-4.15A7.26,7.26,0,0,0,347,16.76l-5-4.18a7.29,7.29,0,0,1-2.69-5.28,7.16,7.16,0,0,1,2.09-5.54A6.79,6.79,0,0,1,346.22,0a11.58,11.58,0,0,1,6.84,2.32L349.8,5.18l-6.3-3.49a7,7,0,0,0-1,3.42q0,2.57,2.86,5,2.64,2.13,5.26,4.22A8,8,0,0,1,353.46,20.22Z"/><path class="cls-1" d="M379.38,13.74a14.78,14.78,0,0,1-3.29,9.7,9.89,9.89,0,0,1-15.9,0,14.83,14.83,0,0,1-3.28-9.7,14.82,14.82,0,0,1,3.28-9.69,9.87,9.87,0,0,1,15.9,0A14.77,14.77,0,0,1,379.38,13.74Zm-4,1.76A14.19,14.19,0,0,0,373,7q-2.79-3.78-8.17-3.78a14.54,14.54,0,0,0-2.32.2A21.37,21.37,0,0,0,360.79,12a14.17,14.17,0,0,0,2.39,8.53q2.79,3.79,8.17,3.79a15.81,15.81,0,0,0,2.32-.2A21.42,21.42,0,0,0,375.4,15.5Z"/><path class="cls-1" d="M405,.46l-2.16,2.73V17.73a9.64,9.64,0,0,1-2.72,6.87,8.93,8.93,0,0,1-13.08,0,9.68,9.68,0,0,1-2.72-6.91V3.19L382.2.46h8.33l-2.15,2.73V15.63A8.67,8.67,0,0,0,391,22.17a8,8,0,0,0,5.81,2.39,8.25,8.25,0,0,0,2-.26V3.19L396.71.46Z"/><path class="cls-1" d="M429,.46l-2.16,2.73V22.44l2,1.79L425,27.52,411.71,6.9V24.3L413.9,27h-6.54l2.16-2.72V3.52l-2-3.06h4.72l12.38,19.19V3.19L422.47.46Z"/><path class="cls-1" d="M452.41,14.14A13.88,13.88,0,0,1,449.62,23a10.34,10.34,0,0,1-8.6,4h-9.33l2.16-2.72V3.19L431.69.46h9.1a10.39,10.39,0,0,1,8.66,4.29A15.14,15.14,0,0,1,452.41,14.14Zm-3.92,1.26A13,13,0,0,0,446,7.24a13,13,0,0,0-8.1-4.72V22.41l8.6,1.82Q448.5,21.08,448.49,15.4Z"/><path class="cls-1" d="M16.41,39.26,8.87,42.14,25,58.22l3.43.38-5.89,5.89-.38-3.43L6,45,3.12,52.54,0,49.42,13.29,36.13Z"/><path class="cls-1" d="M49.55,37.42l-5.89,5.9-.4-3.45L36.1,32.71l-6.76,6.76,7.16,7.16L40,47l-5.89,5.9-.4-3.45L18.73,34.54l-3.45-.4,5.89-5.89.4,3.45,6.22,6.22,6.76-6.76-6.22-6.22-3.45-.4,5.89-5.89.4,3.45L46.1,37Z"/><path class="cls-1" d="M62.2,24.77,51.45,35.52l-.4-3.45L36.12,17.15l-3.45-.4L43.42,6l3.12,3.12L38,13.3l7.37,7.37,4.77-4.77L53,18.81l-6.76,2.77,8.66,8.66,4.15-8.61Z"/><path class="cls-1" d="M782.48,38.32a14.79,14.79,0,0,1-9.18,4.53,9.87,9.87,0,0,1-11.24-11.24,14.79,14.79,0,0,1,4.53-9.18,14.85,14.85,0,0,1,9.18-4.53A9.87,9.87,0,0,1,787,29.15,14.8,14.8,0,0,1,782.48,38.32Zm-4.06-1.57A14.12,14.12,0,0,0,782.76,29q.71-4.65-3.1-8.45a14.26,14.26,0,0,0-1.78-1.5,21.23,21.23,0,0,0-7.3,4.86,14.12,14.12,0,0,0-4.34,7.72q-.71,4.65,3.09,8.45a16.39,16.39,0,0,0,1.79,1.5A21.32,21.32,0,0,0,778.42,36.75Z"/><path class="cls-1" d="M801.75,45.06l-4.18-8.59-7.37,7.37L795,48.6l-2.92,2.92-2.76-6.76-7.66,7.65-.4,3.45L775.34,50l3.45-.4,14.93-14.93.4-3.45,10.75,10.75Z"/></g></g></svg>
-            <svg class="logo bleed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 695.6 76.2"><defs><style>.orange-fill{fill:#ff1900;}</style></defs><g data-name="Layer 2"><path class="orange-fill" d="M689 7.4l-1-0.5V9.6l0.4h-1.6l0.4-0.5V6.9l-1 0.5V6.6H689Z"/><path class="orange-fill" d="M691.7 10.1l0.4-0.5V7.8l-1 1.6-1-1.6V9.6l0.4h-1.2l0.4-0.5V7.2l-0.3-0.3-0.5 1.2 1.8-1.1-0.4-0.5h1.6l-0.4V9.6l0.4h-1.6"/><path class="orange-fill" d="M689.7 14.2a5.9 5.9 0 1 1 5.9-5.9A5.9 5.9 0 0 1 689.7 14.2Zm0-11.2A5.3 5.3 0 1 0 695 8.2 5.3 5.3 0 0 0 689.7 2.9Z"/><polygon class="orange-fill" points="98.1 2.3 98.1 3.2 111.2 21.2 111.2 55.5 98.1 73.6 98.1 74.5 129.2 74.5 129.2 2.3 98.1 2.3"/><polygon class="orange-fill" points="147.9 23.5 134.1 38.4 147.9 53 148.6 53 148.6 23.5 147.9 23.5"/><polygon class="orange-fill" points="137 2.3 160.4 26.7 161.3 26.7 161.3 2.3 137 2.3"/><polygon class="orange-fill" points="163.5 74.5 163.5 48 162.6 48 138.3 74.5 163.5 74.5"/><path class="orange-fill" d="M195.6 6.9a36.2 36.2 0 0 0-7.3 8.8 39.3 39.3 0 0 0-4.4 10.6 49 49 0 0 0-1.4 12 50 50 0 0 0 1.4 12.1 41 41 0 0 0 4.3 10.8 35.2 35.2 0 0 0 17.6 15.1V0.7A35.4 35.4 0 0 0 195.6 6.9Z"/><polygon class="orange-fill" points="240.2 28.7 240.2 2.3 215 2.3 239.3 28.7 240.2 28.7"/><polygon class="orange-fill" points="240.2 74.5 240.2 48 239.3 48 215 74.5 240.2 74.5"/><polygon class="orange-fill" points="358.4 74.5 358.4 73.6 343.5 54.2 328.5 73.6 328.5 74.5 358.4 74.5"/><polygon class="orange-fill" points="360.4 19.7 377.4 55.5 364.9 73.6 364.9 74.5 412 74.5 412 73.6 397.4 55.5 371.2 0 360.4 19.7"/><polygon class="orange-fill" points="424.9 2.3 424.9 3.2 438 21.2 438 55.5 424.9 73.6 424.9 74.5 456.1 74.5 456.1 2.3 424.9 2.3"/><path class="orange-fill" d="M489.4 31.9a17.3 17.3 0 0 0 0-24 19.9 19.9 0 0 0-6-4.3 25.2 25.2 0 0 0-8.5-2.2V38.3a25.5 25.5 0 0 0 8.5-2.2A19.9 19.9 0 0 0 489.4 31.9Z"/><polygon class="orange-fill" points="503.4 74.5 503.4 73.6 475.8 44.7 474.9 44.7 474.9 74.5 503.4 74.5"/><path class="orange-fill" d="M518.1 15.7a39.3 39.3 0 0 0-4.4 10.6 49 49 0 0 0-1.4 12 50 50 0 0 0 1.4 12.1 41 41 0 0 0 4.3 10.8 35.2 35.2 0 0 0 17.6 15.1V0.7A35.5 35.5 0 0 0 525.4 6.9 36.2 36.2 0 0 0 518.1 15.7Z"/><path class="orange-fill" d="M570.8 69.9a36.6 36.6 0 0 0 7.3-8.8 40.4 40.4 0 0 0 4.4-10.8 50 50 0 0 0 1.4-12 49 49 0 0 0-1.4-12 39.9 39.9 0 0 0-4.4-10.6A36.4 36.4 0 0 0 570.8 6.9 35.5 35.5 0 0 0 560.6V76.2A34.6 34.6 0 0 0 570.8 69.9Z"/><polygon class="orange-fill" points="29.9 70.1 29.9 70.1 12.2 47.2 12.2 61.2 2.7 73.6 2.7 74.5 32.5 74.5 32.5 73.6 29.9 70.1"/><polygon class="orange-fill" points="70.3 53 23.9 2.3 0 2.3 0 3.2 65.7 75.4 70.3 75.4 70.3 53"/><polygon class="orange-fill" points="53 2.3 53 3.2 67.9 22.5 82.9 3.2 82.9 2.3 53 2.3"/><polygon class="orange-fill" points="660 75.4 664.6 75.4 664.6 53 618.2 2.3 594.3 2.3 594.3 3.2 660 75.4"/><polygon class="orange-fill" points="663.1 22.5 678.1 3.2 678.1 2.3 648.2 2.3 648.2 3.2 663.1 22.5"/><rect class="orange-fill" x="260.9" y="2.1" width="63.4" height="16.1"/><polygon class="orange-fill" points="270.5 73.4 270.5 74.3 314.7 74.3 314.7 73.4 301.6 55.4 301.6 31 283.6 31 283.6 55.4 270.5 73.4"/><polygon class="orange-fill" points="607.4 47.2 607.4 61.2 597.9 73.6 597.9 74.5 627.7 74.5 627.7 73.6 625 70.1 607.4 47.2"/></g></svg>
-            <svg class="logo-mobile mobile bleed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490.35 1027.03"><defs><style>.orange-fill{fill:#ff1900;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="orange-fill" d="M338.24,179.6H260.79v-2.24l32.55-44.9V47.14L260.79,2.24V0h77.45Zm48.27-53.43h-1.79L350.37,89.8l34.35-37h1.79Zm31.43-65.33h-2L357.55,0h60.39Zm5.62,118.76H360.92l60.39-65.78h2.25Z"/><path class="orange-fill" d="M87,468.56a87.51,87.51,0,0,1-43.78-37.49,101.81,101.81,0,0,1-10.78-26.83,124.21,124.21,0,0,1-3.59-30,121.57,121.57,0,0,1,3.59-29.75A98.71,98.71,0,0,1,43.28,318a90.53,90.53,0,0,1,18.19-21.77A87.67,87.67,0,0,1,87,280.88Zm85.31-118.09H170l-60.39-65.78h62.64Zm0,113.83H109.62L170,398.52h2.25Z"/><path class="orange-fill" d="M74.31,740.73H0v-2.24l37.27-48,37,48Zm133.36,0H90.48v-2.24l31.2-44.9L79.25,604.46l26.94-48.94,65.33,138.07,36.15,44.9Z"/><path class="orange-fill" d="M322.08,740.73H244.63v-2.24l32.55-44.9V608.27l-32.55-44.9v-2.24h77.45Zm95-135.83a43.41,43.41,0,0,1-12,29.87A49.26,49.26,0,0,1,390,645.32a63.35,63.35,0,0,1-21.21,5.38V558.88a62.5,62.5,0,0,1,21.1,5.39,50.11,50.11,0,0,1,15,10.66,43.73,43.73,0,0,1,9.1,14.15A43.08,43.08,0,0,1,417.05,604.9Zm22.67,135.83H369V666.64h2.25l68.47,71.85Z"/><path class="orange-fill" d="M72.85,1027a87.51,87.51,0,0,1-43.78-37.49A101.59,101.59,0,0,1,18.3,962.71a123.84,123.84,0,0,1-3.6-30A121.09,121.09,0,0,1,18.3,903,98.06,98.06,0,0,1,29.19,876.5a90.3,90.3,0,0,1,18.18-21.78,87.89,87.89,0,0,1,25.48-15.38ZM193,932.74a124.33,124.33,0,0,1-3.59,30,99.85,99.85,0,0,1-10.89,26.83,91.63,91.63,0,0,1-18.19,22A86.65,86.65,0,0,1,134.81,1027V839.34a87.89,87.89,0,0,1,25.48,15.38,90.57,90.57,0,0,1,18.19,21.78A98.71,98.71,0,0,1,189.37,903,121.57,121.57,0,0,1,193,932.74Z"/><path class="orange-fill" d="M421,324.32H263.37v-40H421ZM397.18,464h-110v-2.24l32.55-44.91V356.2h44.91v60.61l32.55,44.91Z"/><path class="orange-fill" d="M472.75,856.73l-2.63-1.41v7.06l1,1.26h-4.22l1-1.26v-7.06l-2.63,1.42v-2.22h7.55Z"/><path class="orange-fill" d="M480,863.64l1-1.26v-4.82l-2.62,4.17-2.69-4.22v4.87l1,1.26h-3.05l1-1.26V856l-.72-.72L476,854l3.06,4.85,1.91-3-1-1.25h4.22l-1,1.27v6.59l1,1.26H480"/><path class="orange-fill" d="M474.7,874.45a15.65,15.65,0,1,1,15.65-15.65A15.66,15.66,0,0,1,474.7,874.45Zm0-29.64a14,14,0,1,0,14,14A14,14,0,0,0,474.7,844.81Z"/><polygon class="orange-fill" points="75.17 168.74 75.17 168.74 31.31 111.82 31.31 146.66 7.5 177.36 7.5 179.6 81.81 179.6 81.81 177.36 75.17 168.74"/><polygon class="orange-fill" points="175.71 126.32 60.4 0 0.86 0 0.86 2.24 164.2 181.85 175.71 181.84 175.71 126.32"/><polygon class="orange-fill" points="132.77 0 132.77 2.24 169.81 50.29 207.08 2.24 207.08 0 132.77 0"/><polygon class="orange-fill" points="314.48 1011.9 314.48 1011.9 270.62 954.98 270.62 989.82 246.81 1020.52 246.81 1022.76 321.12 1022.76 321.12 1020.52 314.48 1011.9"/><polygon class="orange-fill" points="415.02 969.48 299.71 843.16 240.17 843.16 240.17 845.4 403.51 1025.01 415.02 1025 415.02 969.48"/><polygon class="orange-fill" points="372.08 843.16 372.08 845.4 409.12 893.45 446.39 845.4 446.39 843.16 372.08 843.16"/></g></g></svg>
-            
+            <svg class="logo letter bleed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 695.6 76.2"><defs><style>.orange-fill{fill:#ff1900;}</style></defs><g data-name="Layer 2"><path class="orange-fill" d="M689 7.4l-1-0.5V9.6l0.4h-1.6l0.4-0.5V6.9l-1 0.5V6.6H689Z"/><path class="orange-fill" d="M691.7 10.1l0.4-0.5V7.8l-1 1.6-1-1.6V9.6l0.4h-1.2l0.4-0.5V7.2l-0.3-0.3-0.5 1.2 1.8-1.1-0.4-0.5h1.6l-0.4V9.6l0.4h-1.6"/><path class="orange-fill" d="M689.7 14.2a5.9 5.9 0 1 1 5.9-5.9A5.9 5.9 0 0 1 689.7 14.2Zm0-11.2A5.3 5.3 0 1 0 695 8.2 5.3 5.3 0 0 0 689.7 2.9Z"/><polygon class="orange-fill" points="98.1 2.3 98.1 3.2 111.2 21.2 111.2 55.5 98.1 73.6 98.1 74.5 129.2 74.5 129.2 2.3 98.1 2.3"/><polygon class="orange-fill" points="147.9 23.5 134.1 38.4 147.9 53 148.6 53 148.6 23.5 147.9 23.5"/><polygon class="orange-fill" points="137 2.3 160.4 26.7 161.3 26.7 161.3 2.3 137 2.3"/><polygon class="orange-fill" points="163.5 74.5 163.5 48 162.6 48 138.3 74.5 163.5 74.5"/><path class="orange-fill" d="M195.6 6.9a36.2 36.2 0 0 0-7.3 8.8 39.3 39.3 0 0 0-4.4 10.6 49 49 0 0 0-1.4 12 50 50 0 0 0 1.4 12.1 41 41 0 0 0 4.3 10.8 35.2 35.2 0 0 0 17.6 15.1V0.7A35.4 35.4 0 0 0 195.6 6.9Z"/><polygon class="orange-fill" points="240.2 28.7 240.2 2.3 215 2.3 239.3 28.7 240.2 28.7"/><polygon class="orange-fill" points="240.2 74.5 240.2 48 239.3 48 215 74.5 240.2 74.5"/><polygon class="orange-fill" points="358.4 74.5 358.4 73.6 343.5 54.2 328.5 73.6 328.5 74.5 358.4 74.5"/><polygon class="orange-fill" points="360.4 19.7 377.4 55.5 364.9 73.6 364.9 74.5 412 74.5 412 73.6 397.4 55.5 371.2 0 360.4 19.7"/><polygon class="orange-fill" points="424.9 2.3 424.9 3.2 438 21.2 438 55.5 424.9 73.6 424.9 74.5 456.1 74.5 456.1 2.3 424.9 2.3"/><path class="orange-fill" d="M489.4 31.9a17.3 17.3 0 0 0 0-24 19.9 19.9 0 0 0-6-4.3 25.2 25.2 0 0 0-8.5-2.2V38.3a25.5 25.5 0 0 0 8.5-2.2A19.9 19.9 0 0 0 489.4 31.9Z"/><polygon class="orange-fill" points="503.4 74.5 503.4 73.6 475.8 44.7 474.9 44.7 474.9 74.5 503.4 74.5"/><path class="orange-fill" d="M518.1 15.7a39.3 39.3 0 0 0-4.4 10.6 49 49 0 0 0-1.4 12 50 50 0 0 0 1.4 12.1 41 41 0 0 0 4.3 10.8 35.2 35.2 0 0 0 17.6 15.1V0.7A35.5 35.5 0 0 0 525.4 6.9 36.2 36.2 0 0 0 518.1 15.7Z"/><path class="orange-fill" d="M570.8 69.9a36.6 36.6 0 0 0 7.3-8.8 40.4 40.4 0 0 0 4.4-10.8 50 50 0 0 0 1.4-12 49 49 0 0 0-1.4-12 39.9 39.9 0 0 0-4.4-10.6A36.4 36.4 0 0 0 570.8 6.9 35.5 35.5 0 0 0 560.6V76.2A34.6 34.6 0 0 0 570.8 69.9Z"/><polygon class="orange-fill" points="29.9 70.1 29.9 70.1 12.2 47.2 12.2 61.2 2.7 73.6 2.7 74.5 32.5 74.5 32.5 73.6 29.9 70.1"/><polygon class="orange-fill" points="70.3 53 23.9 2.3 0 2.3 0 3.2 65.7 75.4 70.3 75.4 70.3 53"/><polygon class="orange-fill" points="53 2.3 53 3.2 67.9 22.5 82.9 3.2 82.9 2.3 53 2.3"/><polygon class="orange-fill" points="660 75.4 664.6 75.4 664.6 53 618.2 2.3 594.3 2.3 594.3 3.2 660 75.4"/><polygon class="orange-fill" points="663.1 22.5 678.1 3.2 678.1 2.3 648.2 2.3 648.2 3.2 663.1 22.5"/><rect class="orange-fill" x="260.9" y="2.1" width="63.4" height="16.1"/><polygon class="orange-fill" points="270.5 73.4 270.5 74.3 314.7 74.3 314.7 73.4 301.6 55.4 301.6 31 283.6 31 283.6 55.4 270.5 73.4"/><polygon class="orange-fill" points="607.4 47.2 607.4 61.2 597.9 73.6 597.9 74.5 627.7 74.5 627.7 73.6 625 70.1 607.4 47.2"/></g></svg>
+          </div>
+          <div class="logo-wrapper-mobile">
+              <svg class="logo-mobile mobile bleed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490.35 1027.03"><defs><style>.orange-fill{fill:#ff1900;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="orange-fill" d="M338.24,179.6H260.79v-2.24l32.55-44.9V47.14L260.79,2.24V0h77.45Zm48.27-53.43h-1.79L350.37,89.8l34.35-37h1.79Zm31.43-65.33h-2L357.55,0h60.39Zm5.62,118.76H360.92l60.39-65.78h2.25Z"/><path class="orange-fill" d="M87,468.56a87.51,87.51,0,0,1-43.78-37.49,101.81,101.81,0,0,1-10.78-26.83,124.21,124.21,0,0,1-3.59-30,121.57,121.57,0,0,1,3.59-29.75A98.71,98.71,0,0,1,43.28,318a90.53,90.53,0,0,1,18.19-21.77A87.67,87.67,0,0,1,87,280.88Zm85.31-118.09H170l-60.39-65.78h62.64Zm0,113.83H109.62L170,398.52h2.25Z"/><path class="orange-fill" d="M74.31,740.73H0v-2.24l37.27-48,37,48Zm133.36,0H90.48v-2.24l31.2-44.9L79.25,604.46l26.94-48.94,65.33,138.07,36.15,44.9Z"/><path class="orange-fill" d="M322.08,740.73H244.63v-2.24l32.55-44.9V608.27l-32.55-44.9v-2.24h77.45Zm95-135.83a43.41,43.41,0,0,1-12,29.87A49.26,49.26,0,0,1,390,645.32a63.35,63.35,0,0,1-21.21,5.38V558.88a62.5,62.5,0,0,1,21.1,5.39,50.11,50.11,0,0,1,15,10.66,43.73,43.73,0,0,1,9.1,14.15A43.08,43.08,0,0,1,417.05,604.9Zm22.67,135.83H369V666.64h2.25l68.47,71.85Z"/><path class="orange-fill" d="M72.85,1027a87.51,87.51,0,0,1-43.78-37.49A101.59,101.59,0,0,1,18.3,962.71a123.84,123.84,0,0,1-3.6-30A121.09,121.09,0,0,1,18.3,903,98.06,98.06,0,0,1,29.19,876.5a90.3,90.3,0,0,1,18.18-21.78,87.89,87.89,0,0,1,25.48-15.38ZM193,932.74a124.33,124.33,0,0,1-3.59,30,99.85,99.85,0,0,1-10.89,26.83,91.63,91.63,0,0,1-18.19,22A86.65,86.65,0,0,1,134.81,1027V839.34a87.89,87.89,0,0,1,25.48,15.38,90.57,90.57,0,0,1,18.19,21.78A98.71,98.71,0,0,1,189.37,903,121.57,121.57,0,0,1,193,932.74Z"/><path class="orange-fill" d="M421,324.32H263.37v-40H421ZM397.18,464h-110v-2.24l32.55-44.91V356.2h44.91v60.61l32.55,44.91Z"/><path class="orange-fill" d="M472.75,856.73l-2.63-1.41v7.06l1,1.26h-4.22l1-1.26v-7.06l-2.63,1.42v-2.22h7.55Z"/><path class="orange-fill" d="M480,863.64l1-1.26v-4.82l-2.62,4.17-2.69-4.22v4.87l1,1.26h-3.05l1-1.26V856l-.72-.72L476,854l3.06,4.85,1.91-3-1-1.25h4.22l-1,1.27v6.59l1,1.26H480"/><path class="orange-fill" d="M474.7,874.45a15.65,15.65,0,1,1,15.65-15.65A15.66,15.66,0,0,1,474.7,874.45Zm0-29.64a14,14,0,1,0,14,14A14,14,0,0,0,474.7,844.81Z"/><polygon class="orange-fill" points="75.17 168.74 75.17 168.74 31.31 111.82 31.31 146.66 7.5 177.36 7.5 179.6 81.81 179.6 81.81 177.36 75.17 168.74"/><polygon class="orange-fill" points="175.71 126.32 60.4 0 0.86 0 0.86 2.24 164.2 181.85 175.71 181.84 175.71 126.32"/><polygon class="orange-fill" points="132.77 0 132.77 2.24 169.81 50.29 207.08 2.24 207.08 0 132.77 0"/><polygon class="orange-fill" points="314.48 1011.9 314.48 1011.9 270.62 954.98 270.62 989.82 246.81 1020.52 246.81 1022.76 321.12 1022.76 321.12 1020.52 314.48 1011.9"/><polygon class="orange-fill" points="415.02 969.48 299.71 843.16 240.17 843.16 240.17 845.4 403.51 1025.01 415.02 1025 415.02 969.48"/><polygon class="orange-fill" points="372.08 843.16 372.08 845.4 409.12 893.45 446.39 845.4 446.39 843.16 372.08 843.16"/></g></g></svg>
+          </div>
+            <!-- <ul id="logo-letters">
+              <li class="letter top left">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.18 43.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="logo-letter-fill" points="17.72 40.24 17.72 40.24 7.26 26.67 7.26 34.98 1.58 42.3 1.58 42.83 19.3 42.83 19.3 42.3 17.72 40.24"/><polygon class="logo-letter-fill" points="41.7 30.13 14.2 0 0 0 0 0.54 38.95 43.37 41.7 43.37 41.7 30.13"/><polygon class="logo-letter-fill" points="31.46 0 31.46 0.54 40.29 11.99 49.18 0.54 49.18 0 31.46 0"/></g></g></svg>
+              </li>
+              <li class="letter top center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -0.7 49.18 44.3"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="logo-letter-fill" points="0 0 0 0.54 7.76 11.24 7.76 31.59 0 42.3 0 42.83 18.47 42.83 18.47 0 0 0"/><polygon class="logo-letter-fill" points="29.55 12.58 21.36 21.42 29.55 30.09 29.98 30.09 29.98 12.58 29.55 12.58"/><polygon class="logo-letter-fill" points="23.08 0 37 14.51 37.48 14.51 37.48 0 23.08 0"/><polygon class="logo-letter-fill" points="38.82 42.83 38.82 27.14 38.28 27.14 23.88 42.83 38.82 42.83"/></g></g></svg>
+              </li>
+              <li class="letter top right">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="-5.5 0.5 48.18 44.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><path class="logo-letter-fill" d="M7.79,3.67A21.72,21.72,0,0,0,3.45,8.86,23.43,23.43,0,0,0,.86,15.18,29,29,0,0,0,0,22.27a29.6,29.6,0,0,0,.86,7.15,24,24,0,0,0,2.57,6.4,20.73,20.73,0,0,0,10.44,8.94V0A20.9,20.9,0,0,0,7.79,3.67Z"/><polygon class="logo-letter-fill" points="34.21 16.6 34.21 0.91 19.27 0.91 33.68 16.6 34.21 16.6"/><polygon class="logo-letter-fill" points="34.21 43.74 34.21 28.05 33.68 28.05 19.27 43.74 34.21 43.74"/></g></g></svg>
+              </li>
+              <li class="letter middle left">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -1.5 50.18 45.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><rect class="logo-letter-fill" width="37.59" height="9.53"/><polygon class="logo-letter-fill" points="5.67 42.3 5.67 42.83 31.91 42.83 31.91 42.3 24.15 31.59 24.15 17.13 13.44 17.13 13.44 31.59 5.67 42.3"/></g></g></svg>
+              </li>
+              <li class="letter middle right"> 
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 0 51.18 44.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="logo-letter-fill" points="17.72 44.17 17.72 43.64 8.89 32.18 0 43.64 0 44.17 17.72 44.17"/><polygon class="logo-letter-fill" points="18.9 11.67 29.02 32.93 21.58 43.64 21.58 44.17 49.52 44.17 49.52 43.64 40.91 32.93 25.32 0 18.9 11.67"/></g></g></svg>
+              </li>
+              <li class="letter bottom left">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 0.5 50.18 42.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="logo-letter-fill" points="0 0.54 0 1.07 7.76 11.78 7.76 32.12 0 42.83 0 43.37 18.47 43.37 18.47 0.54 0 0.54"/><path class="logo-letter-fill" d="M38.25,18.1a10.42,10.42,0,0,0,2.15-3.35,10.26,10.26,0,0,0,0-7.55,10.62,10.62,0,0,0-2.17-3.37,12,12,0,0,0-3.59-2.55,15.15,15.15,0,0,0-5-1.28V21.9a15.21,15.21,0,0,0,5.06-1.29A11.52,11.52,0,0,0,38.25,18.1Z"/><polygon class="logo-letter-fill" points="46.53 43.37 46.53 42.83 30.2 25.7 29.66 25.7 29.66 43.37 46.53 43.37"/></g></g></svg>
+              </li>
+              <li class="letter bottom center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="-4.5 0.5 51.18 43.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><path class="logo-letter-fill" d="M3.45,8.86A23.43,23.43,0,0,0,.86,15.18,29,29,0,0,0,0,22.27a29.6,29.6,0,0,0,.86,7.15,24,24,0,0,0,2.57,6.4,20.73,20.73,0,0,0,10.44,8.94V0A20.9,20.9,0,0,0,7.79,3.67,21.72,21.72,0,0,0,3.45,8.86Z"/><path class="logo-letter-fill" d="M34.72,41.07a22,22,0,0,0,4.34-5.25,23.68,23.68,0,0,0,2.59-6.4,29.11,29.11,0,0,0,.86-7.15,28.51,28.51,0,0,0-.86-7.09,23.43,23.43,0,0,0-2.59-6.32,21.72,21.72,0,0,0-4.34-5.19A20.9,20.9,0,0,0,28.64,0V44.76A20.73,20.73,0,0,0,34.72,41.07Z"/></g></g></svg>
+              </li>
+              <li class="letter bottom right">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.18 43.37"><defs><style>.logo-letter-fill{fill:#88009d;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Master_Nectaron_Nav" data-name="Master Nectaron Nav"><polygon class="logo-letter-fill" points="17.72 40.24 17.72 40.24 7.26 26.67 7.26 34.98 1.58 42.3 1.58 42.83 19.3 42.83 19.3 42.3 17.72 40.24"/><polygon class="logo-letter-fill" points="41.7 30.13 14.2 0 0 0 0 0.54 38.95 43.37 41.7 43.37 41.7 30.13"/><polygon class="logo-letter-fill" points="31.46 0 31.46 0.54 40.29 11.99 49.18 0.54 49.18 0 31.46 0"/></g></g></svg>
+              </li>
+            </ul> -->
             <!-- SUBHEADING AND BUTTON -->
-            <p class="subheading"><span>The Sound of Nectaron is an interactive experience</span><span>designed especially with brewers in mind</span></p><br />
+            <p class="subheading"><span>Brew your very own sonically delicious,</span><span>&nbsp;</span><span>Nectaron-infused playlist.</span></p><br />
             <div id="start-btn" class="next-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34.21 9.68"><defs><style>.arrow-svg{fill:none;stroke:#ff1900;stroke-miterlimit:10;stroke-width:1.18px;}.cls-2{fill:#ff1900;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery"><line class="arrow-svg" y1="4.84" x2="32.93" y2="4.84"/><polygon class="cls-2" points="29.01 9.68 28.2 8.81 32.48 4.84 28.2 0.87 29.01 0 34.21 4.84 29.01 9.68"/></g></g></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34.21 9.68"><defs><style>.arrow-line{fill:none;stroke:#ff1900;stroke-miterlimit:10;stroke-width:1.18px;}.arrow-head{fill:#ff1900;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery"><line class="arrow-line" y1="4.84" x2="32.93" y2="4.84"/><polygon class="arrow-head" points="29.01 9.68 28.2 8.81 32.48 4.84 28.2 0.87 29.01 0 34.21 4.84 29.01 9.68"/></g></g></svg>
             </div>
           </div>
         </div>
@@ -92,8 +128,9 @@
       <div id="round-name" class="full-page section">
         <div class="center-wrapper">
           <div class="text-wrapper">
-            <div class="box"><div class="round heading-size">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 428.84 88.97"><defs><style>.yellow{fill:#ffe700;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery"><path class="yellow" d="M78.27,76.58,57.51,89,30.19,47.24V74.35l9,11.76H0L8.9,74.35V13.13L0,1.38H39.61q13.88,0,23,7.94,8.58,7.52,8.58,17.79,0,14.73-17.05,21.61l12.82,19.7ZM50.52,35.48a22.32,22.32,0,0,0-6-15,23.82,23.82,0,0,0-14.35-8.2V37.71l17.68,7.2A17.76,17.76,0,0,0,50.52,35.48Z"/><path class="yellow" d="M166.6,43.64q0,18.74-11.91,31.29A38.81,38.81,0,0,1,125.4,87.48q-17.48,0-29.23-11.86Q84.1,63.54,84.09,44.91q0-18.85,12-31.88T125.4,0a39,39,0,0,1,29.29,12.44Q166.6,24.89,166.6,43.64ZM147.11,57q0-17.79-10.59-30.5Q125.2,12.82,107.08,12.71a46.6,46.6,0,0,0-3.6,18.22q0,17.79,10.48,30.61,11.45,13.77,29.55,13.87A49.2,49.2,0,0,0,147.11,57Z"/><path class="yellow" d="M258.85,1.38l-9,11.75V55.29a31,31,0,0,1-9.43,22.82,33.39,33.39,0,0,1-46.44,0,31.07,31.07,0,0,1-9.48-22.88v-42L175.6,1.38h39.19l-9,11.75V54.86a23.07,23.07,0,0,0,6,16.21,20,20,0,0,0,15.36,6.56h1.38V13.13l-8.9-11.75Z"/><path class="yellow" d="M347,1.38l-8.9,11.75V70l8.79,6.35L325.89,89,284.48,28.49V74.35l9,11.76H265.2l8.9-11.76V13.24L266.05,1.38h25.1l36.54,53.48V13.13l-9-11.75Z"/><path class="yellow" d="M428.84,45.44q0,16.62-10.59,28.06-11.76,12.61-31.78,12.61h-33l8.9-11.76V13.13l-8.9-11.75h32q19.71,0,32.1,14A43.73,43.73,0,0,1,428.84,45.44Zm-19.17,7.41A40.22,40.22,0,0,0,403,30a34.92,34.92,0,0,0-19.39-14.19V67.15L404,75.62A47.61,47.61,0,0,0,409.67,52.85Z"/></g></g></svg>
+            <div class="box">
+              <div class="round">
+                <svg class="letter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 428.84 88.97"><defs><style>.yellow{fill:#ffe700;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Imagery"><path class="yellow" d="M78.27,76.58,57.51,89,30.19,47.24V74.35l9,11.76H0L8.9,74.35V13.13L0,1.38H39.61q13.88,0,23,7.94,8.58,7.52,8.58,17.79,0,14.73-17.05,21.61l12.82,19.7ZM50.52,35.48a22.32,22.32,0,0,0-6-15,23.82,23.82,0,0,0-14.35-8.2V37.71l17.68,7.2A17.76,17.76,0,0,0,50.52,35.48Z"/><path class="yellow" d="M166.6,43.64q0,18.74-11.91,31.29A38.81,38.81,0,0,1,125.4,87.48q-17.48,0-29.23-11.86Q84.1,63.54,84.09,44.91q0-18.85,12-31.88T125.4,0a39,39,0,0,1,29.29,12.44Q166.6,24.89,166.6,43.64ZM147.11,57q0-17.79-10.59-30.5Q125.2,12.82,107.08,12.71a46.6,46.6,0,0,0-3.6,18.22q0,17.79,10.48,30.61,11.45,13.77,29.55,13.87A49.2,49.2,0,0,0,147.11,57Z"/><path class="yellow" d="M258.85,1.38l-9,11.75V55.29a31,31,0,0,1-9.43,22.82,33.39,33.39,0,0,1-46.44,0,31.07,31.07,0,0,1-9.48-22.88v-42L175.6,1.38h39.19l-9,11.75V54.86a23.07,23.07,0,0,0,6,16.21,20,20,0,0,0,15.36,6.56h1.38V13.13l-8.9-11.75Z"/><path class="yellow" d="M347,1.38l-8.9,11.75V70l8.79,6.35L325.89,89,284.48,28.49V74.35l9,11.76H265.2l8.9-11.76V13.24L266.05,1.38h25.1l36.54,53.48V13.13l-9-11.75Z"/><path class="yellow" d="M428.84,45.44q0,16.62-10.59,28.06-11.76,12.61-31.78,12.61h-33l8.9-11.76V13.13l-8.9-11.75h32q19.71,0,32.1,14A43.73,43.73,0,0,1,428.84,45.44Zm-19.17,7.41A40.22,40.22,0,0,0,403,30a34.92,34.92,0,0,0-19.39-14.19V67.15L404,75.62A47.61,47.61,0,0,0,409.67,52.85Z"/></g></g></svg>
             </div>
             <ul class="numbers">
               <li>
@@ -121,9 +158,7 @@
               </li>
             </ul>
             <div class="description">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </p>
+              <p></p>
             </div>
           
             <div class="next-btn">
@@ -566,13 +601,6 @@
               </div>
             </div>
             <div class="col-wrapper">
-              <!-- <ul class="slider-q1 slider-q"> -->
-                <!-- <li><img src="./assets/round2/q2_0.png"></li>
-                <li><img src="./assets/round2/q2_1.png"></li>
-                <li><img src="./assets/round2/q2_2.png"></li>
-                <li><img src="./assets/round2/q2_3.png"></li>
-                <li><img src="./assets/round2/q2_4.png"></li> -->
-              <!-- </ul> -->
               <ul class="slider-q2 slider-q">
                 <li><img src="./assets/pineappleTop.png"></li>
                 <li><img src="./assets/fruitBottom.png"></li>
@@ -593,24 +621,55 @@
 
         <div id="mc-q" class="full-page section">
           <div class="wrapper">
-            <div class="col-wrapper text-column full-width">
+            <div class="col-wrapper text-column">
               <div class="question-wrapper">
                 <h1 class="question"></h1>
+                <!-- <ul class="arrows">
+                  <li class="left-arrow"></li>
+                  <li class="right-arrow"></li>
+                </ul> -->
                 <ul class="mc-options"></ul>
               </div>
             </div>
-            <!-- <div class="col-wrapper">
-              <ul class="mc-options"></ul>
-            </div> -->
+            <div class="col-wrapper">
+              <div class="scene-wrapper">
+                <!-- <ul class="scene">
+                  <li id="scene-bg"></li>
+                  <li>
+                    <ul id="pairings"></ul>
+                  </li>
+                  <li id="drinker1" class="body-container">
+                    <ul class="body">
+                      <li id="head1" class="head"></li>
+                    </ul>
+                  </li>
+                  <li id="drinker2" class="body-container">
+                    <ul class="body">
+                      <li id="head2" class="head"></li>
+                    </ul>
+                  </li>
+                  <li id="food1" class="food"></li>
+                  <li id="food2" class="food"></li>
+                </ul> -->
+                <li id="label">
+                  <ul>
+                    <li id="head1"></li>
+                    <li id="head2"></li>
+                  </ul>
+                </li>
+                <img id="bottle-img" src="./assets/round3/bottle.png" />
+              </div>
+            </div>
           </div>
         </div>
 
         <div id="quickfire-q" class="full-page section">
+          <ul id="timer">
+            <li id="tensCol"></li>
+            <li id="onesCol"></li>
+          </ul>
           <div class="wrapper">
-            <ul id="timer">
-              <li id="tensCol"></li>
-              <li id="onesCol"></li>
-            </ul>
+            <!-- <div id="timer"></div> -->
             <div class="col-wrapper text-column">
               <div class="question-wrapper">
                 <h1 class="question"></h1>
@@ -636,6 +695,83 @@
       </div>
     </div>
     <div id="password-page"></div>
+
+    <div id="about" class="section full-page">
+      <div class="wrapper question">
+        <p>
+          (9.5-11.5% AA)
+          With its intense tropical and citrus characteristics, Nectaron is NZ Hops’ most playful hop. 
+
+          Breeding
+          HORT4337, aka, Nectaron was born in a collaboration with New Zealand Plant & Food Research. A triploid aroma type it is a full sister to Waimea.
+
+          Selection
+          Pineapple, passionfruit with hints of peach and grapefruit.
+
+          Brewing
+          Perfect for any modern beer style that calls for a consistent dose of high quality tropical aromas.
+          Its unique biotransformation is noticeably different between both American and English ale yeast strains.
+          Nectaron® shines when used late or when dry hopping. 
+          Not for the faint hearted.
+
+          Applications
+          Lagers, Pale Ales, IPA's, NEIPA and modern beer styles.
+        </p>
+      </div>
+    </div>
+
+    <div id="faq" class="section full-page">
+      <div class="wrapper question">
+        <p>
+          Got a question? Maybe we’ve answered it already? (FAQ PAGE)
+
+          What is the Sound of Nectaron?
+          An interactive experience where brewers can experience Nectaron with their ears as well as their taste buds. Just answer some questions and we’ll create a custom Spotify playlist by blending the music you’re into, with the flavour notes of Nectaron. Magic.
+          
+           
+          So, how does it all work?
+          You sitting down? Good. This may take a while…
+          First off, we found few clever people who know how to harness the magical powers of the Spotify API. What does API stand for? Application Programming Interface. In a nutshell it gives us all sorts of interesting information around the music brewers are listening to - like their top tracks and favourite artists. It also gives us detailed info about how each music track is categorised, based on attributes like tempo, danceability.
+          
+          Then, we created a series of questions which tweak those values based on how the brewers answer them. Think of the questions as a way to digitally brew using Nectaron. 
+          
+          If Spotify API can see my favourite songs, can it see my Internet search history?
+          Nope. 
+          
+          How can I taste Nectaron with my actual taste buds?
+          Easy. Click here. 
+          
+          Who are NZ Hops?
+          NZ Hops is a cooperative of Master Growers, whose legend and cultivars have been crafted and refined for over 150 years.          
+        </p>
+      </div>
+    </div>
+
+    <div id="contact" class="section full-page">
+      <div class="wrapper question">
+        <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/shell.js"></script>
+        <script>
+          hbspt.forms.create({
+                    portalId: "8349752",
+                    formId: "e165a7f9-f1e0-491a-9559-7d0a896b32ab"
+        });
+        </script>        
+      </div>
+    </div>
+
+
+    <div id="nav-wrapper">
+      <ul id="nav">
+        <li class="deg top">41.2706&#xb0; S</li>
+        <li data="link">Shop</li>
+        <li data="about">About</li>
+        <li data="contact">Contact</li>
+        <li data="faq">FAQ</li>
+        <li class="deg bottom">173.2840&#xb0; E</li>
+      </ul>
+    </div>
+
+    <span id="burger"></span>
     
   </div>
   <div id="canvas-container"></div>

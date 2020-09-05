@@ -3,9 +3,62 @@
 #landing {
     .text-wrapper {
         text-align: center;
+        width: 100%;
+    }
+
+    .logo-wrapper-large, .logo-wrapper-mobile {
+        width: 100%;
+    }
+
+    #logo-letters {
+        // border: 1px solid black;
+        .letter {
+            display:inline-block;
+            position: relative;
+
+            svg {
+                width: $letterSize;
+            }
+
+            // &:nth-child(2) {
+            //     // E
+            //     left: 12px;
+            // }
+
+            // &:nth-child(3) {
+            //     // C
+            //     left: 13px;
+            // }
+
+            // &:nth-child(4) {
+            //     // T
+            //     left: 9px;
+            // }
+
+            // &:nth-child(5) {
+            //     // A
+            // }
+
+            // &:nth-child(6) {
+            //     // R
+            //     left: 9px;
+            // }
+
+            // &:nth-child(7) {
+            //     // O
+            //     left: 13px;
+            // }
+
+            // &:nth-child(8) {
+            //     // N
+            //     left: 13px;
+            // }
+        }
+    
     }
 
     .logo, .logo-head {
+        display: inline-block;
         width: 100%;
         overflow: visible;
     }
@@ -14,13 +67,11 @@
         height: 60px;
     }
 
-    .logo {
-        height: 70px;
-    }
-
     .logo-mobile {
-        display: none;
-        width: 80%;
+        height: 0;
+        width: 50%;
+        max-width: 250px;
+        display: inline-block;
     }
 
     .subheading {
@@ -28,11 +79,14 @@
         margin: 30px 0px;
         text-align: center;
         display: inline-block;
-        
-        font-size-adjust: 20px;
+        color: $purple;
 
         span {
             display: block;
+
+            &:nth-child(2) {
+                display:none;
+            }
         }
 
         // @include minTablet {
@@ -83,127 +137,148 @@
 //         }
 //     }
 
-//     .fruits {
-//         .fruit-top {
-//             width: 140px;
-//             right: 185px;
-//             top: -220px;
-//         }
+    .fruits {
+        display: none;
+        .fruit-top {
+            width: 140px;
+            right: 185px;
+            top: -220px;
+        }
 
-//         .fruit-bottom {
-//             width: 190px;
-//             right: 160px;
-//             top: -50px;
-//         }
+        .fruit-bottom {
+            width: 190px;
+            right: 160px;
+            top: -50px;
+        }
 
-//         .pineapple-top {
-//             width: 210px;
-//             left: 140px;
-//             top: -250px;
+        .pineapple-top {
+            width: 210px;
+            left: 140px;
+            top: -250px;
 
-//             @include transform(rotate(-90deg));
-//         }
+            @include transform(rotate(-90deg));
+        }
 
-//         .fruit-bottom-2 {
-//             width: 190px;
-//             left: 370px;
-//             top: -160px;
+        .fruit-bottom-2 {
+            width: 190px;
+            left: 370px;
+            top: -160px;
         
-//             @include transform(rotate(-90deg));
-//         }
+            @include transform(rotate(-90deg));
+        }
 
-//         .pineapple-burner {
-//             width: 330px;
-//             right: 250px;
-//             bottom: -200px;
-//         }
+        .pineapple-burner {
+            width: 330px;
+            right: 250px;
+            bottom: -200px;
+        }
 
-//         .fruit-whole {
-//             width: 180px;
-//             left: 300px;
-//             bottom: -200px;        
-//         }
+        .fruit-whole {
+            width: 180px;
+            left: 300px;
+            bottom: -200px;        
+        }
 
-//         // .fruit-top {
-//         //     width: 140px;
-//         //     right: 178px;
-//         //     top: 71px;
-//         // }
+        // .fruit-top {
+        //     width: 140px;
+        //     right: 178px;
+        //     top: 71px;
+        // }
 
-//         // .fruit-bottom {
-//         //     width: 190px;
-//         //     right: 160px;
-//         //     top: 250px;
-//         // }
+        // .fruit-bottom {
+        //     width: 190px;
+        //     right: 160px;
+        //     top: 250px;
+        // }
 
-//         // .pineapple-top {
-//         //     width: 200px;
-//         //     left: 0px;
-//         //     top:0px;
-//         // }
+        // .pineapple-top {
+        //     width: 200px;
+        //     left: 0px;
+        //     top:0px;
+        // }
 
-//         // .fruit-bottom-2 {
-//         //     width: 200px;
-//         //     left: 0px;
-//         //     top:0px;
-//         // }
+        // .fruit-bottom-2 {
+        //     width: 200px;
+        //     left: 0px;
+        //     top:0px;
+        // }
 
-//         // .pineapple-burner {
-//         //     width: 300px;
-//         //     right: 250px;
-//         //     bottom: 100px;
-//         // }
-//     }
+        // .pineapple-burner {
+        //     width: 300px;
+        //     right: 250px;
+        //     bottom: 100px;
+        // }
+    }
 // }
 
 
 // >1920px
 @include minW($desktopXLargeWidth) {
-
+     .text-wrapper {
+        @include transform(scale(1.2));
+    }
 }
 
 //1920px;
 @include maxW($desktopXLargeWidth) {
-
+    .text-wrapper {
+        @include transform(scale(1.1));
+    }
 }
 
 //1366px
 @include maxW($desktopLargeWidth) {
-    #landing .text-wrapper {
-        @include transform(scale(0.9));
+    .text-wrapper {
+        @include transform(scale(1));
     }
 }
 
 //1280px
 @include maxW($desktopWidth) {
-    #landing .text-wrapper {
-        @include transform(scale(0.8));
+    .text-wrapper {
+        @include transform(scale(0.9));
     }
 }
 
 //768px;
 @include maxW($tabletPortraitWidth) {
-    #landing {
-        .text-wrapper  {
-            @include transform(scale(0.7));
-        }
-        .subheading span{
-            display: inline-block;
-        }
+    .text-wrapper {
+        @include transform(scale(0.7));
+    }
+    .subheading span{
+        display: inline-block;
     }
 }
 
 //640px
 @include maxW($mobileLargeWidth) {
-    .logo {
-        @include maxMobile {
-            display: none;
-        }
+    #landing .text-wrapper {
+        @include transform(scale(1));
     }
 
-    .logo-mobile {
-        @include maxMobile {
+    #landing {
+        .logo-head, .logo {
+            display: none;
+        }
+    
+        .logo-mobile {
+            height:auto;
+        }
+
+        .subheading {
+            width: 50%;
+            max-width: 250px;
+            min-width: 210px;
             display: inline-block;
+            font-size: 16px;
+
+            span {
+                display:inline;
+
+                &:nth-child(2) {
+                    display: inline
+                }
+            }
         }
     }
 }
