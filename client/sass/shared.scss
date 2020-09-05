@@ -117,6 +117,18 @@ $mobileWidth: 480px;
     }
 }
 
+@mixin minPxH($screen) {
+    @media (min-height: $screen+'px') {
+        @content;
+    }
+ }
+
+ @mixin maxPxH($screen) {
+    @media (max-height: $screen+'px') {
+        @content;
+    }
+ }
+
 @mixin minPxW($screen) {
     @media (min-width: $screen+'px') {
         @content;

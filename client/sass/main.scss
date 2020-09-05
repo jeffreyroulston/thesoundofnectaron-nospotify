@@ -205,3 +205,26 @@ svg.letter, .letter svg{
         }
     }
 }
+
+@include maxW($tabletPortraitWidth) {
+    .wrapper {
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 50px
+    }
+}
+
+@include maxW($mobileLargeWidth) {
+    h1 {
+        font-size: 40px
+    }
+}
+
+//480px;
+@include maxW($mobileWidth) {
+    h1 {
+        font-size: 30px
+    }
+}

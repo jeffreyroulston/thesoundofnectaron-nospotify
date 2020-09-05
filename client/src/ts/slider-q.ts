@@ -374,13 +374,13 @@ export default class Slider {
             y:0
         });
 
-        this.loopingAnimations.push(TweenMax.to(this.imgs[0], 0.5, {
-            y:-20, repeat:-1, yoyo:true, delay:0.8
-        }))
+        // this.loopingAnimations.push(TweenMax.to(this.imgs[0], 0.5, {
+        //     y:-20, repeat:-1, yoyo:true, delay:0.8
+        // }))
 
-        this.loopingAnimations.push(TweenMax.to(this.imgs[1], 0.5, {
-            y:20, repeat:-1, yoyo:true, delay:0.8
-        }))
+        // this.loopingAnimations.push(TweenMax.to(this.imgs[1], 0.5, {
+        //     y:20, repeat:-1, yoyo:true, delay:0.8
+        // }))
     }
 
     private callbackQ2(e: any) {
@@ -517,13 +517,13 @@ export default class Slider {
             this.imgs.push(f.el(".slider-q5 li:nth-child(" + i.toString() + ")"));
         }
 
-        for(var i=0; i<this.imgs.length; i++) {
-            this.loopingAnimations.push(TweenMax.fromTo(this.imgs[i], 1.5, {
-                rotate:5, transformOrigin: "50% 100%"
-            }, {
-                rotate:-10, transformOrigin: "50% 100%", repeat:-1, yoyo:true, delay: 0.06 * i
-            }));
-        }
+        // for(var i=0; i<this.imgs.length; i++) {
+        //     this.loopingAnimations.push(TweenMax.fromTo(this.imgs[i], 1.5, {
+        //         rotate:5, transformOrigin: "50% 100%"
+        //     }, {
+        //         rotate:-10, transformOrigin: "50% 100%", repeat:-1, yoyo:true, delay: 0.06 * i
+        //     }));
+        // }
     }
 
     private callbackQ5(e: any) {
