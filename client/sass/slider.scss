@@ -239,6 +239,31 @@
         top: 17px;
         cursor: pointer;
     }
+
+    @include maxW($tabletPortraitWidth) {
+        .slider-q2 {
+            li {
+                img {
+                    width: 50%;
+                }
+            }
+        }
+    
+        .slider-q5 {
+            margin:0;
+            width: 120%;
+            left:-35%;
+        }
+    }
+
+    // height < 600px
+    @include maxPxH(600) {
+        .question-wrapper {
+            .slide-container {
+                bottom: 50px;
+            }
+        }
+    }
 }
 
 @-webkit-keyframes SUN-RAY-SCALE {
@@ -261,83 +286,3 @@
     50%   { transform: scale(1.2); }
     100%   { transform: scale(1); }
   }
-
-@include maxW($tabletPortraitWidth) {
-    #questions {
-        .col-wrapper:not(.full-width), .col-wrapper.text-column:not(.full-width) {
-            width: 100%;
-            height: 100vh;
-            float: none;
-            margin:0;
-            position: absolute;
-        }
-
-        .question-wrapper {
-            width: 80%;
-            border: 1px solid black;
-
-            .question {
-                position: relative;
-                top: 100px;
-                text-align: center;
-                text-shadow: 1px 1px 5px $beige;
-            }
-
-            .slide-container {
-                position: absolute;
-                bottom: 80px;
-                width: 80%;
-                left: 10%;
-
-                .slider-line {
-                    width: 100%;
-                }
-
-                .slider-label {
-                    font-size: 16px;
-                }
-            }
-        }
-
-        .col-wrapper:not(.text-column) {
-            height: calc(100vh - 200px);
-            top: 100px;
-            border: 1px solid black;
-            z-index: -1;
-        }
-
-        .slider-q2 {
-            li {
-                img {
-                    width: 50%;
-                }
-            }
-        }
-
-        .slider-q5 {
-            margin:0;
-            width: 120%;
-            left:-35%;
-        }
-    }
-}
-
-@include maxW($mobileLargeWidth) {
-
-}
-
-// height < 600px
-@include maxPxH(600) {
-    #questions {
-        .question-wrapper {
-            .question {
-                top: 50px;
-            }
-
-            .slide-container {
-                bottom: 50px;
-            }
-        }
-    }
-
-}

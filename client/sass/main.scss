@@ -172,6 +172,51 @@ svg.letter, .letter svg{
         max-width: 600px;
         margin: 0 auto;
     }
+
+     // < 768px;
+    @include maxW($tabletPortraitWidth) {
+        .col-wrapper:not(.full-width), .col-wrapper.text-column:not(.full-width) {
+            width: 100%;
+            height: 100vh;
+            float: none;
+            margin:0;
+            position: absolute;
+        }
+
+        .question-wrapper {
+            width: 80%;
+            border: 1px solid black;
+
+            .question {
+                top: 100px;
+                text-align: center;
+                margin-top: 50px;
+                text-shadow: 1px 1px 5px $beige;
+            }
+
+            .slide-container {
+                position: absolute;
+                bottom: 80px;
+                width: 80%;
+                left: 10%;
+
+                .slider-line {
+                    width: 100%;
+                }
+
+                .slider-label {
+                    font-size: 16px;
+                }
+            }
+        }
+
+        .col-wrapper:not(.text-column) {
+            height: calc(100vh - 200px);
+            top: 100px;
+            border: 1px solid black;
+            z-index: -1;
+        }
+    }
 }
 
 #end-frame {
