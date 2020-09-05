@@ -33,6 +33,28 @@ h1 {
     text-align: left;
     font-size: 62px;
     line-height: 1.2;
+
+    @include transition(font-size 0.2s ease);
+
+    // < 1366px
+    @include maxW($desktopLargeWidth) {
+        font-size: 55px;
+    }
+
+    // < 1280px
+    @include maxW($desktopWidth) {
+        font-size: 45px;
+    }
+
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
+        font-size: 40px;
+    }
+
+    // < 480px;
+    @include maxW($mobileWidth) {
+        font-size: 30px
+    }
 }
 
 p {
@@ -113,6 +135,17 @@ p {
     width: calc(100% - 400px);
     position: relative;
     margin: 0 auto;
+
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
+        width: calc(100% - 200px);
+        font-size: 50px;
+    }
+
+    // < 768px
+    @include maxW($tabletPortraitWidth) {
+        width: 100%;
+    }
 }
 
 // USED FOR QUESTIONS
@@ -248,28 +281,5 @@ svg.letter, .letter svg{
         &:first-child {
             width: 35%;
         }
-    }
-}
-
-@include maxW($tabletPortraitWidth) {
-    .wrapper {
-        width: 100%;
-    }
-
-    h1 {
-        font-size: 50px
-    }
-}
-
-@include maxW($mobileLargeWidth) {
-    h1 {
-        font-size: 40px
-    }
-}
-
-//480px;
-@include maxW($mobileWidth) {
-    h1 {
-        font-size: 30px
     }
 }
