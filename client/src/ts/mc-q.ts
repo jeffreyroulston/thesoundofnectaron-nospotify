@@ -36,6 +36,9 @@ export default class MCQ {
         // question copy
         this.questionElement = f.find(this.el, ".question");
 
+        window.onresize = this.onResize.bind(this)
+        this.onResize();
+
         // this.ui = ui;
         // this.el = elementName;
         // this.questionElement = el(this.el + " .question");
@@ -44,6 +47,28 @@ export default class MCQ {
         // for (var i=0; i<options.length; i++) {
         //     options[i].addEventListener("click", this.answerRetrieved.bind(this));
         // }
+    }
+
+    onResize() {
+        // size the bottle
+        var bottleHeight = window.innerHeight - 200;
+        var bottleRatio = 1010/2700;
+        var bottleWidth = bottleHeight * bottleRatio;
+        console.log(bottleHeight, bottleRatio);
+
+        var bottleSceneWrapper = f.el(".scene-wrapper");
+        bottleSceneWrapper.style.width = f.px(bottleWidth);
+
+        // set the backgroundSize
+        // var backgroundRatio = 173/100;
+        var bgRatio = 1249/1237;
+        var bgEl = f.el("#label");
+        bgEl.style.height = f.px(bgRatio * bottleWidth)
+
+        var bgTopOffsetRatio = 290/240;
+        bgEl.style.top = f.px(bgTopOffsetRatio * (bgRatio * bottleWidth));
+
+
     }
 
     getNextQuestion() {
@@ -199,142 +224,142 @@ export default class MCQ {
 
     answerSelected(e:HTMLElement) {
         // this is the element that's been clicked
-        console.log(e);
-        mcqQuestions[this.questionIdx].answer = e.style.backgroundImage;
-        switch (this.questionIdx) {
-            case 0:
-                // body
-                f.el("#head1").style.backgroundImage = e.style.backgroundImage;
+        // console.log(e);
+        // mcqQuestions[this.questionIdx].answer = e.style.backgroundImage;
+        // switch (this.questionIdx) {
+        //     case 0:
+        //         // body
+        //         f.el("#head1").style.backgroundImage = e.style.backgroundImage;
 
-                // displace buddy
-                TweenMax.to("#drinker2", 0, {
-                    x:200
-                })
+        //         // displace buddy
+        //         TweenMax.to("#drinker2", 0, {
+        //             x:200
+        //         })
 
-                // pop out drinker 1
-                f.el("#drinker1").style.display = "block";
-                TweenMax.from("#drinker1", 0.5, {
-                    y:1000
-                })
+        //         // pop out drinker 1
+        //         f.el("#drinker1").style.display = "block";
+        //         TweenMax.from("#drinker1", 0.5, {
+        //             y:1000
+        //         })
 
-                this.loopingAnimations.push(
-                    TweenMax.to("#drinker1", 0.5, {
-                        y:-100, repeat:-1, yoyo: true, delay:0.5
-                    })
-                )
+        //         this.loopingAnimations.push(
+        //             TweenMax.to("#drinker1", 0.5, {
+        //                 y:-100, repeat:-1, yoyo: true, delay:0.5
+        //             })
+        //         )
                 
-                break;
-            case 1:
-                // location
-                // change the copy to white
-                var el = f.find(this.el, ".question-wrapper")
-                el.classList.toggle("boxed");
+        //         break;
+        //     case 1:
+        //         // location
+        //         // change the copy to white
+        //         var el = f.find(this.el, ".question-wrapper")
+        //         el.classList.toggle("boxed");
                 
-                f.el("#scene-bg").style.backgroundImage = e.style.backgroundImage;
-                TweenMax.fromTo("#scene-bg", 0.5, {
-                    height: 0
-                }, {
-                    height: '100vh'
-                })
-                break;
-            case 2:
-                // buddy
-                f.el("#head2").style.backgroundImage = e.style.backgroundImage;
+        //         f.el("#scene-bg").style.backgroundImage = e.style.backgroundImage;
+        //         TweenMax.fromTo("#scene-bg", 0.5, {
+        //             height: 0
+        //         }, {
+        //             height: '100vh'
+        //         })
+        //         break;
+        //     case 2:
+        //         // buddy
+        //         f.el("#head2").style.backgroundImage = e.style.backgroundImage;
 
-                // displace drinker 1
-                TweenMax.to("#drinker1", 0.5, {
-                    x:-200
-                })
+        //         // displace drinker 1
+        //         TweenMax.to("#drinker1", 0.5, {
+        //             x:-200
+        //         })
 
-                // pop out buddy
-                f.el("#drinker2").style.display = "block";
-                TweenMax.from("#drinker2", 0.5, {
-                    y:1000
-                });
+        //         // pop out buddy
+        //         f.el("#drinker2").style.display = "block";
+        //         TweenMax.from("#drinker2", 0.5, {
+        //             y:1000
+        //         });
 
-                this.loopingAnimations.push(
-                    TweenMax.to("#drinker2", 0.5, {
-                        y:-50, repeat:-1, yoyo: true, delay:0.5
-                    })
-                )
-                break;
-            case 3:
-                // pairing
-                var count = 10;
-                var container = f.el("#pairings")
-                var elements : HTMLElement[] = [];
+        //         this.loopingAnimations.push(
+        //             TweenMax.to("#drinker2", 0.5, {
+        //                 y:-50, repeat:-1, yoyo: true, delay:0.5
+        //             })
+        //         )
+        //         break;
+        //     case 3:
+        //         // pairing
+        //         var count = 10;
+        //         var container = f.el("#pairings")
+        //         var elements : HTMLElement[] = [];
 
-                for (var i=1; i<count+1; i++) {
-                    let el = document.createElement("li");
-                    elements.push(el);
+        //         for (var i=1; i<count+1; i++) {
+        //             let el = document.createElement("li");
+        //             elements.push(el);
 
-                    el.className = "pairing";
-                    el.style.backgroundImage = e.style.backgroundImage;
-                    el.style.left = f.px(i* (window.innerWidth/count));
-                    container.appendChild(el)
-                }
+        //             el.className = "pairing";
+        //             el.style.backgroundImage = e.style.backgroundImage;
+        //             el.style.left = f.px(i* (window.innerWidth/count));
+        //             container.appendChild(el)
+        //         }
 
-                f.shuffle(elements);
-                for (var x=0; x<elements.length; x++) {
-                    this.loopingAnimations.push(
-                        TweenMax.fromTo(elements[x], f.getRandom(1, 3), {
-                            y:window.innerHeight
-                        }, {
-                            y:-window.innerHeight, ease:"linear", delay:i*0.1, repeat:-1 
-                        })
-                    )
-                }
+        //         f.shuffle(elements);
+        //         for (var x=0; x<elements.length; x++) {
+        //             this.loopingAnimations.push(
+        //                 TweenMax.fromTo(elements[x], f.getRandom(1, 3), {
+        //                     y:window.innerHeight
+        //                 }, {
+        //                     y:-window.innerHeight, ease:"linear", delay:i*0.1, repeat:-1 
+        //                 })
+        //             )
+        //         }
 
-                // f.el("#food1").style.backgroundImage = e.style.backgroundImage;
-                // // f.el("#food2").style.backgroundImage = e.style.backgroundImage;
+        //         // f.el("#food1").style.backgroundImage = e.style.backgroundImage;
+        //         // // f.el("#food2").style.backgroundImage = e.style.backgroundImage;
 
-                // // pop out buddy
-                // f.el("#food1").style.display = "block";
+        //         // // pop out buddy
+        //         // f.el("#food1").style.display = "block";
 
-                // TweenMax.from("#food1", 0.5, {
-                //     y:1000
-                // });
+        //         // TweenMax.from("#food1", 0.5, {
+        //         //     y:1000
+        //         // });
 
-                // this.loopingAnimations.push(
-                //     TweenMax.to("#food1", 0.5, {
-                //         y:-window.innerHeight/2, rotate:360, repeat:-1, yoyo: true, delay:0.5
-                //     })
-                // )
+        //         // this.loopingAnimations.push(
+        //         //     TweenMax.to("#food1", 0.5, {
+        //         //         y:-window.innerHeight/2, rotate:360, repeat:-1, yoyo: true, delay:0.5
+        //         //     })
+        //         // )
 
-                break;
-            case 4:
-                // vessel
-                var count = 10;
-                var container = f.el("#pairings")
-                var elements : HTMLElement[] = [];
+        //         break;
+        //     case 4:
+        //         // vessel
+        //         var count = 10;
+        //         var container = f.el("#pairings")
+        //         var elements : HTMLElement[] = [];
 
-                for (var i=1; i<count+1; i++) {
-                    let el = document.createElement("li");
-                    elements.push(el);
+        //         for (var i=1; i<count+1; i++) {
+        //             let el = document.createElement("li");
+        //             elements.push(el);
 
-                    el.className = "pairing";
-                    el.style.backgroundImage = e.style.backgroundImage;
-                    el.style.left = f.px(i* (window.innerWidth/count));
-                    container.appendChild(el)
-                }
+        //             el.className = "pairing";
+        //             el.style.backgroundImage = e.style.backgroundImage;
+        //             el.style.left = f.px(i* (window.innerWidth/count));
+        //             container.appendChild(el)
+        //         }
 
-                f.shuffle(elements);
-                for (var x=0; x<elements.length; x++) {
-                    this.loopingAnimations.push(
-                        TweenMax.fromTo(elements[x], f.getRandom(1, 3), {
-                            y:window.innerHeight
-                        }, {
-                            y:-window.innerHeight, ease:"linear", delay:i*0.1, repeat:-1 
-                        })
-                    )
+        //         f.shuffle(elements);
+        //         for (var x=0; x<elements.length; x++) {
+        //             this.loopingAnimations.push(
+        //                 TweenMax.fromTo(elements[x], f.getRandom(1, 3), {
+        //                     y:window.innerHeight
+        //                 }, {
+        //                     y:-window.innerHeight, ease:"linear", delay:i*0.1, repeat:-1 
+        //                 })
+        //             )
                     
-                }
-                // f.el("#vessel1").style.backgroundImage = e.style.backgroundImage;
-                // f.el("#vessel2").style.backgroundImage = e.style.backgroundImage;
-                break;
+        //         }
+        //         // f.el("#vessel1").style.backgroundImage = e.style.backgroundImage;
+        //         // f.el("#vessel2").style.backgroundImage = e.style.backgroundImage;
+        //         break;
 
-        }
-        this.hide();
+        // }
+        // this.hide();
     }
 
     completed() {

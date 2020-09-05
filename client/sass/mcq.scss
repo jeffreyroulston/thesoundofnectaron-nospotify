@@ -1,71 +1,125 @@
-
+ 
 @import "shared";
 
 #questions #mc-q {
-    .question-wrapper {
-        width: 100%;
-        max-width: unset;
-        text-align: center;
-
-        transition: background-color 0.5s ease;
-
-        h1 {
-            text-align: center;
-            height: auto;
-            margin-bottom: 100px;
-            max-width: 600px;
-            display: inline-block;
-        }
-
-        &.boxed {
-            // width: 700px;
-            // background-color: $beige;
-            // padding: 60px 0px;
-            h1 {
-                text-shadow: 11px 6px 19px #000000;
-                color: white;
-            }
-
-        }
+    .wrapper {
+        height: 100vh
     }
+
+    // .question-wrapper {
+    //     width: 100%;
+    //     max-width: unset;
+    //     text-align: center;
+
+    //     h1 {
+    //         text-align: center;
+    //         height: auto;
+    //         margin-bottom: 100px;
+    //         max-width: 600px;
+    //         display: inline-block;
+    //     }
+
+    //     &.boxed {
+    //         // width: 700px;
+    //         // background-color: $beige;
+    //         // padding: 60px 0px;
+    //         h1 {
+    //             text-shadow: 11px 6px 19px #000000;
+    //             color: white;
+    //         }
+
+    //     }
+    // }
 
     .col-wrapper {
-        margin-top: $marginTop;
-        text-align: center;
-        // &.text-column {
-        //     margin-top: $marginTop;
-        // }
+        &.text-column {
+            margin-top: $marginTop_30;
+        }
 
-        &.full-width {
-            width: 100%;
+        h1 {
+            height: auto;
         }
     }
 
+    .scene-wrapper {
+        height: calc(100vh - 200px);
+        // background: blue;
+        border: 1px solid black;
+        position: relative;
+        top: 100px;
+        margin: 0 auto;
 
-    // #mc-dino {
-    //     background-image: url("./assets/dino.png");
-    // }
+        // #bottle, #bottle > li {
+        //     width: 100%;
+        //     border: 1px solid purple;
+        // }
 
-    // #mc-dragon {
-    //     background-image: url("./assets/dragon.png");
-    // }
+        #label, label li {
+            background-repeat: no-repeat;
+            background-position: center;
+            border: 1px solid red;
+        }
 
-    // #mc-snake{
-    //     background-image: url("./assets/snake.png");
-    // }
+        #label {
+            width: 100%;
+            height: 40px;
+            background-image: url("./assets/round3/2_1.png");
+            background-size: 100% auto;
+            position: relative;
 
-    // #mc-person {
-    //     background-image: url("./assets/person.png");
-    // }
+            li {
+                position: absolute;
+            }
+        }
 
-    // #mc-unicorn {
-    //     background-image: url("./assets/unicorn.png");
+        #bottle-img {
+            position: absolute;
+            height: 100%;
+            top: 0;
+            left: 0;
+
+            img {
+                height: 100%;
+            }
+        }
+
+        // #bottle-img {
+        //     width: 100%;
+        //     height: 40px;
+        //     background-image: url("./assets/round3/bottle.png");
+        //     background-size: auto 100%;
+        //     background-position: center;
+        // }
+    }
+
+    // .arrows {
+    //     border: 1px solid black;
+    //     li {
+    //         border: 1px solid blue;
+    //     }
+
+    //     .left-arrow {
+    //         width: 0; 
+    //         height: 0; 
+    //         border-top: 20px solid transparent;
+    //         border-bottom: 20px solid transparent; 
+    //         border-right:20px solid $purple; 
+    //     }
+
+    //     .right-arrow {
+    //         width: 0; 
+    //         height: 0; 
+    //         border-top: 20px solid transparent;
+    //         border-bottom: 20px solid transparent;
+    //         border-left: 20px solid $purple;
+    //     }
     // }
 
     .mc-options {
         // border: 1px solid black;
         position: relative;
         display: inline-block;
+        margin-top: 50px;
         // width: 100%;
         // height: 100vh;
 
@@ -90,71 +144,71 @@
     }
 }
 
-.scene-wrapper, #scene-bg {
-    width: 100%;
-    height: 100vh;
-    position: absolute;
-    top:0;
-    left: 0;
-}
+// .scene-wrapper, #scene-bg {
+//     width: 100%;
+//     height: 100vh;
+//     position: absolute;
+//     top:0;
+//     left: 0;
+// }
 
-.scene-wrapper {
-    li {
-        // border: 1px solid black;
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-        position: absolute;
+// .scene-wrapper {
+//     li {
+//         // border: 1px solid black;
+//         background-size: 100% auto;
+//         background-repeat: no-repeat;
+//         position: absolute;
 
-        &.pairing {
-            width: 100px;
-            height: 100px;
-            background-size: 100% auto;
-            background-repeat: no-repeat;
-            bottom: -200px;
-        }
-    }
+//         &.pairing {
+//             width: 100px;
+//             height: 100px;
+//             background-size: 100% auto;
+//             background-repeat: no-repeat;
+//             bottom: -200px;
+//         }
+//     }
 
-    .body-container {
-        width: 200px;
-        height: 500px;
-        background-image: url("./assets/round3/body.png");
-        background-size: 100% auto;
-        background-repeat: no-repeat;
+//     .body-container {
+//         width: 200px;
+//         height: 500px;
+//         background-image: url("./assets/round3/body.png");
+//         background-size: 100% auto;
+//         background-repeat: no-repeat;
         
-        @include horizontalAlign(absolute);
-        bottom: 0px;
-        display: none;
-    }
+//         @include horizontalAlign(absolute);
+//         bottom: 0px;
+//         display: none;
+//     }
 
-    .body {
-        position: relative;
-    }
+//     .body {
+//         position: relative;
+//     }
 
-    .head, .vessel{
-        width: 200px;
-        height: 200px;
-    }
+//     .head, .vessel{
+//         width: 200px;
+//         height: 200px;
+//     }
 
-    .food {
-        width: 400px;
-        height: 400px;
-    }
+//     .food {
+//         width: 400px;
+//         height: 400px;
+//     }
 
-    #food1 {
-        left: 100px;
-        bottom: 0px;
-        display: none;
-    }
+//     #food1 {
+//         left: 100px;
+//         bottom: 0px;
+//         display: none;
+//     }
 
-    // #food2 {
-    //     right: 100px;
-    //     bottom: 0px;
-    // }
+//     // #food2 {
+//     //     right: 100px;
+//     //     bottom: 0px;
+//     // }
 
-    .head {
-        width: 100px;
-        height: 100px;
-        top: -100px;
-        left: 50px;
-    }
-}
+//     .head {
+//         width: 100px;
+//         height: 100px;
+//         top: -100px;
+//         left: 50px;
+//     }
+// }

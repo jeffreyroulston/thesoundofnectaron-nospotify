@@ -1,10 +1,6 @@
 @import 'shared';
 
 #round-name {
-    .text-wrapper {
-        width: 100%;
-    }
-
     .round, .round-name-text, .numbers, .description {
         display: inline-block;
         position: relative; 
@@ -93,7 +89,7 @@
 
 }
 
-// 901px
+// >= 901px
 @include minPxW(901) {
     #round-name {
         .round-name-text {
@@ -122,6 +118,8 @@
             top: -110px;
             left: -6px;
 
+            
+
             p {
                 @include verticalAlign(absolute);
                 padding: 0px 30px;
@@ -137,11 +135,15 @@
     }
 }
 
-// 900px
+// <= 900px
 @include maxPxW(900) {
     #round-name {
         .box, .round-name-text, .description {
             display: block;
+        }
+
+        .text-wrapper {
+            width: 100%;
         }
 
         .round {

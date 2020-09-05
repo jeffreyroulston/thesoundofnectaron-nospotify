@@ -93,8 +93,8 @@ export default class UI {
         var polygons = elList(".logo-letters .purple");
 
         // set the order (lol)
-        this.questionGroups = [this.slider, this.mcq, this.qfq];
-        // this.questionGroups = [this.mcq, this.slider, this.mcq];
+        // this.questionGroups = [this.slider, this.mcq, this.qfq];
+        this.questionGroups = [this.mcq, this.slider, this.mcq];
 
         // set initial question
         this.currentQuestionGroup = this.slider;

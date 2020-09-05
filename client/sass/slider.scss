@@ -7,7 +7,7 @@
 
     .col-wrapper {
         &.text-column {
-            margin-top: $marginTop;
+            margin-top: $marginTop_30;
         }
 
         &.full-width {
@@ -148,7 +148,7 @@
     // }
 
     .slider-q5 {
-        margin-top: $marginTop2;
+        margin-top: $marginTop_20;
         position: relative;
 
         li {
