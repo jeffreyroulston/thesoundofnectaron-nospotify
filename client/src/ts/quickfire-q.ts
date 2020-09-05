@@ -128,20 +128,22 @@ export default class QuickFireQ {
     updateTimer() {
         this.timerCount--;
 
-        if (this.timerCount >= 0) {
+        if (this.timerCount >= 0 && this.timerCount > 9) {
             this.updateTimerElements();
             setTimeout(this.updateTimer.bind(this), 1000);
         } else {
             this.active = false;
-            this.ui.roundComplete(this.el);
+            // this.ui.roundComplete(this.el);
         }
     }
 
     updateTimerElements() {
         var t = this.timerCount.toString();
 
-        if (this.timerCount < 20) {
-            this.timerEl.className = " tens";
+        if (this.timerCount < 10) {
+            this.timerEl.className = "ones";
+        } else if (this.timerCount < 20) {
+            this.timerEl.className = "tens";
         }
 
         if (this.timerCount < 11) {

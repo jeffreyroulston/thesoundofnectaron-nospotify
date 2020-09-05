@@ -6,6 +6,10 @@
         color: $purple;
     }
 
+    .question-wrapper {
+        max-width: 800px;
+    }
+
     .wrapper {
         height: 100vh;
     }
@@ -13,11 +17,18 @@
     .col-wrapper {
         &.text-column {
             margin-top: $marginTop_30;
+            // width: 60%;
         }
     }
 
-    .question-wrapper {
-        max-width: 700px;
+    .question {
+        // height: 250px;
+        text-shadow: 1px 1px 5px $beige;
+
+        // < 768px
+        @include maxW($tabletPortraitWidth) {
+            height: 150px;
+        }
     }
 
     #timer {
@@ -25,26 +36,45 @@
         font-weight: 600;
         text-align: right;
         color: $blue;
-
-        // @include verticalAlign();
-        // top: 55%;
         position: absolute;
         right:120px;
 
-        // // border: 1px solid black;
-        // font-family: "Harbour";
-        // font-weight: 600;
-        // text-align: right;
-        // // font-size: 1000px;
-        // font-size: 50vw;
-        // color: $blue;
+        // < 768px
+        @include maxW($tabletPortraitWidth) {
+            width: 100%;
+            right: 0;
+            bottom: 0;
+            text-align: center;
+        }
 
-        // position: relative;
-        // width: 100%;
-        &.tens{
-            li:first-child {
+        &.tens li {
+            &:first-child {
                 width: 18vw;
+                
+                @include maxW($tabletPortraitWidth) {
+                    width: 36vw;
+                }
             }
+
+            @include maxW($tabletPortraitWidth) {
+                &:last-child {
+                    width: 50vw;
+                }
+            }
+        }
+
+        &.ones li {
+            @include maxW($tabletPortraitWidth) {
+                width: unset;
+                &:first-child {
+                    width: 0;
+                }
+
+                &:last-child {
+                    width: unset;
+                }
+            }
+
         }
 
         li {
@@ -53,28 +83,47 @@
             line-height: 110vh;
             display: inline-block;
 
+            @include maxW($tabletPortraitWidth) {
+                font-size: 70vw;
+            }
+
+
+            // < 768px
+            @include maxW($tabletPortraitWidth) {
+                font-size: 70vw;
+                line-height: unset;
+                bottom: 0;
+            }
+
             &:first-child {
                 width: 26vw;
+
+                // < 768px
+                @include maxW($tabletPortraitWidth) {
+                    @include transition(width 0.2s ease);
+                    width: 36vw;
+                }
             }
 
             &:last-child {
                 width: 35vw;
+                
+                // < 768px
+                @include maxW($tabletPortraitWidth) {
+                    @include transition(width 0.2s ease);
+                    width: 55vw;
+                }
             }
-            // // width: 750px;
-            // right: 0;
-            // width: 37vw;
-            // line-height: calc(100vh + 5vw);
-            // position: absolute;
-
-            // &:first-child {
-            //     // letter-spacing: -350px;
-            //     right: 33vw;
-            // }
         }
     }
 
     #answer-wrapper {
         margin-left: 10px;
+
+        // < 768px
+        @include maxW($tabletPortraitWidth) {
+            text-align: center;
+        }
 
         li {
             background-color: $purple;
@@ -83,12 +132,32 @@
             color: $orange;
             display: inline-block;
             padding: 10px 20px;
-            font-size: 50px;
+            font-size: 45px;
             cursor: pointer;
             position: relative;
             top:0px;
 
             @include transition(top 0.2s ease);
+
+            // < 1366px
+            @include maxW($desktopLargeWidth) {
+                font-size: 40px;
+            }
+
+            // < 1280px
+            @include maxW($desktopWidth) {
+                font-size: 35px;
+            }
+
+            // < 1024px
+            @include maxW($tabletLandscapeWidth) {
+                font-size: 30px;
+            }
+
+            // < 480px;
+            @include maxW($mobileWidth) {
+                font-size: 20px
+            }
             
             &:first-child {
                 margin-right: 20px;
