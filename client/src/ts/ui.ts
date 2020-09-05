@@ -15,6 +15,7 @@ import * as d3 from "d3";
 import gsap from "gsap";
 import { DrawSVGPlugin } from "gsap/dist/DrawSVGPlugin";
 import { forceY, easeCircleIn, easeCircleInOut } from "d3";
+import { CullFaceNone } from "three";
 gsap.registerPlugin(DrawSVGPlugin);
 
 var qDefault = function() { return { value: 0, include: false } };
@@ -24,6 +25,12 @@ enum PageType {
     RoundName,
     Question,
     EndFrame
+}
+
+enum PopupPage {
+    About,
+    Contact,
+    FAQ
 }
 
 export default class UI {
@@ -43,21 +50,31 @@ export default class UI {
     private borderEl : HTMLElement = el("#logo-letters");
     private borderLetters: HTMLElement[] = elList("#logo-letters .letter");
     private descriptionEl : HTMLElement = el("#round-name .description p");
+    private navWrapperEl : HTMLElement = el("#nav-wrapper")
+    private navContentEl : HTMLElement = el("#nav")
+    private burgerEl : HTMLElement = el("#burger");
 
     // loader elements
     private loaderProgress = 0;
     private loaderEl : HTMLElement = el("#loader");
     private loaderRedFill : HTMLElement;
     private loaderPurpleFill : HTMLElement;
-
     private loaderRedFillTargetVal : number = 1;
     private loaderPurpleFillTargetVal : number = 1;
     private loaderRedFillCurrentVal : number = 1;
     private loaderPurpleFillCurrentVal : number = 1;
 
+    // for between pages
     private lastVisibleEl : HTMLElement;
     private nextBgColor : string = "";
 
+    // pop up pages
+    private currentPopupPage : PopupPage | undefined = undefined;
+
+    // nav
+    private navVisible : boolean = false;
+
+    // questions
     private questionGroups : any[] = [];
     private currentQuestionGroup: Slider | MCQ | QuickFireQ;
 
@@ -116,6 +133,8 @@ export default class UI {
         btns.forEach(e => {
             e.addEventListener("click", this.next.bind(this))
         })
+
+        this.burgerEl.addEventListener("click", this.toggleNav.bind(this))
 
         // loader
         this.loaderRedFill = find(this.loaderEl, ".loader-fill-a");
@@ -536,6 +555,37 @@ export default class UI {
         
         this.currentQuestionGroup = this.questionGroups[this.currentRoundIdx];
         this.currentQuestionGroup.set();
+    }
+
+    private toggleNav() {
+        // called from the burger/close
+        if (this.navVisible) {
+            // close the nav
+            TweenMax.to(this.navWrapperEl, 0.5, {
+                display: "none", x:-window.innerWidth*2
+            })
+
+            this.navVisible = false;
+
+        } else {
+            // show the nav
+            TweenMax.fromTo(this.navWrapperEl, 0.5, {
+                display: "none", x:-window.innerWidth*2
+            }, {
+                display: "block", x:0
+            })
+
+            TweenMax.fromTo("#nav li", 0.5, {
+                alpha:0, y:50
+            }, {
+                alpha: 1, y:0, delay:0.2, stagger : {
+                    each: 0.1
+                }
+            })
+
+            this.navVisible = true;
+        }
+
     }
 
     private login() {

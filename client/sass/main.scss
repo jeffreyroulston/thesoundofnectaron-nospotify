@@ -1,6 +1,7 @@
 @import "shared";
 @import "loader";
 @import "frame";
+@import "nav";
 @import "round";
 @import "slider";
 @import "mcq";
@@ -262,4 +263,14 @@ svg.letter, .letter svg{
             width: 35%;
         }
     }
+}
+
+#burger {
+    position: absolute;
+    z-index: 100;
+    top: 10px;
+    right: 10px;
+    height: 20px;
+    width: 20px;
+    background: $purple;
 }
