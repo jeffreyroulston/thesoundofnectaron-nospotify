@@ -71,22 +71,9 @@
             margin-left: 20px;
             cursor: pointer;
 
-            &:first-child {
-                margin-right: 20px;
-
-                //< 768px;
-                @include maxW($tabletPortraitWidth) {
-                    margin-right: 10px;
-                }
-
-                // < 640px
-                @include maxW($mobileLargeWidth) {
-                }
-
-                // < 480px;
-                @include maxW($mobileWidth) {
-                    margin-right: 5px;
-                }
+            // < 1024px
+            @include maxW($tabletLandscapeWidth) {
+                margin-left: 10px;
             }
 
             //< 768px;
@@ -103,6 +90,30 @@
                 margin-left: 5px;
                 width: 30px;
             }
+
+            &:first-child {
+                margin-right: 20px;
+
+                // < 1024px
+                @include maxW($tabletLandscapeWidth) {
+                    margin-right: 10px;
+                }
+
+                // < 768px;
+                @include maxW($tabletPortraitWidth) {
+                    margin-right: 10px;
+                }
+
+                // < 640px
+                @include maxW($mobileLargeWidth) {
+                }
+
+                // < 480px;
+                @include maxW($mobileWidth) {
+                    margin-right: 5px;
+                }
+            }
+
         }
     }
 }

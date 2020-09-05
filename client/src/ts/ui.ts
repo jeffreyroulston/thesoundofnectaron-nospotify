@@ -94,7 +94,8 @@ export default class UI {
 
         // set the order (lol)
         // this.questionGroups = [this.slider, this.mcq, this.qfq];
-        this.questionGroups = [this.mcq, this.slider, this.mcq];
+        // this.questionGroups = [this.mcq, this.slider, this.mcq];
+        this.questionGroups = [this.qfq, this.slider, this.mcq];
 
         // set initial question
         this.currentQuestionGroup = this.slider;

@@ -127,7 +127,6 @@ export default class QuickFireQ {
 
     updateTimer() {
         this.timerCount--;
-        // this.timerEl.innerHTML = this.timerCount.toString();
 
         if (this.timerCount >= 0) {
             this.updateTimerElements();
@@ -140,6 +139,10 @@ export default class QuickFireQ {
 
     updateTimerElements() {
         var t = this.timerCount.toString();
+
+        if (this.timerCount < 20) {
+            this.timerEl.className = " tens";
+        }
 
         if (this.timerCount < 11) {
             this.timerTensColumn.style.color = COLOURS.red;

@@ -139,7 +139,6 @@ p {
     // < 1024px
     @include maxW($tabletLandscapeWidth) {
         width: calc(100% - 200px);
-        font-size: 50px;
     }
 
     // < 768px
@@ -147,24 +146,6 @@ p {
         width: 100%;
     }
 }
-
-// USED FOR QUESTIONS
-.col-wrapper {
-    float: left;
-    width: 50%;
-
-    // &.text-column {
-    //     margin-top: 20vh;
-    // }
-}
-
-// .mobile {
-//     display: none;
-
-//     @include maxW($mobileLargeWidth) {
-//         display: inline-block;
-//     }
-// }
 
 .next-btn {
     width: 50px;
@@ -175,12 +156,6 @@ p {
 
     &:hover {
         cursor: pointer;
-    }
-}
-
-.logo-letters {
-    @include maxMobile {
-        display: none;
     }
 }
 
@@ -204,6 +179,11 @@ svg.letter, .letter svg{
     .question-wrapper {
         max-width: 600px;
         margin: 0 auto;
+    }
+
+    .col-wrapper {
+        float: left;
+        width: 50%;
     }
 
      // < 768px;

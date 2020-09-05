@@ -29,7 +29,7 @@
         // @include verticalAlign();
         // top: 55%;
         position: absolute;
-        right:0;
+        right:120px;
 
         // // border: 1px solid black;
         // font-family: "Harbour";
@@ -41,14 +41,25 @@
 
         // position: relative;
         // width: 100%;
+        &.tens{
+            li:first-child {
+                width: 18vw;
+            }
+        }
 
         li {
-            width: 35vw;
             text-align: right;
             font-size: 50vw;
-            letter-spacing: -5vw;
             line-height: 110vh;
             display: inline-block;
+
+            &:first-child {
+                width: 26vw;
+            }
+
+            &:last-child {
+                width: 35vw;
+            }
             // // width: 750px;
             // right: 0;
             // width: 37vw;

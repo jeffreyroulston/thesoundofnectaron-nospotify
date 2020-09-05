@@ -154,6 +154,11 @@ $mobileWidth: 480px;
     }
  }
 
+// // < 1366px
+// @include maxW($desktopLargeWidth) {
+//     font-size: 55px;
+// }
+
 // // < 1280px
 // @include maxW($desktopWidth) {
 //     font-size: 55px;
