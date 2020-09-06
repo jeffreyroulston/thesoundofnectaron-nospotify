@@ -1,77 +1,121 @@
 @import "shared";
 $loaderDimensions : 200px;
 
+// best seen at 1500px or less
+#loader {
+    height: 0;
+    width:100%;
+    position:absolute;
+    bottom:0;
+    left:0;
+    background: $purple;
+
+    .wave {
+        background: url("./assets/loader/wave.svg") repeat-x; 
+        position: absolute;
+        top: -195px;
+        width: 6400px;
+        height: 198px;
+        animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite;
+        transform: translate3d(0, 0, 0);
+      }
+      
+      .wave:nth-of-type(2) {
+        top: -175px;
+        animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) -.125s infinite, swell 7s ease -1.25s infinite;
+        opacity: 1;
+      }
+}
+
+@keyframes wave {
+  0% {
+    margin-left: 0;
+  }
+  100% {
+    margin-left: -1600px;
+  }
+}
+
+@keyframes swell {
+  0%, 100% {
+    transform: translate3d(0,-25px,0);
+  }
+  50% {
+    transform: translate3d(0,-25px,0);
+  }
+}
+
 // #loader-2 {
 //     background: black;
 // }
 
-#loader-container {
-    @include centerAlign();
-    position:absolute;
-    width: $loaderDimensions;
-    height: $loaderDimensions;
+// #loader-container {
+//     @include centerAlign();
+//     position:absolute;
+//     width: $loaderDimensions;
+//     height: $loaderDimensions;
 
-    #loader {
-        position: relative;
+//     #loader {
+//         position: relative;
 
-        li, #loader-bar, .letter {
-            opacity:0;
-        }
+//         li, #loader-bar, .letter {
+//             opacity:0;
+//         }
 
-        li {
-            display: block;
-            position: absolute;
-            width: $loaderDimensions;
-            &.letter {
-                height: $loaderDimensions;
+//         li {
+//             display: block;
+//             position: absolute;
+//             width: $loaderDimensions;
+//             &.letter {
+//                 height: $loaderDimensions;
 
-                svg {
-                    height: $loaderDimensions;
-                    width: $loaderDimensions;
-                }
-            }
+//                 svg {
+//                     height: $loaderDimensions;
+//                     width: $loaderDimensions;
+//                 }
+//             }
 
-            &.hop-top {
-                background-image: url("./assets/loader/hopTop.png");
-            }
+//             &.hop-top {
+//                 background-image: url("./assets/loader/hopTop.png");
+//             }
 
 
-            &.fruit-top {
-                background-image: url("./assets/loader/fruitTop.png");
-                top: -190px;
-                height: 300px;
-            }
+//             &.fruit-top {
+//                 background-image: url("./assets/loader/fruitTop.png");
+//                 top: -190px;
+//                 height: 300px;
+//             }
 
-            &.hop-bottom {
-                background-image: url("./assets/loader/hopBottom.png");
-                top: 90px;
-                height: $loaderDimensions;
-            }
+//             &.hop-bottom {
+//                 background-image: url("./assets/loader/hopBottom.png");
+//                 top: 90px;
+//                 height: $loaderDimensions;
+//             }
 
-            background-size: 100% auto;
-            background-repeat: no-repeat;
-        }
-    }
+//             background-size: 100% auto;
+//             background-repeat: no-repeat;
+//         }
+//     }
 
-    #loader-bar {
-        polygon {
-            @include transition(fill 0.2s ease)
-        }
+//     #loader-bar {
+//         polygon {
+//             @include transition(fill 0.2s ease)
+//         }
 
-        .loader-fill-a {
-            stop-color: $orange
-        }
+//         .loader-fill-a {
+//             stop-color: $orange
+//         }
     
-        .loader-fill-b {
-            stop-color: $purple;
-        }
-        // background: blue;
-        // height: 200px;
-        // width: 200px;
-        // clip-path: url(#myClip);
-        // clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-    }
-}
+//         .loader-fill-b {
+//             stop-color: $purple;
+//         }
+//         // background: blue;
+//         // height: 200px;
+//         // width: 200px;
+//         // clip-path: url(#myClip);
+//         // clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+//     }
+// }
 
 // #shared {
 //     z-index: 100;

@@ -3,7 +3,7 @@ import * as data from "./data";
 import Slider from "./slider-q";
 import MCQ from "./mc-q";
 import QuickFireQ from "./quickfire-q";
-import {el, find, elList, getRandom} from "./helpers";
+import {el, find, elList, getRandom, px} from "./helpers";
 import {TweenMax} from "gsap"
 import App from "./app";
 
@@ -49,13 +49,14 @@ export default class UI {
 
     // loader elements
     private loaderProgress = 0;
+    private loaderHeight = 0;
     private loaderEl : HTMLElement = el("#loader");
-    private loaderRedFill : HTMLElement;
-    private loaderPurpleFill : HTMLElement;
-    private loaderRedFillTargetVal : number = 1;
-    private loaderPurpleFillTargetVal : number = 1;
-    private loaderRedFillCurrentVal : number = 1;
-    private loaderPurpleFillCurrentVal : number = 1;
+    // private loaderRedFill : HTMLElement;
+    // private loaderPurpleFill : HTMLElement;
+    // private loaderRedFillTargetVal : number = 1;
+    // private loaderPurpleFillTargetVal : number = 1;
+    // private loaderRedFillCurrentVal : number = 1;
+    // private loaderPurpleFillCurrentVal : number = 1;
 
     // for between pages
     private lastVisibleEl : HTMLElement;
@@ -134,14 +135,38 @@ export default class UI {
         })
 
         // loader
-        this.loaderRedFill = find(this.loaderEl, ".loader-fill-a");
-        this.loaderPurpleFill = find(this.loaderEl, ".loader-fill-b");
+        // this.loaderRedFill = find(this.loaderEl, ".loader-fill-a");
+        // this.loaderPurpleFill = find(this.loaderEl, ".loader-fill-b");
 
         // this.loaderInit();
 
         // kick it off
         this.showLanding();
         // this.showRoundName();
+        // this.showLoader();
+    }
+
+    private showLoader() {
+        this.loaderEl.style.display = "block";
+        this.incrementLoader();
+    }
+
+    private incrementLoader() {
+        if (this.loaderProgress == 100) return;
+        this.loaderProgress+=10;
+        TweenMax.to(this.loaderEl, 0.5, {
+            height: (this.loaderProgress).toString() + "%"
+        })
+        // if (this.loaderHeight >= window.innerHeight) return;
+        // this.loaderHeight++ 
+        // this.loaderEl.style.height = px(this.loaderHeight);
+        setTimeout(this.incrementLoader.bind(this), 1000)
+    }
+
+    private lerpLoader() {
+        if (this.loaderProgress < 100) {
+            this.loaderEl.style.height = px((this.loaderProgress/100) * window.innerHeight)
+        }
     }
 
     // private loaderInit2() {
@@ -152,123 +177,123 @@ export default class UI {
     //     }
     // }
 
-    private loaderInit() {
-        var y1 = window.innerHeight;
-        var y2 = 10
-        var t = 0.6;
-        var fruitTop = find(this.loaderEl, ".fruit-top");
-        var hopTop = find(this.loaderEl, ".hop-bottom")
+    // private loaderInit() {
+    //     var y1 = window.innerHeight;
+    //     var y2 = 10
+    //     var t = 0.6;
+    //     var fruitTop = find(this.loaderEl, ".fruit-top");
+    //     var hopTop = find(this.loaderEl, ".hop-bottom")
 
-        TweenMax.fromTo(fruitTop, t, {
-            opacity:0, y:-y1
-        }, {
-            opacity:1, y:0, delay: t
-        })
+    //     TweenMax.fromTo(fruitTop, t, {
+    //         opacity:0, y:-y1
+    //     }, {
+    //         opacity:1, y:0, delay: t
+    //     })
 
-        TweenMax.fromTo(hopTop, t, {
-            opacity:0, y:y1
-        }, {
-            opacity:1, y:0, delay: t
-        })
+    //     TweenMax.fromTo(hopTop, t, {
+    //         opacity:0, y:y1
+    //     }, {
+    //         opacity:1, y:0, delay: t
+    //     })
 
-        TweenMax.fromTo("#loader-bar, #loader .letter", t/2, {
-            opacity:0, scale:0.5
-        }, {
-            opacity:1, scale:1, delay: t+t/2, onComplete: ()=> {
-                this.incrementLoaderGradient();
-            }
-        })
+    //     TweenMax.fromTo("#loader-bar, #loader .letter", t/2, {
+    //         opacity:0, scale:0.5
+    //     }, {
+    //         opacity:1, scale:1, delay: t+t/2, onComplete: ()=> {
+    //             this.incrementLoaderGradient();
+    //         }
+    //     })
 
-        this.loopingAnimations.push(
-            TweenMax.to(fruitTop, t, {
-                y:-y2, repeat:-1, yoyo:true, delay:t*2
-            })
-        )
+    //     this.loopingAnimations.push(
+    //         TweenMax.to(fruitTop, t, {
+    //             y:-y2, repeat:-1, yoyo:true, delay:t*2
+    //         })
+    //     )
 
-        this.loopingAnimations.push(
-            TweenMax.to(hopTop, t, {
-                y:y2, repeat:-1, yoyo:true, delay:t*2
-            })
-        )
+    //     this.loopingAnimations.push(
+    //         TweenMax.to(hopTop, t, {
+    //             y:y2, repeat:-1, yoyo:true, delay:t*2
+    //         })
+    //     )
 
-        this.loopingAnimations.push(
-            TweenMax.to(find(this.loaderEl, ".top"), t, {
-                y:-y2, x:y2, repeat:-1, yoyo:true, delay:t*2
-            })
-        )
+    //     this.loopingAnimations.push(
+    //         TweenMax.to(find(this.loaderEl, ".top"), t, {
+    //             y:-y2, x:y2, repeat:-1, yoyo:true, delay:t*2
+    //         })
+    //     )
 
-        this.loopingAnimations.push(
-            TweenMax.to(find(this.loaderEl, ".bottom"), t, {
-                y:y2, x:-y2, repeat:-1, yoyo:true, delay:t*2
-            })
-        )
+    //     this.loopingAnimations.push(
+    //         TweenMax.to(find(this.loaderEl, ".bottom"), t, {
+    //             y:y2, x:-y2, repeat:-1, yoyo:true, delay:t*2
+    //         })
+    //     )
 
-        // this.incrementLoader();
-    }
+    //     // this.incrementLoader();
+    // }
 
-    private loaderOut() {
-        var y1 = window.innerHeight;
-        var y2 = 20;
-        var t = 0.3;
-        var fruitTop = find(this.loaderEl, ".fruit-top");
-        var hopTop = find(this.loaderEl, ".hop-bottom");
+    // private loaderOut() {
+    //     var y1 = window.innerHeight;
+    //     var y2 = 20;
+    //     var t = 0.3;
+    //     var fruitTop = find(this.loaderEl, ".fruit-top");
+    //     var hopTop = find(this.loaderEl, ".hop-bottom");
 
-        this.loopingAnimations.forEach((anim)=> {
-            anim.kill();
-        })
+    //     this.loopingAnimations.forEach((anim)=> {
+    //         anim.kill();
+    //     })
 
-        TweenMax.to(fruitTop, t, {
-            y:-y1/2, alpha:0
-        })
+    //     TweenMax.to(fruitTop, t, {
+    //         y:-y1/2, alpha:0
+    //     })
 
-        TweenMax.to(hopTop, t, {
-            y:y1/2, alpha:0
-        })
+    //     TweenMax.to(hopTop, t, {
+    //         y:y1/2, alpha:0
+    //     })
 
-        TweenMax.to("#loader-bar, #loader .letter", t, {
-            alpha:0, scale:0.5, onComplete: this.showLanding.bind(this)
-        })
+    //     TweenMax.to("#loader-bar, #loader .letter", t, {
+    //         alpha:0, scale:0.5, onComplete: this.showLanding.bind(this)
+    //     })
 
-    }
+    // }
 
-    private incrementLoader() {
-        console.log(this.loaderProgress);
-        if (this.loaderProgress < 1) {
-            this.loaderProgress += 1/20;
-            // console.log(this.loaderProgress);
-            if (this.loaderProgress < 0.5) {
-                this.loaderRedFillTargetVal = 1-this.loaderProgress*2;
-                // console.log("red", this.loaderRedFillTargetVal);
-                // this.loaderRedFill.setAttribute("offset", (1-this.loaderProgress*2).toString())
-            } else {
-                this.loaderPurpleFillTargetVal = 1-(this.loaderProgress*2-1);
-                // console.log("purple", this.loaderPurpleFillTargetVal)
-                // this.loaderPurpleFill.setAttribute("offset", (1-(this.loaderProgress*2-1)).toString())
-            }
+    // private incrementLoader() {
+    //     console.log(this.loaderProgress);
+    //     if (this.loaderProgress < 1) {
+    //         this.loaderProgress += 1/20;
+    //         // console.log(this.loaderProgress);
+    //         if (this.loaderProgress < 0.5) {
+    //             this.loaderRedFillTargetVal = 1-this.loaderProgress*2;
+    //             // console.log("red", this.loaderRedFillTargetVal);
+    //             // this.loaderRedFill.setAttribute("offset", (1-this.loaderProgress*2).toString())
+    //         } else {
+    //             this.loaderPurpleFillTargetVal = 1-(this.loaderProgress*2-1);
+    //             // console.log("purple", this.loaderPurpleFillTargetVal)
+    //             // this.loaderPurpleFill.setAttribute("offset", (1-(this.loaderProgress*2-1)).toString())
+    //         }
     
-            // console.log(this.loaderProgress, this.loaderRedFill, this.loaderPurpleFill);
-            // console.log("*")
+    //         // console.log(this.loaderProgress, this.loaderRedFill, this.loaderPurpleFill);
+    //         // console.log("*")
     
-            setTimeout(this.incrementLoader.bind(this), 500)
-        } else {
-           this.loaderOut();
-        }
-    }
+    //         setTimeout(this.incrementLoader.bind(this), 500)
+    //     } else {
+    //     //    this.loaderOut();
+    //     }
+    // }
 
-    private incrementLoaderGradient() {
-        var increment = 0.01;
-        if (this.loaderRedFillCurrentVal > this.loaderRedFillTargetVal) {
-            this.loaderRedFillCurrentVal-= increment;
-            this.loaderRedFill.setAttribute("offset", this.loaderRedFillCurrentVal.toString())
-        }
+    // private incrementLoaderGradient() {
+    //     var increment = 0.01;
+    //     if (this.loaderRedFillCurrentVal > this.loaderRedFillTargetVal) {
+    //         this.loaderRedFillCurrentVal-= increment;
+    //         this.loaderRedFill.setAttribute("offset", this.loaderRedFillCurrentVal.toString())
+    //     }
 
-        if (this.loaderPurpleFillCurrentVal > this.loaderPurpleFillTargetVal) {
-            this.loaderPurpleFillCurrentVal-= increment;
-            this.loaderPurpleFill.setAttribute("offset", this.loaderPurpleFillCurrentVal.toString())
-        }
+    //     if (this.loaderPurpleFillCurrentVal > this.loaderPurpleFillTargetVal) {
+    //         this.loaderPurpleFillCurrentVal-= increment;
+    //         this.loaderPurpleFill.setAttribute("offset", this.loaderPurpleFillCurrentVal.toString())
+    //     }
 
-        setTimeout(this.incrementLoaderGradient.bind(this), 10)
-    }
+    //     setTimeout(this.incrementLoaderGradient.bind(this), 10)
+    // }
 
     private setBG(color : string) {
         // set the next background color to turn the body in the graphics callback
@@ -289,18 +314,58 @@ export default class UI {
         this.app.switchGraphics(data.COLOURS_THREE[color]);
     }
 
+    private showBorder() {
+        // show the border letters
+
+        // N E C
+        TweenMax.fromTo("#frame-letters li.top", 0.3, {
+            y:-100
+        }, {
+            y:0, stagger: {
+                each: 0.2
+            }
+        })
+
+        // T
+        TweenMax.fromTo("#frame-letters li.left.middle", 0.3, {
+            x:-100
+        }, {
+            x:0, delay:0.4
+        })
+
+        // A
+        TweenMax.fromTo("#frame-letters li.right.middle", 0.3, {
+            x:100
+        }, {
+            x:0, delay:0.6
+        })
+
+        // R O N
+        TweenMax.fromTo("#frame-letters li.bottom", 0.3, {
+            y:100
+        }, {
+            y:0, delay:0.6, stagger: {
+                each: 0.2
+            }
+        })
+    }
+
     public showLanding() {
         // // reset the cookie
         document.cookie = "landingShown"
         console.log(document.cookie);
         this.landingPageEl.style.display = "block";
 
+        this.showBorder();
+
+        // NECTARON
         TweenMax.from(".logo path, .logo polygon, .logo rect", 1, {
             alpha:0, scale:0, transformOrigin: "center", delay:0.5, stagger: {
                 each:0.04, from: "random"
             }
         })
         
+        // THE SOUND OF
         TweenMax.from(".logo-head path:nth-child(even)", 1, {
             alpha:0, scale:0, rotation:45, y:50, delay:1, stagger: {
                 each:0.1, from: "random"
@@ -313,17 +378,20 @@ export default class UI {
             }
         })
         
+        // BREW YOUR OWN....
         TweenMax.from("#landing .subheading", 0.5, {
             alpha:0, y:5, delay:3
         })
         
+        // ARROW
         TweenMax.from("#start-btn", 0.3, {
-            alpha:0, delay:4
+            alpha:0, delay:4, x:-10
         })
         
-        // TweenMax.to("#start-btn", 0.3, {
-        //     x:-5, repeat: -1, delay:4, yoyo: true
-        // })
+        this.loopingAnimations.push(TweenMax.to("#start-btn", 0.3, {
+            x:-10, repeat: -1, delay:4.3, yoyo: true
+        }))
+        
 
         var d = 2;
         var t1 = 0.3;
