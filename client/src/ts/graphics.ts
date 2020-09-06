@@ -164,7 +164,7 @@ const waterFragShader = `
         {
             vec2 g = vec2(float(i),float(j));
             vec2 o = hash2( n + g );
-            o = 0.5 + 0.5*sin(6.2831 * o + noise + time);
+            o = 0.5 + 0.5*sin(6.2831 * o + noise + time * 0.5);
             vec2 r = g + o - f;
             float d = dot(r,r);
 
@@ -185,7 +185,7 @@ const waterFragShader = `
         {
             vec2 g = mg + vec2(float(i),float(j));
             vec2 o = hash2( n + g );
-            o = 0.5 + 0.5*sin(6.2831 * o + noise + time);
+            o = 0.5 + 0.5*sin(6.2831 * o + noise + time * 0.5);
             vec2 r = g + o - f;
 
             if( dot(mr-r,mr-r)>0.00001 )
@@ -198,9 +198,9 @@ const waterFragShader = `
 
 
     void main() {
-        vec2 samplePoint = vUv * size * 0.01;
+        vec2 samplePoint = vUv * size * 0.015;
         vec3 c = voronoi( samplePoint + vec2(0.0, time) );
-        float border = smoothstep( 0.03, 0.04, c.x);
+        float border = smoothstep( 0.02, 0.04, c.x);
         vec3 color = mix(FOAM_COL, WATER_COL, border);
         gl_FragColor = vec4(color, 1.0);
     }
