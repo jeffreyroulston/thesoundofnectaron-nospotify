@@ -65,6 +65,7 @@ const waterFragShader = `
     varying vec2 vUv;
 
     uniform float time;
+    uniform vec2 size;
 
     vec3 mod289(vec3 x) {
         return x - floor(x * (1.0 / 289.0)) * 289.0;
@@ -155,7 +156,7 @@ const waterFragShader = `
         //----------------------------------
         vec2 mg, mr;
 
-        float noise = snoise(vec3(x * 2.0, time));
+        float noise = snoise(vec3(x * 2.0, time)) * 0.5;
 
         float md = 8.0;
         for( int j=-1; j<=1; j++ )
@@ -197,8 +198,8 @@ const waterFragShader = `
 
 
     void main() {
-        vec3 c = voronoi( 8.0 * vUv + vec2(0.0, time) );
-        float noise = snoise(vec3(vUv * 10.0, time));
+        vec2 samplePoint = vUv * size * 0.01;
+        vec3 c = voronoi( samplePoint + vec2(0.0, time) );
         float border = smoothstep( 0.03, 0.04, c.x);
         vec3 color = mix(FOAM_COL, WATER_COL, border);
         gl_FragColor = vec4(color, 1.0);
@@ -270,9 +271,9 @@ export default class Graphics {
             this.renderer.domElement.id = "graphics-canvas";
         }
 
-        window.onresize = () => {
+        window.addEventListener('resize', () => {
             this.frameResized = true;
-        }
+        });
 
         this.scene = new THREE.Scene();
         this.camera = new THREE.OrthographicCamera(-2, 2, 2, -2, 0, 2);
@@ -304,7 +305,8 @@ export default class Graphics {
             fragmentShader: waterFragShader,
             side: THREE.DoubleSide,
             uniforms: {
-                time: {value: 0.0}
+                time: {value: 0.0},
+                size: {value: new THREE.Vector2(1.0, 1.0)}
             }
         });
 
@@ -414,6 +416,7 @@ export default class Graphics {
         // this.squiggleRenderer.getDrawingBufferSize(this.currentRendererSize);
 
         this.material.uniforms.size.value.copy(this.currentRendererSize);
+        this.waterMaterial.uniforms.size.value.copy(this.currentRendererSize);
 
         const aspect = width / height;
         this.camera.left = -aspect;
