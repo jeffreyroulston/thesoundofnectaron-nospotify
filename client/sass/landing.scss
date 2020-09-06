@@ -26,6 +26,20 @@
         width: 100%;
     }
 
+    .logo-wrapper-large {
+        @include maxW($mobileLargeWidth) {
+            display: none;
+        }
+    }
+
+    .logo-wrapper-mobile {
+        display: none;
+
+        @include maxW($mobileLargeWidth) {
+            display: block;
+        }
+    }
+
     #logo-letters {
         .letter {
             display:inline-block;

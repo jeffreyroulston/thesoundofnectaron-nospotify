@@ -1,15 +1,15 @@
 import * as si from "./spotify-interface";
 import * as data from "./data";
+import * as f from "./helpers";
 import Slider from "./slider-q";
 import MCQ from "./mc-q";
 import QuickFireQ from "./quickfire-q";
-import {el, find, elList, getRandom, px} from "./helpers";
 import {TweenMax} from "gsap"
 import App from "./app";
 
 import gsap from "gsap";
 import { DrawSVGPlugin } from "gsap/dist/DrawSVGPlugin";
-import { easeCircleInOut } from "d3";
+import { easeCircleInOut, easeExpIn, easeSinIn } from "d3";
 gsap.registerPlugin(DrawSVGPlugin);
 
 var qDefault = function() { return { value: 0, include: false } };
@@ -31,31 +31,30 @@ export default class UI {
     private currentPage : PageType = PageType.Login;
     private currentRoundIdx : number = -1;
 
-    private graphicsEl: HTMLElement = el("#canvas-container");
-    private landingPageEl: HTMLElement = el("#landing");
-    private roundPageEl: HTMLElement = el("#round-name");
-    private frameLetters: HTMLElement[] = elList("#frame-letters");
-    private descriptionEl : HTMLElement = el("#round-name .description p");
+    // main bits
+    private graphicsEl: HTMLElement = f.elByID("canvas-container");
+    private landingPageEl: HTMLElement = f.elByID("landing");
+    private roundPageEl: HTMLElement = f.elByID("round-name");
+
+    // frame letters
+    private frameEl: HTMLElement = f.elByID("frame-letters");
+    private frameLetterFill : HTMLElement[] = f.findAll(this.frameEl, ".logo-letter-fill");
+
+    // description box for the round
+    private descriptionEl : HTMLElement = f.find(this.roundPageEl, ".description p");
+
+    // waves
+    private wavesTopEl : HTMLElement = f.elByID("waves-top");
+    private wavesBottomEl : HTMLElement = f.elByID("waves-bottom");
+    private currentWaveColor: string = "purple";
     
     // nav
-    private navWrapperEl : HTMLElement = el("#nav-wrapper")
-    private navContentEl : HTMLElement = el("#nav")
-    private burgerEl : HTMLElement = el("#burger");
+    private navWrapperEl : HTMLElement = f.elByID("nav-wrapper")
+    private burgerEl : HTMLElement = f.elByID("burger");
 
     // pop up pages
     private currentPopupPageEl : HTMLElement | undefined = undefined;
     private currentPopupPage : string = "";
-
-    // loader elements
-    private loaderProgress = 0;
-    private loaderHeight = 0;
-    private loaderEl : HTMLElement = el("#loader");
-    // private loaderRedFill : HTMLElement;
-    // private loaderPurpleFill : HTMLElement;
-    // private loaderRedFillTargetVal : number = 1;
-    // private loaderPurpleFillTargetVal : number = 1;
-    // private loaderRedFillCurrentVal : number = 1;
-    // private loaderPurpleFillCurrentVal : number = 1;
 
     // for between pages
     private lastVisibleEl : HTMLElement;
@@ -98,8 +97,6 @@ export default class UI {
         this.mcq = new MCQ(this, "#mc-q");
         this.qfq = new QuickFireQ(this, "#quickfire-q");
 
-        // get the logo letters
-        var polygons = elList(".logo-letters .purple");
 
         // set the order (lol)
         this.questionGroups = [this.slider, this.mcq, this.qfq];
@@ -117,19 +114,16 @@ export default class UI {
         //     console.log("it's internet fucking explorer")
         //   }
 
-        // set button bindings
-        // el("#start-btn").addEventListener("click", this.login.bind(this));
-        
-        // var btns = elList(".next-btn:not(#start-btn)");
-        var btns = elList(".next-btn");
-        btns.forEach(e => {
-            e.addEventListener("click", this.next.bind(this))
-        })
 
+        // var btns = elList(".next-btn:not(#start-btn)");
+        f.find(this.landingPageEl, ".next-btn").addEventListener("click", this.next.bind(this))
+        f.find(this.roundPageEl, ".next-btn").addEventListener("click", this.next.bind(this))
+
+        // used for the mobile menu
         this.burgerEl.addEventListener("click", this.toggleNav.bind(this));
 
-        var navItems = elList("#nav li");
-        navItems.forEach(li => {
+        // navigation elements
+        f.findAll(this.navWrapperEl, "li").forEach(li => {
             li.addEventListener("click", this.togglePage.bind(this))
         })
 
@@ -143,12 +137,6 @@ export default class UI {
         // set the next background color to turn the body in the graphics callback
         this.nextBgColor = color;
 
-        // // set logo colours - set it to the contrast of the background colour
-        // this.borderLetters.forEach(el => {
-        //     // el.style.fill = data.CONTRAST[color];
-        //     el.style.fill = data.COLOURS.beige;
-        // });
-
         // these are the border elements that stay on top
         // this.sharedEl.style.zIndex = "201";
 
@@ -161,130 +149,127 @@ export default class UI {
 
     private showBorder() {
         // show the border letters
-
         // N E C
-        TweenMax.fromTo("#frame-letters li.top", 0.5, {
-            y:-100
-        }, {
-            y:0
-        })
-
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.top"), 0.5, {y:-100}, {y:0})
         // T
-        TweenMax.fromTo("#frame-letters li.left.middle", 0.5, {
-            x:-100
-        }, {
-            x:0
-        })
-
+        TweenMax.fromTo(f.findAll(this.frameEl,"li.left.middle"), 0.5, {x:-100}, {x:0})
         // A
-        TweenMax.fromTo("#frame-letters li.right.middle", 0.5, {
-            x:100
-        }, {
-            x:0
-        })
-
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.right.middle"), 0.5, {x:100}, { x:0})
         // R O N
-        TweenMax.fromTo("#frame-letters li.bottom", 0.5, {
-            y:100
-        }, {
-            y:0
-        })
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.bottom"), 0.5, {y:100}, {y:0})
     }
 
-    private toggleWaves(colour: string, hideAll?:boolean) {
-        var waves = elList(".wave:not(.wave-" + colour + ")");
-        waves.forEach((w)=> {
-            w.style.display = "none";
+    private toggleWaves(colour: string) {
+        // change visible wave colours
+        f.findAll(this.wavesTopEl, ".wave").forEach((w1)=> {
+            w1.classList.toggle(this.currentWaveColor);
+            w1.classList.toggle(colour);
         })
 
-        var waves2 = elList(".wave-" + colour);
-        waves2.forEach((w2)=> {
-            w2.style.display = "block";
+        f.findAll(this.wavesBottomEl, ".wave").forEach((w2)=> {
+            w2.classList.toggle(this.currentWaveColor);
+            w2.classList.toggle(colour);
         })
+
+        this.currentWaveColor = colour;
     }
 
     private hideWaves() {
-        var waves = elList(".wave");
-        waves.forEach((w)=> {
-            w.style.display = "none";
-        })
+        this.wavesTopEl.style.display = "none";
+        this.wavesBottomEl.style.display = "none";
     }
 
     private toggleFrameColours(colour : string) {
-        var borderLetters = elList(".logo-letter-fill");
-        borderLetters.forEach((el)=> {
+        // change colour of letters in the border
+        this.frameLetterFill.forEach((el)=> {
             el.style.fill = colour;
         })
-
     }
 
     public showLanding() {
         // // reset the cookie
         document.cookie = "landingShown"
-        console.log(document.cookie);
         this.landingPageEl.style.display = "block";
 
-        // make the waves purple
-        this.toggleWaves("purple");
-
-        // make the text white
+        // make the frame text white
         this.toggleFrameColours(data.COLOURS.beige);
 
+        // make the border come in - this is used on round name as well?
         this.showBorder();
 
+        // logos
+        var logoDesktop = f.find(this.landingPageEl, ".logo-wrapper-large");
+        var logoMobile = f.find(this.landingPageEl, ".logo-wrapper-mobile");
+        var isDesktop = f.getStyle(logoDesktop, "display") == "block";
+        var logoContainer = isDesktop ? logoDesktop : logoMobile;
+
+        var logoHeadElements= f.findAll(logoContainer, ".logo-head-fill");
+        var logoElements= f.findAll(logoContainer, ".logo-fill");
+
+        // other elements
+        var hop = f.elByID("hop");
+        var subheading = f.find(this.landingPageEl, ".subheading")
+        var btn = f.find(this.landingPageEl, "#start-btn");
+
         // WAVES
-        TweenMax.fromTo(".waves:not(.flipped)", 0.5, {
+        TweenMax.fromTo(this.wavesBottomEl, 0.5, {
             display:"none", y:500, alpha:0
         }, {
             display:"block",y:0, alpha:1
         })
 
-        TweenMax.fromTo(".waves.flipped", 0.5, {
+        TweenMax.fromTo(this.wavesTopEl, 0.5, {
             display:"none", y:-500, alpha:0
         }, {
             display:"block",y:0, alpha:1
         })
 
         // HOP  
-        TweenMax.fromTo("#hop", 0.5, {
-            display:"none", scale: 0.9, alpha:0
+        TweenMax.fromTo(hop, 1, {
+            display:"none", scale: 0.95, alpha:0
         }, {
-            display:"block",scale:1, alpha:1
+            display:"block",scale:1, alpha:1, ease: easeSinIn
         })
 
         // BOUNCE DAT HOP
-        this.loopingAnimations.push(TweenMax.to("#hop", 1, {
-            y:-5, repeat:-1, yoyo:true
+        this.loopingAnimations.push(TweenMax.to(hop, 1, {
+            scale:0.99, delay:1, repeat:-1, yoyo:true
         }))
 
         // NECTARON
-        TweenMax.from(".logo path, .logo polygon, .logo rect", 1, {
-            alpha:0, scale:0, transformOrigin: "center", delay:0.5, stagger: {
+        TweenMax.from(logoElements, 1, {
+            alpha:0, scale:0, transformOrigin: "center", delay:1.5, stagger: {
                 each:0.04, from: "random"
             }
         })
         
         // THE SOUND OF
-        TweenMax.from(".logo-head path:nth-child(even)", 1, {
-            alpha:0, scale:0, rotation:45, y:50, delay:1, stagger: {
-                each:0.1, from: "random"
+        TweenMax.from(logoHeadElements, 1, {
+            alpha:0, scale:0, rotation:-45, y:-200, delay:2, stagger: {
+                each:0.1
             }
         })
         
-        TweenMax.from(".logo-head path:nth-child(odd)", 1, {
-            alpha:0, scale:0, rotation:-45, y:-200, delay:1, stagger: {
-                each:0.1, from: "random"
-            }
-        })
+        // TweenMax.from(".logo-head path:nth-child(even)", 1, {
+        //     alpha:0, scale:0, rotation:45, y:50, delay:1, stagger: {
+        //         each:0.1, from: "random"
+        //     }
+        // })
+        
+        // TweenMax.from(".logo-head path:nth-child(odd)", 1, {
+        //     alpha:0, scale:0, rotation:-45, y:-200, delay:1, stagger: {
+        //         each:0.1, from: "random"
+        //     }
+        // })
         
         // BREW YOUR OWN....
-        TweenMax.from("#landing .subheading", 0.5, {
+        TweenMax.from(subheading, 0.5, {
             alpha:0, y:5, delay:3
         })
         
         // ARROW
-        TweenMax.from("#start-btn", 0.3, {
-            alpha:0, delay:4, x:-10
+        TweenMax.from(btn, 0.3, {
+            alpha:0, scale:0.9, delay:4
         })
     }
 
@@ -310,12 +295,12 @@ export default class UI {
         this.descriptionEl.innerHTML = currentRound.text;
 
         // set the arrow colour
-        find(this.roundPageEl, ".arrow-line").style.stroke = data.CONTRAST[currentRound.color];
-        find(this.roundPageEl, ".arrow-head").style.fill = data.CONTRAST[currentRound.color];
+        f.find(this.roundPageEl, ".arrow-line").style.stroke = data.CONTRAST[currentRound.color];
+        f.find(this.roundPageEl, ".arrow-head").style.fill = data.CONTRAST[currentRound.color];
 
         // if round 3, change the colour of zero
         if (this.currentRoundIdx == 2) {
-            el("#round-name .numbers li:first-child path").style.stroke = data.COLOURS.purple;
+            f.el("#round-name .numbers li:first-child path").style.stroke = data.COLOURS.purple;
         }
 
         // show elements
@@ -355,9 +340,9 @@ export default class UI {
         var paths = document.querySelectorAll(".round path");
         console.log(paths);
         for (var i=0; i<paths.length; i++) {
-            let xVal = getRandom(-300, 300)
-            let yVal = getRandom(-300, 300);
-            let r = getRandom(-180, 180);
+            let xVal = f.getRandom(-300, 300)
+            let yVal = f.getRandom(-300, 300);
+            let r = f.getRandom(-180, 180);
 
             TweenMax.fromTo(paths[i], 0.8, {
                 alpha:0, scale:0, x:xVal, y: yVal, rotation: r
@@ -567,7 +552,7 @@ export default class UI {
     // call back from graphics/app
     public bgTransitionComplete() {
         // set the body colour
-        el("body").style.backgroundColor = this.nextBgColor;
+        f.el("body").style.backgroundColor = this.nextBgColor;
         this.lastVisibleEl.style.display = "none";
 
         if (this.currentPage == PageType.Question) {
@@ -580,7 +565,7 @@ export default class UI {
         }
 
         // fix this lol
-        el("#hop").style.display = "none";
+        f.el("#hop").style.display = "none";
 
         // set completed callback
         console.log("heeeeeeere");

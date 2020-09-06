@@ -35,10 +35,12 @@ export enum QuestionType {
 export interface QuestionRound {
     round : number;
     color: string;
+    waveColor: string;
     numberColor: string,
     btnTextColor: string,
     btnPaddingColor: string,
     text : string;
+    
 }
 
 export interface Question {
@@ -66,6 +68,7 @@ export const ROUNDS : QuestionRound[] = [
     {
         round: 1,
         color: COLOURS.red,
+        waveColor : "red",
         numberColor: COLOURS.yellow,
         btnTextColor : COLOURS.red,
         btnPaddingColor : COLOURS.purple,
@@ -74,6 +77,7 @@ export const ROUNDS : QuestionRound[] = [
     {
         round : 2,
         color: COLOURS.purple,
+        waveColor : "purple",
         numberColor: COLOURS.yellow,
         btnTextColor : COLOURS.purple,
         btnPaddingColor : COLOURS.red,
@@ -82,6 +86,7 @@ export const ROUNDS : QuestionRound[] = [
     {
         round: 3,
         color: COLOURS.blue,
+        waveColor : "blue",
         numberColor: COLOURS.purple,
         btnTextColor : COLOURS.red,
         btnPaddingColor : COLOURS.purple,
