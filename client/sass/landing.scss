@@ -85,14 +85,14 @@
 //1920px;
 @include maxW($desktopXLargeWidth) {
     .text-wrapper {
-        @include transform(scale(0.9));
+        @include transform(scale(0.8));
     }
 }
 
 //1366px
 @include maxW($desktopLargeWidth) {
     .text-wrapper {
-        @include transform(scale(0.8));
+        @include transform(scale(0.7));
     }
 }
 

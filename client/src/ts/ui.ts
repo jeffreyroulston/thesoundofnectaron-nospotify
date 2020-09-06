@@ -252,6 +252,11 @@ export default class UI {
             display:"block",scale:1, alpha:1
         })
 
+        // BOUNCE DAT HOP
+        this.loopingAnimations.push(TweenMax.to("#hop", 1, {
+            y:-5, repeat:-1, yoyo:true
+        }))
+
         // NECTARON
         TweenMax.from(".logo path, .logo polygon, .logo rect", 1, {
             alpha:0, scale:0, transformOrigin: "center", delay:0.5, stagger: {
