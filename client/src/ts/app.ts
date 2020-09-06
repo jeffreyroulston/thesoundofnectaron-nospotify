@@ -2,7 +2,7 @@ import * as si from "./spotify-interface";
 // import * as Questions from "./questions";
 import * as THREE from 'three';
 import UI from "./ui";
-import ResourceManager from "./resource-manager";
+import ResourceManager, { GLTFAsset } from "./resource-manager";
 import Graphics from "./graphics";
 import { timeThursday } from "d3";
 
@@ -52,7 +52,11 @@ export default class App {
         // this.ui.OnLoginPressed = this.Login;
         // this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
 
-        this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png").then(() => {
+        const loadPromises = [];
+        loadPromises.push(this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png"));
+        loadPromises.push(this.resourceManager.loadResourceByPath(GLTFAsset, "assets/water_plane.gltf"));
+
+        Promise.all(loadPromises).then(() => {
             this.graphics.onInitResources(this.resourceManager);
         });
 

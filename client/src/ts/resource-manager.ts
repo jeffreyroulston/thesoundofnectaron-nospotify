@@ -1,8 +1,21 @@
-export type LoadableResource = HTMLImageElement;
+import * as THREE from "three";
+import * as gltfloader from './GLTFLoader';
+
+console.debug(gltfloader, THREE.GLTFLoader);
+
+export class GLTFAsset {
+    public resource: THREE.GLTF;
+
+    constructor(resource: THREE.GLTF) {
+        this.resource = resource;
+    }
+}
+export type LoadableResource = HTMLImageElement | GLTFAsset;
 
 export default class ResourceManager {
 
     private resourceStore: Map<string, LoadableResource> = new Map();
+    private gltfLoader: THREE.GLTFLoader = new THREE.GLTFLoader();
 
     constructor() {}
 
@@ -40,6 +53,21 @@ export default class ResourceManager {
                 }
 
                 image.src = path;
+            });
+        }
+
+        if (t === GLTFAsset)
+        {
+            return new Promise((resolve, reject) => {
+                this.gltfLoader.load(path, (gltf) => {
+                    const a = new t(gltf);
+                    this.resourceStore.set(alias ?? path, a);
+                    resolve(a);
+                },
+                () => {},
+                (err) => {
+                    reject(err);
+                });
             });
         }
 

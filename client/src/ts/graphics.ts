@@ -1,8 +1,8 @@
-import ResourceManager from "./resource-manager";
+import ResourceManager, { GLTFAsset } from "./resource-manager";
 import * as THREE from 'three';
 import {COLOURS} from "./data";
 import Squiggles from "./squiggles";
-import { BufferAttribute } from "three";
+import { BufferAttribute, Scene } from "three";
 
 const vertShader = `
     varying vec2 vUv;
@@ -43,6 +43,168 @@ const fragShader = `
     }
 `
 
+const waterVertShader = `
+
+    varying vec2 vUv;
+
+    void main() {
+        vUv = uv;
+        gl_Position = vec4(position, 1.0);
+    }
+`
+
+const waterFragShader = `
+
+    #define WATER_COL vec3(0.0, 0.4453, 0.7305)
+    #define WATER2_COL vec3(0.0, 0.4180, 0.6758)
+    #define FOAM_COL vec3(0.8125, 0.9609, 0.9648)
+    #define FOG_COL vec3(0.6406, 0.9453, 0.9336)
+    #define SKY_COL vec3(0.0, 0.8203, 1.0)
+
+
+    varying vec2 vUv;
+
+    uniform float time;
+
+    vec3 mod289(vec3 x) {
+        return x - floor(x * (1.0 / 289.0)) * 289.0;
+     }
+     vec4 mod289(vec4 x) {
+        return x - floor(x * (1.0 / 289.0)) * 289.0;
+     }
+     vec4 permute(vec4 x) {
+        return mod289(((x*34.0)+1.0)*x);
+     }
+     vec4 taylorInvSqrt(vec4 r) {
+        return 1.79284291400159 - 0.85373472095314 * r;
+     }
+     float snoise(vec3 v) {
+        const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+        const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+  
+        vec3 i  = floor(v + dot(v, C.yyy) );
+        vec3 x0 =   v - i + dot(i, C.xxx) ;
+  
+        vec3 g = step(x0.yzx, x0.xyz);
+        vec3 l = 1.0 - g;
+        vec3 i1 = min( g.xyz, l.zxy );
+        vec3 i2 = max( g.xyz, l.zxy );
+  
+        vec3 x1 = x0 - i1 + C.xxx;
+        vec3 x2 = x0 - i2 + C.yyy; // 2.0*C.x = 1/3 = C.y
+        vec3 x3 = x0 - D.yyy;      // -1.0+3.0*C.x = -0.5 = -D.y
+  
+        i = mod289(i);
+        vec4 p = permute( permute( permute(
+        i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+        + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))
+        + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+  
+        float n_ = 0.142857142857; // 1.0/7.0
+        vec3  ns = n_ * D.wyz - D.xzx;
+  
+        vec4 j = p - 49.0 * floor(p * ns.z * ns.z);  //  mod(p,7*7)
+  
+        vec4 x_ = floor(j * ns.z);
+        vec4 y_ = floor(j - 7.0 * x_ );    // mod(j,N)
+  
+        vec4 x = x_ *ns.x + ns.yyyy;
+        vec4 y = y_ *ns.x + ns.yyyy;
+        vec4 h = 1.0 - abs(x) - abs(y);
+  
+        vec4 b0 = vec4( x.xy, y.xy );
+        vec4 b1 = vec4( x.zw, y.zw );
+  
+        vec4 s0 = floor(b0)*2.0 + 1.0;
+        vec4 s1 = floor(b1)*2.0 + 1.0;
+        vec4 sh = -step(h, vec4(0.0));
+  
+        vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+        vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+  
+        vec3 p0 = vec3(a0.xy,h.x);
+        vec3 p1 = vec3(a0.zw,h.y);
+        vec3 p2 = vec3(a1.xy,h.z);
+        vec3 p3 = vec3(a1.zw,h.w);
+  
+        vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+        p0 *= norm.x;
+        p1 *= norm.y;
+        p2 *= norm.z;
+        p3 *= norm.w;
+  
+        vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+        m = m * m;
+        return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3) ) );
+     }
+
+    vec2 hash2( vec2 p )
+    {
+
+        // procedural white noise	
+        return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);
+    }
+
+    vec3 voronoi( in vec2 x )
+    {
+        vec2 n = floor(x);
+        vec2 f = fract(x);
+
+        //----------------------------------
+        // first pass: regular voronoi
+        //----------------------------------
+        vec2 mg, mr;
+
+        float noise = snoise(vec3(x * 2.0, time));
+
+        float md = 8.0;
+        for( int j=-1; j<=1; j++ )
+        for( int i=-1; i<=1; i++ )
+        {
+            vec2 g = vec2(float(i),float(j));
+            vec2 o = hash2( n + g );
+            o = 0.5 + 0.5*sin(6.2831 * o + noise + time);
+            vec2 r = g + o - f;
+            float d = dot(r,r);
+
+            if( d<md )
+            {
+                md = d;
+                mr = r;
+                mg = g;
+            }
+        }
+
+        //----------------------------------
+        // second pass: distance to borders
+        //----------------------------------
+        md = 8.0;
+        for( int j=-2; j<=2; j++ )
+        for( int i=-2; i<=2; i++ )
+        {
+            vec2 g = mg + vec2(float(i),float(j));
+            vec2 o = hash2( n + g );
+            o = 0.5 + 0.5*sin(6.2831 * o + noise + time);
+            vec2 r = g + o - f;
+
+            if( dot(mr-r,mr-r)>0.00001 )
+            md = min( md, dot( 0.5*(mr+r), normalize(r-mr) ) );
+        }
+
+        return vec3( md, mr );
+    }
+
+
+
+    void main() {
+        vec3 c = voronoi( 8.0 * vUv + vec2(0.0, time) );
+        float noise = snoise(vec3(vUv * 10.0, time));
+        float border = smoothstep( 0.03, 0.04, c.x);
+        vec3 color = mix(FOAM_COL, WATER_COL, border);
+        gl_FragColor = vec4(color, 1.0);
+    }
+`
+
 enum TransitionState {
     Ready,
     TransitionForward,
@@ -61,6 +223,12 @@ export default class Graphics {
 
     private squiggleRenderer: THREE.WebGLRenderer;
     private squiggleScene: THREE.Scene;
+
+    // water
+
+    private waterMesh: THREE.Mesh;
+    private waterMaterial: THREE.ShaderMaterial;
+    private waterScene: Scene;
 
     // squiggle timing
     private squiggleUpdateInterval: number = 1.0 / 10.0;
@@ -127,6 +295,22 @@ export default class Graphics {
             },
             transparent: true
         });
+
+        // water
+
+        const waterGeo = new THREE.PlaneBufferGeometry(2, 2, 2, 2);
+        this.waterMaterial = new THREE.ShaderMaterial({
+            vertexShader: waterVertShader,
+            fragmentShader: waterFragShader,
+            side: THREE.DoubleSide,
+            uniforms: {
+                time: {value: 0.0}
+            }
+        });
+
+        this.waterMesh = new THREE.Mesh(waterGeo, this.waterMaterial);
+        this.waterScene = new THREE.Scene();
+        this.waterScene.add(this.waterMesh);
         
         // squiggles
         this.squiggles.update();
@@ -144,7 +328,7 @@ export default class Graphics {
         this.squiggleRenderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
         this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.squiggleRenderer.setClearColor(0x000000, 0);
+        this.squiggleRenderer.setClearColor(0x000000, 1);
 
         // UNCOMMENT THESE LINES TO ADD THE SQUIGGLES
 
@@ -174,6 +358,13 @@ export default class Graphics {
 
         const geo = new THREE.PlaneBufferGeometry(2.0, 2.0, 1.0, 1.0);
         const mesh = new THREE.Mesh(geo, this.material);
+
+        const gltf = resourceManager.getResourceByPath(GLTFAsset, "assets/water_plane.gltf");
+        gltf?.resource.scene.traverse((o => {
+            if (o instanceof THREE.Mesh) {
+                this.waterMesh.geometry = o.geometry;
+            }
+        }))
         
         this.scene.add(mesh);
 
@@ -271,9 +462,10 @@ export default class Graphics {
         }        
 
         this.material.uniforms.time.value = time;
+        this.waterMaterial.uniforms.time.value = time;
         this.material.uniforms.lerp.value = this.currentLerp;
 
         this.renderer.render(this.scene, this.camera);
-        this.squiggleRenderer.render(this.squiggleScene, this.camera);
+        this.squiggleRenderer.render(this.waterScene, this.camera);
     }
 }
