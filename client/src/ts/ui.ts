@@ -212,28 +212,28 @@ export default class UI {
         var btn = f.find(this.landingPageEl, "#start-btn");
 
         // WAVES
-        TweenMax.fromTo(this.wavesBottomEl, 0.5, {
-            display:"none", y:500, alpha:0
+        TweenMax.fromTo(this.wavesBottomEl, 3, {
+            display:"none", y:100, alpha:0
         }, {
-            display:"block",y:0, alpha:1
+            display:"block", y:0, alpha:0.9, ease: "linear"
         })
 
-        TweenMax.fromTo(this.wavesTopEl, 0.5, {
-            display:"none", y:-500, alpha:0
+        TweenMax.fromTo(this.wavesTopEl, 3, {
+            display:"none", y:-100, alpha:0
         }, {
-            display:"block",y:0, alpha:1
+            display:"block", y:0, alpha:0.9, ease: "linear"
         })
 
         // HOP  
         TweenMax.fromTo(hop, 1, {
             display:"none", scale: 0.95, alpha:0
         }, {
-            display:"block",scale:1, alpha:1, ease: easeSinIn
+            display:"block",scale:1, alpha:0.9, ease: easeSinIn
         })
 
         // BOUNCE DAT HOP
-        this.loopingAnimations.push(TweenMax.to(hop, 1, {
-            scale:0.99, delay:1, repeat:-1, yoyo:true
+        this.loopingAnimations.push(TweenMax.to(hop, 2, {
+            scale:0.99, ease: "linear", delay:1, repeat:-1, yoyo:true
         }))
 
         // NECTARON
@@ -295,8 +295,8 @@ export default class UI {
         this.descriptionEl.innerHTML = currentRound.text;
 
         // set the arrow colour
-        f.find(this.roundPageEl, ".arrow-line").style.stroke = data.CONTRAST[currentRound.color];
-        f.find(this.roundPageEl, ".arrow-head").style.fill = data.CONTRAST[currentRound.color];
+        // f.find(this.roundPageEl, ".arrow-line").style.stroke = data.CONTRAST[currentRound.color];
+        // f.find(this.roundPageEl, ".arrow-head").style.fill = data.CONTRAST[currentRound.color];
 
         // if round 3, change the colour of zero
         if (this.currentRoundIdx == 2) {
