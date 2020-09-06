@@ -102,9 +102,9 @@ export default class UI {
         var polygons = elList(".logo-letters .purple");
 
         // set the order (lol)
-        // this.questionGroups = [this.slider, this.mcq, this.qfq];
+        this.questionGroups = [this.slider, this.mcq, this.qfq];
         // this.questionGroups = [this.mcq, this.slider, this.mcq];
-        this.questionGroups = [this.qfq, this.slider, this.mcq];
+        // this.questionGroups = [this.qfq, this.slider, this.mcq];
 
         // set initial question
         this.currentQuestionGroup = this.slider;
@@ -286,134 +286,12 @@ export default class UI {
         TweenMax.from("#start-btn", 0.3, {
             alpha:0, delay:4, x:-10
         })
-        
-        // this.loopingAnimations.push(TweenMax.to("#start-btn", 0.3, {
-        //     x:-10, repeat: -1, delay:4.3, yoyo: true
-        // }))
-        
-
-        var d = 2;
-        var t1 = 0.3;
-        var t2 = 1;
-        var distance = 50;
-
-        // // the title sequence
-        // TweenMax.from(".logo path, .logo polygon, .logo rect", 1, {
-        //     alpha:0, scale:0, transformOrigin: "center", stagger: {
-        //         each:0.04, from: "random"
-        //     }
-        // })
-
-        // TweenMax.from(".logo-head path:nth-child(even)", 1, {
-        //     alpha:0, scale:0, rotation:45, y:50, delay:0.5, stagger: {
-        //         each:0.1, from: "random"
-        //     }
-        // });
-
-        // TweenMax.from("#landing .subheading", 0.5, {
-        //     alpha:0, y:5, delay:1.2
-        // })
-        
-        // TweenMax.from(".logo-head path:nth-child(odd)", 1, {
-        //     alpha:0, scale:0, rotation:-45, y:-200, delay:0.5, stagger: {
-        //         each:0.1, from: "random"
-        //     }
-        // })
-        
-        // TweenMax.from(".logo path, .logo polygon, .logo rect", 1, {
-        //     alpha:0, scale:0, transformOrigin: Anim.center, stagger: {
-        //         each:0.04, from: Anim.random
-        //     }
-        // }, 0).from("#landing .subheading", 0.5, {
-        //     alpha:0, y:5
-        // }, "+=0.2").from("#start-btn", 0.3, {
-        //     alpha:0, x:-5
-        // }).to("#start-btn", 0.3, {
-        //     x:-5, repeat: -1, yoyo: true
-        // })
-
-        // // show the fruits 
-        // TweenMax.from("#landing .fruit-top", t1, {
-        //     alpha: 0, delay:d
-        // })
-
-        // TweenMax.from("#landing .fruit-bottom", t1, {
-        //     alpha: 0, delay:d+0.2
-        // })
-
-        // TweenMax.from("#landing .pineapple-top", t1, {
-        //     alpha: 0, delay:d+0.4
-        // })
-        // TweenMax.from("#landing .fruit-bottom-2", t1, {
-        //     alpha: 0, delay:d+0.6
-        // })
-
-        // TweenMax.from("#landing .fruit-whole", t1, {
-        //     alpha: 0, delay:d+0.8
-        // })
-
-        // TweenMax.from("#landing .pineapple-burner", t1, {
-        //     alpha: 0, delay:d+1
-        // })
-
-        // this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-top", t2, {
-        //     rotate:-30
-        // },{
-        //     y:-50, scale:1.3, rotate:30, repeat:-1, yoyo:true, ease:"linear"
-        // }))
-
-        // this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-bottom", t2, {
-        //     rotate:30
-        // },{
-        //     y:50, scale:1.3, rotate:-30, repeat:-1, yoyo:true, ease:"linear"
-        // }))
-
-        // this.loopingAnimations.push(TweenMax.fromTo("#landing .pineapple-top", t2, {
-        //     x:-50
-        // },{
-        //     x:10, scale:1.3, repeat:-1, yoyo:true, ease:"linear"
-        // }))
-
-        // this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-bottom-2", t2, {
-        //     x:50
-        // },{
-        //     x:10, scale:1.3, repeat:-1, yoyo:true, ease:"linear"
-        // }))
-
-        // this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-whole", t2*2, {
-        //     rotate:0
-        // },{
-        //     rotate:360, repeat:-1, ease:"linear"
-        // }))
-
-        // this.loopingAnimations.push(TweenMax.fromTo("#landing .fruit-whole", t2, {
-        //     scale:1
-        // },{
-        //    scale:1.3, repeat:-1, yoyo:true
-        // }))
-
-        // this.loopingAnimations.push(TweenMax.fromTo("#landing .pineapple-burner", 0.1, {
-        //     rotate:-1
-        // },{
-        //     rotate:0, transformOrigin: "bottom", repeat:-1, ease:"linear", yoyo:true
-        // }))
     }
 
     public showRoundName() {
         window.onbeforeunload = ()=> {
             document.cookie = "showLanding"
         }
-
-        // var wavesBeige = elList(".wave-beige");
-        // var wavesRed = elList(".wave-red");
-
-        // wavesBeige.forEach((b)=> {
-        //     b.style.display = "none";
-        // })
-
-        // wavesRed.forEach((r)=> {
-        //     r.style.display = "block";
-        // })
 
         // set delay time
         var d = 0.7;
@@ -554,12 +432,7 @@ export default class UI {
             this.hidePage(this.currentPopupPage);
             this.currentPopupPage = "";
             this.currentPopupPageEl = undefined;
-        } else {
-
-            // var isMobile = window.getComputedStyle(this.navContentEl).getPropertyValue("height");
-            // console.log(isMobile, window.innerHeight);
-
-            
+        } else {            
             switch (target) {
                 case "link":
                     // go to the nz hops website
@@ -649,10 +522,6 @@ export default class UI {
         console.log("next");
         switch (this.currentPage) {
             case PageType.Login:
-                // stop the animations
-                // anim.landingPageIn.pause();
-                // anim.fruitsIn.pause();
-
                 // show the round name
                 this.showRoundName();
                 break;
@@ -697,8 +566,6 @@ export default class UI {
 
     // call back from graphics/app
     public bgTransitionComplete() {
-        console.log("background transition complete");
-
         // set the body colour
         el("body").style.backgroundColor = this.nextBgColor;
         this.lastVisibleEl.style.display = "none";
@@ -708,7 +575,12 @@ export default class UI {
             TweenMax.to(".round-name-text li, .numbers li", 0, {
                 display: "none"
             })
+
+            this.hideWaves();
         }
+
+        // fix this lol
+        el("#hop").style.display = "none";
 
         // set completed callback
         console.log("heeeeeeere");
