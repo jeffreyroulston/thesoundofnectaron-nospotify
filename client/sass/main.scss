@@ -1,5 +1,5 @@
 @import "shared";
-@import "loader";
+@import "waves";
 @import "frame";
 @import "nav";
 @import "round";
@@ -22,7 +22,7 @@
 //   }
   
 body {
-    background: $beige;
+    background: $purple;
 }
 
 li {

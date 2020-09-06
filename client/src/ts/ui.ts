@@ -34,8 +34,7 @@ export default class UI {
     private graphicsEl: HTMLElement = el("#canvas-container");
     private landingPageEl: HTMLElement = el("#landing");
     private roundPageEl: HTMLElement = el("#round-name");
-    private borderEl : HTMLElement = el("#logo-letters");
-    private borderLetters: HTMLElement[] = elList("#logo-letters .letter");
+    private frameLetters: HTMLElement[] = elList("#frame-letters");
     private descriptionEl : HTMLElement = el("#round-name .description p");
     
     // nav
@@ -134,175 +133,21 @@ export default class UI {
             li.addEventListener("click", this.togglePage.bind(this))
         })
 
-        // loader
-        // this.loaderRedFill = find(this.loaderEl, ".loader-fill-a");
-        // this.loaderPurpleFill = find(this.loaderEl, ".loader-fill-b");
-
-        // this.loaderInit();
-
         // kick it off
-        this.showLanding();
+        setTimeout(this.showLanding.bind(this), 1000);
         // this.showRoundName();
         // this.showLoader();
     }
-
-    private showLoader() {
-        this.loaderEl.style.display = "block";
-        this.incrementLoader();
-    }
-
-    private incrementLoader() {
-        if (this.loaderProgress == 100) return;
-        this.loaderProgress+=10;
-        TweenMax.to(this.loaderEl, 0.5, {
-            height: (this.loaderProgress).toString() + "%"
-        })
-        // if (this.loaderHeight >= window.innerHeight) return;
-        // this.loaderHeight++ 
-        // this.loaderEl.style.height = px(this.loaderHeight);
-        setTimeout(this.incrementLoader.bind(this), 1000)
-    }
-
-    private lerpLoader() {
-        if (this.loaderProgress < 100) {
-            this.loaderEl.style.height = px((this.loaderProgress/100) * window.innerHeight)
-        }
-    }
-
-    // private loaderInit2() {
-    //     var e = el("#loader-2");
-    //     var count = 50;
-    //     for (var i=0; i<count; i++) {
-    //         document.crea
-    //     }
-    // }
-
-    // private loaderInit() {
-    //     var y1 = window.innerHeight;
-    //     var y2 = 10
-    //     var t = 0.6;
-    //     var fruitTop = find(this.loaderEl, ".fruit-top");
-    //     var hopTop = find(this.loaderEl, ".hop-bottom")
-
-    //     TweenMax.fromTo(fruitTop, t, {
-    //         opacity:0, y:-y1
-    //     }, {
-    //         opacity:1, y:0, delay: t
-    //     })
-
-    //     TweenMax.fromTo(hopTop, t, {
-    //         opacity:0, y:y1
-    //     }, {
-    //         opacity:1, y:0, delay: t
-    //     })
-
-    //     TweenMax.fromTo("#loader-bar, #loader .letter", t/2, {
-    //         opacity:0, scale:0.5
-    //     }, {
-    //         opacity:1, scale:1, delay: t+t/2, onComplete: ()=> {
-    //             this.incrementLoaderGradient();
-    //         }
-    //     })
-
-    //     this.loopingAnimations.push(
-    //         TweenMax.to(fruitTop, t, {
-    //             y:-y2, repeat:-1, yoyo:true, delay:t*2
-    //         })
-    //     )
-
-    //     this.loopingAnimations.push(
-    //         TweenMax.to(hopTop, t, {
-    //             y:y2, repeat:-1, yoyo:true, delay:t*2
-    //         })
-    //     )
-
-    //     this.loopingAnimations.push(
-    //         TweenMax.to(find(this.loaderEl, ".top"), t, {
-    //             y:-y2, x:y2, repeat:-1, yoyo:true, delay:t*2
-    //         })
-    //     )
-
-    //     this.loopingAnimations.push(
-    //         TweenMax.to(find(this.loaderEl, ".bottom"), t, {
-    //             y:y2, x:-y2, repeat:-1, yoyo:true, delay:t*2
-    //         })
-    //     )
-
-    //     // this.incrementLoader();
-    // }
-
-    // private loaderOut() {
-    //     var y1 = window.innerHeight;
-    //     var y2 = 20;
-    //     var t = 0.3;
-    //     var fruitTop = find(this.loaderEl, ".fruit-top");
-    //     var hopTop = find(this.loaderEl, ".hop-bottom");
-
-    //     this.loopingAnimations.forEach((anim)=> {
-    //         anim.kill();
-    //     })
-
-    //     TweenMax.to(fruitTop, t, {
-    //         y:-y1/2, alpha:0
-    //     })
-
-    //     TweenMax.to(hopTop, t, {
-    //         y:y1/2, alpha:0
-    //     })
-
-    //     TweenMax.to("#loader-bar, #loader .letter", t, {
-    //         alpha:0, scale:0.5, onComplete: this.showLanding.bind(this)
-    //     })
-
-    // }
-
-    // private incrementLoader() {
-    //     console.log(this.loaderProgress);
-    //     if (this.loaderProgress < 1) {
-    //         this.loaderProgress += 1/20;
-    //         // console.log(this.loaderProgress);
-    //         if (this.loaderProgress < 0.5) {
-    //             this.loaderRedFillTargetVal = 1-this.loaderProgress*2;
-    //             // console.log("red", this.loaderRedFillTargetVal);
-    //             // this.loaderRedFill.setAttribute("offset", (1-this.loaderProgress*2).toString())
-    //         } else {
-    //             this.loaderPurpleFillTargetVal = 1-(this.loaderProgress*2-1);
-    //             // console.log("purple", this.loaderPurpleFillTargetVal)
-    //             // this.loaderPurpleFill.setAttribute("offset", (1-(this.loaderProgress*2-1)).toString())
-    //         }
-    
-    //         // console.log(this.loaderProgress, this.loaderRedFill, this.loaderPurpleFill);
-    //         // console.log("*")
-    
-    //         setTimeout(this.incrementLoader.bind(this), 500)
-    //     } else {
-    //     //    this.loaderOut();
-    //     }
-    // }
-
-    // private incrementLoaderGradient() {
-    //     var increment = 0.01;
-    //     if (this.loaderRedFillCurrentVal > this.loaderRedFillTargetVal) {
-    //         this.loaderRedFillCurrentVal-= increment;
-    //         this.loaderRedFill.setAttribute("offset", this.loaderRedFillCurrentVal.toString())
-    //     }
-
-    //     if (this.loaderPurpleFillCurrentVal > this.loaderPurpleFillTargetVal) {
-    //         this.loaderPurpleFillCurrentVal-= increment;
-    //         this.loaderPurpleFill.setAttribute("offset", this.loaderPurpleFillCurrentVal.toString())
-    //     }
-
-    //     setTimeout(this.incrementLoaderGradient.bind(this), 10)
-    // }
 
     private setBG(color : string) {
         // set the next background color to turn the body in the graphics callback
         this.nextBgColor = color;
 
         // // set logo colours - set it to the contrast of the background colour
-        this.borderLetters.forEach(el => {
-            el.style.fill = data.CONTRAST[color];
-        });
+        // this.borderLetters.forEach(el => {
+        //     // el.style.fill = data.CONTRAST[color];
+        //     el.style.fill = data.COLOURS.beige;
+        // });
 
         // these are the border elements that stay on top
         // this.sharedEl.style.zIndex = "201";
@@ -318,36 +163,59 @@ export default class UI {
         // show the border letters
 
         // N E C
-        TweenMax.fromTo("#frame-letters li.top", 0.3, {
+        TweenMax.fromTo("#frame-letters li.top", 0.5, {
             y:-100
         }, {
-            y:0, stagger: {
-                each: 0.2
-            }
+            y:0
         })
 
         // T
-        TweenMax.fromTo("#frame-letters li.left.middle", 0.3, {
+        TweenMax.fromTo("#frame-letters li.left.middle", 0.5, {
             x:-100
         }, {
-            x:0, delay:0.4
+            x:0
         })
 
         // A
-        TweenMax.fromTo("#frame-letters li.right.middle", 0.3, {
+        TweenMax.fromTo("#frame-letters li.right.middle", 0.5, {
             x:100
         }, {
-            x:0, delay:0.6
+            x:0
         })
 
         // R O N
-        TweenMax.fromTo("#frame-letters li.bottom", 0.3, {
+        TweenMax.fromTo("#frame-letters li.bottom", 0.5, {
             y:100
         }, {
-            y:0, delay:0.6, stagger: {
-                each: 0.2
-            }
+            y:0
         })
+    }
+
+    private toggleWaves(colour: string, hideAll?:boolean) {
+        var waves = elList(".wave:not(.wave-" + colour + ")");
+        waves.forEach((w)=> {
+            w.style.display = "none";
+        })
+
+        var waves2 = elList(".wave-" + colour);
+        waves2.forEach((w2)=> {
+            w2.style.display = "block";
+        })
+    }
+
+    private hideWaves() {
+        var waves = elList(".wave");
+        waves.forEach((w)=> {
+            w.style.display = "none";
+        })
+    }
+
+    private toggleFrameColours(colour : string) {
+        var borderLetters = elList(".logo-letter-fill");
+        borderLetters.forEach((el)=> {
+            el.style.fill = colour;
+        })
+
     }
 
     public showLanding() {
@@ -356,7 +224,33 @@ export default class UI {
         console.log(document.cookie);
         this.landingPageEl.style.display = "block";
 
+        // make the waves purple
+        this.toggleWaves("purple");
+
+        // make the text white
+        this.toggleFrameColours(data.COLOURS.beige);
+
         this.showBorder();
+
+        // WAVES
+        TweenMax.fromTo(".waves:not(.flipped)", 0.5, {
+            display:"none", y:500, alpha:0
+        }, {
+            display:"block",y:0, alpha:1
+        })
+
+        TweenMax.fromTo(".waves.flipped", 0.5, {
+            display:"none", y:-500, alpha:0
+        }, {
+            display:"block",y:0, alpha:1
+        })
+
+        // HOP  
+        TweenMax.fromTo("#hop", 0.5, {
+            display:"none", scale: 0.9, alpha:0
+        }, {
+            display:"block",scale:1, alpha:1
+        })
 
         // NECTARON
         TweenMax.from(".logo path, .logo polygon, .logo rect", 1, {
@@ -388,9 +282,9 @@ export default class UI {
             alpha:0, delay:4, x:-10
         })
         
-        this.loopingAnimations.push(TweenMax.to("#start-btn", 0.3, {
-            x:-10, repeat: -1, delay:4.3, yoyo: true
-        }))
+        // this.loopingAnimations.push(TweenMax.to("#start-btn", 0.3, {
+        //     x:-10, repeat: -1, delay:4.3, yoyo: true
+        // }))
         
 
         var d = 2;
@@ -504,6 +398,17 @@ export default class UI {
         window.onbeforeunload = ()=> {
             document.cookie = "showLanding"
         }
+
+        // var wavesBeige = elList(".wave-beige");
+        // var wavesRed = elList(".wave-red");
+
+        // wavesBeige.forEach((b)=> {
+        //     b.style.display = "none";
+        // })
+
+        // wavesRed.forEach((r)=> {
+        //     r.style.display = "block";
+        // })
 
         // set delay time
         var d = 0.7;
