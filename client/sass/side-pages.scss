@@ -1,0 +1,9 @@
+@import "shared";
+
+#contact, #faq, #about {
+    background-color: $beige;
+
+    .wrapper {
+        top: $marginTop_30;
+    }
+}
