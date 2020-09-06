@@ -4,18 +4,12 @@ import Slider from "./slider-q";
 import MCQ from "./mc-q";
 import QuickFireQ from "./quickfire-q";
 import {el, find, elList, getRandom} from "./helpers";
-import {TweenMax, TimelineMax} from "gsap"
+import {TweenMax} from "gsap"
 import App from "./app";
-
-import * as d3 from "d3";
-
-// import Graphics from "./graphics";
-// import * as THREE from 'three';
 
 import gsap from "gsap";
 import { DrawSVGPlugin } from "gsap/dist/DrawSVGPlugin";
-import { forceY, easeCircleIn, easeCircleInOut } from "d3";
-import { CullFaceNone } from "three";
+import { easeCircleInOut } from "d3";
 gsap.registerPlugin(DrawSVGPlugin);
 
 var qDefault = function() { return { value: 0, include: false } };
@@ -25,12 +19,6 @@ enum PageType {
     RoundName,
     Question,
     EndFrame
-}
-
-enum PopupPage {
-    About,
-    Contact,
-    FAQ
 }
 
 export default class UI {
@@ -44,15 +32,20 @@ export default class UI {
     private currentRoundIdx : number = -1;
 
     private graphicsEl: HTMLElement = el("#canvas-container");
-    // private sharedEl: HTMLElement = el("#shared");
     private landingPageEl: HTMLElement = el("#landing");
     private roundPageEl: HTMLElement = el("#round-name");
     private borderEl : HTMLElement = el("#logo-letters");
     private borderLetters: HTMLElement[] = elList("#logo-letters .letter");
     private descriptionEl : HTMLElement = el("#round-name .description p");
+    
+    // nav
     private navWrapperEl : HTMLElement = el("#nav-wrapper")
     private navContentEl : HTMLElement = el("#nav")
     private burgerEl : HTMLElement = el("#burger");
+
+    // pop up pages
+    private currentPopupPageEl : HTMLElement | undefined = undefined;
+    private currentPopupPage : string = "";
 
     // loader elements
     private loaderProgress = 0;
@@ -67,10 +60,7 @@ export default class UI {
     // for between pages
     private lastVisibleEl : HTMLElement;
     private nextBgColor : string = "";
-
-    // pop up pages
-    private currentPopupPage : PopupPage | undefined = undefined;
-
+    
     // nav
     private navVisible : boolean = false;
 
@@ -134,7 +124,12 @@ export default class UI {
             e.addEventListener("click", this.next.bind(this))
         })
 
-        this.burgerEl.addEventListener("click", this.toggleNav.bind(this))
+        this.burgerEl.addEventListener("click", this.toggleNav.bind(this));
+
+        var navItems = elList("#nav li");
+        navItems.forEach(li => {
+            li.addEventListener("click", this.togglePage.bind(this))
+        })
 
         // loader
         this.loaderRedFill = find(this.loaderEl, ".loader-fill-a");
@@ -555,6 +550,64 @@ export default class UI {
         
         this.currentQuestionGroup = this.questionGroups[this.currentRoundIdx];
         this.currentQuestionGroup.set();
+    }
+
+    private togglePage(e: any) {
+        // used for nav (About/Contact/Order)
+        var target = "#" + e.srcElement.getAttribute("data");
+        if (this.currentPopupPage == target) {
+            e.srcElement.classList.toggle("active");
+            this.hidePage(this.currentPopupPage);
+            this.currentPopupPage = "";
+            this.currentPopupPageEl = undefined;
+
+        } else {
+            
+            switch (target) {
+                case "link":
+                    // go to the nz hops website
+                    break;
+                case "deg":
+                    // show nelson?
+                    break;
+                default:
+                    if (this.currentPopupPageEl) {
+                        // there's a page currently showing, so hide it and show the next
+                        this.currentPopupPageEl.classList.toggle("active");
+                        e.srcElement.classList.toggle("active");
+                        this.hidePage(this.currentPopupPage, target);
+                    } else {
+                        e.srcElement.classList.toggle("active");
+                        this.showPage(target);
+                    }
+                    break;
+            }
+
+            this.currentPopupPage = target;
+            this.currentPopupPageEl = e.srcElement;
+        }
+        
+
+    }
+
+    private showPage(p : string) {
+        TweenMax.fromTo(p, 0.5, {
+            display : "none", alpha: 0, x:-window.innerWidth
+        }, {
+            display: "block", alpha: 1, x:0
+        })
+    }
+
+    private hidePage(p : string, p2?: string) {
+        TweenMax.fromTo(p, 0.5, {
+            display : "block", alpha: 1, x:0
+        }, {
+            display: "none", alpha: 0, x:window.innerWidth
+        })
+
+        if (p2) {
+            this.showPage(p2);
+        }
     }
 
     private toggleNav() {
