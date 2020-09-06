@@ -165,10 +165,11 @@ p {
 }
 
 .next-btn {
-    width: 50px;
+    width: 80px;
 
     svg {
         width: inherit;
+        overflow: visible;
     }
 
     &:hover {

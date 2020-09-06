@@ -54,10 +54,6 @@
             display: none;
         }
 
-        &:hover {
-            text-decoration: underline;
-        }
-
         // < 640px;
         @include maxW($mobileLargeWidth) {
             display: block;
@@ -112,6 +108,8 @@
             }
 
             &.active {
+                color: $orange;
+
                 &::after {
                     opacity: 1;
                     top: 20px;

@@ -70,6 +70,8 @@ export default class UI {
 
     private loopingAnimations: TweenMax[] = [];
 
+    private isMobile : boolean = false;
+
     // private recommendations: si.Track[] | undefined = [];
     // private queryParameters: {[key: string]: si.QueryParameter }  = {
     //     "acousticness" : qDefault(),
@@ -138,8 +140,8 @@ export default class UI {
         // this.loaderInit();
 
         // kick it off
-        // this.showLanding();
-        this.showRoundName();
+        this.showLanding();
+        // this.showRoundName();
     }
 
     // private loaderInit2() {
@@ -522,24 +524,37 @@ export default class UI {
             alpha:1, x:0, delay:2*d+0.8
         });
 
+        console.log(window.innerWidth);
         // show the description box
-        TweenMax.fromTo("#round-name .description", 0.6, {
-            alpha:0, y:20
-        }, {
-            alpha:1, y:0, delay:2*d+1
-        });
+        if (window.innerWidth > 900) {
+            TweenMax.fromTo("#round-name .description", 0.6, {
+                alpha:0, y:20, rotation: -27
+            }, {
+                alpha:1, y:0, rotation: -17, delay:2*d+1
+            });
+
+        } else {
+            // show the description box
+            TweenMax.fromTo("#round-name .description", 0.6, {
+                alpha:0, y:20
+            }, {
+                alpha:1, y:0, delay:2*d+1
+            });
+        }
 
         // show the arrow
-        TweenMax.fromTo("#round-name .next-btn", 0.3, {
-            alpha:0, x:-10
+        TweenMax.fromTo("#round-name .next-btn", 0.6, {
+            alpha:0, x:-300
         }, {
-            alpha:1, x:0, delay:2*d+1.2
+            alpha:1, x:0, delay:2*d+1.4
         });
 
         // bounce the arrow
-        // TweenMax.to("#round-name .next-btn", 0.3, {
-        //     x:-10, repeat: -1, yoyo: true, delay:2*d+1.5
-        // });
+        this.loopingAnimations.push(
+            TweenMax.to("#round-name .next-btn .arrow-head", 0.3, {
+                x:10, repeat: -1, yoyo: true, delay:2*d+2
+            })
+        )
 
 
     }
@@ -555,13 +570,17 @@ export default class UI {
     private togglePage(e: any) {
         // used for nav (About/Contact/Order)
         var target = "#" + e.srcElement.getAttribute("data");
+        
         if (this.currentPopupPage == target) {
             e.srcElement.classList.toggle("active");
             this.hidePage(this.currentPopupPage);
             this.currentPopupPage = "";
             this.currentPopupPageEl = undefined;
-
         } else {
+
+            // var isMobile = window.getComputedStyle(this.navContentEl).getPropertyValue("height");
+            // console.log(isMobile, window.innerHeight);
+
             
             switch (target) {
                 case "link":
@@ -572,11 +591,14 @@ export default class UI {
                     break;
                 default:
                     if (this.currentPopupPageEl) {
-                        // there's a page currently showing, so hide it and show the next
+                        // of there's a page currently showing, so hide it and show the next
                         this.currentPopupPageEl.classList.toggle("active");
                         e.srcElement.classList.toggle("active");
                         this.hidePage(this.currentPopupPage, target);
                     } else {
+                        // check if it's mobile
+
+
                         e.srcElement.classList.toggle("active");
                         this.showPage(target);
                     }
@@ -669,6 +691,10 @@ export default class UI {
                 break;
         }
     }
+
+     private onResize(e: any) {
+        //  if (window.innerWidth)
+     }
 
     private showEndFrame() {
         this.currentPage = PageType.EndFrame;
