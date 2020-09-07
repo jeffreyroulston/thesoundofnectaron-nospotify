@@ -1,12 +1,9 @@
 export enum QueryParameters {
-    Acousticness,
     Energy,
-    Instrumentalness,
-    Liveness,
-    Loudness,
     Speechiness,
     Valence,
-    Tempo
+    Danceability,
+    PlaylistLength,
 }
 
 export interface SpotifyInterfaceParams {
