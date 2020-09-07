@@ -57,9 +57,9 @@ export default class App {
         });
 
         // transition finished callback here
-        this.graphics.transitionedCallback = () => {
-            this.ui.bgTransitionComplete();
-        }
+        // this.graphics.transitionedCallback = () => {
+        //     this.ui.bgTransitionComplete();
+        // }
         // this below was just for testing
         // is also a great example for how to switch colour in the background
         // setInterval(() => {

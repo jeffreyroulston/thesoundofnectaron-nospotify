@@ -141,61 +141,21 @@ export default class UI {
         // let complete = this.bgTransitionComplete.bind(this);
         f.el("body").style.backgroundColor = this.nextBgColor;
 
-        TweenMax.to(this.elementsToHide, 0.5, {
-            alpha:0, scale:0.9, display: "none", onComplete: this.clearHiddenElements.bind(this)
+        this.loopingAnimations.forEach((anim)=> {
+            anim.kill();
         })
 
-        // this.hideWaves();
+        this.loopingAnimations = [];
 
-        
-        // these are the border elements that stay on top
-        // this.sharedEl.style.zIndex = "201";
+        TweenMax.to(this.elementsToHide, 0.5, {
+            alpha:0, scale:0.95, display: "none", onComplete: this.clearHiddenElements.bind(this)
+        })
 
-        // put the pixel graphics on top of the others
-        // this.graphicsEl.style.zIndex = "200";
-
-        // pixels!
-        // this.app.switchGraphics(data.COLOURS_THREE[color]);
-        // this.bgTransitionComplete();
     }
 
     private clearHiddenElements() {
         this.elementsToHide = [];
     }
-
-        // call back from graphics/app
-        public bgTransitionComplete() {
-            // set the body colour
-            f.el("body").style.backgroundColor = this.nextBgColor;
-            // this.lastVisibleEl.style.display = "none";
-    
-            if (this.currentPage == PageType.Question) {
-                // hide the round number elements
-                TweenMax.to(".round-name-text li, .numbers li", 0, {
-                    display: "none"
-                })
-    
-                // this.hideWaves();
-            }
-    
-            // fix this lol
-            // f.el("#hop").style.display = "none";
-            // this.hideWaves();
-    
-            // set completed callback
-            if (this.currentQuestionGroup.isComplete) this.currentQuestionGroup.completed();
-    
-            // setTimeout(()=> {
-            //     // moved shared element back so things can be interacted with
-            //     // this.sharedEl.style.zIndex = "100";
-                
-            //     // prepare to hide graphics element
-            //     this.graphicsEl.style.zIndex = "0";
-    
-            //     // convert graphics element to transparent
-            //     this.app.resetGraphics();
-            // }, 100)
-        }
 
     private showBorder() {
         // show the border letters
@@ -317,7 +277,7 @@ export default class UI {
                 each:0.04, from: "random"
             }
         })
-        
+
         // TweenMax.from(logoElements, 0.2, {
         //     alpha:0, delay:1.5, stagger: {
         //         each:0.04, from: "random"
@@ -526,6 +486,19 @@ export default class UI {
         
         this.currentQuestionGroup = this.questionGroups[this.currentRoundIdx];
         this.currentQuestionGroup.set();
+
+        // move the waves out
+        TweenMax.to([this.wavesTopEl, this.wavesBottomEl], 1, {
+            display:"none", alpha:0, ease: "linear"
+        })
+
+        TweenMax.to(this.wavesBottomEl, 1, {
+            y:500, ease: "linear"
+        })
+
+        TweenMax.to(this.wavesTopEl, 1, {
+            y:-500, ease: "linear"
+        })
     }
 
     private togglePage(e: any) {
