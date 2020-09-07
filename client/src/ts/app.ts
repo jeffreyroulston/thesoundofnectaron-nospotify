@@ -132,7 +132,7 @@ export default class App {
     private OnAuthorised(): void {
         // we can only really get these when we're authorised
         this.spotifyInterface.GetUserProfile();
-        this.ui.loginSuccessful();
+        this.ui.authenticated();
     }
 
     // most of this stuff is temporary, will hook up the proper handlers with the ui state
