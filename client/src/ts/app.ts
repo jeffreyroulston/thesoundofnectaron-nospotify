@@ -32,6 +32,10 @@ export default class App {
         this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
         var cookie = document.cookie;
 
+        document.addEventListener('DOMContentLoaded', ()=> {
+            this.ui.init();
+        }, false);
+
         // if (this.spotifyInterface.Authorized) {
         //     if (document.cookie == "landingShown") {
         //         this.ui.startRounds();

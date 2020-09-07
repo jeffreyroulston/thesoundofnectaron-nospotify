@@ -9,7 +9,7 @@ import App from "./app";
 
 import gsap from "gsap";
 import { DrawSVGPlugin } from "gsap/dist/DrawSVGPlugin";
-import { easeCircleInOut, easeExpIn, easeSinIn } from "d3";
+import { easeCircleInOut, easeExpIn, easeSinIn, image } from "d3";
 gsap.registerPlugin(DrawSVGPlugin);
 
 var qDefault = function() { return { value: 0, include: false } };
@@ -73,6 +73,10 @@ export default class UI {
 
     private isMobile : boolean = false;
 
+    // assets
+    private assetCounter : number = 0;
+    private assetsLoaded : number= 0;
+
     // private recommendations: si.Track[] | undefined = [];
     // private queryParameters: {[key: string]: si.QueryParameter }  = {
     //     "acousticness" : qDefault(),
@@ -129,26 +133,48 @@ export default class UI {
             li.addEventListener("click", this.togglePage.bind(this))
         })
 
-        // set the height?
-        f.el("body").style.height =  f.px(window.innerHeight);
+        // Set custom height
+        window.addEventListener('resize', this.onResize.bind(this));
+        this.onResize();
 
-        // kick it off
+                // kick it off
         // setTimeout(this.showLanding.bind(this), 1000);
-        this.showLanding();
+        // this.showLanding();
         // this.showRoundName();
         // this.showLoader();
+        // load the landing page elements
+    }
 
-        // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+    public init() {
+        console.log("init");
+        this.loadImages([
+            "fruit/hop.png",
+            "waves/wave-orange.svg",
+            "waves/wave-purple.svg"
+        ])
+    }
+
+    private onResize() {
         let vh = window.innerHeight * 0.01;
-        // Then we set the value in the --vh custom property to the root of the document
         document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
 
-        // We listen to the resize event
-        window.addEventListener('resize', () => {
-            // We execute the same script as before
-            let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        });
+    private loadImages(images: string[]) {
+        this.assetCounter += images.length;
+        
+        images.forEach((imgSrc)=> {
+            let imgObject = new Image();
+            imgObject.onload = this.imgDownloaded.bind(this);
+            imgObject.src = "./assets/" + imgSrc;
+        })
+    }
+
+    private imgDownloaded() {
+        console.log("image downloaded");
+        this.assetsLoaded++;
+        if (this.assetsLoaded == this.assetCounter) {
+            this.showLanding();
+        }
     }
 
     private setBG(color : string) {
@@ -633,10 +659,6 @@ export default class UI {
                 break;
         }
     }
-
-     private onResize(e: any) {
-        //  if (window.innerWidth)
-     }
 
     private showEndFrame() {
         this.currentPage = PageType.EndFrame;

@@ -130,7 +130,7 @@ export default class MCQ {
 
             // set images
             for (var x=0; x<this.imgs.length; x++) {
-                var data = "./assets/round3/" + (this.questionIdx+1).toString() + "_" + x.toString();
+                var data = "./assets/round2/" + (this.questionIdx+1).toString() + "_" + x.toString();
                 data = data + (this.questionIdx == 1 ? ".svg" : ".png");
                 let src = "url(" + data + ")";
 

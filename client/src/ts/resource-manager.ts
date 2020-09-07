@@ -19,7 +19,7 @@ export default class ResourceManager {
 
         return undefined;
     }
-
+    
     public loadResourceByPath<T extends LoadableResource>( t: new ( ...args: any[] ) => T, path: string, alias?: string ): Promise<any> {
 
         if (t === HTMLImageElement) {
