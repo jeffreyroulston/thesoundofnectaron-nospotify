@@ -675,6 +675,10 @@ export default class UI {
         ])
     }
 
+    public authenticated() {
+        
+    }
+
     public startRounds() {
         // called from the app ior spotify?
         this.showRoundName();
