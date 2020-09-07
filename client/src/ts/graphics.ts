@@ -209,7 +209,7 @@ const waterFragShader = `
         vec3 c = voronoi( samplePoint + vec2(0.0, time) );
         float border = smoothstep( 0.00, 1.0, c.x);
         float transition = clamp(transitionGradient - transitionAmount, 0.0, 1.0);
-        vec3 transitionColor = mix(TRANSITION_COL_PURPLE, TRANSITION_COL_ORANGE, transition) * (1.0 - border * 0.05 * (1.0 - transitionAmount));
+        vec3 transitionColor = mix(TRANSITION_COL_PURPLE, TRANSITION_COL_ORANGE, transition) * (1.0 - border * 0.025 * (1.0 - transitionAmount));
         gl_FragColor = vec4(transitionColor, 1.0);
     }
 `
