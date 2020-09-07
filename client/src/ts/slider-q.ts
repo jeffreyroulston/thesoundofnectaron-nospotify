@@ -8,10 +8,8 @@ import { MorphSVGPlugin } from "gsap/dist/MorphSVGPlugin";
 gsap.registerPlugin(DrawSVGPlugin, MorphSVGPlugin);
 
 export default class Slider {
-    public el : HTMLElement;
-
     private ui : UI;
-    private id : string;
+    public el : HTMLElement = f.elByID("slider-q");
 
     private questionIdx : number = 0;
     private questions : SliderQuestion[] = sliderQuestions;
@@ -37,11 +35,11 @@ export default class Slider {
 
     // these change per question
     private imgs : HTMLElement[] = [];
-    private imgEl : HTMLElement = f.el(".slider-q1");
+    private imgEl : HTMLElement = f.find(this.el, ".slider-q1");
     private count : number = 0;
 
     //q1 (color slider)
-    private colorWipeEl :HTMLElement = f.el("#color-wipe");
+    private colorWipeEl :HTMLElement = f.elByID("#color-wipe");
     private colour1 = f.convertHexToRgb("FCF1DB");
     private colour2 = f.convertHexToRgb("281333");
     private imgs2 : HTMLElement[] = [];
@@ -73,10 +71,8 @@ export default class Slider {
     public initiated = false;
     public isComplete = false;
 
-    constructor(ui : UI, id: string) {
+    constructor(ui : UI) {
         this.ui = ui;
-        this.id = id;
-        this.el = f.el(this.id);
 
         // question copy
         this.questionElement = f.find(this.el, ".question");

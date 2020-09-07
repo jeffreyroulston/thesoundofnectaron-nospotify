@@ -94,7 +94,7 @@ export default class UI {
         this.app = app;
 
         // create the questions classes
-        this.slider= new Slider(this, "#slider-q");
+        this.slider= new Slider(this);
         this.mcq = new MCQ(this, "#mc-q");
         this.qfq = new QuickFireQ(this, "#quickfire-q");
 
