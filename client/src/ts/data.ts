@@ -7,7 +7,8 @@ export const COLOURS = {
     orange : "#FF1900",
     purple : "#88009D",
     blue : "#00C1F5",
-    yellow: "#FFE700"
+    yellow: "#FFE700",
+    white : "#FFFFFF"
 }
 
 export const COLOURS_THREE : { [id: string] : THREE.Color } = {

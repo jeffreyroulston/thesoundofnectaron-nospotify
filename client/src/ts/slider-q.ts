@@ -46,6 +46,7 @@ export default class Slider {
     private colour1 = f.convertHexToRgb("FCF1DB");
     private colour2 = f.convertHexToRgb("281333");
     private imgs2 : HTMLElement[] = [];
+    private moon : HTMLElement = f.find(this.el, ".moon-center");
 
     // q2 (scale)
     private topFruitDefaultBottomValue : number = 0;
@@ -165,7 +166,7 @@ export default class Slider {
         });
 
         // show the line
-        TweenMax.fromTo(" .slider-line", this.time, {
+        TweenMax.fromTo(this.sliderLineEl, this.time, {
             scaleX:0, transformOrigin: "right"
         }, {
             scaleX:1, delay: delay
@@ -188,82 +189,68 @@ export default class Slider {
     }
 
     private showQ1() {
-        console.log("show question one");
+        // // SUN AND CLOUDS
+        this.count = 5;
+        var sunRays = f.find(this.el, ".sun-rays");
+        var rays = f.findAll(sunRays, ".line");
+        var stars = f.findAll(sunRays, "polygon.star");
+
+        this.imgs = rays;
+        this.imgs2 = stars;
+        f.shuffle(rays);
+
+        // make it full width
+        f.find(this.el, ".col-wrapper").classList.toggle("full-width");
+        
+        // bring in the colour wipe (this is the container for the colour change)
         TweenMax.fromTo(this.colorWipeEl, 0.2, {
             display:"none", alpha:0
         }, {
             display:"block", alpha:1, delay: this.delay
         })
         this.colorWipeEl.style.backgroundColor = f.rgb(this.colour1);
-        
-        // // SUN AND CLOUDS
-        this.count = 5;
 
-        // make it full width
-        f.el(".col-wrapper").classList.toggle("full-width");
 
-        // add all the different states (sun, clouds) to imgs
-        for (var i=1; i<this.count+1; i++) {
-            this.imgs.push(f.el(".slider-q1 li:nth-child(" + i.toString() + ")"));
-        }
-
-        // show the block
-        // TweenMax.fromTo(this.imgs[0], 0.5, {
-        //     alpha:0, y:400, scale:1.5
-        // }, {
-        //     alpha:1, y:0, scale:1, delay:this.delay
-        // })
-
-        // bop
-        // this.loopingAnimations.push(TweenMax.to(this.imgs, 1, {
-        //     y:-50, repeat:-1, yoyo:true, delay:this.delay+0.5
-        // }))
-
-        TweenMax.fromTo(".sun-rays", this.time, {
+        // fade it in
+        TweenMax.fromTo(sunRays, this.time, {
             alpha:0
         }, {
             alpha:1, delay:this.delay, ease:"linear"
         })
 
-        // this.loopingAnimations.push(
-        //     TweenMax.fromTo(".sun-rays .lines", 100, {
-        //         rotation:0
-        //     }, {
-        //         rotation:360, transformOrigin: "center", ease:"linear", repeat:-1
-        //     })
-        // )
+        // change the sun ray colours
+        for (var i=0; i<rays.length; i++) {
+            this.loopingAnimations.push(
+                TweenMax.fromTo(rays[i], 1, {
+                fill: COLOURS.white
+                }, {
+                    fill: COLOURS.yellow, repeat:-1, yoyo:true, ease: "linear", delay: i*0.1
+                })
+            )
+        }
 
-        // var nodes = f.elList(".sun-rays .cls-2.line");
-        // console.log(nodes);
+        // stars be twinkling
+        for (var i=0; i<stars.length; i++) {
+            this.loopingAnimations.push(
+                TweenMax.fromTo(stars[i], 0.1, {
+                fill: COLOURS.white
+                }, {
+                    fill: COLOURS.purple, repeat:-1, yoyo:true, ease: "linear", delay: i*0.1
+                })
+            )
+        }
 
-        this.imgs = f.elList(".sun-rays .cls-2.line");
-        this.imgs2 = f.elList(".sun-rays .cls-2.star");
-
-        // for(var i=0; i<this.imgs.length; i++) {
-        //     // TweenMax.to(".sun-rays .cls-2.line:nth-child(" + i.toString() + ")", 0.1, {
-        //     //     morphSVG: ".sun-rays .cls-2.star:nth-child(" + i.toString() + ")", delay:1*i
-        //     // })
-        //     // TweenMax.to(this.imgs[i], 5, {
-        //     //     scale: 1.1, yoyo: true, repeat:-1, delay:i*0.1
-        //     // })
-        //     let img = this.imgs[i];
-
-        //     setTimeout(()=> {
-        //         img.classList.toggle("animate");
-        //     }, 100 * i)
-        // }
-        // TweenMax.to(this.imgs, 1, {
-        //     scale: 1.1, yoyo:true, repeat:-1, stagger: {
-        //         each: 0.1
-        //     }
-        // })
-        
+        // make the image pulse
+        this.loopingAnimations.push(
+            TweenMax.to(sunRays, 2, {
+                scale:0.95, repeat:-1, yoyo:true, ease: "linear"
+            })
+        )
     }
 
     private callbackQ1(e: any) {
         // get value from slider
         this.sliderValue = e.srcElement.value;
-        // console.log(this.sliderValue);
 
         var colour = f.rgb(f.findColorBetween(this.colour1, this.colour2, this.sliderValue));
         console.log(colour);
@@ -277,59 +264,21 @@ export default class Slider {
             rotation: rotation
         })
 
-        // hide rays and show stars 
-        var rayCount = Math.round(ratio * this.imgs.length);
-        var starCount = this.imgs.length - rayCount;
-
-        // console.log("ray count: " + rayCount.toString() + ", star count: " + starCount.toString());
-
+        // rays
         var lineOpacity = (1-ratio) - ratio;
         lineOpacity = lineOpacity < 0 ? 0 : lineOpacity;
         this.imgs.forEach((line)=> {
             line.style.opacity = (lineOpacity).toString();
         })
 
-        console.log("value: " + this.sliderValue.toString() + ", line opacity: " + lineOpacity.toString());
-
+        // stars
         var starOpacity = (ratio - (1-ratio));
         starOpacity = starOpacity < 0 ? 0 : starOpacity;
         this.imgs2.forEach((star)=> {
             star.style.opacity = starOpacity.toString();
         })
 
-        // f.find(this.imgEl, ".moon-center").style.opacity = ratio.toString();
-        f.find(this.imgEl, ".moon-center").style.opacity = ratio.toString();
-
-        // var ratio = 25
-        
-        // var v = this.sliderValue / ratio;
-        // var idx = Math.ceil(v);
-        // idx = idx < 1 ? 1 : idx; // always at least zero
-
-        // var max = idx * ratio;
-        // var multiplier = (max - this.sliderValue)/ratio;
-
-        // if (multiplier >= 0.5) {
-        //     this.imgs[idx-1].style.opacity = "1";
-        // } else {
-        //     this.imgs[idx-1].style.opacity = (multiplier*2).toString();
-        // }
-        // this.imgs[idx].style.opacity = ( 1- multiplier).toString();
-        
-        // // reset the other things
-        // for (var i=0; i<this.imgs.length; i++) {
-        //     if (i!=idx && i!=(idx-1))
-        //     this.imgs[i].style.opacity = "0";
-        // }
-
-        // var nodes = f.elList(".sun-rays .cls-2.line");
-        // console.log(nodes);
-
-        // for(var i=1; i<nodes.length+1; i++) {
-        //     TweenMax.to(".sun-rays .cls-2.line:nth-child(" + i.toString() + ")", 0.1, {
-        //         morphSVG: ".sun-rays .cls-2.star:nth-child(" + i.toString() + ")", delay:1*i
-        //     })
-        // }
+        this.moon.style.opacity = ratio.toString();
     }
 
     private showQ2() {

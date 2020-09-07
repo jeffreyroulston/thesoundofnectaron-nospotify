@@ -68,6 +68,7 @@ export default class UI {
     private questionGroups : any[] = [];
     private currentQuestionGroup: Slider | MCQ | QuickFireQ;
 
+    // looping animations
     private loopingAnimations: TweenMax[] = [];
 
     private isMobile : boolean = false;
@@ -130,8 +131,8 @@ export default class UI {
 
         // kick it off
         // setTimeout(this.showLanding.bind(this), 1000);
-        this.showLanding();
-        // this.showRoundName();
+        // this.showLanding();
+        this.showRoundName();
         // this.showLoader();
     }
 
