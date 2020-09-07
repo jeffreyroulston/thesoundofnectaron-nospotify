@@ -22,8 +22,9 @@ enum PageType {
 }
 
 export default class UI {
-    private app : App;
+    public ASSETURL : string = "./assets/";
 
+    private app : App;
     private slider : Slider;
     private mcq : MCQ;
     private qfq : QuickFireQ;
@@ -75,6 +76,9 @@ export default class UI {
     private assetCounter : number = 0;
     private assetsLoaded : number= 0;
 
+    // spotify
+    private authorized : boolean = false;
+
     // private recommendations: si.Track[] | undefined = [];
     // private queryParameters: {[key: string]: si.QueryParameter }  = {
     //     "acousticness" : qDefault(),
@@ -96,6 +100,15 @@ export default class UI {
         // pass in the app to use for spotify interface
         this.app = app;
 
+        // we playing rounds on the redirect
+        if (window.location.href.indexOf("sonicallydelicious") > -1) {
+            this.ASSETURL = "../assets/";
+            f.el("body").style.backgroundColor = data.COLOURS.orange;
+            this.authorized = true;
+        } else {
+            f.find(this.landingPageEl, ".next-btn").addEventListener("click", this.login.bind(this))
+        }
+
         // create the questions classes
         this.slider= new Slider(this);
         this.mcq = new MCQ(this, "#mc-q");
@@ -110,17 +123,12 @@ export default class UI {
         // set initial question
         this.currentQuestionGroup = this.slider;
 
-        // set the page to be hidden in graphics callback
-        // this.lastVisibleEl = this.landingPageEl;
-
         // check if it's fucking internet explorer
         // if (!Modernizr.svg) {
         //     console.log("it's internet fucking explorer")
         //   }
 
-
-        // var btns = elList(".next-btn:not(#start-btn)");
-        f.find(this.landingPageEl, ".next-btn").addEventListener("click", this.next.bind(this))
+        // bind round page button
         f.find(this.roundPageEl, ".next-btn").addEventListener("click", this.next.bind(this))
 
         // used for the mobile menu
@@ -134,13 +142,6 @@ export default class UI {
         // Set custom height
         window.addEventListener('resize', this.onResize.bind(this));
         this.onResize();
-
-                // kick it off
-        // setTimeout(this.showLanding.bind(this), 1000);
-        // this.showLanding();
-        // this.showRoundName();
-        // this.showLoader();
-        // load the landing page elements
     }
 
     // **************
@@ -148,7 +149,12 @@ export default class UI {
     // **************
 
     private login() {
-        this.app.Login();
+        console.log("ui authorized?", this.authorized);
+        if (this.authorized) {
+            this.next();
+        } else {
+            this.app.Login();
+        }
     }
 
     private onResize() {
@@ -162,7 +168,7 @@ export default class UI {
         images.forEach((imgSrc)=> {
             let imgObject = new Image();
             imgObject.onload = this.imgDownloaded.bind(this);
-            imgObject.src = "./assets/" + imgSrc;
+            imgObject.src = this.ASSETURL + imgSrc;
         })
     }
 
@@ -170,7 +176,11 @@ export default class UI {
         console.log("image downloaded");
         this.assetsLoaded++;
         if (this.assetsLoaded == this.assetCounter) {
-            this.showLanding();
+            if (this.authorized) {
+                this.showRoundName()
+            } else {
+                this.showLanding();
+            }
         }
     }
 
@@ -666,7 +676,7 @@ export default class UI {
     // PUBLIC
     // **************
 
-    public init() {
+    public Init() {
         console.log("init");
         this.loadImages([
             "fruit/hop.png",
@@ -675,16 +685,16 @@ export default class UI {
         ])
     }
 
-    public authenticated() {
-        
+    public Authorize() {
+        this.authorized = true;
     }
 
-    public startRounds() {
+    public StartRounds() {
         // called from the app ior spotify?
         this.showRoundName();
     }
 
-    public roundComplete(el: HTMLElement) {
+    public RoundComplete(el: HTMLElement) {
         // Called from slider/MCQ/Quickfire
         this.elementsToHide.push(el);
 

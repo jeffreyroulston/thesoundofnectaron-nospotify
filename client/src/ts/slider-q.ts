@@ -557,7 +557,7 @@ export default class Slider {
         } else {
             this.isComplete = true;
             this.hide();
-            this.ui.roundComplete(this.el);
+            this.ui.RoundComplete(this.el);
         }
     }
 

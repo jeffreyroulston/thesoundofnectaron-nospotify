@@ -4,10 +4,9 @@ import * as THREE from 'three';
 import UI from "./ui";
 import ResourceManager from "./resource-manager";
 import Graphics from "./graphics";
-import { timeThursday } from "d3";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
-let REDIRECT_URI: string = "http://localhost:8888";
+let REDIRECT_URI: string = "http://localhost:8888/sonicallydelicious";
 let SCOPES: string[] = [
     'user-top-read', 
     'user-read-private', 
@@ -32,8 +31,10 @@ export default class App {
         this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
         var cookie = document.cookie;
 
+        this.CheckAuthorization();
+
         document.addEventListener('DOMContentLoaded', ()=> {
-            this.ui.init();
+            this.ui.Init();
         }, false);
 
         // if (this.spotifyInterface.Authorized) {
@@ -87,19 +88,34 @@ export default class App {
         this.graphics.switchColorBackward();
     }
 
-    public Login() {
-        // kick it all off
-        // called from UI
-        console.log("spotify authorised?", this.spotifyInterface.Authorized);
-
+    async CheckAuthorization() {
+        // checks if it's already authorised
+        console.log("spotify interface authorised", this.spotifyInterface.Authorized);
         if (this.spotifyInterface.Authorized) {
-            this.ui.authenticated();
+            this.ui.Authorize();
             this.spotifyInterface.GetUserProfile();
-            console.log(this.profile);
-        } else {
-            this.spotifyInterface.GetAuthorization();
+            console.log("User profile:", this.profile);
         }
     }
+
+    public Login() {
+        // called from UI on landing page button click
+        this.spotifyInterface.GetAuthorization();
+    }
+
+    // public Login() {
+    //     // kick it all off
+    //     // called from UI
+    //     console.log("spotify authorised?", this.spotifyInterface.Authorized);
+
+    //     if (this.spotifyInterface.Authorized) {
+    //         this.ui.authenticated();
+    //         this.spotifyInterface.GetUserProfile();
+    //         console.log(this.profile);
+    //     } else {
+    //         this.spotifyInterface.GetAuthorization();
+    //     }
+    // }
 
     // private QuestionAnswered(totalQuestions: number, questionNumber: number, question: Questions.Question) {
         // this is where we aggregate query parameters
@@ -132,7 +148,7 @@ export default class App {
     private OnAuthorised(): void {
         // we can only really get these when we're authorised
         this.spotifyInterface.GetUserProfile();
-        this.ui.authenticated();
+        // this.ui.authenticated();
     }
 
     // most of this stuff is temporary, will hook up the proper handlers with the ui state

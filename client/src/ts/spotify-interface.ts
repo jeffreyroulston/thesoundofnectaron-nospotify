@@ -89,9 +89,7 @@ export class SpotifyInterface {
         // console.log("window hash:", window.location.hash);
 
         // get the token
-        this.token = window.location.hash.substr(1).split('&')[0].split("=")[1];
-        // window.location.hash = "";
-
+        // this.token = window.location.hash.substr(1).split('&')[0].split("=")[1];
         console.log("token", this.token);
     }
 
@@ -107,6 +105,8 @@ export class SpotifyInterface {
         // otherwise we will need to reauth
         if (this.token === undefined) {
 
+            console.log(this.params);
+
             // build url in a nice clean way
             const scopes = this.params.Scopes.join(" ");
             const url = new URL(SpotifyInterface.AUTHORIZATION_ADDRESS);
@@ -119,9 +119,6 @@ export class SpotifyInterface {
             // we could do this or we could do a pop up window
             // I like this style of auth window better, popups can be annoying and we have to redirect anyway
             window.location.href = url.href;
-            
-            // stick in there so that when it refreshes the page, you don't see the landing page again
-            // set the cookie so that it redirects correctly
         }
 
         // the token exists, so we're good to go with the rest of the app
@@ -142,7 +139,7 @@ export class SpotifyInterface {
     }
 
     public GetUserProfile(): void {
-        console.log("get user profile")
+        console.log("Get user profile")
         const auth = this.BuildAuthToken();
 
         // we shouldn't be calling these functions without a valid auth token
@@ -171,11 +168,6 @@ export class SpotifyInterface {
             else {
 
                 response.json().then((json) => {
-
-                    console.log("fetched", json);
-
-                    // DEBUG
-                    //console.log(json);
 
                     // get all images attached with the profile
                     const possibleImages = json["images"];

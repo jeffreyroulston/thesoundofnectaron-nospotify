@@ -84,7 +84,7 @@ export default class MCQ {
                 this.loopingAnimations.forEach((anim)=> {
                     anim.pause();
                 })
-                    this.ui.roundComplete(this.el);
+                    this.ui.RoundComplete(this.el);
                 }, 2000)
         }
     }
