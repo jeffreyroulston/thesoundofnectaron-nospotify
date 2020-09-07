@@ -13,18 +13,19 @@
     margin: 0;
     padding: 0;
 }
-
-#hippo, #elephant, #star{
-    visibility:hidden;
-  }
-
 //   #test {
 //       visibility: hidden;
 //   }
-  
+html {
+    height: -webkit-fill-available;
+}
+
 body {
     background-color: $purple;
     @include transition(background-color 1s ease);
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    height: calc(var(--vh, 1vh) * 100);
 }
 
 li {
@@ -111,11 +112,13 @@ p {
 
 .full-page {
     margin: 0;
-    padding: 0;
-    height: 100vh; // make this compatible with iphone scroll
+    padding: 0; 
     width: 100%;
     position: fixed;
     z-index: 100;
+    top:0;
+    height: 100%;
+    height: calc(var(--vh, 1vh) * 100);
 }
 
 .center-wrapper {
@@ -196,6 +199,7 @@ svg.letter, .letter svg{
         .col-wrapper:not(.full-width), .col-wrapper.text-column:not(.full-width) {
             width: 100%;
             height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
             float: none;
             margin:0;
             position: absolute;

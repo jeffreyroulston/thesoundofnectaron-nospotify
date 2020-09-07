@@ -129,11 +129,26 @@ export default class UI {
             li.addEventListener("click", this.togglePage.bind(this))
         })
 
+        // set the height?
+        f.el("body").style.height =  f.px(window.innerHeight);
+
         // kick it off
         // setTimeout(this.showLanding.bind(this), 1000);
         // this.showLanding();
         this.showRoundName();
         // this.showLoader();
+
+        // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+        let vh = window.innerHeight * 0.01;
+        // Then we set the value in the --vh custom property to the root of the document
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+        // We listen to the resize event
+        window.addEventListener('resize', () => {
+            // We execute the same script as before
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        });
     }
 
     private setBG(color : string) {
@@ -432,9 +447,10 @@ export default class UI {
             y:0, rotate:0, delay:2*d+0.5
         })
 
-        this.loopingAnimations.push(TweenMax.to(fruit, 1, {
-            y:5, repeat:-1, ease: "linear", yoyo:true, delay:2*d+1.5
-        }))
+        // bop the fruit
+        // this.loopingAnimations.push(TweenMax.to(fruit, 1, {
+        //     y:5, repeat:-1, ease: "linear", yoyo:true, delay:2*d+1.5
+        // }))
 
 
         // show the arrow
@@ -445,11 +461,11 @@ export default class UI {
         })
 
         // bounce the arrow
-        this.loopingAnimations.push(
-            TweenMax.to(btn, 1, {
-                scale:0.9, ease: "linear", delay:2*d+3, repeat:-1, yoyo:true
-            })
-        )
+        // this.loopingAnimations.push(
+        //     TweenMax.to(btn, 1, {
+        //         scale:0.9, ease: "linear", delay:2*d+3, repeat:-1, yoyo:true
+        //     })
+        // )
 
         // WAVES
         var wavesAreVisible = f.getStyle(this.wavesTopEl, "display");
@@ -460,9 +476,8 @@ export default class UI {
             }, {
                 display:"block", alpha:0.95, delay: d, ease: "linear"
             })
-
         }
-
+    
         // move the waves in
         TweenMax.fromTo(this.wavesBottomEl, 2, {
             y:100

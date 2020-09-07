@@ -172,7 +172,7 @@
         }
 
         .description {
-            top : -40px;
+            top : -163px;
             width: 100%;
             max-width: 400px;
             margin: 0 auto;
@@ -190,14 +190,18 @@
 
         .next-btn {
             width: 100%;
+            top: 220px;
+            position: relative;
 
             svg {
-                width: 70px;
+                width: 120px;
             }
         }
 
         .fruit-whole {
-            display: none;
+            right: 33px;
+            top: -173px;
+            z-index: -1;
         }
     }
 }
