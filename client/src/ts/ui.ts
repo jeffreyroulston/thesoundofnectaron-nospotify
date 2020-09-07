@@ -57,7 +57,8 @@ export default class UI {
     private currentPopupPage : string = "";
 
     // for between pages
-    private lastVisibleEl : HTMLElement;
+    private elementsToHide : HTMLElement[] = [];
+    // private lastVisibleEl : HTMLElement;
     private nextBgColor : string = "";
     
     // nav
@@ -107,7 +108,7 @@ export default class UI {
         this.currentQuestionGroup = this.slider;
 
         // set the page to be hidden in graphics callback
-        this.lastVisibleEl = this.landingPageEl;
+        // this.lastVisibleEl = this.landingPageEl;
 
         // check if it's fucking internet explorer
         // if (!Modernizr.svg) {
@@ -137,20 +138,14 @@ export default class UI {
     private setBG(color : string) {
         // set the next background color to turn the body in the graphics callback
         this.nextBgColor = color;
-        let complete = this.bgTransitionComplete.bind(this);
+        // let complete = this.bgTransitionComplete.bind(this);
+        f.el("body").style.backgroundColor = this.nextBgColor;
 
-        TweenMax.to("#hop", 0.5, {
-            alpha:0, scale:0.9, display: "none"
+        TweenMax.to(this.elementsToHide, 0.5, {
+            alpha:0, scale:0.9, display: "none", onComplete: this.clearHiddenElements.bind(this)
         })
 
-
-        TweenMax.to(this.lastVisibleEl, 0.5, {
-            alpha:0, scale:0.9, display: "none", onComplete: ()=> {
-                complete();
-            }
-        })
-
-        this.hideWaves();
+        // this.hideWaves();
 
         
         // these are the border elements that stay on top
@@ -163,6 +158,44 @@ export default class UI {
         // this.app.switchGraphics(data.COLOURS_THREE[color]);
         // this.bgTransitionComplete();
     }
+
+    private clearHiddenElements() {
+        this.elementsToHide = [];
+    }
+
+        // call back from graphics/app
+        public bgTransitionComplete() {
+            // set the body colour
+            f.el("body").style.backgroundColor = this.nextBgColor;
+            // this.lastVisibleEl.style.display = "none";
+    
+            if (this.currentPage == PageType.Question) {
+                // hide the round number elements
+                TweenMax.to(".round-name-text li, .numbers li", 0, {
+                    display: "none"
+                })
+    
+                // this.hideWaves();
+            }
+    
+            // fix this lol
+            // f.el("#hop").style.display = "none";
+            // this.hideWaves();
+    
+            // set completed callback
+            if (this.currentQuestionGroup.isComplete) this.currentQuestionGroup.completed();
+    
+            // setTimeout(()=> {
+            //     // moved shared element back so things can be interacted with
+            //     // this.sharedEl.style.zIndex = "100";
+                
+            //     // prepare to hide graphics element
+            //     this.graphicsEl.style.zIndex = "0";
+    
+            //     // convert graphics element to transparent
+            //     this.app.resetGraphics();
+            // }, 100)
+        }
 
     private showBorder() {
         // show the border letters
@@ -178,26 +211,38 @@ export default class UI {
 
     private toggleWaves(colour: string) {
         // change visible wave colours
-        f.findAll(this.wavesTopEl, ".wave").forEach((w1)=> {
-            w1.classList.toggle(this.currentWaveColor);
-            w1.classList.toggle(colour);
+        TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + this.currentWaveColor), 1, {
+            alpha:1, display:"block"
+        }, {
+            alpha:0, display:"none"
         })
 
-        f.findAll(this.wavesBottomEl, ".wave").forEach((w2)=> {
-            w2.classList.toggle(this.currentWaveColor);
-            w2.classList.toggle(colour);
+        TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + this.currentWaveColor), 1, {
+            alpha:1, display:"block"
+        }, {
+            alpha:0, display:"none"
+        })
+
+        TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + colour), 1, {
+            alpha:0, display:"none"
+        }, {
+            alpha:1, display:"block"
+        })
+
+        TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + colour), 1, {
+            alpha:0, display:"none"
+        }, {
+            alpha:1, display:"block"
         })
 
         this.currentWaveColor = colour;
     }
 
-    private hideWaves() {
-        TweenMax.to([this.wavesBottomEl, this.wavesTopEl], 1, {
-            alpha:0, display:"none"
-        })
-        // this.wavesTopEl.style.display = "none";
-        // this.wavesBottomEl.style.display = "none";
-    }
+    // private hideWaves() {
+    //     TweenMax.to([this.wavesBottomEl, this.wavesTopEl], 1, {
+    //         alpha:0, display:"none"
+    //     })
+    // }
 
     private toggleFrameColours(colour : string) {
         // change colour of letters in the border
@@ -231,17 +276,27 @@ export default class UI {
         var subheading = f.find(this.landingPageEl, ".subheading")
         var btn = f.find(this.landingPageEl, "#start-btn");
 
+        // elements to hide
+        this.elementsToHide.push(this.landingPageEl);
+        this.elementsToHide.push(hop);
+
         // WAVES
-        TweenMax.fromTo(this.wavesBottomEl, 3, {
-            display:"none", y:100, alpha:0
+        TweenMax.fromTo([this.wavesTopEl, this.wavesBottomEl], 2, {
+            display:"none", alpha:0
         }, {
-            display:"block", y:0, alpha:0.95, ease: "linear"
+            display:"block", alpha:0.95, ease: "linear"
+        })
+
+        TweenMax.fromTo(this.wavesBottomEl, 3, {
+            y:100
+        }, {
+            y:0, ease: "linear"
         })
 
         TweenMax.fromTo(this.wavesTopEl, 3, {
-            display:"none", y:-100, alpha:0
+            y:-100
         }, {
-            display:"block", y:0, alpha:0.95, ease: "linear"
+            y:0, ease: "linear"
         })
 
         // HOP  
@@ -262,6 +317,12 @@ export default class UI {
                 each:0.04, from: "random"
             }
         })
+        
+        // TweenMax.from(logoElements, 0.2, {
+        //     alpha:0, delay:1.5, stagger: {
+        //         each:0.04, from: "random"
+        //     }
+        // })
         
         // THE SOUND OF
         TweenMax.from(logoHeadElements, 1, {
@@ -430,16 +491,28 @@ export default class UI {
         )
 
         // WAVES
+        var wavesAreVisible = f.getStyle(this.wavesTopEl, "display");
+        if (!wavesAreVisible) {
+            // if waves aren't visible, fade them in
+            TweenMax.fromTo([this.wavesTopEl, this.wavesBottomEl], 2, {
+                display:"none", alpha:0
+            }, {
+                display:"block", alpha:0.95, delay: d, ease: "linear"
+            })
+
+        }
+
+        // move the waves in
         TweenMax.fromTo(this.wavesBottomEl, 2, {
-            display:"none", y:100, alpha:0
+            y:100
         }, {
-            display:"block", y:0, alpha:0.95, delay: d, ease: "linear"
+            y:0, delay: d, ease: "linear"
         })
 
         TweenMax.fromTo(this.wavesTopEl, 2, {
-            display:"none", y:-100, alpha:0
+            y:-100
         }, {
-            display:"block", y:0, alpha:0.95, delay: d, ease: "linear"
+            y:0, delay: d, ease: "linear"
         })
         
     }
@@ -560,7 +633,8 @@ export default class UI {
             
             case PageType.RoundName:
                 // set the page to be hidden in graphics callback
-                this.lastVisibleEl = this.roundPageEl;
+                // this.lastVisibleEl = this.roundPageEl;
+                this.elementsToHide.push(this.roundPageEl);
                 this.showQuestion();
                 break;
             
@@ -596,40 +670,6 @@ export default class UI {
         // }, 0.7)
     }
 
-    // call back from graphics/app
-    public bgTransitionComplete() {
-        // set the body colour
-        f.el("body").style.backgroundColor = this.nextBgColor;
-        // this.lastVisibleEl.style.display = "none";
-
-        if (this.currentPage == PageType.Question) {
-            // hide the round number elements
-            TweenMax.to(".round-name-text li, .numbers li", 0, {
-                display: "none"
-            })
-
-            this.hideWaves();
-        }
-
-        // fix this lol
-        // f.el("#hop").style.display = "none";
-        // this.hideWaves();
-
-        // set completed callback
-        if (this.currentQuestionGroup.isComplete) this.currentQuestionGroup.completed();
-
-        // setTimeout(()=> {
-        //     // moved shared element back so things can be interacted with
-        //     // this.sharedEl.style.zIndex = "100";
-            
-        //     // prepare to hide graphics element
-        //     this.graphicsEl.style.zIndex = "0";
-
-        //     // convert graphics element to transparent
-        //     this.app.resetGraphics();
-        // }, 100)
-    }
-
     public answerRetrieved(a : any) {
         // data.QUESTIONS[this.currentQuestionIdx].answer = a;
         // console.log(data.QUESTIONS[this.currentQuestionIdx]);
@@ -637,7 +677,8 @@ export default class UI {
     }
 
     public roundComplete(el: HTMLElement) {
-        this.lastVisibleEl = el;
+        // this.lastVisibleEl = el;
+        this.elementsToHide.push(el);
         if (this.currentRoundIdx == this.questionGroups.length-1) {
             this.questionsCompleted();
         } else {
