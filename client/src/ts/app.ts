@@ -93,7 +93,7 @@ export default class App {
         console.log("spotify authorised?", this.spotifyInterface.Authorized);
 
         if (this.spotifyInterface.Authorized) {
-            this.ui.loginSuccessful();
+            this.ui.authenticated();
             this.spotifyInterface.GetUserProfile();
             console.log(this.profile);
         } else {

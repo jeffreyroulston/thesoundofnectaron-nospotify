@@ -58,8 +58,6 @@ export default class UI {
 
     // for between pages
     private elementsToHide : HTMLElement[] = [];
-    // private lastVisibleEl : HTMLElement;
-    private nextBgColor : string = "";
     
     // nav
     private navVisible : boolean = false;
@@ -145,13 +143,12 @@ export default class UI {
         // load the landing page elements
     }
 
-    public init() {
-        console.log("init");
-        this.loadImages([
-            "fruit/hop.png",
-            "waves/wave-orange.svg",
-            "waves/wave-purple.svg"
-        ])
+    // **************
+    // PRIVATE
+    // **************
+
+    private login() {
+        this.app.Login();
     }
 
     private onResize() {
@@ -178,17 +175,17 @@ export default class UI {
     }
 
     private setBG(color : string) {
-        // set the next background color to turn the body in the graphics callback
-        this.nextBgColor = color;
-        // let complete = this.bgTransitionComplete.bind(this);
-        f.el("body").style.backgroundColor = this.nextBgColor;
+        // transition the background colour
+        f.el("body").style.backgroundColor = color;
 
+        // kill the looping animations
         this.loopingAnimations.forEach((anim)=> {
             anim.kill();
         })
 
         this.loopingAnimations = [];
 
+        // hide the elements
         TweenMax.to(this.elementsToHide, 0.5, {
             alpha:0, scale:0.95, display: "none", onComplete: this.clearHiddenElements.bind(this)
         })
@@ -196,6 +193,7 @@ export default class UI {
     }
 
     private clearHiddenElements() {
+        // reset hidden elements
         this.elementsToHide = [];
     }
 
@@ -240,12 +238,6 @@ export default class UI {
         this.currentWaveColor = colour;
     }
 
-    // private hideWaves() {
-    //     TweenMax.to([this.wavesBottomEl, this.wavesTopEl], 1, {
-    //         alpha:0, display:"none"
-    //     })
-    // }
-
     private toggleFrameColours(colour : string) {
         // change colour of letters in the border
         this.frameLetterFill.forEach((el)=> {
@@ -253,7 +245,24 @@ export default class UI {
         })
     }
 
-    public showLanding() {
+    private next() {
+        switch (this.currentPage) {
+            case PageType.Login:
+                this.showRoundName();
+                break;
+            
+            case PageType.RoundName:
+                this.elementsToHide.push(this.roundPageEl);
+                this.showQuestion();
+                break;
+            
+            case PageType.Question:
+                this.showRoundName();
+                break;
+        }
+    }
+
+    private showLanding() {
         // // reset the cookie
         document.cookie = "landingShown"
         this.landingPageEl.style.display = "block";
@@ -543,6 +552,27 @@ export default class UI {
         })
     }
 
+    private showEndFrame() {
+        this.currentPage = PageType.EndFrame;
+        this.setBG(data.COLOURS.beige);
+        // anim.endFrameIn.play();
+        // endFrameIn.to("#end-frame", 0, {
+        //     display: "block"
+        // }).fromTo("#playlist-title", 0.3, {
+        //     alpha:0, x:-20
+        // }, {
+        //     alpha:1, x:0
+        // }, 0.4).fromTo("#playlist-desc", 0.3, {
+        //     alpha:0, x:-20
+        // }, {
+        //     alpha:1, x:0
+        // }, 0.5).fromTo("#album-cover", 0.3, {
+        //     alpha:0, scale:0.5
+        // }, {
+        //     alpha: 1, scale:1, delay: 0.7
+        // }, 0.7)
+    }
+
     private togglePage(e: any) {
         // used for nav (About/Contact/Order)
         var target = "#" + e.srcElement.getAttribute("data");
@@ -579,23 +609,21 @@ export default class UI {
             this.currentPopupPage = target;
             this.currentPopupPageEl = e.srcElement;
         }
-        
-
     }
 
     private showPage(p : string) {
         TweenMax.fromTo(p, 0.5, {
-            display : "none", alpha: 0, x:-window.innerWidth
+            display : "none", alpha: 0, scale:0.95
         }, {
-            display: "block", alpha: 1, x:0
+            display: "block", alpha: 1, scale:1
         })
     }
 
     private hidePage(p : string, p2?: string) {
         TweenMax.fromTo(p, 0.5, {
-            display : "block", alpha: 1, x:0
+            display : "block", alpha: 1, scale:1
         }, {
-            display: "none", alpha: 0, x:window.innerWidth
+            display: "none", alpha: 0, scale:0.95
         })
 
         if (p2) {
@@ -634,85 +662,34 @@ export default class UI {
 
     }
 
-    private login() {
-        this.app.Login();
-    }
+    // **************
+    // PUBLIC
+    // **************
 
-    private next() {
-        console.log("next");
-        switch (this.currentPage) {
-            case PageType.Login:
-                // show the round name
-                this.showRoundName();
-                break;
-            
-            case PageType.RoundName:
-                // set the page to be hidden in graphics callback
-                // this.lastVisibleEl = this.roundPageEl;
-                this.elementsToHide.push(this.roundPageEl);
-                this.showQuestion();
-                break;
-            
-            case PageType.Question:
-                // show the round name
-                this.showRoundName();
-                break;
-        }
-    }
-
-    private showEndFrame() {
-        this.currentPage = PageType.EndFrame;
-        this.setBG(data.COLOURS.beige);
-        // anim.endFrameIn.play();
-        // endFrameIn.to("#end-frame", 0, {
-        //     display: "block"
-        // }).fromTo("#playlist-title", 0.3, {
-        //     alpha:0, x:-20
-        // }, {
-        //     alpha:1, x:0
-        // }, 0.4).fromTo("#playlist-desc", 0.3, {
-        //     alpha:0, x:-20
-        // }, {
-        //     alpha:1, x:0
-        // }, 0.5).fromTo("#album-cover", 0.3, {
-        //     alpha:0, scale:0.5
-        // }, {
-        //     alpha: 1, scale:1, delay: 0.7
-        // }, 0.7)
-    }
-
-    public answerRetrieved(a : any) {
-        // data.QUESTIONS[this.currentQuestionIdx].answer = a;
-        // console.log(data.QUESTIONS[this.currentQuestionIdx]);
-        // this.next();
-    }
-
-    public roundComplete(el: HTMLElement) {
-        // this.lastVisibleEl = el;
-        this.elementsToHide.push(el);
-        if (this.currentRoundIdx == this.questionGroups.length-1) {
-            this.questionsCompleted();
-        } else {
-            this.next();
-        }
-    }
-
-    public questionsCompleted() {
-        // called from quick fire question class
-        // use the current question index to discount unanswered quickfire questions
-        console.log("questions completed");
-        this.showEndFrame();
-
-    }
-
-    // CALLBACK FROM APP
-    public loginSuccessful() {
-        this.next();
-        // this.showRoundName();
+    public init() {
+        console.log("init");
+        this.loadImages([
+            "fruit/hop.png",
+            "waves/wave-orange.svg",
+            "waves/wave-purple.svg"
+        ])
     }
 
     public startRounds() {
+        // called from the app ior spotify?
         this.showRoundName();
+    }
+
+    public roundComplete(el: HTMLElement) {
+        // Called from slider/MCQ/Quickfire
+        this.elementsToHide.push(el);
+
+        if (this.currentRoundIdx == this.questionGroups.length-1) {
+            console.log("questions completed");
+            this.showEndFrame();
+        } else {
+            this.next();
+        }
     }
 
     public OnUserData(type: si.DataType, data: si.Data): void {
@@ -735,13 +712,9 @@ export default class UI {
         //         break;
         // }
     }
-
-
-    // public Login() {
-    //     this.OnLoginPressed();
-    // }
     
     public ShowUserData(imageURL: string, displayName: string): void {
     }
+
     
 }

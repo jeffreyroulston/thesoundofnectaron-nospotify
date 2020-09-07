@@ -541,11 +541,7 @@ export default class Slider {
         })
 
         if (this.questionIdx < this.questions.length-1) {
-            console.log("current question: " + this.questionIdx.toString() + ", next question: " + (this.questionIdx+1).toString())
             this.questionIdx++;
-            // transition out
-
-            // reset values
             this.imgs = [];
             this.imgEl = f.find(this.el, ".slider-q" + (this.questionIdx+1).toString());
             this.count = 0;
@@ -559,7 +555,6 @@ export default class Slider {
             this.hide();
 
         } else {
-            console.log("current question: " + this.questionIdx.toString() + ", end of this section ");
             this.isComplete = true;
             this.hide();
             this.ui.roundComplete(this.el);
@@ -580,7 +575,7 @@ export default class Slider {
         });
 
         // hide the line
-        TweenMax.to(" .slider-line", this.time, {
+        TweenMax.to(this.sliderLineEl, this.time, {
             scaleX:0, transformOrigin: "right"
         });;
 
