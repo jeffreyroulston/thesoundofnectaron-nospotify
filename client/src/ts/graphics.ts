@@ -46,9 +46,11 @@ const fragShader = `
 const waterVertShader = `
 
     varying vec2 vUv;
+    varying float transitionGradient;
 
     void main() {
         vUv = uv;
+        transitionGradient = position.y * 0.5 + 0.5;
         gl_Position = vec4(position, 1.0);
     }
 `
@@ -61,10 +63,15 @@ const waterFragShader = `
     #define FOG_COL vec3(0.6406, 0.9453, 0.9336)
     #define SKY_COL vec3(0.0, 0.8203, 1.0)
 
+    #define TRANSITION_COL_PURPLE vec3(136.0 / 255.0, 0.0, 157.0 / 255.0)
+    #define TRANSITION_COL_LIGHT_PURPLE vec3(130.0 / 255.0, 0.0 / 255.0, 150.0 / 255.0)
+    #define TRANSITION_COL_ORANGE vec3(252.0 / 255.0, 140.0 / 255.0, 3.0 / 255.0)
 
     varying vec2 vUv;
+    varying float transitionGradient;
 
     uniform float time;
+    uniform float transitionAmount;
     uniform vec2 size;
 
     vec3 mod289(vec3 x) {
@@ -200,9 +207,10 @@ const waterFragShader = `
     void main() {
         vec2 samplePoint = vUv * size * 0.015;
         vec3 c = voronoi( samplePoint + vec2(0.0, time) );
-        float border = smoothstep( 0.02, 0.04, c.x);
-        vec3 color = mix(FOAM_COL, WATER_COL, border);
-        gl_FragColor = vec4(color, 1.0);
+        float border = smoothstep( 0.00, 1.0, c.x);
+        float transition = clamp(transitionGradient - transitionAmount, 0.0, 1.0);
+        vec3 transitionColor = mix(TRANSITION_COL_PURPLE, TRANSITION_COL_ORANGE, transition) * (1.0 - border * 0.05 * (1.0 - transitionAmount));
+        gl_FragColor = vec4(transitionColor, 1.0);
     }
 `
 
@@ -306,7 +314,8 @@ export default class Graphics {
             side: THREE.DoubleSide,
             uniforms: {
                 time: {value: 0.0},
-                size: {value: new THREE.Vector2(1.0, 1.0)}
+                size: {value: new THREE.Vector2(1.0, 1.0)},
+                transitionAmount: {value: 0.0}
             }
         });
 
@@ -467,6 +476,8 @@ export default class Graphics {
         this.material.uniforms.time.value = time;
         this.waterMaterial.uniforms.time.value = time;
         this.material.uniforms.lerp.value = this.currentLerp;
+
+        this.waterMaterial.uniforms.transitionAmount.value = Math.sin(time) * 0.5 + 0.5;
 
         this.renderer.render(this.scene, this.camera);
         this.squiggleRenderer.render(this.waterScene, this.camera);
