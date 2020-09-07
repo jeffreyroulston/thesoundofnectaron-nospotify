@@ -1,11 +1,13 @@
 @import "shared";
-@import "loader";
+@import "landing";
+@import "waves";
 @import "frame";
 @import "nav";
 @import "round";
 @import "slider";
 @import "mcq";
 @import "qfq";
+@import "side-pages";
 
 * {
     margin: 0;
@@ -21,7 +23,8 @@
 //   }
   
 body {
-    background: $beige;
+    background-color: $purple;
+    @include transition(background-color 1s ease);
 }
 
 li {
@@ -175,6 +178,7 @@ p {
 
     svg {
         width: inherit;
+        overflow: visible;
     }
 
     &:hover {

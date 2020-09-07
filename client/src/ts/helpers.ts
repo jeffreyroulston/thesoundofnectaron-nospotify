@@ -4,6 +4,10 @@ export interface HEX_COLOR {
     b : number
 }
 
+export function elByID(e: string) : HTMLElement {
+    return <HTMLElement>document.getElementById(e);
+}
+
 export function el(e: string) : HTMLElement{
     return <HTMLElement>document.querySelector(e);
 }
@@ -18,6 +22,18 @@ export function elList(e: string) {
         elements.push(<HTMLElement>el)
     });
     return elements; 
+}
+
+export function findAll(el : HTMLElement, e: string) {
+    var elements : HTMLElement[] = [];
+    el.querySelectorAll(e).forEach(el => {
+        elements.push(<HTMLElement>el)
+    });
+    return elements; 
+}
+
+export function getStyle(el : HTMLElement, prop: string) {
+    return window.getComputedStyle(el).getPropertyValue(prop)
 }
 
 export function px (n : number) : string{

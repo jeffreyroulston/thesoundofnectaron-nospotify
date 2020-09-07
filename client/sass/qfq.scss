@@ -23,7 +23,7 @@
 
     .question {
         // height: 250px;
-        text-shadow: 1px 1px 5px $beige;
+        // text-shadow: 1px 1px 5px $beige;
 
         // < 768px
         @include maxW($tabletPortraitWidth) {

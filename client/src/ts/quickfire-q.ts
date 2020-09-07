@@ -114,8 +114,8 @@ export default class QuickFireQ {
         this.questionsAsked.push(this.questionsUnanswered[idx]);
         this.questionsUnanswered.splice(idx, 1);
 
-        console.log(this.questionsAsked);
-        console.log(this.questionsUnanswered);
+        // console.log(this.questionsAsked);
+        // console.log(this.questionsUnanswered);
         if (this.initiated) this.set();
     }
 
@@ -147,8 +147,8 @@ export default class QuickFireQ {
         }
 
         if (this.timerCount < 11) {
-            this.timerTensColumn.style.color = COLOURS.red;
-            this.timerOnesColumn.style.color = COLOURS.red;
+            this.timerTensColumn.style.color = COLOURS.orange;
+            this.timerOnesColumn.style.color = COLOURS.orange;
         } else if (this.timerCount < 21) {
             this.timerTensColumn.style.color = COLOURS.yellow;
             this.timerOnesColumn.style.color = COLOURS.yellow;
