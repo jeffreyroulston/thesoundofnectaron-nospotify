@@ -17,14 +17,17 @@ export default class Slider {
     private time = 0.3;
 
     // shared elements
-    private sliderEl : HTMLInputElement;
-    private sliderThumbEl : HTMLElement;
-    private sliderWidthEl : number = 0;
-    private questionElement: HTMLElement;
-    private minValueLabel : HTMLElement;
-    private maxValueLabel : HTMLElement;
+    private sliderEl : HTMLInputElement = <HTMLInputElement>f.find(this.el, ".slider-input");
+    private sliderThumbEl : HTMLElement = f.find(this.el, " .slider-thumb");
+    private questionElement: HTMLElement = f.find(this.el, ".question");
+    private minValueLabel : HTMLElement = f.find(this.el, "#min-value-label");
+    private maxValueLabel : HTMLElement = f.find(this.el, "#max-value-label");
+
+    // other bits
+    private sliderLineEl : HTMLElement = f.find(this.el, ".slider-line")
 
     // from question
+    private sliderWidthEl : number = 0;
     private minValue : number = 0;
     private maxValue : number = 100;
 
@@ -39,7 +42,7 @@ export default class Slider {
     private count : number = 0;
 
     //q1 (color slider)
-    private colorWipeEl :HTMLElement = f.elByID("#color-wipe");
+    private colorWipeEl :HTMLElement = f.elByID("color-wipe");
     private colour1 = f.convertHexToRgb("FCF1DB");
     private colour2 = f.convertHexToRgb("281333");
     private imgs2 : HTMLElement[] = [];
@@ -73,17 +76,6 @@ export default class Slider {
 
     constructor(ui : UI) {
         this.ui = ui;
-
-        // question copy
-        this.questionElement = f.find(this.el, ".question");
-
-        // labels
-        this.minValueLabel = f.find(this.el, "#min-value-label");
-        this.maxValueLabel = f.find(this.el, "#max-value-label");
-
-        // slider arrow
-        this.sliderEl = <HTMLInputElement>f.find(this.el, ".slider-input");
-        this.sliderThumbEl = f.find(this.el, " .slider-thumb");
 
         this.showCurrentQuestion = this.showQ1.bind(this);
         this.callbackCurrentQuestion = this.callbackQ1.bind(this)
@@ -345,6 +337,9 @@ export default class Slider {
         
         // PINEAPPLE AND HOPS
         this.imgs = f.elList(".slider-q2 li img");
+
+        // get the width
+        this.fruitDefaultWidth = this.imgs[0].getBoundingClientRect().width;
 
         // Make it not full width
         f.el(".col-wrapper").classList.toggle("full-width");
