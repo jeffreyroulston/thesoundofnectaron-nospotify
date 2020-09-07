@@ -4,7 +4,7 @@ import * as THREE from 'three';
 
 export const COLOURS = {
     beige : "#FCF1DB",
-    red : "#FF2000",
+    orange : "#FF1900",
     purple : "#88009D",
     blue : "#00C1F5",
     yellow: "#FFE700"
@@ -12,7 +12,7 @@ export const COLOURS = {
 
 export const COLOURS_THREE : { [id: string] : THREE.Color } = {
     "#FCF1DB" : new THREE.Color(0xFCF1DB),
-    "#FF2000" : new THREE.Color(0xFF2000),
+    "#FF1900" : new THREE.Color(0xFF2000),
     "#88009D" : new THREE.Color(0x88009D),
     "#00C1F5" : new THREE.Color(0x00C1F5),
     "#FFE700" : new THREE.Color(0xFFE700)
@@ -21,7 +21,7 @@ export const COLOURS_THREE : { [id: string] : THREE.Color } = {
 export const CONTRAST : { [id: string] : string } = {
     "#FCF1DB" : COLOURS.purple,
     "#FF2000" : COLOURS.purple,
-    "#88009D" : COLOURS.red,
+    "FF1900" : COLOURS.orange,
     "#00C1F5" : COLOURS.yellow,
     "#FFE700" : COLOURS.purple
 }
@@ -67,10 +67,10 @@ export interface QuickFireQuestion extends Question {
 export const ROUNDS : QuestionRound[] = [
     {
         round: 1,
-        color: COLOURS.red,
-        waveColor : "red",
+        color: COLOURS.orange,
+        waveColor : "orange",
         numberColor: COLOURS.yellow,
-        btnTextColor : COLOURS.red,
+        btnTextColor : COLOURS.orange,
         btnPaddingColor : COLOURS.purple,
         text : "Light? dark? Hazies? Lagers? There’s a science to it. Slide the dial to show what you’re in to..." 
     },
@@ -80,7 +80,7 @@ export const ROUNDS : QuestionRound[] = [
         waveColor : "purple",
         numberColor: COLOURS.yellow,
         btnTextColor : COLOURS.purple,
-        btnPaddingColor : COLOURS.red,
+        btnPaddingColor : COLOURS.orange,
         text: "It’s time to imbue some of your personality into this thing. What makes you, you?"
     },
     {
@@ -88,7 +88,7 @@ export const ROUNDS : QuestionRound[] = [
         color: COLOURS.blue,
         waveColor : "blue",
         numberColor: COLOURS.purple,
-        btnTextColor : COLOURS.red,
+        btnTextColor : COLOURS.orange,
         btnPaddingColor : COLOURS.purple,
         text: "OK, for this part switch off your brain. Don’t think. Just follow your instinct."
     }

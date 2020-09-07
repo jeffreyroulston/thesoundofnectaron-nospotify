@@ -23,7 +23,8 @@
 //   }
   
 body {
-    background: $purple;
+    background-color: $purple;
+    @include transition(background-color 1s ease);
 }
 
 li {

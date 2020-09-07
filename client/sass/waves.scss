@@ -23,17 +23,17 @@
         animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite;
         transform: translate3d(0, 0, 0);
       
-        &:nth-chil(2) {
+        &:nth-child(2) {
           top: -175px;
           animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) -.125s infinite, swell 7s ease -1.25s infinite;
         }
 
         &.purple {
-          background: url("./assets/loader/wave-purple.svg") repeat-x; 
+          background: url("./assets/waves/wave-purple.svg") repeat-x; 
         }
 
-        &.red {
-          background: url("./assets/loader/wave-red.svg") repeat-x;
+        &.orange {
+          background: url("./assets/waves/wave-orange.svg") repeat-x;
         }
     }
 }
@@ -52,7 +52,7 @@
     transform: translate3d(0,-25px,0);
   }
   50% {
-    transform: translate3d(0,-25px,0);
+    transform: translate3d(0,5px,0);
   }
 }
 

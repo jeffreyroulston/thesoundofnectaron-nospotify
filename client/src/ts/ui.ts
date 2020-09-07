@@ -41,7 +41,7 @@ export default class UI {
     private frameLetterFill : HTMLElement[] = f.findAll(this.frameEl, ".logo-letter-fill");
 
     // description box for the round
-    private descriptionEl : HTMLElement = f.find(this.roundPageEl, ".description p");
+    private descriptionEl : HTMLElement = f.find(this.roundPageEl, ".description");
 
     // waves
     private wavesTopEl : HTMLElement = f.elByID("waves-top");
@@ -128,7 +128,8 @@ export default class UI {
         })
 
         // kick it off
-        setTimeout(this.showLanding.bind(this), 1000);
+        // setTimeout(this.showLanding.bind(this), 1000);
+        this.showLanding();
         // this.showRoundName();
         // this.showLoader();
     }
@@ -136,15 +137,31 @@ export default class UI {
     private setBG(color : string) {
         // set the next background color to turn the body in the graphics callback
         this.nextBgColor = color;
+        let complete = this.bgTransitionComplete.bind(this);
 
+        TweenMax.to("#hop", 0.5, {
+            alpha:0, scale:0.9, display: "none"
+        })
+
+
+        TweenMax.to(this.lastVisibleEl, 0.5, {
+            alpha:0, scale:0.9, display: "none", onComplete: ()=> {
+                complete();
+            }
+        })
+
+        this.hideWaves();
+
+        
         // these are the border elements that stay on top
         // this.sharedEl.style.zIndex = "201";
 
         // put the pixel graphics on top of the others
-        this.graphicsEl.style.zIndex = "200";
+        // this.graphicsEl.style.zIndex = "200";
 
         // pixels!
-        this.app.switchGraphics(data.COLOURS_THREE[color]);
+        // this.app.switchGraphics(data.COLOURS_THREE[color]);
+        // this.bgTransitionComplete();
     }
 
     private showBorder() {
@@ -175,8 +192,11 @@ export default class UI {
     }
 
     private hideWaves() {
-        this.wavesTopEl.style.display = "none";
-        this.wavesBottomEl.style.display = "none";
+        TweenMax.to([this.wavesBottomEl, this.wavesTopEl], 1, {
+            alpha:0, display:"none"
+        })
+        // this.wavesTopEl.style.display = "none";
+        // this.wavesBottomEl.style.display = "none";
     }
 
     private toggleFrameColours(colour : string) {
@@ -215,13 +235,13 @@ export default class UI {
         TweenMax.fromTo(this.wavesBottomEl, 3, {
             display:"none", y:100, alpha:0
         }, {
-            display:"block", y:0, alpha:0.9, ease: "linear"
+            display:"block", y:0, alpha:0.95, ease: "linear"
         })
 
         TweenMax.fromTo(this.wavesTopEl, 3, {
             display:"none", y:-100, alpha:0
         }, {
-            display:"block", y:0, alpha:0.9, ease: "linear"
+            display:"block", y:0, alpha:0.95, ease: "linear"
         })
 
         // HOP  
@@ -268,7 +288,7 @@ export default class UI {
         })
         
         // ARROW
-        TweenMax.from(btn, 0.3, {
+        TweenMax.from(btn, 0.5, {
             alpha:0, scale:0.9, delay:4
         })
     }
@@ -277,9 +297,6 @@ export default class UI {
         window.onbeforeunload = ()=> {
             document.cookie = "showLanding"
         }
-
-        // set delay time
-        var d = 0.7;
 
         // // set current page to be a round
         this.currentPage = PageType.RoundName;
@@ -291,8 +308,11 @@ export default class UI {
         // // do the background
         this.setBG(currentRound.color);
 
+        // set wave colour
+        this.toggleWaves(currentRound.waveColor);
+
         // set round copy
-        this.descriptionEl.innerHTML = currentRound.text;
+        this.descriptionEl.innerHTML = "<p>" + currentRound.text + "</p>";
 
         // set the arrow colour
         // f.find(this.roundPageEl, ".arrow-line").style.stroke = data.CONTRAST[currentRound.color];
@@ -300,109 +320,136 @@ export default class UI {
 
         // if round 3, change the colour of zero
         if (this.currentRoundIdx == 2) {
-            f.el("#round-name .numbers li:first-child path").style.stroke = data.COLOURS.purple;
+            f.find(this.roundPageEl, ".numbers li:first-child-path").style.stroke = data.COLOURS.purple;
         }
+
+        // change the colour of the frame
+        this.toggleFrameColours(data.COLOURS.beige);
 
         // show elements
         this.roundPageEl.style.display = "block";
 
+        // VARIABLES
+        var d = 0.7; // set delay time
+        var btn = f.find(this.roundPageEl, ".next-btn");
+        var fruit = f.find(this.roundPageEl, ".fruit-whole");
+
+        // this is 0
+        var roundNumberZero = f.find(this.roundPageEl, ".numbers li:first-child");
+
         // this is the round number (1, 2, 3)
-        var nextRoundNumber = "#round-name .numbers li:nth-child(" + (this.currentRoundIdx +2).toString() + ")";
+        var nextRoundNumber = f.find(this.roundPageEl, ".numbers li:nth-child(" + (this.currentRoundIdx +2).toString() + ")");
 
         // this is the name of the round
-        var nextRoundName = ".round-name-text li:nth-child(" + (this.currentRoundIdx +1).toString() + ")"
-
-        // hidden inline elements to prevent janky transition
-        var roundPageHiddenInline = "#round-name .numbers li:first-child" + ", " + nextRoundNumber + ", " + nextRoundName;
+        var nextRoundName = f.find(this.roundPageEl, ".round-name-text li:nth-child(" + (this.currentRoundIdx +1).toString() + ")");
 
         // set hidden inline elements to visible
-        TweenMax.fromTo(roundPageHiddenInline, 0, {
+        TweenMax.fromTo([roundNumberZero, nextRoundNumber, nextRoundName], 0, {
             display: "none"
         }, {
             display: "inline-block"
         })
 
         // show round number "0"
-        TweenMax.fromTo("#round-name .numbers li:first-child path", 2, {
+        TweenMax.fromTo(f.find(roundNumberZero, "path"), 2, {
             drawSVG : "0"
         }, {
             drawSVG : "100%", ease: easeCircleInOut, delay: d
         });
 
         // show variable round number (1,2,3)
-        TweenMax.fromTo(nextRoundNumber + " path", 2, {
+        TweenMax.fromTo(f.find(nextRoundNumber, "path"), 2, {
            drawSVG : "0"
         }, {
             drawSVG : "100%", ease: easeCircleInOut, delay: d
         });
 
         // float in 'round'
-        var paths = document.querySelectorAll(".round path");
-        console.log(paths);
+        var paths = f.findAll(this.roundPageEl, ".round path");
         for (var i=0; i<paths.length; i++) {
             let xVal = f.getRandom(-300, 300)
-            let yVal = f.getRandom(-300, 300);
+            let yVal = f.getRandom(-500, 0);
             let r = f.getRandom(-180, 180);
 
-            TweenMax.fromTo(paths[i], 0.8, {
+            TweenMax.fromTo(paths[i], 1, {
                 alpha:0, scale:0, x:xVal, y: yVal, rotation: r
             }, {
                 alpha:1, scale:1, x:0, y:0, rotation:0, delay:2*d + i*0.1
             })
         }
 
-        // bring in the fruit
-        // TweenMax.fromTo("#round-name .fruit-whole", 0.6, {
-        //     scale:0.8, alpha:0, y:-500, rotation:-45
-        // }, {
-        //     scale:1, alpha:1, y:0, rotation:0, delay:2*d+0.6
-        // })
-
         // show the round name
-        TweenMax.fromTo(nextRoundName, 0.6, {
+        TweenMax.fromTo(nextRoundName, 0.5, {
             alpha:0, x:-50
         }, {
-            alpha:1, x:0, delay:2*d+0.8
+            alpha:1, x:0, delay:2*d+1
         });
 
-        console.log(window.innerWidth);
+        // console.log(window.innerWidth);
         // show the description box
         if (window.innerWidth > 900) {
-            TweenMax.fromTo("#round-name .description", 0.6, {
-                alpha:0, y:20, rotation: -27
+            TweenMax.fromTo(this.descriptionEl, 0.5, {
+                alpha:0, y:-50, rotation:-17
             }, {
                 alpha:1, y:0, rotation: -17, delay:2*d+1
             });
 
         } else {
             // show the description box
-            TweenMax.fromTo("#round-name .description", 0.6, {
-                alpha:0, y:20
+            TweenMax.fromTo(this.descriptionEl, 1, {
+                alpha:0, y:-50
             }, {
                 alpha:1, y:0, delay:2*d+1
             });
         }
 
-        // show the arrow
-        TweenMax.fromTo("#round-name .next-btn", 0.6, {
-            alpha:0, x:-300
+        // bring in the fruit
+        TweenMax.fromTo(fruit, 1, {
+            y:-window.innerHeight, rotate:90
         }, {
-            alpha:1, x:0, delay:2*d+1.4
-        });
+            y:0, rotate:0, delay:2*d+0.5
+        })
+
+        this.loopingAnimations.push(TweenMax.to(fruit, 1, {
+            y:5, repeat:-1, ease: "linear", yoyo:true, delay:2*d+1.5
+        }))
+
+
+        // show the arrow
+        TweenMax.fromTo(btn, 0.5, {
+            alpha:0, scale:0.9
+        }, {
+            alpha:1, scale: 1, ease: "linear", delay:2*d+2.5
+        })
 
         // bounce the arrow
         this.loopingAnimations.push(
-            TweenMax.to("#round-name .next-btn .arrow-head", 0.3, {
-                x:10, repeat: -1, yoyo: true, delay:2*d+2
+            TweenMax.to(btn, 1, {
+                scale:0.9, ease: "linear", delay:2*d+3, repeat:-1, yoyo:true
             })
         )
 
+        // WAVES
+        TweenMax.fromTo(this.wavesBottomEl, 2, {
+            display:"none", y:100, alpha:0
+        }, {
+            display:"block", y:0, alpha:0.95, delay: d, ease: "linear"
+        })
 
+        TweenMax.fromTo(this.wavesTopEl, 2, {
+            display:"none", y:-100, alpha:0
+        }, {
+            display:"block", y:0, alpha:0.95, delay: d, ease: "linear"
+        })
+        
     }
 
     private showQuestion() { 
         this.currentPage = PageType.Question;
         this.setBG(data.COLOURS.beige);
+        
+        // change the colour of the frame
+        this.toggleFrameColours(data.COLOURS.purple);
         
         this.currentQuestionGroup = this.questionGroups[this.currentRoundIdx];
         this.currentQuestionGroup.set();
@@ -553,7 +600,7 @@ export default class UI {
     public bgTransitionComplete() {
         // set the body colour
         f.el("body").style.backgroundColor = this.nextBgColor;
-        this.lastVisibleEl.style.display = "none";
+        // this.lastVisibleEl.style.display = "none";
 
         if (this.currentPage == PageType.Question) {
             // hide the round number elements
@@ -565,23 +612,22 @@ export default class UI {
         }
 
         // fix this lol
-        f.el("#hop").style.display = "none";
+        // f.el("#hop").style.display = "none";
+        // this.hideWaves();
 
         // set completed callback
-        console.log("heeeeeeere");
-        console.log(this.currentQuestionGroup.isComplete);
         if (this.currentQuestionGroup.isComplete) this.currentQuestionGroup.completed();
 
-        setTimeout(()=> {
-            // moved shared element back so things can be interacted with
-            // this.sharedEl.style.zIndex = "100";
+        // setTimeout(()=> {
+        //     // moved shared element back so things can be interacted with
+        //     // this.sharedEl.style.zIndex = "100";
             
-            // prepare to hide graphics element
-            this.graphicsEl.style.zIndex = "0";
+        //     // prepare to hide graphics element
+        //     this.graphicsEl.style.zIndex = "0";
 
-            // convert graphics element to transparent
-            this.app.resetGraphics();
-        }, 100)
+        //     // convert graphics element to transparent
+        //     this.app.resetGraphics();
+        // }, 100)
     }
 
     public answerRetrieved(a : any) {
