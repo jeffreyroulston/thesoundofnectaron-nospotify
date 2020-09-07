@@ -134,8 +134,8 @@ export default class UI {
 
         // kick it off
         // setTimeout(this.showLanding.bind(this), 1000);
-        // this.showLanding();
-        this.showRoundName();
+        this.showLanding();
+        // this.showRoundName();
         // this.showLoader();
 
         // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
