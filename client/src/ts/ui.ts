@@ -205,6 +205,13 @@ export default class UI {
     //     }
     // }
 
+    public TransitionOut() {
+        // hide the elements
+        TweenMax.to(this.elementsToHide, 0.5, {
+            alpha:0, scale:0.95, display: "none", onComplete: this.clearHiddenElements.bind(this)
+        })
+    }
+
     public ShowQuestion() { 
         // called from UI.ROUNDS
         // this.currentPage = PageType.Question;
@@ -216,8 +223,8 @@ export default class UI {
         // hide waves
         this.HideWaves(0);
 
-        // this.currentQuestionGroup = this.questionGroups[this.currentRoundIdx];
-        // this.currentQuestionGroup.set();
+        // hide the elements
+        this.TransitionOut();
     }
 
     private showEndFrame() {
@@ -348,22 +355,22 @@ export default class UI {
         f.el("body").style.backgroundColor = color;
     }
 
-    public TransitionOut(color : string) {
-        // transition the background colour
-        f.el("body").style.backgroundColor = color;
+    // public TransitionOut(color : string) {
+    //     // transition the background colour
+    //     f.el("body").style.backgroundColor = color;
 
-        // kill the looping animations
-        // this.loopingAnimations.forEach((anim)=> {
-        //     anim.kill();
-        // })
+    //     // kill the looping animations
+    //     // this.loopingAnimations.forEach((anim)=> {
+    //     //     anim.kill();
+    //     // })
 
-        // this.loopingAnimations = [];
+    //     // this.loopingAnimations = [];
 
-        // hide the elements
-        TweenMax.to(this.elementsToHide, 0.5, {
-            alpha:0, scale:0.95, display: "none", onComplete: this.clearHiddenElements.bind(this)
-        })
-    }
+    //     // hide the elements
+    //     TweenMax.to(this.elementsToHide, 0.5, {
+    //         alpha:0, scale:0.95, display: "none", onComplete: this.clearHiddenElements.bind(this)
+    //     })
+    // }
 
     public LoadImages(images: string[]) {
         this.assetCounter += images.length;

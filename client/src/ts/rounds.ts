@@ -25,9 +25,14 @@ export default class Rounds {
     // ELEMENTS
     private roundPageEl: HTMLElement = f.elByID("round-name");
     private descriptionEl : HTMLElement = f.find(this.roundPageEl, ".description");
+    private roundNumberListEls : HTMLElement[] = f.findAll(this.roundPageEl, ".numbers li")
+    private roundNameListEls : HTMLElement[] = f.findAll(this.roundPageEl, ".round-name-text li")
+    private roundNumberPaths : HTMLElement[] = f.findAll(this.roundPageEl, ".number")
+    private btnEl : HTMLElement = f.find(this.roundPageEl, ".next-btn");
+    private fruitEl : HTMLElement = f.find(this.roundPageEl, ".fruit-whole");
 
     // PAGES
-    private currentRoundIdx : number = -1;
+    private currentRoundIdx : number = 0;
 
     //ANIMATION
     private loopingAnimations: TweenMax[] = [];
@@ -47,36 +52,24 @@ export default class Rounds {
         // this.questionGroups = [this.mcq, this.slider, this.mcq];
         // this.questionGroups = [this.qfq, this.slider, this.mcq];
 
+        // set callbacks
+        this.questionGroups.forEach((q)=> {
+            q.roundComplete = this.RoundComplete.bind(this);
+        })
+
         // set initial question
         this.currentQuestionGroup = this.slider;
 
-        this.ShowRound();
+        this.ShowRound(0);
 
         // bind round page button
-        // f.find(this.roundPageEl, ".next-btn").addEventListener("click", this.next.bind(this))
-
+        this.btnEl.addEventListener("click", this.next.bind(this));
     }
 
-    private ShowRound() {
-        // // increment the current round
-        this.currentRoundIdx++;
+    private ShowRound(d : number) {
         var currentRound = data.ROUNDS[this.currentRoundIdx];
 
-        // VARIABLES
-        var d = 0.7; // set delay time
-        var btn = f.find(this.roundPageEl, ".next-btn");
-        var fruit = f.find(this.roundPageEl, ".fruit-whole");
-
-        // this is 0
-        var roundNumberZero = f.find(this.roundPageEl, ".numbers li:first-child");
-
-        // this is the round number (1, 2, 3)
-        var nextRoundNumber = f.find(this.roundPageEl, ".numbers li:nth-child(" + (this.currentRoundIdx +2).toString() + ")");
-
-        // this is the name of the round
-        var nextRoundName = f.find(this.roundPageEl, ".round-name-text li:nth-child(" + (this.currentRoundIdx +1).toString() + ")");
-
-        // // do the background
+        //do the background
         this.UI.SetBgColor(currentRound.color);
 
         // elements to hide
@@ -95,36 +88,31 @@ export default class Rounds {
         this.descriptionEl.innerHTML = "<p>" + currentRound.text + "</p>";
 
         // set the arrow colour
-        // f.find(this.roundPageEl, ".arrow-line").style.stroke = data.CONTRAST[currentRound.color];
-        // f.find(this.roundPageEl, ".arrow-head").style.fill = data.CONTRAST[currentRound.color];
+        f.find(this.btnEl, ".next-btn-round").style.fill = currentRound.btnColor;
 
         // if round 3, change the colour of zero to purple
-        if (this.currentRoundIdx == 2) {
-            f.find(this.roundPageEl, ".numbers li:first-child-path").style.stroke = data.COLOURS.purple;
+        if (this.currentRoundIdx == 3) {
+            this.roundNumberPaths[0].style.stroke = data.COLOURS.purple;
         }
 
         // show elements
         this.roundPageEl.style.display = "block";
+        this.roundPageEl.style.opacity = "1";
 
         // set hidden inline elements to visible
-        TweenMax.fromTo([roundNumberZero, nextRoundNumber, nextRoundName], 0, {
+        var liElements = [this.roundNumberListEls[0], this.roundNumberListEls[this.currentRoundIdx+1], this.roundNameListEls[this.currentRoundIdx]];
+        TweenMax.fromTo(liElements, 0, {
             display: "none"
         }, {
             display: "inline-block"
         })
 
-        // show round number "0"
-        TweenMax.fromTo(f.find(roundNumberZero, "path"), 2, {
-            drawSVG : "0"
+        // show round numbers
+        var roundNumbers = [this.roundNumberPaths[0], this.roundNumberPaths[this.currentRoundIdx+1]]
+        TweenMax.fromTo(roundNumbers, 2, {
+            display: "none", drawSVG : "0"
         }, {
-            drawSVG : "100%", ease: easeCircleInOut, delay: d
-        });
-
-        // show variable round number (1,2,3)
-        TweenMax.fromTo(f.find(nextRoundNumber, "path"), 2, {
-        drawSVG : "0"
-        }, {
-            drawSVG : "100%", ease: easeCircleInOut, delay: d
+            display: "block", drawSVG : "100%", ease: easeCircleInOut, delay: d
         });
 
         // float in 'round'
@@ -142,7 +130,7 @@ export default class Rounds {
         }
 
         // show the round name
-        TweenMax.fromTo(nextRoundName, 0.5, {
+        TweenMax.fromTo(this.roundNameListEls[this.currentRoundIdx], 0.5, {
             alpha:0, x:-50
         }, {
             alpha:1, x:0, delay:2*d+1
@@ -166,7 +154,7 @@ export default class Rounds {
         }
 
         // bring in the fruit
-        TweenMax.fromTo(fruit, 1, {
+        TweenMax.fromTo(this.fruitEl, 1, {
             y:-window.innerHeight, rotate:90
         }, {
             y:0, rotate:0, delay:2*d+0.5
@@ -179,7 +167,7 @@ export default class Rounds {
 
 
         // show the arrow
-        TweenMax.fromTo(btn, 0.5, {
+        TweenMax.fromTo(this.btnEl, 0.5, {
             alpha:0, scale:0.9
         }, {
             alpha:1, scale: 1, ease: "linear", delay:2*d+2.5
@@ -193,17 +181,37 @@ export default class Rounds {
         // )
     }
 
-    // public RoundComplete(el: HTMLElement) {
-    //     // Called from slider/MCQ/Quickfire
-    //     this.elementsToHide.push(el);
+    private next() {
+        this.loopingAnimations.forEach((anim)=> {
+            anim.kill();
+        })
 
-    //     if (this.currentRoundIdx == this.questionGroups.length-1) {
-    //         console.log("questions completed");
-    //         this.showEndFrame();
-    //     } else {
-    //         this.next();
-    //     }
-    // }
+        var q = this.questionGroups[this.currentRoundIdx];
+        this.UI.ShowQuestion();
+        q.set();
+    }
+
+    public RoundComplete(el: HTMLElement) {
+        // Called from slider/MCQ/Quickfire
+        this.UI.SetVisibleElements([el]);
+
+        // hide elements
+        this.roundNumberListEls.forEach((n1)=> {
+            n1.style.display = "none"
+        });
+
+        this.roundNameListEls.forEach((n2)=> {
+            n2.style.display = "none"
+        });
+
+        if (this.currentRoundIdx <3) {
+            this.currentRoundIdx++;
+            this.UI.TransitionOut();
+            this.ShowRound(0.7);
+        } else {
+            // this.next();
+        }
+    }
 
 
 }

@@ -38,8 +38,7 @@ export interface QuestionRound {
     color: string;
     waveColor: string;
     numberColor: string,
-    btnTextColor: string,
-    btnPaddingColor: string,
+    btnColor: string,
     text : string;
     
 }
@@ -73,8 +72,7 @@ export const ROUNDS : QuestionRound[] = [
         color: COLOURS.orange,
         waveColor : "orange",
         numberColor: COLOURS.yellow,
-        btnTextColor : COLOURS.orange,
-        btnPaddingColor : COLOURS.purple,
+        btnColor : COLOURS.purple,
         text : "Light? dark? Hazies? Lagers? There’s a science to it. Slide the dial to show what you’re in to..." 
     },
     {
@@ -82,8 +80,7 @@ export const ROUNDS : QuestionRound[] = [
         color: COLOURS.purple,
         waveColor : "purple",
         numberColor: COLOURS.yellow,
-        btnTextColor : COLOURS.purple,
-        btnPaddingColor : COLOURS.orange,
+        btnColor : COLOURS.orange,
         text: "It’s time to imbue some of your personality into this thing. What makes you, you?"
     },
     {
@@ -91,8 +88,7 @@ export const ROUNDS : QuestionRound[] = [
         color: COLOURS.blue,
         waveColor : "blue",
         numberColor: COLOURS.purple,
-        btnTextColor : COLOURS.orange,
-        btnPaddingColor : COLOURS.purple,
+        btnColor : COLOURS.purple,
         text: "OK, for this part switch off your brain. Don’t think. Just follow your instinct."
     }
 ]
