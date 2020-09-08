@@ -89,7 +89,7 @@ export class SpotifyInterface {
         // console.log("window hash:", window.location.hash);
 
         // get the token
-        // this.token = window.location.hash.substr(1).split('&')[0].split("=")[1];
+        this.token = window.location.hash.substr(1).split('&')[0].split("=")[1];
         console.log("token", this.token);
     }
 

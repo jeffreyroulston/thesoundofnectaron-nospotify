@@ -1,16 +1,14 @@
-import UI from "./ui";
 import * as f from "./helpers";
-import gsap, {TweenMax} from "gsap"
+import UI from "./ui";
+import ROUND from "./rounds";
+import {TweenMax} from "gsap"
 import {COLOURS, sliderQuestions, SliderQuestion } from "./data";
-import { DrawSVGPlugin } from "gsap/dist/DrawSVGPlugin";
-import { MorphSVGPlugin } from "gsap/dist/MorphSVGPlugin";
-
-gsap.registerPlugin(DrawSVGPlugin, MorphSVGPlugin);
 
 export default class Slider {
-    private ui : UI;
-    public el : HTMLElement = f.elByID("slider-q");
+    // the element
+    private el : HTMLElement = f.elByID("slider-q");
 
+    // index things....
     private questionIdx : number = 0;
     private questions : SliderQuestion[] = sliderQuestions;
     private delay = 0.7;
@@ -75,9 +73,10 @@ export default class Slider {
     public initiated = false;
     public isComplete = false;
 
-    constructor(ui : UI) {
-        this.ui = ui;
+    // bound to ui
+    public roundComplete = (e: HTMLElement)=> {};
 
+    constructor() {
         this.showCurrentQuestion = this.showQ1.bind(this);
         this.callbackCurrentQuestion = this.callbackQ1.bind(this)
 
@@ -557,7 +556,7 @@ export default class Slider {
         } else {
             this.isComplete = true;
             this.hide();
-            this.ui.RoundComplete(this.el);
+            this.roundComplete(this.el);
         }
     }
 

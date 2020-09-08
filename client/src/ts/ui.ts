@@ -1,16 +1,10 @@
 import * as si from "./spotify-interface";
 import * as data from "./data";
 import * as f from "./helpers";
-import Slider from "./slider-q";
-import MCQ from "./mc-q";
-import QuickFireQ from "./quickfire-q";
 import {TweenMax} from "gsap"
 import App from "./app";
-
-import gsap from "gsap";
-import { DrawSVGPlugin } from "gsap/dist/DrawSVGPlugin";
-import { easeCircleInOut, easeExpIn, easeSinIn, image } from "d3";
-gsap.registerPlugin(DrawSVGPlugin);
+import Landing from "./landing";
+import Rounds from "./rounds";
 
 var qDefault = function() { return { value: 0, include: false } };
 
@@ -22,32 +16,24 @@ enum PageType {
 }
 
 export default class UI {
-    public ASSETURL : string = "./assets/";
+    public ASSET_URL : string = "./assets/";
 
+    // these are toggled depending on redirect state
+    private LANDING : Landing | undefined;
+    private ROUNDS : Rounds | undefined;
+
+    // link to the app
     private app : App;
-    private slider : Slider;
-    private mcq : MCQ;
-    private qfq : QuickFireQ;
-
-    private currentPage : PageType = PageType.Login;
-    private currentRoundIdx : number = -1;
-
-    // main bits
-    private graphicsEl: HTMLElement = f.elByID("canvas-container");
-    private landingPageEl: HTMLElement = f.elByID("landing");
-    private roundPageEl: HTMLElement = f.elByID("round-name");
 
     // frame letters
     private frameEl: HTMLElement = f.elByID("frame-letters");
     private frameLetterFill : HTMLElement[] = f.findAll(this.frameEl, ".logo-letter-fill");
 
-    // description box for the round
-    private descriptionEl : HTMLElement = f.find(this.roundPageEl, ".description");
-
     // waves
     private wavesTopEl : HTMLElement = f.elByID("waves-top");
     private wavesBottomEl : HTMLElement = f.elByID("waves-bottom");
     private currentWaveColor: string = "purple";
+    private wavesVisible : boolean = false;
     
     // nav
     private navWrapperEl : HTMLElement = f.elByID("nav-wrapper")
@@ -63,21 +49,18 @@ export default class UI {
     // nav
     private navVisible : boolean = false;
 
-    // questions
-    private questionGroups : any[] = [];
-    private currentQuestionGroup: Slider | MCQ | QuickFireQ;
-
-    // looping animations
-    private loopingAnimations: TweenMax[] = [];
-
-    private isMobile : boolean = false;
-
     // assets
     private assetCounter : number = 0;
     private assetsLoaded : number= 0;
 
     // spotify
     private authorized : boolean = false;
+
+    // binder for images
+    public ImagesDownloadedCallback = ()=>{};
+
+    // bound to app
+    public Login = ()=>{};
 
     // private recommendations: si.Track[] | undefined = [];
     // private queryParameters: {[key: string]: si.QueryParameter }  = {
@@ -100,36 +83,29 @@ export default class UI {
         // pass in the app to use for spotify interface
         this.app = app;
 
-        // we playing rounds on the redirect
-        if (window.location.href.indexOf("sonicallydelicious") > -1) {
-            this.ASSETURL = "../assets/";
-            f.el("body").style.backgroundColor = data.COLOURS.orange;
-            this.authorized = true;
-        } else {
-            f.find(this.landingPageEl, ".next-btn").addEventListener("click", this.login.bind(this))
-        }
-
-        // create the questions classes
-        this.slider= new Slider(this);
-        this.mcq = new MCQ(this, "#mc-q");
-        this.qfq = new QuickFireQ(this, "#quickfire-q");
-
-
-        // set the order (lol)
-        this.questionGroups = [this.slider, this.mcq, this.qfq];
-        // this.questionGroups = [this.mcq, this.slider, this.mcq];
-        // this.questionGroups = [this.qfq, this.slider, this.mcq];
-
-        // set initial question
-        this.currentQuestionGroup = this.slider;
-
         // check if it's fucking internet explorer
         // if (!Modernizr.svg) {
         //     console.log("it's internet fucking explorer")
         //   }
 
-        // bind round page button
-        f.find(this.roundPageEl, ".next-btn").addEventListener("click", this.next.bind(this))
+        // Set custom height
+        window.addEventListener('resize', this.onResize.bind(this));
+        this.onResize();
+
+        document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
+    }
+
+    private init() {
+        // we playing rounds on the redirect
+        if (window.location.href.indexOf("sonicallydelicious") > -1) {
+            // GAMEPLAY
+            this.ASSET_URL = "../assets/";
+            this.ROUNDS = new Rounds(this);
+        } else {
+            // LANDING PAGE
+            this.LANDING = new Landing(this);
+            this.LANDING.onLoginPressed = this.Login.bind(this)
+        }
 
         // used for the mobile menu
         this.burgerEl.addEventListener("click", this.toggleNav.bind(this));
@@ -138,23 +114,6 @@ export default class UI {
         f.findAll(this.navWrapperEl, "li").forEach(li => {
             li.addEventListener("click", this.togglePage.bind(this))
         })
-
-        // Set custom height
-        window.addEventListener('resize', this.onResize.bind(this));
-        this.onResize();
-    }
-
-    // **************
-    // PRIVATE
-    // **************
-
-    private login() {
-        console.log("ui authorized?", this.authorized);
-        if (this.authorized) {
-            this.next();
-        } else {
-            this.app.Login();
-        }
     }
 
     private onResize() {
@@ -162,44 +121,22 @@ export default class UI {
         document.documentElement.style.setProperty('--vh', `${vh}px`);
     }
 
-    private loadImages(images: string[]) {
-        this.assetCounter += images.length;
+    // public loadImages(images: string[]) {
+    //     this.assetCounter += images.length;
         
-        images.forEach((imgSrc)=> {
-            let imgObject = new Image();
-            imgObject.onload = this.imgDownloaded.bind(this);
-            imgObject.src = this.ASSETURL + imgSrc;
-        })
-    }
+    //     images.forEach((imgSrc)=> {
+    //         let imgObject = new Image();
+    //         imgObject.onload = this.imgDownloaded.bind(this);
+    //         imgObject.src = this.ASSETURL + imgSrc;
+    //     })
+    // }
 
     private imgDownloaded() {
         console.log("image downloaded");
         this.assetsLoaded++;
         if (this.assetsLoaded == this.assetCounter) {
-            if (this.authorized) {
-                this.showRoundName()
-            } else {
-                this.showLanding();
-            }
+            this.ImagesDownloadedCallback();
         }
-    }
-
-    private setBG(color : string) {
-        // transition the background colour
-        f.el("body").style.backgroundColor = color;
-
-        // kill the looping animations
-        this.loopingAnimations.forEach((anim)=> {
-            anim.kill();
-        })
-
-        this.loopingAnimations = [];
-
-        // hide the elements
-        TweenMax.to(this.elementsToHide, 0.5, {
-            alpha:0, scale:0.95, display: "none", onComplete: this.clearHiddenElements.bind(this)
-        })
-
     }
 
     private clearHiddenElements() {
@@ -207,7 +144,7 @@ export default class UI {
         this.elementsToHide = [];
     }
 
-    private showBorder() {
+    public ShowBorder() {
         // show the border letters
         // N E C
         TweenMax.fromTo(f.findAll(this.frameEl, "li.top"), 0.5, {y:-100}, {y:0})
@@ -219,352 +156,73 @@ export default class UI {
         TweenMax.fromTo(f.findAll(this.frameEl, "li.bottom"), 0.5, {y:100}, {y:0})
     }
 
-    private toggleWaves(colour: string) {
+    public ShowWaves(d: number) {
+        TweenMax.fromTo([this.wavesTopEl, this.wavesBottomEl], 2, {display:"none", alpha:0}, {display:"block", alpha:0.95, ease: "linear", delay: d})
+        TweenMax.fromTo(this.wavesBottomEl, 3, {y:100}, {y:0, ease: "linear", delay: d})
+        TweenMax.fromTo(this.wavesTopEl, 3, {y:-100}, {y:0, ease: "linear", delay: d})
+    }
+
+    public HideWaves(delay: number) {
+        TweenMax.to([this.wavesTopEl, this.wavesBottomEl], 1, {display:"none", alpha:0, ease: "linear"})
+        TweenMax.to(this.wavesBottomEl, 1, {y:500, ease: "linear"})
+        TweenMax.to(this.wavesTopEl, 1, {y:-500, ease: "linear"})
+    }
+
+    public ToggleWaveColor(colour: string) {
         // change visible wave colours
-        TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + this.currentWaveColor), 1, {
-            alpha:1, display:"block"
-        }, {
-            alpha:0, display:"none"
-        })
+        TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + this.currentWaveColor), 1, {alpha:1, display:"block"}, {alpha:0, display:"none"})
 
-        TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + this.currentWaveColor), 1, {
-            alpha:1, display:"block"
-        }, {
-            alpha:0, display:"none"
-        })
+        TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + this.currentWaveColor), 1, {alpha:1, display:"block"}, {alpha:0, display:"none"})
 
-        TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + colour), 1, {
-            alpha:0, display:"none"
-        }, {
-            alpha:1, display:"block"
-        })
+        TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + colour), 1, {alpha:0, display:"none"}, {alpha:1, display:"block"})
 
-        TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + colour), 1, {
-            alpha:0, display:"none"
-        }, {
-            alpha:1, display:"block"
-        })
+        TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + colour), 1, {alpha:0, display:"none"}, {alpha:1, display:"block"})
 
         this.currentWaveColor = colour;
     }
 
-    private toggleFrameColours(colour : string) {
+    public ToggleFrameColours(colour : string) {
         // change colour of letters in the border
         this.frameLetterFill.forEach((el)=> {
             el.style.fill = colour;
         })
     }
 
-    private next() {
-        switch (this.currentPage) {
-            case PageType.Login:
-                this.showRoundName();
-                break;
+    // private next() {
+    //     switch (this.currentPage) {
+    //         case PageType.Login:
+    //             this.showRoundName();
+    //             break;
             
-            case PageType.RoundName:
-                this.elementsToHide.push(this.roundPageEl);
-                this.showQuestion();
-                break;
+    //         case PageType.RoundName:
+    //             this.elementsToHide.push(this.roundPageEl);
+    //             this.showQuestion();
+    //             break;
             
-            case PageType.Question:
-                this.showRoundName();
-                break;
-        }
-    }
+    //         case PageType.Question:
+    //             this.showRoundName();
+    //             break;
+    //     }
+    // }
 
-    private showLanding() {
-        // // reset the cookie
-        document.cookie = "landingShown"
-        this.landingPageEl.style.display = "block";
-
-        // make the frame text white
-        this.toggleFrameColours(data.COLOURS.beige);
-
-        // make the border come in - this is used on round name as well?
-        this.showBorder();
-
-        // logos
-        var logoDesktop = f.find(this.landingPageEl, ".logo-wrapper-large");
-        var logoMobile = f.find(this.landingPageEl, ".logo-wrapper-mobile");
-        var isDesktop = f.getStyle(logoDesktop, "display") == "block";
-        var logoContainer = isDesktop ? logoDesktop : logoMobile;
-
-        var logoHeadElements= f.findAll(logoContainer, ".logo-head-fill");
-        var logoElements= f.findAll(logoContainer, ".logo-fill");
-
-        // other elements
-        var hop = f.elByID("hop");
-        var subheading = f.find(this.landingPageEl, ".subheading")
-        var btn = f.find(this.landingPageEl, "#start-btn");
-
-        // elements to hide
-        this.elementsToHide.push(this.landingPageEl);
-        this.elementsToHide.push(hop);
-
-        // WAVES
-        TweenMax.fromTo([this.wavesTopEl, this.wavesBottomEl], 2, {
-            display:"none", alpha:0
-        }, {
-            display:"block", alpha:0.95, ease: "linear"
-        })
-
-        TweenMax.fromTo(this.wavesBottomEl, 3, {
-            y:100
-        }, {
-            y:0, ease: "linear"
-        })
-
-        TweenMax.fromTo(this.wavesTopEl, 3, {
-            y:-100
-        }, {
-            y:0, ease: "linear"
-        })
-
-        // HOP  
-        TweenMax.fromTo(hop, 1, {
-            display:"none", scale: 0.95, alpha:0
-        }, {
-            display:"block",scale:1, alpha:0.9, ease: easeSinIn
-        })
-
-        // BOUNCE DAT HOP
-        this.loopingAnimations.push(TweenMax.to(hop, 2, {
-            scale:0.99, ease: "linear", delay:1, repeat:-1, yoyo:true
-        }))
-
-        // NECTARON
-        TweenMax.from(logoElements, 1, {
-            alpha:0, scale:0, transformOrigin: "center", delay:1.5, stagger: {
-                each:0.04, from: "random"
-            }
-        })
-
-        // TweenMax.from(logoElements, 0.2, {
-        //     alpha:0, delay:1.5, stagger: {
-        //         each:0.04, from: "random"
-        //     }
-        // })
-        
-        // THE SOUND OF
-        TweenMax.from(logoHeadElements, 1, {
-            alpha:0, scale:0, rotation:-45, y:-200, delay:2, stagger: {
-                each:0.1
-            }
-        })
-        
-        // TweenMax.from(".logo-head path:nth-child(even)", 1, {
-        //     alpha:0, scale:0, rotation:45, y:50, delay:1, stagger: {
-        //         each:0.1, from: "random"
-        //     }
-        // })
-        
-        // TweenMax.from(".logo-head path:nth-child(odd)", 1, {
-        //     alpha:0, scale:0, rotation:-45, y:-200, delay:1, stagger: {
-        //         each:0.1, from: "random"
-        //     }
-        // })
-        
-        // BREW YOUR OWN....
-        TweenMax.from(subheading, 0.5, {
-            alpha:0, y:5, delay:3
-        })
-        
-        // ARROW
-        TweenMax.from(btn, 0.5, {
-            alpha:0, scale:0.9, delay:4
-        })
-    }
-
-    public showRoundName() {
-        window.onbeforeunload = ()=> {
-            document.cookie = "showLanding"
-        }
-
-        // // set current page to be a round
-        this.currentPage = PageType.RoundName;
-
-        // // increment the current round
-        this.currentRoundIdx++;
-        var currentRound = data.ROUNDS[this.currentRoundIdx];
-
-        // // do the background
-        this.setBG(currentRound.color);
-
-        // set wave colour
-        this.toggleWaves(currentRound.waveColor);
-
-        // set round copy
-        this.descriptionEl.innerHTML = "<p>" + currentRound.text + "</p>";
-
-        // set the arrow colour
-        // f.find(this.roundPageEl, ".arrow-line").style.stroke = data.CONTRAST[currentRound.color];
-        // f.find(this.roundPageEl, ".arrow-head").style.fill = data.CONTRAST[currentRound.color];
-
-        // if round 3, change the colour of zero
-        if (this.currentRoundIdx == 2) {
-            f.find(this.roundPageEl, ".numbers li:first-child-path").style.stroke = data.COLOURS.purple;
-        }
+    public ShowQuestion() { 
+        // called from UI.ROUNDS
+        // this.currentPage = PageType.Question;
+        this.SetBgColor(data.COLOURS.beige)
 
         // change the colour of the frame
-        this.toggleFrameColours(data.COLOURS.beige);
+        this.ToggleFrameColours(data.COLOURS.purple);
 
-        // show elements
-        this.roundPageEl.style.display = "block";
+        // hide waves
+        this.HideWaves(0);
 
-        // VARIABLES
-        var d = 0.7; // set delay time
-        var btn = f.find(this.roundPageEl, ".next-btn");
-        var fruit = f.find(this.roundPageEl, ".fruit-whole");
-
-        // this is 0
-        var roundNumberZero = f.find(this.roundPageEl, ".numbers li:first-child");
-
-        // this is the round number (1, 2, 3)
-        var nextRoundNumber = f.find(this.roundPageEl, ".numbers li:nth-child(" + (this.currentRoundIdx +2).toString() + ")");
-
-        // this is the name of the round
-        var nextRoundName = f.find(this.roundPageEl, ".round-name-text li:nth-child(" + (this.currentRoundIdx +1).toString() + ")");
-
-        // set hidden inline elements to visible
-        TweenMax.fromTo([roundNumberZero, nextRoundNumber, nextRoundName], 0, {
-            display: "none"
-        }, {
-            display: "inline-block"
-        })
-
-        // show round number "0"
-        TweenMax.fromTo(f.find(roundNumberZero, "path"), 2, {
-            drawSVG : "0"
-        }, {
-            drawSVG : "100%", ease: easeCircleInOut, delay: d
-        });
-
-        // show variable round number (1,2,3)
-        TweenMax.fromTo(f.find(nextRoundNumber, "path"), 2, {
-           drawSVG : "0"
-        }, {
-            drawSVG : "100%", ease: easeCircleInOut, delay: d
-        });
-
-        // float in 'round'
-        var paths = f.findAll(this.roundPageEl, ".round path");
-        for (var i=0; i<paths.length; i++) {
-            let xVal = f.getRandom(-300, 300)
-            let yVal = f.getRandom(-500, 0);
-            let r = f.getRandom(-180, 180);
-
-            TweenMax.fromTo(paths[i], 1, {
-                alpha:0, scale:0, x:xVal, y: yVal, rotation: r
-            }, {
-                alpha:1, scale:1, x:0, y:0, rotation:0, delay:2*d + i*0.1
-            })
-        }
-
-        // show the round name
-        TweenMax.fromTo(nextRoundName, 0.5, {
-            alpha:0, x:-50
-        }, {
-            alpha:1, x:0, delay:2*d+1
-        });
-
-        // console.log(window.innerWidth);
-        // show the description box
-        if (window.innerWidth > 900) {
-            TweenMax.fromTo(this.descriptionEl, 0.5, {
-                alpha:0, y:-50, rotation:-17
-            }, {
-                alpha:1, y:0, rotation: -17, delay:2*d+1
-            });
-
-        } else {
-            // show the description box
-            TweenMax.fromTo(this.descriptionEl, 1, {
-                alpha:0, y:-50
-            }, {
-                alpha:1, y:0, delay:2*d+1
-            });
-        }
-
-        // bring in the fruit
-        TweenMax.fromTo(fruit, 1, {
-            y:-window.innerHeight, rotate:90
-        }, {
-            y:0, rotate:0, delay:2*d+0.5
-        })
-
-        // bop the fruit
-        // this.loopingAnimations.push(TweenMax.to(fruit, 1, {
-        //     y:5, repeat:-1, ease: "linear", yoyo:true, delay:2*d+1.5
-        // }))
-
-
-        // show the arrow
-        TweenMax.fromTo(btn, 0.5, {
-            alpha:0, scale:0.9
-        }, {
-            alpha:1, scale: 1, ease: "linear", delay:2*d+2.5
-        })
-
-        // bounce the arrow
-        // this.loopingAnimations.push(
-        //     TweenMax.to(btn, 1, {
-        //         scale:0.9, ease: "linear", delay:2*d+3, repeat:-1, yoyo:true
-        //     })
-        // )
-
-        // WAVES
-        var wavesAreVisible = f.getStyle(this.wavesTopEl, "display");
-        if (!wavesAreVisible) {
-            // if waves aren't visible, fade them in
-            TweenMax.fromTo([this.wavesTopEl, this.wavesBottomEl], 2, {
-                display:"none", alpha:0
-            }, {
-                display:"block", alpha:0.95, delay: d, ease: "linear"
-            })
-        }
-    
-        // move the waves in
-        TweenMax.fromTo(this.wavesBottomEl, 2, {
-            y:100
-        }, {
-            y:0, delay: d, ease: "linear"
-        })
-
-        TweenMax.fromTo(this.wavesTopEl, 2, {
-            y:-100
-        }, {
-            y:0, delay: d, ease: "linear"
-        })
-        
-    }
-
-    private showQuestion() { 
-        this.currentPage = PageType.Question;
-        this.setBG(data.COLOURS.beige);
-        
-        // change the colour of the frame
-        this.toggleFrameColours(data.COLOURS.purple);
-        
-        this.currentQuestionGroup = this.questionGroups[this.currentRoundIdx];
-        this.currentQuestionGroup.set();
-
-        // move the waves out
-        TweenMax.to([this.wavesTopEl, this.wavesBottomEl], 1, {
-            display:"none", alpha:0, ease: "linear"
-        })
-
-        TweenMax.to(this.wavesBottomEl, 1, {
-            y:500, ease: "linear"
-        })
-
-        TweenMax.to(this.wavesTopEl, 1, {
-            y:-500, ease: "linear"
-        })
+        // this.currentQuestionGroup = this.questionGroups[this.currentRoundIdx];
+        // this.currentQuestionGroup.set();
     }
 
     private showEndFrame() {
-        this.currentPage = PageType.EndFrame;
-        this.setBG(data.COLOURS.beige);
+        // this.currentPage = PageType.EndFrame;
+        // this.setBG(data.COLOURS.beige);
         // anim.endFrameIn.play();
         // endFrameIn.to("#end-frame", 0, {
         //     display: "block"
@@ -676,35 +334,58 @@ export default class UI {
     // PUBLIC
     // **************
 
-    public Init() {
-        console.log("init");
-        this.loadImages([
-            "fruit/hop.png",
-            "waves/wave-orange.svg",
-            "waves/wave-purple.svg"
-        ])
-    }
-
     public Authorize() {
         this.authorized = true;
     }
 
-    public StartRounds() {
-        // called from the app ior spotify?
-        this.showRoundName();
+    public SetVisibleElements(elements : HTMLElement[]) {
+        elements.forEach((e)=> {
+            this.elementsToHide.push(e);
+        })
     }
 
-    public RoundComplete(el: HTMLElement) {
-        // Called from slider/MCQ/Quickfire
-        this.elementsToHide.push(el);
-
-        if (this.currentRoundIdx == this.questionGroups.length-1) {
-            console.log("questions completed");
-            this.showEndFrame();
-        } else {
-            this.next();
-        }
+    public SetBgColor(color: string) {
+        f.el("body").style.backgroundColor = color;
     }
+
+    public TransitionOut(color : string) {
+        // transition the background colour
+        f.el("body").style.backgroundColor = color;
+
+        // kill the looping animations
+        // this.loopingAnimations.forEach((anim)=> {
+        //     anim.kill();
+        // })
+
+        // this.loopingAnimations = [];
+
+        // hide the elements
+        TweenMax.to(this.elementsToHide, 0.5, {
+            alpha:0, scale:0.95, display: "none", onComplete: this.clearHiddenElements.bind(this)
+        })
+    }
+
+    public LoadImages(images: string[]) {
+        this.assetCounter += images.length;
+        
+        images.forEach((imgSrc)=> {
+            let imgObject = new Image();
+            imgObject.onload = this.imgDownloaded.bind(this);
+            imgObject.src = this.ASSET_URL + imgSrc;
+        })
+    }
+
+    // public RoundComplete(el: HTMLElement) {
+    //     // Called from slider/MCQ/Quickfire
+    //     this.elementsToHide.push(el);
+
+    //     if (this.currentRoundIdx == this.questionGroups.length-1) {
+    //         console.log("questions completed");
+    //         this.showEndFrame();
+    //     } else {
+    //         this.next();
+    //     }
+    // }
 
     public OnUserData(type: si.DataType, data: si.Data): void {
 

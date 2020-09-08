@@ -1,19 +1,20 @@
-import UI from "./ui";
 import * as f from "./helpers";
+import ROUND from "./rounds";
 import {mcqQuestions, MCQuestion} from "./data";
 import {TweenMax} from "gsap"
 
 export default class MCQ {
-    private ui : UI;
-    private id : string;
-    private el : HTMLElement;
-
+    // the element
+    private el : HTMLElement = f.elByID("mc-q");
+    
+    // index things....
     private questionIdx : number = 0;
     private questions : MCQuestion[] = mcqQuestions;
     private delay = 0.7;
     private time = 0.3;
 
-    private questionElement: HTMLElement;
+    // elements
+    private questionElement: HTMLElement = f.find(this.el, ".question");
     private bgEl : HTMLElement = f.el(".scene-wrapper");
     private imgEl : HTMLUListElement = <HTMLUListElement>f.el(".mc-options");
     private imgs : HTMLElement[] = [];
@@ -28,20 +29,12 @@ export default class MCQ {
     public initiated = false;
     public isComplete = false;
 
-    constructor(ui : UI, id: string) {
-        this.ui = ui;
-        this.id = id;
-        this.el = f.el(this.id);
+    // bound to ui
+    public roundComplete = (e: HTMLElement)=> {};
 
-        // question copy
-        this.questionElement = f.find(this.el, ".question");
-
+    constructor() {
         window.onresize = this.onResize.bind(this)
         this.onResize();
-
-        // this.ui = ui;
-        // this.el = elementName;
-        // this.questionElement = el(this.el + " .question");
 
         // var options = document.querySelectorAll(this.el + " .mc-options li");
         // for (var i=0; i<options.length; i++) {
@@ -84,7 +77,7 @@ export default class MCQ {
                 this.loopingAnimations.forEach((anim)=> {
                     anim.pause();
                 })
-                    this.ui.RoundComplete(this.el);
+                    this.roundComplete(this.el);
                 }, 2000)
         }
     }

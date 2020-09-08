@@ -4,6 +4,8 @@ import * as THREE from 'three';
 import UI from "./ui";
 import ResourceManager from "./resource-manager";
 import Graphics from "./graphics";
+import Landing from "./landing";
+import Game from "./rounds";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
 let REDIRECT_URI: string = "http://localhost:8888/sonicallydelicious";
@@ -29,13 +31,10 @@ export default class App {
 
     constructor() {
         this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
-        var cookie = document.cookie;
 
-        this.CheckAuthorization();
+        this.ui.Login = this.Login.bind(this);
 
-        document.addEventListener('DOMContentLoaded', ()=> {
-            this.ui.Init();
-        }, false);
+        // this.CheckAuthorization();
 
         // if (this.spotifyInterface.Authorized) {
         //     if (document.cookie == "landingShown") {
@@ -88,19 +87,15 @@ export default class App {
         this.graphics.switchColorBackward();
     }
 
-    async CheckAuthorization() {
-        // checks if it's already authorised
-        console.log("spotify interface authorised", this.spotifyInterface.Authorized);
+    public Login() {
+        // called from UI on landing page button click
         if (this.spotifyInterface.Authorized) {
             this.ui.Authorize();
             this.spotifyInterface.GetUserProfile();
             console.log("User profile:", this.profile);
+        } else {
+            this.spotifyInterface.GetAuthorization();
         }
-    }
-
-    public Login() {
-        // called from UI on landing page button click
-        this.spotifyInterface.GetAuthorization();
     }
 
     // public Login() {
