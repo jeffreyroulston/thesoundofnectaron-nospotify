@@ -72,9 +72,6 @@ export default class Rounds {
         //do the background
         this.UI.SetBgColor(currentRound.color);
 
-        // elements to hide
-        this.UI.SetVisibleElements([this.roundPageEl]);
-
         // make the frame text white
         this.UI.ToggleFrameColours(data.COLOURS.beige);
 
@@ -187,6 +184,7 @@ export default class Rounds {
         })
 
         var q = this.questionGroups[this.currentRoundIdx];
+        this.UI.SetVisibleElements([this.roundPageEl]);
         this.UI.ShowQuestion();
         q.set();
     }

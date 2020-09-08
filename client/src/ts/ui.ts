@@ -206,6 +206,7 @@ export default class UI {
     // }
 
     public TransitionOut() {
+        console.log("transition out", this.elementsToHide);
         // hide the elements
         TweenMax.to(this.elementsToHide, 0.5, {
             alpha:0, scale:0.95, display: "none", onComplete: this.clearHiddenElements.bind(this)
