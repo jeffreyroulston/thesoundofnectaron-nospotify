@@ -10,13 +10,16 @@ export default class MCQ {
     // index things....
     private questionIdx : number = 0;
     private questions : MCQuestion[] = mcqQuestions;
+    private currentQuestion : MCQuestion | undefined;
     private delay = 0.7;
     private time = 0.3;
 
     // elements
     private questionElement: HTMLElement = f.find(this.el, ".question");
-    private bgEl : HTMLElement = f.el(".scene-wrapper");
-    private imgEl : HTMLUListElement = <HTMLUListElement>f.el(".mc-options");
+    private optionEl : HTMLElement = f.find(this.el, ".mc-options");
+    private listEls : HTMLElement[] = f.findAll(this.optionEl, "li");
+    private canEl : HTMLElement = f.find(this.el, "#can");
+    private canGraphicEls : HTMLElement[] = f.findAll(this.canEl, "li");
     private imgs : HTMLElement[] = [];
 
     // do this
@@ -34,37 +37,45 @@ export default class MCQ {
 
     constructor() {
         window.onresize = this.onResize.bind(this)
-        this.onResize();
+        // this.onResize();
 
         // var options = document.querySelectorAll(this.el + " .mc-options li");
         // for (var i=0; i<options.length; i++) {
         //     options[i].addEventListener("click", this.answerRetrieved.bind(this));
-        // }
+
+        this.listEls.forEach((e)=> {
+            e.addEventListener("mouseover", ()=> {
+                TweenMax.to(e, 0.1, {scale:1.3})
+            });
+
+            e.addEventListener("mouseleave", ()=> {
+                TweenMax.to(e, 0.1, {scale:1})
+            });
+
+            e.addEventListener("click", this.optionSelected.bind(this));
+        })
+
+        this.onResize();
     }
 
     onResize() {
-        // size the bottle
-        var bottleHeight = window.innerHeight - 200;
-        var bottleRatio = 1010/2700;
-        var bottleWidth = bottleHeight * bottleRatio;
-        console.log(bottleHeight, bottleRatio);
-
-        var bottleSceneWrapper = f.el(".scene-wrapper");
-        bottleSceneWrapper.style.width = f.px(bottleWidth);
-
-        // set the backgroundSize
-        // var backgroundRatio = 173/100;
-        var bgRatio = 1249/1237;
-        var bgEl = f.el("#label");
-        bgEl.style.height = f.px(bgRatio * bottleWidth)
-
-        var bgTopOffsetRatio = 290/240;
-        bgEl.style.top = f.px(bgTopOffsetRatio * (bgRatio * bottleWidth));
-
-
+        // size the list options
+        if (this.currentQuestion) {
+            var w = this.optionEl.getBoundingClientRect().width;
+            this.optionEl.style.height = f.px(w/this.currentQuestion.optionCount);
+        }
     }
 
-    getNextQuestion() {
+    private optionSelected(e: any) {
+        // get the answer
+        var answer = e.srcElement.style.backgroundImage;
+        mcqQuestions[this.questionIdx].answer = answer;
+
+        // set the thing
+        this.canGraphicEls[this.questionIdx].style.backgroundImage = this.getCanPath(answer);
+    }
+
+    private getNextQuestion() {
         console.log("get next question:")
         if (this.questionIdx < mcqQuestions.length-1) {
             console.log("progress");
@@ -82,53 +93,71 @@ export default class MCQ {
         }
     }
 
-    set() {
+    private getImgPath(idx: number) {
+        var prefix = "url(./assets/round2/";
+        var name = (this.questionIdx+1).toString() + "_" + idx.toString();
+        var suffix = ".png)";
+        return prefix + name + suffix
+    }
+
+    private getCanPath(s : string) {
+        // expected format = "url(./assets/round2/x_y.png)"
+        return s.replace(".png", "_can.png");
+    }
+
+    public set() {
         // called from the ui and internally to set the question
         if (this.questionIdx < this.questions.length) {
-            var q = mcqQuestions[this.questionIdx];
+            var path = "./assets/round2/";
+            this.currentQuestion = mcqQuestions[this.questionIdx];
 
             // set the question copy
-            this.questionElement.innerHTML = q.question;
+            this.questionElement.innerHTML = this.currentQuestion.question;
+
+            // set the things
+            for (var i=0; i<this.currentQuestion.optionCount; i++) {
+                this.listEls[i].style.backgroundImage = this.getImgPath(i);
+            }
 
             // private imgEl = f.el(".mc-options");
             // private imgs : HTMLElement[] = [];
-            var currentChildrenCount = this.imgs.length;
+            // var currentChildrenCount = this.imgs.length;
 
-            // create enough elements to house the options
-            for (var i=0; i<q.options; i++) {
-                if (i > this.imgs.length) {
-                    let el = document.createElement("li");
-                    el.addEventListener("mouseover", ()=> {
-                        console.log("mouse enter")
-                        // console.log(el.style.backgroundImage.replace(".png", "_grey.png"));
-                        // this.bgEl.style.backgroundImage = el.style.backgroundImage.replace(".png", "_grey.png");
-                        TweenMax.to(el, 0.2, {
-                            scale:1.3
-                        })
-                    });
-                    el.addEventListener("mouseleave", ()=> {
-                        console.log("mouse leave");
-                        TweenMax.to(el, 0.2, {
-                            scale:1
-                        })
-                    });
-                    // add a check to make sure it's visible
-                    el.addEventListener("click", ()=> {
-                        this.answerSelected(el);
-                    })
-                    this.imgEl.appendChild(el);
-                    this.imgs.push(el)
-                }
-            }
+            // // create enough elements to house the options
+            // for (var i=0; i<q.options; i++) {
+            //     if (i > this.imgs.length) {
+            //         let el = document.createElement("li");
+            //         el.addEventListener("mouseover", ()=> {
+            //             console.log("mouse enter")
+            //             // console.log(el.style.backgroundImage.replace(".png", "_grey.png"));
+            //             // this.bgEl.style.backgroundImage = el.style.backgroundImage.replace(".png", "_grey.png");
+            //             TweenMax.to(el, 0.2, {
+            //                 scale:1.3
+            //             })
+            //         });
+            //         el.addEventListener("mouseleave", ()=> {
+            //             console.log("mouse leave");
+            //             TweenMax.to(el, 0.2, {
+            //                 scale:1
+            //             })
+            //         });
+            //         // add a check to make sure it's visible
+            //         el.addEventListener("click", ()=> {
+            //             this.answerSelected(el);
+            //         })
+            //         this.imgEl.appendChild(el);
+            //         this.imgs.push(el)
+            //     }
+            // }
 
             // set images
-            for (var x=0; x<this.imgs.length; x++) {
-                var data = "./assets/round2/" + (this.questionIdx+1).toString() + "_" + x.toString();
-                data = data + (this.questionIdx == 1 ? ".svg" : ".png");
-                let src = "url(" + data + ")";
+            // for (var x=0; x<this.imgs.length; x++) {
+            //     var data = "./assets/round2/" + (this.questionIdx+1).toString() + "_" + x.toString();
+            //     data = data + (this.questionIdx == 1 ? ".svg" : ".png");
+            //     let src = "url(" + data + ")";
 
-                this.imgs[x].style.backgroundImage = src;
-                this.imgs[x].setAttribute("data", data);
+            //     this.imgs[x].style.backgroundImage = src;
+            //     this.imgs[x].setAttribute("data", data);
 
                 // TweenMax.to(this.imgs)
 
@@ -148,21 +177,21 @@ export default class MCQ {
                 //         y:-50, repeat:-1, yoyo:true, delay:d
                 //     })
                 // )
-            }
+            // }
 
-            let d = this.initiated? 0 : this.delay
+            // let d = this.initiated? 0 : this.delay
 
-            TweenMax.fromTo(this.imgs, this.time, {
-                alpha:0, y:10
-            }, {
-                alpha:1, y:0, delay:d, stagger: {
-                    each:0.1
-                }
-            })
+            // TweenMax.fromTo(this.imgs, this.time, {
+            //     alpha:0, y:10
+            // }, {
+            //     alpha:1, y:0, delay:d, stagger: {
+            //         each:0.1
+            //     }
+            // })
 
 
-            console.log(q.options, this.imgs);
-            this.show();
+            // console.log(q.options, this.imgs);
+            // this.show();
 
             // create children and add to images
             // for (var i=1; i<this.count+1; i++) {
@@ -180,7 +209,7 @@ export default class MCQ {
             // }
 
             // show it
-            // this.show();
+            this.show();
             // this.showCurrentQuestion();
 
         } else {
@@ -191,28 +220,29 @@ export default class MCQ {
         var delay = this.initiated ? 0 : 1;
         this.initiated = true;
         this.el.style.display = "block";
+        this.onResize();
         
         // show the element with images
-        this.imgEl.style.display = "block";
+        // this.imgEl.style.display = "block";
 
         // show the question
-        TweenMax.fromTo(this.questionElement, this.time, {
-            alpha:0, x:-20
-        }, {
-            alpha:1, x:0, delay: delay
-        });
+        // TweenMax.fromTo(this.questionElement, this.time, {
+        //     alpha:0, x:-20
+        // }, {
+        //     alpha:1, x:0, delay: delay
+        // });
     }
 
     hide() {
-        TweenMax.to(this.questionElement, this.time, {
-            alpha:0, x:-20, onComplete : ()=> {
-                this.getNextQuestion();
-            }
-        })
+        // TweenMax.to(this.questionElement, this.time, {
+        //     alpha:0, x:-20, onComplete : ()=> {
+        //         this.getNextQuestion();
+        //     }
+        // })
 
-        TweenMax.to(this.imgs, this.time, {
-            alpha:0
-        });
+        // TweenMax.to(this.imgs, this.time, {
+        //     alpha:0
+        // });
     }
 
     answerSelected(e:HTMLElement) {
@@ -356,9 +386,9 @@ export default class MCQ {
     }
 
     completed() {
-        console.log("completed!!");
-        this.bgEl.style.display = "none";
-        this.el.style.display = "none";
+        // console.log("completed!!");
+        // this.bgEl.style.display = "none";
+        // this.el.style.display = "none";
     }
 
 

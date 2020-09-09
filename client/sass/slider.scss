@@ -2,8 +2,7 @@
 
 #slider-q {
     .wrapper {
-        height: 100vh;
-        height: calc(var(--vh, 1vh) * 100);
+        height: 100%;
     }
 
     .col-wrapper {
@@ -79,7 +78,7 @@
     .slider-q1, .slider-q3 {
         margin: 0;
         padding: 0;
-        height: 100vh; // make this compatible with iphone scroll
+        height: 100%;
         width: 100%;
         position: absolute;
         top: 0;

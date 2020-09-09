@@ -57,7 +57,7 @@ export interface SliderQuestion extends Question {
 }
 
 export interface MCQuestion extends Question {
-    options: number,
+    optionCount: number,
     answer : string;
 }
 
@@ -144,27 +144,27 @@ export const sliderQuestions : Array<SliderQuestion> = [
 export const mcqQuestions : Array<MCQuestion> = [
     {
         question : "Choose your brewer",
-        options: 6,
+        optionCount: 6,
         answer : ""
     },
     {
         question : "Where is you Nectaron brew savoured?",
-        options: 4,
+        optionCount: 4,
         answer : ""
     },
     {
         question : "Choose your drinking buddy",
-        options: 6,
+        optionCount: 6,
         answer : ""
     },
     {
         question : "Perfect pairing?",
-        options: 6,
+        optionCount: 6,
         answer : ""
     },
     {
         question : "Ingredient X?",
-        options: 6,
+        optionCount: 6,
         answer : ""
     }
 ]

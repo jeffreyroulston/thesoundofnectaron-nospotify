@@ -294,6 +294,8 @@ export default class Slider {
         // get the width
         this.fruitDefaultWidth = this.imgs[0].getBoundingClientRect().width;
 
+        // DO THIS ON RESIZE
+
         // Make it not full width
         this.toggleFullWidth();
 

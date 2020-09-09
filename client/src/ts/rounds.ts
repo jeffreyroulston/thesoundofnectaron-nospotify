@@ -48,8 +48,8 @@ export default class Rounds {
         this.qfq = new QuickFireQ();
 
         // set the question order
-        this.questionGroups = [this.slider, this.mcq, this.qfq];
-        // this.questionGroups = [this.mcq, this.slider, this.mcq];
+        // this.questionGroups = [this.slider, this.mcq, this.qfq];
+        this.questionGroups = [this.mcq, this.slider, this.mcq];
         // this.questionGroups = [this.qfq, this.slider, this.mcq];
 
         // set callbacks
