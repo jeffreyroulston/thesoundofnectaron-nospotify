@@ -206,14 +206,16 @@ export default class Rounds {
         });
 
 
-        if (this.currentRoundIdx <2) {
-            this.currentRoundIdx++;
-            this.UI.TransitionOut();
-            this.ShowRound(0.7);
-        } else {
-            // all done
-            this.CreatePlaylist();
-        }
+        // if (this.currentRoundIdx <2) {
+        //     this.currentRoundIdx++;
+        //     this.UI.TransitionOut();
+        //     this.ShowRound(0.7);
+        // } else {
+        //     // all done
+        //     this.CreatePlaylist();
+        // }
+        this.UI.TransitionOut();
+        this.CreatePlaylist();
     }
 
 

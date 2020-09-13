@@ -120,7 +120,7 @@
         position: relative;
         top: 100px;
 
-        li {
+        > li {
             position: absolute;
             top: 0px;
             left: 0px;
@@ -133,6 +133,17 @@
 
             svg {
                 width: inherit;
+            }
+        }
+        
+        #bubbles {
+            li {
+                display: block;
+                width: 100px;
+                height: 100px;
+                background-image: url("./assets/round1/bubble.png");
+                background-size: 100% auto;
+                background-repeat: no-repeat;
             }
         }
     }

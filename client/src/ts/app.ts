@@ -7,6 +7,7 @@ import ResourceManager from "./resource-manager";
 import Graphics from "./graphics";
 import Landing from "./landing";
 import Game from "./rounds";
+import { easeExpIn } from "d3";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
 let REDIRECT_URI: string = "http://localhost:8888/sonicallydelicious";
@@ -17,7 +18,8 @@ let SCOPES: string[] = [
     'user-top-read', 
     'user-library-modify', 
     'playlist-modify-public',
-    'playlist-modify-private'];
+    'playlist-modify-private',
+    'ugc-image-upload'];
 
 
 export default class App {
@@ -30,7 +32,11 @@ export default class App {
     private topArtists: si.Artist[] | undefined;
     // private answeredQuestions: Questions.Question[] = [];
 
+    private requestedPlaylistLength: number = 60;
+
     constructor() {
+        // console.log(window.location.href);
+
         this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
 
         this.ui.Login = this.Login.bind(this);
@@ -48,9 +54,9 @@ export default class App {
         // }
 
         // // we need these binds to make sure and 'this' in callbacks is bound to the correct object
-        // this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
-        // this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this));
-        // this.spotifyInterface.OnErrorListeners.push(this.OnSpotifyInterfaceError.bind(this));
+        //this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
+        this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this));
+        this.spotifyInterface.OnErrorListeners.push(this.OnSpotifyInterfaceError.bind(this));
 
         // this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this.ui));
 
@@ -109,17 +115,36 @@ export default class App {
     }
 
     public CreatePlaylist() {
+        console.log("create playlist");
         this.generatePlaylist();
     }
 
     async generatePlaylist() {
         // get spotify paramaters
-        for (var i=0; i<data.sliderQuestions.length; i++) {
-            let q = data.sliderQuestions[i];
 
+        
+        if (this.profile !== undefined && this.topArtists !== undefined) {
+            const name = this.profile.DisplayName;
+            const queries = [];
+
+            for (var i=0; i<data.sliderQuestions.length; i++) {
+                let q = data.sliderQuestions[i];
+
+                if (q.params === si.QueryParameters.PlaylistLength) {
+                    this.requestedPlaylistLength = q.answer;
+                }
+
+                else {
+                    queries.push({parameter: si.QueryParameters[q.params], value: q.answer});
+                }
+            }
+
+            this.spotifyInterface.GetRecommendations({
+                QueryParameters: queries,
+                Count: 100,
+                SeedArtistIDs: this.topArtists.map(x => x.Id).slice(0, 5)
+            });
         }
-
-
         // console.log(data.mcqQuestions);
         // console.log(data.qfQuestions);
         // console.log(data.sliderQuestions);
@@ -182,7 +207,7 @@ export default class App {
                 // }
 
                 
-                // this.spotifyInterface.GetTopArtists();
+                this.spotifyInterface.GetTopArtists();
                 break;
 
             // when we get recommendations back, we can automatically create the new playlist
@@ -192,7 +217,7 @@ export default class App {
                 console.log(recommendations);
 
                 // all this below is to build a playlist just over four hours
-                const playlistLengthSeconds = 4 * 60 * 60;
+                const playlistLengthSeconds = 60 * this.requestedPlaylistLength;
                 let trackCount = 0;
                 let currentLengthSeconds = 0;
                 for (trackCount = 0; trackCount <  recommendations.length; trackCount++) {
@@ -208,13 +233,20 @@ export default class App {
                 // get only just enough tracks to make the playlist time limit
                 const trackUris = recommendations.map(track => track.Uri).slice(0, trackCount);
 
+                // console.log(window.location.href);
+
                 if (this.profile !== undefined) {
                     this.spotifyInterface.CreatePlaylist({
                         UserId: this.profile.id,
                         TrackUris: trackUris,
                         Name: "Nectaron",
                         Description: "Get a load of this ya jabronies",
-                        Public: false
+                        Public: false,
+                        Image: {
+                            Width: 72,
+                            Height: 72,
+                            Url: "http://localhost:8888/assets/albumCover.jpg"
+                        }
                     });
                 }
      
