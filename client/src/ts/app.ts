@@ -11,7 +11,7 @@ import { easeExpIn } from "d3";
 import { shuffle } from "./helpers";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
-let REDIRECT_URI: string = "http://localhost:8888/sonicallydelicious";
+let REDIRECT_URI: string = "http://localhost:8888";
 let SCOPES: string[] = [
     'user-top-read', 
     'user-read-private', 

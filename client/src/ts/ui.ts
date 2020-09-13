@@ -97,7 +97,7 @@ export default class UI {
 
     private init() {
         // we playing rounds on the redirect
-        if (window.location.href.indexOf("sonicallydelicious") > -1) {
+        if (window.location.href.indexOf("access_token") > -1) {
             // GAMEPLAY
             this.ASSET_URL = "../assets/";
             this.ROUNDS = new Rounds(this);

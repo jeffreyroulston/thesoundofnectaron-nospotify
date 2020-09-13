@@ -105,8 +105,8 @@ p {
 
 .section {
     display: none;
-    max-width: 2500px;
-    @include horizontalAlign(relative);
+    // max-width: 2500px;
+    // @include horizontalAlign(relative);
 }
 
 .full-page {
