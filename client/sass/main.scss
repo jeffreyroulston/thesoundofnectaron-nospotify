@@ -13,11 +13,9 @@
     margin: 0;
     padding: 0;
 }
-//   #test {
-//       visibility: hidden;
-//   }
+
 html {
-    height: -webkit-fill-available;
+    height: calc(var(--vh, 1vh) * 100);
 }
 
 body {
@@ -31,12 +29,15 @@ li {
     list-style: none;
 }
 
-h1 {
+h1, h2 {
     font-family: "Harbour";
     font-weight: 600;
     text-align: left;
-    font-size: 55px;
     line-height: 1.2;
+}
+
+h1 {
+    font-size: 55px;
 
     @include transition(font-size 0.2s ease);
 
@@ -61,7 +62,7 @@ h1 {
     }
 }
 
-p {
+p, table {
     font-family: "Circular";
     font-weight: 400;
     text-align: left;
@@ -117,7 +118,6 @@ p {
     z-index: 100;
     top:0;
     height: 100%;
-    height: calc(var(--vh, 1vh) * 100);
 }
 
 .center-wrapper {
