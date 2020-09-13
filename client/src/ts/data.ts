@@ -34,7 +34,7 @@ export enum QuestionType {
 }
 
 export interface QuestionRound {
-    round : number;
+    round : number,
     color: string;
     waveColor: string;
     numberColor: string,
@@ -44,11 +44,11 @@ export interface QuestionRound {
 }
 
 export interface Question {
-    question : string;
+    question : string
 }
 
 export interface SliderQuestion extends Question {
-    params: si.QueryParameters;
+    params: si.QueryParameters,
     minTextValue : string,
     maxTextValue : string,
     min: number,
@@ -57,8 +57,9 @@ export interface SliderQuestion extends Question {
 }
 
 export interface MCQuestion extends Question {
-    optionCount: number,
-    answer : string;
+    options: string[],
+    answer : string,
+    id: string
 }
 
 export interface QuickFireQuestion extends Question {
@@ -143,28 +144,33 @@ export const sliderQuestions : Array<SliderQuestion> = [
 
 export const mcqQuestions : Array<MCQuestion> = [
     {
-        question : "Choose your brewer",
-        optionCount: 6,
+        question : "Where is you Nectaron brew savoured?",
+        id: "bg",
+        options : ["beach_skyline", "city_skyline", "mountains_skyline", "park_skyline"],
         answer : ""
     },
     {
-        question : "Where is you Nectaron brew savoured?",
-        optionCount: 4,
+        question : "Choose your brewer",
+        id: "brewer",
+        options: ["brewer_computer", "brewer_cool_dude", "brewer_cool_girl", "brewer_handyman", "brewer_witch", "brewer_wrestler"],
         answer : ""
     },
     {
         question : "Choose your drinking buddy",
-        optionCount: 6,
+        id: "buddy",
+        options: ["drinking_buddy_clown", "drinking_buddy_dinosaur", "drinking_buddy_leprechaun", "drinking_buddy_masquerade", "drinking_buddy_robot", "drinking_buddy_snowman"],
         answer : ""
     },
     {
         question : "Perfect pairing?",
-        optionCount: 6,
+        id: "pairing",
+        options: ["beer_pairing_burger", "beer_pairing_chilli", "beer_pairing_orange", "beer_pairing_pineapple", "beer_pairing_pizza", "beer_pairing_sushi"],
         answer : ""
     },
     {
         question : "Ingredient X?",
-        optionCount: 6,
+        id: "ingredientX",
+        options: ["ingredient_x_diamond", "ingredient_x_dynamite", "ingredient_x_lightning", "ingredient_x_lips", "ingredient_x_poison", "ingredient_x_skull"],
         answer : ""
     }
 ]

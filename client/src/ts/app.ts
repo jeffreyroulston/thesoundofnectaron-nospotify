@@ -60,6 +60,8 @@ export default class App {
             this.graphics.onInitResources(this.resourceManager);
         });
 
+        this.getProfile();
+
         // transition finished callback here
         // this.graphics.transitionedCallback = () => {
         //     this.ui.bgTransitionComplete();
@@ -79,6 +81,14 @@ export default class App {
         // this.switchGraphics();
     }
 
+    async getProfile() {
+        console.log("authorized", this.spotifyInterface.Authorized);
+        if (this.spotifyInterface.Authorized) {
+            this.spotifyInterface.GetUserProfile();
+            console.log("User profile:", this.profile);
+        }
+    }
+
     public switchGraphics(color : THREE.Color) {
         this.graphics.switchColorForward(color, 0.5)
     }
@@ -90,7 +100,6 @@ export default class App {
     public Login() {
         // called from UI on landing page button click
         if (this.spotifyInterface.Authorized) {
-            this.ui.Authorize();
             this.spotifyInterface.GetUserProfile();
             console.log("User profile:", this.profile);
         } else {
@@ -139,12 +148,6 @@ export default class App {
         //     });
         // }
     // }
-
-    private OnAuthorised(): void {
-        // we can only really get these when we're authorised
-        this.spotifyInterface.GetUserProfile();
-        // this.ui.authenticated();
-    }
 
     // most of this stuff is temporary, will hook up the proper handlers with the ui state
     public OnUserData(type: si.DataType, data: si.Data): void {

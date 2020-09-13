@@ -86,11 +86,10 @@ export class SpotifyInterface {
     constructor(params: SpotifyInterfaceParams) {
         this.params = params;
 
-        // console.log("window hash:", window.location.hash);
+        console.log("window hash:", window.location.hash);
 
         // get the token
         this.token = window.location.hash.substr(1).split('&')[0].split("=")[1];
-        console.log("token", this.token);
     }
 
     public get Authorized(): boolean {

@@ -54,7 +54,7 @@ export default class UI {
     private assetsLoaded : number= 0;
 
     // spotify
-    private authorized : boolean = false;
+    // private authorized : boolean = false;
 
     // binder for images
     public ImagesDownloadedCallback = ()=>{};
@@ -188,25 +188,8 @@ export default class UI {
         })
     }
 
-    // private next() {
-    //     switch (this.currentPage) {
-    //         case PageType.Login:
-    //             this.showRoundName();
-    //             break;
-            
-    //         case PageType.RoundName:
-    //             this.elementsToHide.push(this.roundPageEl);
-    //             this.showQuestion();
-    //             break;
-            
-    //         case PageType.Question:
-    //             this.showRoundName();
-    //             break;
-    //     }
-    // }
-
     public TransitionOut() {
-        console.log("transition out", this.elementsToHide);
+        console.log("elements to hide", this.elementsToHide);
         // hide the elements
         TweenMax.to(this.elementsToHide, 0.5, {
             alpha:0, scale:0.95, display: "none", onComplete: this.clearHiddenElements.bind(this)
@@ -342,9 +325,9 @@ export default class UI {
     // PUBLIC
     // **************
 
-    public Authorize() {
-        this.authorized = true;
-    }
+    // public Authorize() {
+    //     this.authorized = true;
+    // }
 
     public SetVisibleElements(elements : HTMLElement[]) {
         elements.forEach((e)=> {
