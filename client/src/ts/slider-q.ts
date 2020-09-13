@@ -51,6 +51,10 @@ export default class Slider {
     private bottomFruitDefaultTopValue : number = 0;
     private fruitDefaultWidth : number = 300;
 
+    // q4 (bunsen)
+    private busenEl : HTMLElement = f.find(this.el, "#bunsen-img");
+    private busenLiquidEl : HTMLElement = f.find(this.el, "#bunsen-liquid");
+
     // for looping animations
     private loopingAnimations : TweenMax[] = [];
 
@@ -80,49 +84,33 @@ export default class Slider {
         this.showCurrentQuestion = this.showQ1.bind(this);
         this.callbackCurrentQuestion = this.callbackQ1.bind(this)
 
-        // Initialising for question one
-        // var lines = f.elList(".sun-rays .cls-2.line");
-        // var stars = f.elList(".sun-rays .cls-2.star");
-        // f.shuffle(lines);
-        // f.shuffle(stars);
-
-        // for(var i=0; i<lines.length; i++) {
-        //     let line = lines[i];
-        //     let star = stars[i]
-        //     let idx = i;
-
-        //     setTimeout(()=> {
-        //         line.classList.toggle("animate");
-        //         star.classList.toggle("animate");
-        //     }, 1000 * idx)
-        // }
-
-        // for(var i=0; i<lines.length; i++) {
-        //     lines[i].style.transitionDelay = (1000*i).toString() +"ms";
-        //     stars[i].style.transitionDelay = (1000*i).toString() +"ms";
-
-        //     lines[i].classList.toggle("animate");
-        //     stars[i].classList.toggle("animate");
-        // }
-
-
-        // INITALISING FOR QUESTION TWO
-        // this.topFruitElement = f.find(this.el, " .fruit-top img");
-        // this.bottomFruitElement = f.find(this.el, " .fruit-bottom img");
-        // this.questionElement = el(this.el + " .question");
-
-        // // console.log(this.el, this.sliderEl, this.sliderThumb, this.topFruitElement, this.bottomFruitElement, this.questionElement);
-
-        // // this.fruitDefaultWidth = this.topFruitElement.getBoundingClientRect().width;
-        // this.fruitDefaultWidth = 200;
-        // this.topFruitDefaultBottomValue = pxToInt(getComputedStyle(this.topFruitElement).bottom);
-        // this.bottomFruitDefaultTopValue = pxToInt(getComputedStyle(this.bottomFruitElement).top);
-
-        // // console.log(this.fruitDefaultWidth, this.topFruitDefaultBottomValue, this.bottomFruitDefaultTopValue);
-
         // // set bindings
         this.sliderEl.addEventListener("input",this.sliderChange.bind(this));
         this.sliderEl.addEventListener("change", this.sliderValueSet.bind(this));
+        window.addEventListener("resize", this.onResize.bind(this));
+    }
+
+    private onResize(e: any) {
+        console.log(this.questionIdx)
+
+        switch(this.questionIdx) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                // BUNSEN BURNER
+                // adjust liquid size
+                var r = this.busenEl.getBoundingClientRect();
+                this.busenLiquidEl.style.top = f.px(688/1278 * r.height);
+                this.busenLiquidEl.style.left = f.px(554/672 * r.width);
+                this.busenLiquidEl.style.width = f.px(230/672 * r.width);
+                break;
+            default:
+                break;
+        }
     }
 
     public set() {
@@ -192,7 +180,7 @@ export default class Slider {
     }
 
     private showQ1() {
-        // // SUN AND CLOUDS
+        // SUN AND CLOUDS
         this.count = 5;
         var sunRays = f.find(this.el, ".sun-rays");
         var rays = f.findAll(sunRays, ".line");
@@ -430,8 +418,23 @@ export default class Slider {
     private showQ4() {
         // make it not full width
         f.el(".col-wrapper").classList.toggle("full-width");
+
+        TweenMax.fromTo(this.busenEl, 0.5, {
+            alpha:0, x:window.innerWidth
+        }, {
+            alpha:1, x:0
+        })
+
+        // adjust liquid size
+        var r = this.busenEl.getBoundingClientRect();
+        this.busenLiquidEl.style.top = f.px(688/1278 * r.height);
+        this.busenLiquidEl.style.left = f.px(554/672 * r.width);
+        this.busenLiquidEl.style.width = f.px(230/672 * r.width);
+
     }
-    private callbackQ4(e: any) {}
+    private callbackQ4(e: any) {
+
+    }
 
     private showQ5() {
         // HANDS

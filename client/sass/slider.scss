@@ -115,6 +115,30 @@
         }
     }
 
+    .slider-q4 {
+        height: calc(100% - 200px);
+        position: relative;
+        top: 100px;
+
+        img {
+            height: 100%;
+        }
+
+        li {
+            &:first-child {
+                position: absolute;
+                width: 18.5%;
+                position: absolute;
+                top: 53.5%;
+                left: 48%;
+            }
+
+            &:nth-child(2) {
+                height: 100%;
+            }
+        }
+    }
+
     .slider-q5 {
         margin-top: $marginTop_20;
         position: relative;
