@@ -13,6 +13,7 @@
         &.full-width {
             width: 100%;
             float: none;
+            height: auto;
             margin:0;
             @include verticalAlign(absolute);
 
