@@ -120,12 +120,12 @@ export default class QuickFireQ {
     updateTimer() {
         this.timerCount--;
 
-        if (this.timerCount >= 0 && this.timerCount > 9) {
+        if (this.timerCount >= 0 && this.timerCount > 0) {
             this.updateTimerElements();
             setTimeout(this.updateTimer.bind(this), 1000);
         } else {
             this.active = false;
-            // this.ui.roundComplete(this.el);
+            this.roundComplete(this.el);
         }
     }
 

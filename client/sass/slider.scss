@@ -120,21 +120,19 @@
         position: relative;
         top: 100px;
 
-        img {
-            height: 100%;
-        }
-
         li {
-            &:first-child {
-                position: absolute;
-                width: 18.5%;
-                position: absolute;
-                top: 53.5%;
-                left: 48%;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 100%;
+            width: 100%;
+
+            img, svg {
+                height: inherit;
             }
 
-            &:nth-child(2) {
-                height: 100%;
+            svg {
+                width: inherit;
             }
         }
     }

@@ -52,8 +52,9 @@ export default class Slider {
     private fruitDefaultWidth : number = 300;
 
     // q4 (bunsen)
-    private busenEl : HTMLElement = f.find(this.el, "#bunsen-img");
-    private busenLiquidEl : HTMLElement = f.find(this.el, "#bunsen-liquid");
+    private busenFillEl : HTMLElement = f.find(this.el, ".bunsen-fill");
+    private bunsenColour1 = f.convertHexToRgb("88009D");
+    private bunsenColour2 = f.convertHexToRgb("FF1900");
 
     // for looping animations
     private loopingAnimations : TweenMax[] = [];
@@ -102,11 +103,6 @@ export default class Slider {
                 break;
             case 3:
                 // BUNSEN BURNER
-                // adjust liquid size
-                var r = this.busenEl.getBoundingClientRect();
-                this.busenLiquidEl.style.top = f.px(688/1278 * r.height);
-                this.busenLiquidEl.style.left = f.px(554/672 * r.width);
-                this.busenLiquidEl.style.width = f.px(230/672 * r.width);
                 break;
             default:
                 break;
@@ -419,21 +415,25 @@ export default class Slider {
         // make it not full width
         f.el(".col-wrapper").classList.toggle("full-width");
 
-        TweenMax.fromTo(this.busenEl, 0.5, {
-            alpha:0, x:window.innerWidth
+        var slider = f.find(this.el, ".slider-q4");
+
+        // get the colours
+        var colour = f.rgb(f.findColorBetween(this.bunsenColour1, this.bunsenColour2, this.sliderValue));
+        this.busenFillEl.style.fill = colour;
+
+        TweenMax.fromTo(slider, 0.5, {
+            display:"none", alpha:0, x:window.innerWidth
         }, {
-            alpha:1, x:0
+            display: "block", alpha:1, x:0
         })
-
-        // adjust liquid size
-        var r = this.busenEl.getBoundingClientRect();
-        this.busenLiquidEl.style.top = f.px(688/1278 * r.height);
-        this.busenLiquidEl.style.left = f.px(554/672 * r.width);
-        this.busenLiquidEl.style.width = f.px(230/672 * r.width);
-
     }
     private callbackQ4(e: any) {
+        // get value from slider
+        this.sliderValue = e.srcElement.value;
 
+        // get the colours
+        var colour = f.rgb(f.findColorBetween(this.bunsenColour1, this.bunsenColour2, this.sliderValue));
+        this.busenFillEl.style.fill = colour;
     }
 
     private showQ5() {

@@ -34,8 +34,11 @@ export default class Rounds {
     // PAGES
     private currentRoundIdx : number = 0;
 
-    //ANIMATION
+    // ANIMATION
     private loopingAnimations: TweenMax[] = [];
+
+    // CALLBACK
+    public CreatePlaylist = () => {};
 
     constructor(ui : UI) {
         this.UI = ui;
@@ -207,7 +210,8 @@ export default class Rounds {
             this.UI.TransitionOut();
             this.ShowRound(0.7);
         } else {
-            // this.next();
+            // all done
+            this.CreatePlaylist();
         }
     }
 

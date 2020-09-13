@@ -101,6 +101,7 @@ export default class UI {
             // GAMEPLAY
             this.ASSET_URL = "../assets/";
             this.ROUNDS = new Rounds(this);
+            this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
         } else {
             // LANDING PAGE
             this.LANDING = new Landing(this);

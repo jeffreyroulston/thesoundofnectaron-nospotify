@@ -1,6 +1,7 @@
 import * as si from "./spotify-interface";
 // import * as Questions from "./questions";
 import * as THREE from 'three';
+import * as data from "./data";
 import UI from "./ui";
 import ResourceManager from "./resource-manager";
 import Graphics from "./graphics";
@@ -105,6 +106,17 @@ export default class App {
         } else {
             this.spotifyInterface.GetAuthorization();
         }
+    }
+
+    public CreatePlaylist() {
+        this.generatePlaylist();
+    }
+
+    async generatePlaylist() {
+        console.log(data.mcqQuestions);
+        console.log(data.qfQuestions);
+        console.log(data.sliderQuestions);
+
     }
 
     // public Login() {
