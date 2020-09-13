@@ -8,6 +8,7 @@ import Graphics from "./graphics";
 import Landing from "./landing";
 import Game from "./rounds";
 import { easeExpIn } from "d3";
+import { shuffle } from "./helpers";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
 let REDIRECT_URI: string = "http://localhost:8888/sonicallydelicious";
@@ -139,10 +140,19 @@ export default class App {
                 }
             }
 
+            
+            const seedArtists = this.topArtists.map(x => x.Id).slice(0, 2);
+            let genres: string[] = [];
+            this.topArtists.map(x => x.Genres.forEach((genre) => genres.push(genre)));
+            shuffle(genres);
+            genres = genres.slice(0, 3);
+            
+
             this.spotifyInterface.GetRecommendations({
                 QueryParameters: queries,
                 Count: 100,
-                SeedArtistIDs: this.topArtists.map(x => x.Id).slice(0, 5)
+                SeedArtistIDs: seedArtists,
+                SeedGenres: genres
             });
         }
         // console.log(data.mcqQuestions);
