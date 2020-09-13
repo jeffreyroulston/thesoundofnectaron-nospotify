@@ -113,9 +113,16 @@ export default class App {
     }
 
     async generatePlaylist() {
-        console.log(data.mcqQuestions);
-        console.log(data.qfQuestions);
-        console.log(data.sliderQuestions);
+        // get spotify paramaters
+        for (var i=0; i<data.sliderQuestions.length; i++) {
+            let q = data.sliderQuestions[i];
+
+        }
+
+
+        // console.log(data.mcqQuestions);
+        // console.log(data.qfQuestions);
+        // console.log(data.sliderQuestions);
 
     }
 

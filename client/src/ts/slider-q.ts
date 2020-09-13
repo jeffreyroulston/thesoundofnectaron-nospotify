@@ -422,7 +422,7 @@ export default class Slider {
         this.busenFillEl.style.fill = colour;
 
         TweenMax.fromTo(slider, 0.5, {
-            display:"none", alpha:0, x:window.innerWidth
+            display:"none", alpha:0, x:window.innerWidth/2
         }, {
             display: "block", alpha:1, x:0
         })

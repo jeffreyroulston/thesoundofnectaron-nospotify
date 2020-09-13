@@ -98,16 +98,10 @@ export default class QuickFireQ {
     }
 
     getNextQuestion() {
-        console.log(this.questionsUnanswered.length);
+        // edge case
         var idx = f.getRandomInt(0, this.questionsUnanswered.length-1);
-        console.log(idx);
-        // do an edge case here
-
         this.questionsAsked.push(this.questionsUnanswered[idx]);
         this.questionsUnanswered.splice(idx, 1);
-
-        // console.log(this.questionsAsked);
-        // console.log(this.questionsUnanswered);
         if (this.initiated) this.set();
     }
 

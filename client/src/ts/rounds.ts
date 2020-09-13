@@ -205,7 +205,8 @@ export default class Rounds {
             n2.style.display = "none"
         });
 
-        if (this.currentRoundIdx <3) {
+
+        if (this.currentRoundIdx <2) {
             this.currentRoundIdx++;
             this.UI.TransitionOut();
             this.ShowRound(0.7);
