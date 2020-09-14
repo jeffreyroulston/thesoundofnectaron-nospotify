@@ -1,12 +1,11 @@
+import { geoTransverseMercator } from "d3";
+
 export enum QueryParameters {
-    Acousticness,
     Energy,
-    Instrumentalness,
-    Liveness,
-    Loudness,
     Speechiness,
     Valence,
-    Tempo
+    Danceability,
+    PlaylistLength,
 }
 
 export interface SpotifyInterfaceParams {
@@ -18,6 +17,8 @@ export interface SpotifyInterfaceParams {
 export interface RecommendationParams {
     Count?: number;
     SeedArtistIDs?: string[],
+    SeedGenres?: string[],
+    SeedTrackIDs?: string[],
     QueryParameters?: {parameter: string, value: number}[];
 }
 
@@ -25,14 +26,20 @@ export interface CreatePlaylistParams {
     UserId: string,
     Name: string,
     Description: string,
-    Public?: boolean
-    TrackUris: string[]
+    Public?: boolean,
+    TrackUris: string[],
+    Image?: {
+        Width: number,
+        Height: number,
+        Url: string,
+    }
 }
 
 export type Data = Track[] | Artist[] | UserProfile | Playlist;
 
 export enum DataType {
     TopArtists,
+    TopTracks,
     Recommendations,
     UserProfile,
     PlaylistCreated
@@ -51,7 +58,8 @@ export interface Playlist { }
 export interface Artist {
     Name: string,
     Id: string,
-    Uri: string
+    Uri: string,
+    Genres: string[]
 }
 
 export interface UserProfile {
@@ -73,9 +81,11 @@ export class SpotifyInterface {
     private static AUTHORIZATION_ADDRESS: string = "https://accounts.spotify.com/authorize";
     private static USER_PROFILE_ADDRESS: string = "https://api.spotify.com/v1/me"; 
     private static TOP_ARTISTS_ADDRESS: string = "https://api.spotify.com/v1/me/top/artists";
+    private static TOP_TRACKS_ADDRESS: string = "https://api.spotify.com/v1/me/top/tracks";
     private static RECOMMENDATIONS_ADDRESS: string = "https://api.spotify.com/v1/recommendations";
     private static PLAYLIST_CREATION_ADDRESS: string ='https://api.spotify.com/v1/users/{user_id}/playlists';
     private static PLAYLIST_UPDATE_ADDRESS: string = 'https://api.spotify.com/v1/playlists/{playlist_id}/tracks';
+    private static PLAYLIST_UPDATE_IMAGE_ADDRESS: string = 'https://api.spotify.com/v1/playlists/{playlist_id}/images';
 
     private token: string | undefined;
     private params: SpotifyInterfaceParams;
@@ -89,13 +99,10 @@ export class SpotifyInterface {
     constructor(params: SpotifyInterfaceParams) {
         this.params = params;
 
-        // console.log("window hash:", window.location.hash);
+        console.log("window hash:", window.location.hash);
 
         // get the token
         this.token = window.location.hash.substr(1).split('&')[0].split("=")[1];
-        // window.location.hash = "";
-
-        console.log("token", this.token);
     }
 
     public get Authorized(): boolean {
@@ -110,6 +117,8 @@ export class SpotifyInterface {
         // otherwise we will need to reauth
         if (this.token === undefined) {
 
+            console.log(this.params);
+
             // build url in a nice clean way
             const scopes = this.params.Scopes.join(" ");
             const url = new URL(SpotifyInterface.AUTHORIZATION_ADDRESS);
@@ -117,14 +126,11 @@ export class SpotifyInterface {
             url.searchParams.append("redirect_uri", this.params.RedirectURI);
             url.searchParams.append("scope", scopes);
             url.searchParams.append("response_type", "token");
-            url.searchParams.append("show_dialog", "true");
+            url.searchParams.append("show_dialog", "false");
             
             // we could do this or we could do a pop up window
             // I like this style of auth window better, popups can be annoying and we have to redirect anyway
             window.location.href = url.href;
-            
-            // stick in there so that when it refreshes the page, you don't see the landing page again
-            // set the cookie so that it redirects correctly
         }
 
         // the token exists, so we're good to go with the rest of the app
@@ -145,7 +151,7 @@ export class SpotifyInterface {
     }
 
     public GetUserProfile(): void {
-        console.log("get user profile")
+        console.log("Get user profile")
         const auth = this.BuildAuthToken();
 
         // we shouldn't be calling these functions without a valid auth token
@@ -174,11 +180,6 @@ export class SpotifyInterface {
             else {
 
                 response.json().then((json) => {
-
-                    console.log("fetched", json);
-
-                    // DEBUG
-                    //console.log(json);
 
                     // get all images attached with the profile
                     const possibleImages = json["images"];
@@ -236,8 +237,13 @@ export class SpotifyInterface {
             return;
         }
 
-        fetch(SpotifyInterface.TOP_ARTISTS_ADDRESS, {headers: {'Authorization': auth}})
-        .then((response: Response) => {
+        const options = {
+            headers: {
+                'Authorization': auth
+            }
+        };
+
+        fetch(SpotifyInterface.TOP_ARTISTS_ADDRESS, options).then((response: Response) => {
 
             // something has gone wrong so broadcast error 
             if (!response.ok) {
@@ -260,7 +266,7 @@ export class SpotifyInterface {
     
                         // get all artist information
                         items.forEach((artist: any) => {
-                            artists.push({Name: artist["name"], Id: artist["id"], Uri: artist["uri"]});
+                            artists.push({Name: artist["name"], Id: artist["id"], Uri: artist["uri"], Genres: artist["genres"]});
                         });
     
                         // broadcast artist information to listeners
@@ -287,6 +293,92 @@ export class SpotifyInterface {
         });
     }
 
+    public GetTopTracks() {
+        const auth = this.BuildAuthToken();
+
+        // we shouldn't be calling these functions without a valid auth token
+        if (auth === undefined) {
+
+            // broadcast error
+            this.OnErrorListeners.forEach((callback) => {
+                callback(ErrorType.NoAuthToken);
+            });
+
+            // don't continue with the rest of the fetch
+            return;
+        }
+
+        const options = {
+            headers: {
+                'Authorization': auth
+            }
+        };
+
+        fetch(SpotifyInterface.TOP_TRACKS_ADDRESS, options).then((response) => {
+
+            // something has gone wrong so broadcast error 
+            if (!response.ok) {
+                this.OnErrorListeners.forEach((callback) => {
+                    callback(ErrorType.StatusError, {code: response.status, text: response.statusText});
+                });
+            }
+
+            else {
+
+                // decode json 
+                response.json().then((json) => {
+                    //console.log(json);
+
+                    // parse items
+                    const items = json["items"];
+                    
+                    if (items !== undefined) {
+                        const tracks: Track[] = [];
+
+                        items.forEach((track: any) => {
+                            // get all the tracks artists
+                            const trackArtists: Artist[] = [];
+                            track.artists.forEach((artist: any) => {
+                                trackArtists.push({Name: artist.name, Id: artist.id, Uri: artist.uri, Genres: artist.genres});
+                            });
+
+                            // get the rest of the track data
+                            tracks.push({
+                                Name: track.name,
+                                Id: track.id,
+                                Uri: track.uri,
+                                Artists: trackArtists,
+                                Length: track.duration_ms
+                            });
+                        });
+
+                        this.OnDataListeners.forEach((listener) => {
+                            listener(DataType.TopTracks, tracks);
+                        });
+                    } 
+
+                    // we have no items in our json response, is error
+                    else {
+                        
+                        // broadcast error
+                        this.OnErrorListeners.forEach((callback) => {
+                            callback(ErrorType.JsonParseError);
+                        });
+                    }
+
+                }).catch((err) => {
+                    // broadcast error
+                    this.OnErrorListeners.forEach((callback) => {
+                        callback(ErrorType.JsonParseError, err);
+                    });
+                });
+            }
+
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
     public GetRecommendations(params: RecommendationParams): void {
 
         const auth = this.BuildAuthToken();
@@ -305,14 +397,29 @@ export class SpotifyInterface {
 
         const url = new URL(SpotifyInterface.RECOMMENDATIONS_ADDRESS);
 
+        let currentSeedCount = 0;
+
+        if (params.SeedGenres) {
+            let genres = params.SeedGenres;
+            genres = genres.slice(0, 5 - currentSeedCount);
+            currentSeedCount += genres.length;
+            let genresString = genres.join(',');
+            url.searchParams.append("seed_genres", genresString);
+        }
+
+        if (params.SeedTrackIDs) {
+            let trackSeeds = params.SeedTrackIDs;
+            trackSeeds = trackSeeds.slice(0, 5 - currentSeedCount);
+            currentSeedCount += trackSeeds.length;
+            let tracksString = trackSeeds.join(',');
+            url.searchParams.append("seed_tracks", tracksString);
+        }
+
         if (params.SeedArtistIDs) {
-
             let artistSeeds = params.SeedArtistIDs;
-
-            // enforce size limits
-            artistSeeds = artistSeeds.slice(0, 5);
-            
-            let artistsString = params.SeedArtistIDs.join(',');
+            artistSeeds = artistSeeds.slice(0, 5 - currentSeedCount);
+            currentSeedCount += artistSeeds.length;
+            let artistsString = artistSeeds.join(',');
             url.searchParams.append("seed_artists", artistsString);
         }
 
@@ -369,7 +476,7 @@ export class SpotifyInterface {
                             // get all the tracks artists
                             const trackArtists: Artist[] = [];
                             track.artists.forEach((artist: any) => {
-                                trackArtists.push({Name: artist.name, Id: artist.id, Uri: artist.uri});
+                                trackArtists.push({Name: artist.name, Id: artist.id, Uri: artist.uri, Genres: artist.genres});
                             });
 
                             // get the rest of the track data
@@ -475,8 +582,12 @@ export class SpotifyInterface {
                             // broadcast artist information to listeners
                             this.OnDataListeners.forEach((callback) => {
 
+                                if (params.Image !== undefined) {
+                                    this.SetPlaylistImage(playlistId, params.Image.Url);
+                                }
                                 // TODO: consider what playlist data to return
                                 callback(DataType.PlaylistCreated, {});
+
                             });
                         }
 
@@ -518,4 +629,70 @@ export class SpotifyInterface {
             console.log(rejected);
         });
     }
+
+    public SetPlaylistImage(playlist_id: string, imageUrl: string) {
+
+        const img = new Image();
+        img.onload = (imgData) => {
+       
+            let base64 = this.imgToBase64(img);
+
+            if (base64 !== undefined) {
+                base64 = base64.replace(/^data:image.+;base64,/, '');
+                const auth = this.BuildAuthToken();
+    
+                if (auth === undefined) {
+                    return;
+                }
+    
+                const options = {
+                    headers: {
+                        'Authorization': auth,
+                        'Content-Type': 'image/jpeg'
+                    },
+                    body: base64,
+                    method: 'PUT'
+                }
+                
+                const url = new URL(SpotifyInterface.PLAYLIST_UPDATE_IMAGE_ADDRESS.replace('{playlist_id}', playlist_id));
+                fetch(url.href, options).then((response) => {
+                    
+                }).catch((err) => {
+                    console.log(err);
+                });
+            }
+        }
+
+        img.src = imageUrl;
+    }
+
+    private arrayBufferToBase64(buffer: ArrayBuffer): string {
+        var binary = '';
+        var bytes = [].slice.call(new Uint8Array(buffer));
+      
+        bytes.forEach((b) => binary += String.fromCharCode(b));
+      
+        return window.btoa(binary);
+    };
+
+    private imgToBase64(img: HTMLImageElement): string | undefined {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        if (ctx === null) {
+            return;
+        }
+        
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+
+      
+        // I think this won't work inside the function from the console
+        img.crossOrigin = 'anonymous';
+      
+        ctx.drawImage(img, 0, 0);
+      
+        return canvas.toDataURL();
+      }
 }

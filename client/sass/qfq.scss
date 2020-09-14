@@ -11,13 +11,19 @@
     }
 
     .wrapper {
-        height: 100vh;
+        height: 100%;
     }
 
     .col-wrapper {
         &.text-column {
             margin-top: $marginTop_30;
-            // width: 60%;
+            width: 100%
+        }
+        
+        text-align: center;
+
+        h1 {
+            text-align: center;
         }
     }
 
@@ -37,7 +43,10 @@
         text-align: right;
         color: $blue;
         position: absolute;
-        right:120px;
+        // right:120px;
+
+        width: 100%;
+        text-align: center;
 
         // < 768px
         @include maxW($tabletPortraitWidth) {
@@ -64,21 +73,18 @@
         }
 
         &.ones li {
-            @include maxW($tabletPortraitWidth) {
-                width: unset;
-                &:first-child {
-                    width: 0;
-                }
+            &:first-child {
+                width: 0;
+            }
 
-                &:last-child {
-                    width: unset;
-                }
+            &:last-child {
+                width: unset;
             }
 
         }
 
         li {
-            text-align: right;
+            text-align: center;
             font-size: 50vw;
             line-height: 110vh;
             display: inline-block;

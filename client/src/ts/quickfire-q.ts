@@ -5,10 +5,10 @@ import {TweenMax} from "gsap"
 import { Color } from "three";
 
 export default class QuickFireQ {
-    private ui : UI;
-    private id : string;
-    private el : HTMLElement;
-
+    // the element
+    private el : HTMLElement = f.elByID("quickfire-q");
+    
+    // index things....
     private questionIdx : number = 0;
     private questions : QuickFireQuestion[] = qfQuestions;
     private questionsUnanswered : QuickFireQuestion[] = [];
@@ -16,10 +16,11 @@ export default class QuickFireQ {
     private delay = 0.7;
     private time = 0.3;
 
-    private questionEl: HTMLElement;
-    private timerEl : HTMLElement;
-    private timerTensColumn : HTMLElement;
-    private timerOnesColumn : HTMLElement;
+    // elements
+    private questionEl: HTMLElement = f.find(this.el, " .question");
+    private timerEl : HTMLElement = f.find(this.el, "#timer");
+    private timerTensColumn : HTMLElement = f.find(this.timerEl, "#tensCol");
+    private timerOnesColumn : HTMLElement = f.find(this.timerEl, "#onesCol");
 
     private timerCount : number = 30;
     private timerStarted : boolean = false;
@@ -29,19 +30,10 @@ export default class QuickFireQ {
     public initiated = false;
     public isComplete = false;
 
-    constructor(ui : UI, id: string) {
-        this.ui = ui;
-        this.id = id;
-        this.el = f.el(this.id);
+    // bound to ui
+    public roundComplete = (e: HTMLElement)=> {};
 
-        // get the timer
-        this.timerEl = f.find(this.el, "#timer");
-        this.timerTensColumn = f.find(this.timerEl, "#tensCol");
-        this.timerOnesColumn = f.find(this.timerEl, "#onesCol");
-
-        // get the question element
-        this.questionEl = f.find(this.el, " .question");
-
+    constructor() {
         // copy the questions so we can pluck them out as we go
         for(var i=0; i<this.questions.length; i++) {
             this.questionsUnanswered.push(this.questions[i]);
@@ -53,7 +45,7 @@ export default class QuickFireQ {
         // get next question
         this.getNextQuestion();
 
-        var answer = document.querySelectorAll("#answer-wrapper li");
+        var answer = f.findAll(this.el, "#answer-wrapper li");
         for (var i=0; i<answer.length; i++) {
             answer[i].addEventListener("click", this.answerRetrieved.bind(this))
         }
@@ -106,16 +98,10 @@ export default class QuickFireQ {
     }
 
     getNextQuestion() {
-        console.log(this.questionsUnanswered.length);
+        // edge case
         var idx = f.getRandomInt(0, this.questionsUnanswered.length-1);
-        console.log(idx);
-        // do an edge case here
-
         this.questionsAsked.push(this.questionsUnanswered[idx]);
         this.questionsUnanswered.splice(idx, 1);
-
-        // console.log(this.questionsAsked);
-        // console.log(this.questionsUnanswered);
         if (this.initiated) this.set();
     }
 
@@ -128,12 +114,12 @@ export default class QuickFireQ {
     updateTimer() {
         this.timerCount--;
 
-        if (this.timerCount >= 0 && this.timerCount > 9) {
+        if (this.timerCount >= 0 && this.timerCount > 0) {
             this.updateTimerElements();
             setTimeout(this.updateTimer.bind(this), 1000);
         } else {
             this.active = false;
-            // this.ui.roundComplete(this.el);
+            this.roundComplete(this.el);
         }
     }
 

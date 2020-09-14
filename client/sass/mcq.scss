@@ -2,8 +2,9 @@
 @import "shared";
 
 #mc-q {
+    height: 100%;
     .wrapper {
-        height: 100vh
+        height: 100%;
     }
 
     .col-wrapper {
@@ -16,46 +17,12 @@
         }
     }
 
-    .scene-wrapper {
-        height: calc(100vh - 200px);
-        border: 1px solid black;
-        position: relative;
-        top: 100px;
-        margin: 0 auto;
-
-        #label, label li {
-            background-repeat: no-repeat;
-            background-position: center;
-            border: 1px solid red;
-        }
-
-        #label {
-            width: 100%;
-            background-image: url("./assets/round3/2_1.png");
-            background-size: 100% auto;
-            position: relative;
-
-            li {
-                position: absolute;
-            }
-        }
-
-        #bottle-img {
-            position: absolute;
-            height: 100%;
-            top: 0;
-            left: 0;
-
-            img {
-                height: 100%;
-            }
-        }
-    }
-
     .mc-options {
         position: relative;
         display: inline-block;
         margin-top: 50px;
+        width: 100%;
+        height: 100px;
 
         //< 768px;
         @include maxW($tabletPortraitWidth) {
@@ -63,126 +30,85 @@
         }
 
         li {
-            width: 50px;
-            height: 100px;
+            width: 15%;
+            height: 100%;
             display: inline-block;
             background-size: 100% auto;
             background-repeat: no-repeat;
-            margin-left: 20px;
             cursor: pointer;
 
-            // < 1024px
-            @include maxW($tabletLandscapeWidth) {
-                margin-left: 10px;
-            }
+            // // < 1024px
+            // @include maxW($tabletLandscapeWidth) {
+            //     margin-left: 10px;
+            // }
 
-            //< 768px;
-            @include maxW($tabletPortraitWidth) {
-                margin-left: 10px;
-            }
+            // //< 768px;
+            // @include maxW($tabletPortraitWidth) {
+            //     margin-left: 10px;
+            // }
 
-            // < 640px
-            @include maxW($mobileLargeWidth) {
-            }
+            // // < 640px
+            // @include maxW($mobileLargeWidth) {
+            // }
 
-            // < 480px;
-            @include maxW($mobileWidth) {
-                margin-left: 5px;
-                width: 30px;
-            }
+            // // < 480px;
+            // @include maxW($mobileWidth) {
+            //     margin-left: 5px;
+            //     width: 30px;
+            // }
 
-            &:first-child {
-                margin-right: 20px;
+            // &:first-child {
+            //     margin-right: 20px;
 
-                // < 1024px
-                @include maxW($tabletLandscapeWidth) {
-                    margin-right: 10px;
-                }
+            //     // < 1024px
+            //     @include maxW($tabletLandscapeWidth) {
+            //         margin-right: 10px;
+            //     }
 
-                // < 768px;
-                @include maxW($tabletPortraitWidth) {
-                    margin-right: 10px;
-                }
+            //     // < 768px;
+            //     @include maxW($tabletPortraitWidth) {
+            //         margin-right: 10px;
+            //     }
 
-                // < 640px
-                @include maxW($mobileLargeWidth) {
-                }
+            //     // < 640px
+            //     @include maxW($mobileLargeWidth) {
+            //     }
 
-                // < 480px;
-                @include maxW($mobileWidth) {
-                    margin-right: 5px;
-                }
-            }
+            //     // < 480px;
+            //     @include maxW($mobileWidth) {
+            //         margin-right: 5px;
+            //     }
+            // }
 
         }
     }
 }
 
-// .scene-wrapper, #scene-bg {
-//     width: 100%;
-//     height: 100vh;
-//     position: absolute;
-//     top:0;
-//     left: 0;
-// }
+#can {
+    width: 80%;
+    height: 100%;
+    max-width: 920px;
+    position: relative;
+    margin: 0 auto;
 
-// .scene-wrapper {
-//     li {
-//         // border: 1px solid black;
-//         background-size: 100% auto;
-//         background-repeat: no-repeat;
-//         position: absolute;
+    background-image: url("./assets/round2/can.png");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: center;
 
-//         &.pairing {
-//             width: 100px;
-//             height: 100px;
-//             background-size: 100% auto;
-//             background-repeat: no-repeat;
-//             bottom: -200px;
-//         }
-//     }
+    li {
+        width: 100%;
+        height: 0;
+        height: 100%;
+        max-width: 920px;
+        opacity: 0;
 
-//     .body-container {
-//         width: 200px;
-//         height: 500px;
-//         background-image: url("./assets/round3/body.png");
-//         background-size: 100% auto;
-//         background-repeat: no-repeat;
-        
-//         @include horizontalAlign(absolute);
-//         bottom: 0px;
-//         display: none;
-//     }
+        top:0;
+        left:0;
+        position:absolute;
 
-//     .body {
-//         position: relative;
-//     }
-
-//     .head, .vessel{
-//         width: 200px;
-//         height: 200px;
-//     }
-
-//     .food {
-//         width: 400px;
-//         height: 400px;
-//     }
-
-//     #food1 {
-//         left: 100px;
-//         bottom: 0px;
-//         display: none;
-//     }
-
-//     // #food2 {
-//     //     right: 100px;
-//     //     bottom: 0px;
-//     // }
-
-//     .head {
-//         width: 100px;
-//         height: 100px;
-//         top: -100px;
-//         left: 50px;
-//     }
-// }
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        background-position: center;
+    }
+}

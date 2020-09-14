@@ -6,6 +6,74 @@
     left:0;
 
     .wrapper {
-        top: $marginTop_30;
+        height: calc(100% - 200px);
+        top: 100px;
+        border: 1px solid black;
+    }
+
+    .question-wrapper {
+        overflow: scroll;
+        height: 100%;
+    }
+
+    h1, p, table {
+        color: $purple;
+    }
+
+    p {
+        margin-bottom: 40px;
+        margin-top: 20px;
+        // max-width: 580px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    tr {
+        border-bottom: 1px solid $purple;
+        line-height: 2;
+
+        &:last-child {
+            border: none;
+        }
+    }
+
+    td:first-child {
+        font-weight: 600;
+    }
+
+    .fruit {
+        height: 100%;
+
+        li {
+            text-align: center;
+            position: relative;
+
+            img {
+                @include horizontalAlign(absolute);
+                display: inline-block;
+                width: 100%;
+                max-width: 50vh;
+            }
+
+            &:first-child {
+                height: 60%;
+                img {
+                    bottom: 0px;
+                }
+    
+                z-index: 100;
+            }
+
+            &:nth-child(2) {
+                height: 40%;
+                top: -5%;
+                img {
+                    top: 0px;
+                }
+            }
+        }
     }
 }

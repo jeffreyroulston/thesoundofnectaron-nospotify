@@ -26,7 +26,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task("copy-html", function () {
-    return gulp.src('html/index.html')
+    return gulp.src('html/*.html')
         .pipe(gulp.dest('dist'));
 });
 

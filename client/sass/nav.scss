@@ -15,7 +15,7 @@
     @include maxW($mobileLargeWidth) {
         background-color: white;
         position: absolute;
-        height: 100vh;
+        height: 100%;
         top: 0;
         left:0;
         display: none;

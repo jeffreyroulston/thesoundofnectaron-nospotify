@@ -1,10 +1,14 @@
 import * as si from "./spotify-interface";
 // import * as Questions from "./questions";
 import * as THREE from 'three';
+import * as data from "./data";
 import UI from "./ui";
 import ResourceManager, { GLTFAsset } from "./resource-manager";
 import Graphics from "./graphics";
-import { timeThursday } from "d3";
+import Landing from "./landing";
+import Game from "./rounds";
+import { easeExpIn } from "d3";
+import { shuffle } from "./helpers";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
 let REDIRECT_URI: string = "http://localhost:8888";
@@ -15,7 +19,8 @@ let SCOPES: string[] = [
     'user-top-read', 
     'user-library-modify', 
     'playlist-modify-public',
-    'playlist-modify-private'];
+    'playlist-modify-private',
+    'ugc-image-upload'];
 
 
 export default class App {
@@ -26,11 +31,19 @@ export default class App {
     private ui: UI = new UI(this);
     private profile: si.UserProfile | undefined;
     private topArtists: si.Artist[] | undefined;
+    private topTracks: si.Track[] | undefined;
     // private answeredQuestions: Questions.Question[] = [];
 
+    private requestedPlaylistLength: number = 60;
+
     constructor() {
+        // console.log(window.location.href);
+
         this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
-        var cookie = document.cookie;
+
+        this.ui.Login = this.Login.bind(this);
+
+        // this.CheckAuthorization();
 
         // if (this.spotifyInterface.Authorized) {
         //     if (document.cookie == "landingShown") {
@@ -43,9 +56,9 @@ export default class App {
         // }
 
         // // we need these binds to make sure and 'this' in callbacks is bound to the correct object
-        // this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
-        // this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this));
-        // this.spotifyInterface.OnErrorListeners.push(this.OnSpotifyInterfaceError.bind(this));
+        //this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
+        this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this));
+        this.spotifyInterface.OnErrorListeners.push(this.OnSpotifyInterfaceError.bind(this));
 
         // this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this.ui));
 
@@ -60,10 +73,12 @@ export default class App {
             this.graphics.onInitResources(this.resourceManager);
         });
 
+        this.getProfile();
+
         // transition finished callback here
-        this.graphics.transitionedCallback = () => {
-            this.ui.bgTransitionComplete();
-        }
+        // this.graphics.transitionedCallback = () => {
+        //     this.ui.bgTransitionComplete();
+        // }
         // this below was just for testing
         // is also a great example for how to switch colour in the background
         // setInterval(() => {
@@ -79,6 +94,14 @@ export default class App {
         // this.switchGraphics();
     }
 
+    async getProfile() {
+        console.log("authorized", this.spotifyInterface.Authorized);
+        if (this.spotifyInterface.Authorized) {
+            this.spotifyInterface.GetUserProfile();
+            console.log("User profile:", this.profile);
+        }
+    }
+
     public switchGraphics(color : THREE.Color) {
         this.graphics.switchColorForward(color, 0.5)
     }
@@ -88,18 +111,77 @@ export default class App {
     }
 
     public Login() {
-        // kick it all off
-        // called from UI
-        console.log("spotify authorised?", this.spotifyInterface.Authorized);
-
+        // called from UI on landing page button click
         if (this.spotifyInterface.Authorized) {
-            this.ui.loginSuccessful();
             this.spotifyInterface.GetUserProfile();
-            console.log(this.profile);
+            console.log("User profile:", this.profile);
         } else {
             this.spotifyInterface.GetAuthorization();
         }
     }
+
+    public CreatePlaylist() {
+        console.log("create playlist");
+        this.generatePlaylist();
+    }
+
+    async generatePlaylist() {
+        // get spotify paramaters
+
+        
+        if (this.profile !== undefined && this.topArtists !== undefined && this.topTracks !== undefined) {
+            const name = this.profile.DisplayName;
+            const queries = [];
+
+            for (var i=0; i<data.sliderQuestions.length; i++) {
+                let q = data.sliderQuestions[i];
+
+                if (q.params === si.QueryParameters.PlaylistLength) {
+                    this.requestedPlaylistLength = q.answer;
+                }
+
+                else {
+                    queries.push({parameter: si.QueryParameters[q.params], value: q.answer});
+                }
+            }
+
+            // get a random selection of genres
+            let genres: string[] = [];
+            this.topArtists.map(x => x.Genres.forEach((genre) => genres.push(genre)));
+            shuffle(genres);
+            genres = genres.slice(0, 3);
+            
+            // get two random top tracks
+            let tracks: string[] = this.topTracks.map(track => track.Id);
+            shuffle(tracks);
+            tracks = tracks.slice(0, 2);
+
+            this.spotifyInterface.GetRecommendations({
+                QueryParameters: queries,
+                Count: 100,
+                SeedGenres: genres,
+                SeedTrackIDs: tracks
+            });
+        }
+        // console.log(data.mcqQuestions);
+        // console.log(data.qfQuestions);
+        // console.log(data.sliderQuestions);
+
+    }
+
+    // public Login() {
+    //     // kick it all off
+    //     // called from UI
+    //     console.log("spotify authorised?", this.spotifyInterface.Authorized);
+
+    //     if (this.spotifyInterface.Authorized) {
+    //         this.ui.authenticated();
+    //         this.spotifyInterface.GetUserProfile();
+    //         console.log(this.profile);
+    //     } else {
+    //         this.spotifyInterface.GetAuthorization();
+    //     }
+    // }
 
     // private QuestionAnswered(totalQuestions: number, questionNumber: number, question: Questions.Question) {
         // this is where we aggregate query parameters
@@ -129,12 +211,6 @@ export default class App {
         // }
     // }
 
-    private OnAuthorised(): void {
-        // we can only really get these when we're authorised
-        this.spotifyInterface.GetUserProfile();
-        this.ui.loginSuccessful();
-    }
-
     // most of this stuff is temporary, will hook up the proper handlers with the ui state
     public OnUserData(type: si.DataType, data: si.Data): void {
 
@@ -149,7 +225,8 @@ export default class App {
                 // }
 
                 
-                // this.spotifyInterface.GetTopArtists();
+                this.spotifyInterface.GetTopArtists();
+                this.spotifyInterface.GetTopTracks();
                 break;
 
             // when we get recommendations back, we can automatically create the new playlist
@@ -159,7 +236,7 @@ export default class App {
                 console.log(recommendations);
 
                 // all this below is to build a playlist just over four hours
-                const playlistLengthSeconds = 4 * 60 * 60;
+                const playlistLengthSeconds = 60 * this.requestedPlaylistLength;
                 let trackCount = 0;
                 let currentLengthSeconds = 0;
                 for (trackCount = 0; trackCount <  recommendations.length; trackCount++) {
@@ -175,16 +252,27 @@ export default class App {
                 // get only just enough tracks to make the playlist time limit
                 const trackUris = recommendations.map(track => track.Uri).slice(0, trackCount);
 
+                // console.log(window.location.href);
+
                 if (this.profile !== undefined) {
                     this.spotifyInterface.CreatePlaylist({
                         UserId: this.profile.id,
                         TrackUris: trackUris,
                         Name: "Nectaron",
                         Description: "Get a load of this ya jabronies",
-                        Public: false
+                        Public: false,
+                        Image: {
+                            Width: 72,
+                            Height: 72,
+                            Url: "http://localhost:8888/assets/albumCover.jpg"
+                        }
                     });
                 }
      
+                break;
+
+            case si.DataType.TopTracks:
+                this.topTracks = (data as si.Track[]);
                 break;
 
             case si.DataType.TopArtists:
