@@ -89,7 +89,7 @@ export default class QuickFireQ {
             alpha:1, y:0, stagger:0.1, delay: delay
         });
         
-        TweenMax.fromTo(this.timerEl, this.time, {
+        TweenMax.fromTo(f.find(this.el, "#timer-wrapper"), this.time, {
             alpha:0, x:200
         }, {
             alpha:1, x:0, delay: delay, onComplete: ()=> {
@@ -114,9 +114,9 @@ export default class QuickFireQ {
     updateTimer() {
         this.timerCount--;
 
-        if (this.timerCount >= 0 && this.timerCount > 0) {
+        if (this.timerCount >= 0) {
             this.updateTimerElements();
-            setTimeout(this.updateTimer.bind(this), 1000);
+            setTimeout(this.updateTimer.bind(this), 10000);
         } else {
             this.active = false;
             this.roundComplete(this.el);
@@ -126,29 +126,31 @@ export default class QuickFireQ {
     updateTimerElements() {
         var t = this.timerCount.toString();
 
-        if (this.timerCount < 10) {
-            this.timerEl.className = "ones";
-        } else if (this.timerCount < 20) {
-            this.timerEl.className = "tens";
-        }
+        this.timerEl.innerHTML = t;
 
-        if (this.timerCount < 11) {
-            this.timerTensColumn.style.color = COLOURS.orange;
-            this.timerOnesColumn.style.color = COLOURS.orange;
-        } else if (this.timerCount < 21) {
-            this.timerTensColumn.style.color = COLOURS.yellow;
-            this.timerOnesColumn.style.color = COLOURS.yellow;
-        }
+        // if (this.timerCount < 10) {
+        //     this.timerEl.className = "ones";
+        // } else if (this.timerCount < 20) {
+        //     this.timerEl.className = "tens";
+        // }
 
-        if (this.timerCount > 9) {
-            this.timerTensColumn.innerHTML = t[0];
-            this.timerOnesColumn.innerHTML = t[1];
+        // if (this.timerCount < 11) {
+        //     this.timerTensColumn.style.color = COLOURS.orange;
+        //     this.timerOnesColumn.style.color = COLOURS.orange;
+        // } else if (this.timerCount < 21) {
+        //     this.timerTensColumn.style.color = COLOURS.yellow;
+        //     this.timerOnesColumn.style.color = COLOURS.yellow;
+        // }
 
-        } else {
-            this.timerTensColumn.innerHTML = "";
-            this.
-            timerOnesColumn.innerHTML = t;
-        }
+        // if (this.timerCount > 9) {
+        //     this.timerTensColumn.innerHTML = t[0];
+        //     this.timerOnesColumn.innerHTML = t[1];
+
+        // } else {
+        //     this.timerTensColumn.innerHTML = "";
+        //     this.
+        //     timerOnesColumn.innerHTML = t;
+        // }
     }
 
     answerRetrieved(e: any) {

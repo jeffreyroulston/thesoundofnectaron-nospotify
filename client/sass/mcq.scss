@@ -4,6 +4,10 @@
 #mc-q {
     height: 100%;
 
+    .question {
+        margin-bottom: 0;
+    }
+
     // .col-wrapper {
     //     &.text-column {
     //         position: relative;
@@ -22,9 +26,13 @@
         width: 100%;
         height: 100px;
 
-        //< 768px;
-        @include maxW($tabletPortraitWidth) {
+        // < 1280px
+        @include maxW($desktopWidth) {
             text-align: center;
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            margin: 0;
         }
 
         li {
@@ -34,50 +42,8 @@
             background-size: 100% auto;
             background-repeat: no-repeat;
             cursor: pointer;
-
-            // // < 1024px
-            // @include maxW($tabletLandscapeWidth) {
-            //     margin-left: 10px;
-            // }
-
-            // //< 768px;
-            // @include maxW($tabletPortraitWidth) {
-            //     margin-left: 10px;
-            // }
-
-            // // < 640px
-            // @include maxW($mobileLargeWidth) {
-            // }
-
-            // // < 480px;
-            // @include maxW($mobileWidth) {
-            //     margin-left: 5px;
-            //     width: 30px;
-            // }
-
-            // &:first-child {
-            //     margin-right: 20px;
-
-            //     // < 1024px
-            //     @include maxW($tabletLandscapeWidth) {
-            //         margin-right: 10px;
-            //     }
-
-            //     // < 768px;
-            //     @include maxW($tabletPortraitWidth) {
-            //         margin-right: 10px;
-            //     }
-
-            //     // < 640px
-            //     @include maxW($mobileLargeWidth) {
-            //     }
-
-            //     // < 480px;
-            //     @include maxW($mobileWidth) {
-            //         margin-right: 5px;
-            //     }
-            // }
-
+            background-position: bottom;
+            position: relative;
         }
     }
 }
@@ -97,7 +63,7 @@
     // < 1280px
     @include maxW($desktopWidth) {
         height: 50%;
-        top: 50%;
+        top: 30%;
         background-size: auto 100%;
     }
 

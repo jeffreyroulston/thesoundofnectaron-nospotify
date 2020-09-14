@@ -40,7 +40,7 @@ export default class MCQ {
         // bind interactions
         this.optionEls.forEach((e)=> {
             e.addEventListener("mouseover", ()=> {
-                TweenMax.to(e, 0.1, {scale:1.3, zIndex:2})
+                TweenMax.to(e, 0.1, {scale:1.3, zIndex:50})
             });
 
             e.addEventListener("mouseleave", ()=> {
@@ -55,6 +55,8 @@ export default class MCQ {
     }
 
     onResize() {
+        if (this.isComplete) return;
+        
         // size the list options
         if (this.currentQuestion) {
             // resize options box
@@ -132,9 +134,9 @@ export default class MCQ {
             })
 
             // bounce them
-            this.loopingAnimations.push(TweenMax.to(this.optionEls[i], this.time, {
-                y:10, repeat:-1, yoyo:true, delay: d + (this.time*2) + (0.1*i)
-            }))
+            // this.loopingAnimations.push(TweenMax.to(this.optionEls[i], this.time, {
+            //     y:10, repeat:-1, yoyo:true, delay: d + (this.time*2) + (0.1*i)
+            // }))
         }
     }
 

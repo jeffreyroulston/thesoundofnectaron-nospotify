@@ -73,11 +73,14 @@
                 }
             }
         }
+    }
+}
 
-        // < 1024px
-        @include maxW($tabletLandscapeWidth) {
+#about {
+    .content-wrapper, .fruit {
+        // < 1280px
+        @include maxW($desktopWidth) {
             display: none;
         }
-
     }
 }

@@ -173,6 +173,12 @@ p, table {
     @include maxW($desktopWidth) {
         width: 100%;
     }
+
+    // < 640px;
+    @include maxW($mobileLargeWidth) {
+        height: calc(100% - 150px);
+        top: 80px;
+    }
 }
 
 .question {

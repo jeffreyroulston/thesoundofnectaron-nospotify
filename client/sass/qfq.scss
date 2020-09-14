@@ -40,6 +40,13 @@
         }
     }
 
+    #timer-wrapper {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        border: 1px solid black;
+    }
+
     #timer {
         font-family: "Harbour";
         font-weight: 600;
@@ -47,81 +54,96 @@
         color: $blue;
         width: 100%;
         text-align: center;
+        font-size: 50vw;
+        line-height: 1;
+
+        @include transition(font-size 0.2s ease);
 
         // < 1280px
         @include maxW($desktopWidth) {
-            position: absolute;
-            height: 100%;
+            @include verticalAlign(relative);
+        }
+
+        // < 640px;
+        @include maxW($mobileLargeWidth) {
+            font-size: 80vw;
         }
 
 
-        &.tens li {
-            &:first-child {
-                width: 18vw;
+
+        // &.tens li {
+        //     &:first-child {
+        //         width: 18vw;
                 
-                @include maxW($tabletPortraitWidth) {
-                    width: 36vw;
-                }
-            }
+        //         @include maxW($tabletPortraitWidth) {
+        //             width: 36vw;
+        //         }
+        //     }
 
-            @include maxW($tabletPortraitWidth) {
-                &:last-child {
-                    width: 50vw;
-                }
-            }
-        }
+        //     @include maxW($tabletPortraitWidth) {
+        //         &:last-child {
+        //             width: 50vw;
+        //         }
+        //     }
+        // }
 
-        &.ones li {
-            &:first-child {
-                width: 0;
-            }
+        // &.ones li {
+        //     &:first-child {
+        //         width: 0;
+        //     }
 
-            &:last-child {
-                width: unset;
-            }
+        //     &:last-child {
+        //         width: unset;
+        //     }
 
-        }
+        // }
 
-        li {
-            text-align: center;
-            font-size: 50vw;
-            line-height: 110vh;
-            display: inline-block;
+        // li {
+        //     text-align: center;
+        //     font-size: 50vw;
+        //     line-height: 110vh;
+        //     display: inline-block;
 
 
-            // < 1280px
-            @include maxW($desktopWidth) {
-                font-size: 70vw;
-                line-height: unset;
-                @include verticalAlign(relative);
-            }
+        //     // < 1280px
+        //     @include maxW($desktopWidth) {
+        //         font-size: 70vw;
+        //         height: 61vw;
+        //         line-height: 71vw;
+        //         border: 1px solid black;
+        //         @include verticalAlign(relative);
+        //     }
 
-            &:first-child {
-                width: 26vw;
+        //     &:first-child {
+        //         width: 26vw;
 
-                // < 1280px
-                @include maxW($desktopWidth) {
-                    @include transition(width 0.2s ease);
-                    width: 36vw;
-                }
-            }
+        //         // < 1280px
+        //         @include maxW($desktopWidth) {
+        //             @include transition(width 0.2s ease);
+        //             width: 36vw;
+        //         }
+        //     }
 
-            &:last-child {
-                width: 35vw;
+        //     &:last-child {
+        //         width: 35vw;
+        //         text-align: right;
                 
-                // < 1280px
-                @include maxW($desktopWidth) {
-                    @include transition(width 0.2s ease);
-                    width: 55vw;
-                }
-            }
-        }
+        //         // < 1280px
+        //         @include maxW($desktopWidth) {
+        //             @include transition(width 0.2s ease);
+        //             width:48vw;
+        //         }
+        //     }
+        // }
     }
 
     #answer-wrapper {
+        text-align: center;
+
         @include maxW($desktopWidth) {
             position: absolute;
             bottom: 0px;
+            width: 100%;
         }
 
         li {
