@@ -43,6 +43,14 @@ export default class UI {
     private currentPopupPageEl : HTMLElement | undefined = undefined;
     private currentPopupPage : string = "";
 
+    // about page
+    private aboutEl : HTMLElement = f.elByID("about");
+    private aboutHopTopEl : HTMLElement = f.find(this.aboutEl, ".hopTop");
+    private aboutHopBottomEl : HTMLElement = f.find(this.aboutEl, ".hopBottom")
+    
+    // faq page
+    private faqEl : HTMLElement = f.elByID("faq");
+
     // for between pages
     private elementsToHide : HTMLElement[] = [];
     
@@ -53,8 +61,8 @@ export default class UI {
     private assetCounter : number = 0;
     private assetsLoaded : number= 0;
 
-    // spotify
-    // private authorized : boolean = false;
+    // looping animations
+    private loopingAnimations : TweenMax[] = [];
 
     // binder for images
     public ImagesDownloadedCallback = ()=>{};
@@ -235,7 +243,7 @@ export default class UI {
 
     private togglePage(e: any) {
         // used for nav (About/Contact/Order)
-        var target = "#" + e.srcElement.getAttribute("data");
+        var target = e.srcElement.getAttribute("data");
         
         if (this.currentPopupPage == target) {
             e.srcElement.classList.toggle("active");
@@ -258,8 +266,6 @@ export default class UI {
                         this.hidePage(this.currentPopupPage, target);
                     } else {
                         // check if it's mobile
-
-
                         e.srcElement.classList.toggle("active");
                         this.showPage(target);
                     }
@@ -272,23 +278,62 @@ export default class UI {
     }
 
     private showPage(p : string) {
-        TweenMax.fromTo(p, 0.5, {
+        // animations for different pages
+        switch(p) {
+            case "about" :
+                // bop the fruit
+                this.loopingAnimations.push(TweenMax.fromTo(this.aboutHopTopEl, 3, {
+                    rotate: -10, x:-50
+                }, {
+                    rotate: 10, x:50, repeat: -1, yoyo: true, ease: "linear"
+                }))
+
+                this.loopingAnimations.push(TweenMax.to(this.aboutHopBottomEl, 1.5, {
+                    y: -20, repeat: -1, yoyo: true, ease: "linear"
+                }))
+
+                this.show(this.aboutEl);
+                break;
+            case "faq":
+                this.show(this.faqEl);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private hidePage(p : string, p2?: string) {
+        // animations for different pages
+        switch(p) {
+            case "about" :
+                this.hide(this.aboutEl)
+                break;
+            case "faq":
+                this.hide(this.faqEl)
+                break;
+            default:
+                break;
+        }
+
+        if (p2) {
+            this.showPage(p2);
+        }
+    }
+
+    private show(e: HTMLElement) {
+        TweenMax.fromTo(e, 0.2, {
             display : "none", alpha: 0, scale:0.95
         }, {
             display: "block", alpha: 1, scale:1
         })
     }
 
-    private hidePage(p : string, p2?: string) {
-        TweenMax.fromTo(p, 0.5, {
+    private hide(e: HTMLElement) {
+        TweenMax.fromTo(e, 0.2, {
             display : "block", alpha: 1, scale:1
         }, {
             display: "none", alpha: 0, scale:0.95
         })
-
-        if (p2) {
-            this.showPage(p2);
-        }
     }
 
     private toggleNav() {

@@ -63,9 +63,9 @@ export default class Landing {
         })
 
         // BOUNCE DAT HOP
-        this.loopingAnimations.push(TweenMax.to(hop, 2, {
-            scale:0.99, ease: "linear", delay:1, repeat:-1, yoyo:true
-        }))
+        // this.loopingAnimations.push(TweenMax.to(hop, 2, {
+        //     scale:0.99, ease: "linear", delay:1, repeat:-1, yoyo:true
+        // }))
 
         // NECTARON
         TweenMax.from(logoElements, 1, {

@@ -11,11 +11,9 @@
         border: 1px solid black;
     }
 
-    .column {
-        float: left;
-        width: 50%;
-        height: 100%;
+    .question-wrapper {
         overflow: scroll;
+        height: 100%;
     }
 
     h1, p, table {
@@ -30,10 +28,20 @@
 
     table {
         width: 100%;
+        border-collapse: collapse;
     }
 
     tr {
         border-bottom: 1px solid $purple;
+        line-height: 2;
+
+        &:last-child {
+            border: none;
+        }
+    }
+
+    td:first-child {
+        font-weight: 600;
     }
 
     .fruit {
@@ -42,6 +50,7 @@
         li {
             text-align: center;
             position: relative;
+
             img {
                 @include horizontalAlign(absolute);
                 display: inline-block;
@@ -60,6 +69,7 @@
 
             &:nth-child(2) {
                 height: 40%;
+                top: -5%;
                 img {
                     top: 0px;
                 }
