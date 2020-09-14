@@ -181,10 +181,14 @@ p, table {
     }
 }
 
+// .question-box-wrapper {
+//     height: 300px;
+// }
+
 .question {
     // height: 380px;
     color: $orange;
-    margin-bottom: 130px;
+    @include verticalAlign(relative);
     
     // < 1280px
     @include maxW($desktopWidth) {

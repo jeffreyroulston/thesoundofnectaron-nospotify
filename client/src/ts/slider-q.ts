@@ -55,6 +55,8 @@ export default class Slider {
     private busenFillEl : HTMLElement = f.find(this.el, ".bunsen-fill");
     private bunsenColour1 = f.convertHexToRgb("88009D");
     private bunsenColour2 = f.convertHexToRgb("FF1900");
+    private bubbleCount = 0;
+    private activeBubbles = 0;
 
     // for looping animations
     private loopingAnimations : TweenMax[] = [];
@@ -310,13 +312,13 @@ export default class Slider {
             y:0
         });
 
-        this.loopingAnimations.push(TweenMax.to(this.imgs[0], 0.5, {
-            y:-20, repeat:-1, yoyo:true, delay:0.8
-        }))
+        // this.loopingAnimations.push(TweenMax.to(this.imgs[0], 0.5, {
+        //     y:-20, repeat:-1, yoyo:true, delay:0.8
+        // }))
 
-        this.loopingAnimations.push(TweenMax.to(this.imgs[1], 0.5, {
-            y:20, repeat:-1, yoyo:true, delay:0.8
-        }))
+        // this.loopingAnimations.push(TweenMax.to(this.imgs[1], 0.5, {
+        //     y:20, repeat:-1, yoyo:true, delay:0.8
+        // }))
     }
 
     private callbackQ2(e: any) {
@@ -422,7 +424,7 @@ export default class Slider {
 
     private showQ4() {
         // BUNSEN BURNER
-        
+
         // make it not full width
         this.toggleFullWidth();
 
@@ -430,6 +432,34 @@ export default class Slider {
         f.find(this.el, ".col-wrapper.content-column").style.display = "block"
 
         var slider = f.find(this.el, ".slider-q4");
+
+        // get the bubbles
+        this.imgs = f.findAll(slider, "#bubbles li");
+        var width = slider.getBoundingClientRect().width;
+        var height = slider.getBoundingClientRect().height;
+        
+        this.bubbleCount = this.imgs.length/2;
+        this.activeBubbles = this.imgs.length/2;
+
+        // // add the bubble animations to a list
+        // for (var i=0; i<this.imgs.length; i++) {
+        //     let anim = TweenMax.fromTo(this.imgs[i], 5, {
+        //         x: f.getRandom(0, width-100), y:200
+        //     }, {
+        //         x: f.getRandom(0, width-100), y:-200 + -height, delay: i*0.5, repeat: -1, ease: "linear", onComplete: this.bubbleLoopComplete.bind(this)
+        //     });
+
+        //     anim.pause();
+        //     this.loopingAnimations.push(anim);
+        // }
+        
+        // // move half of the bubbles
+        // for (var y=0; y<this.bubbleCount; y++) {
+        //     let anim = this.loopingAnimations[y]
+        //     setTimeout(()=> {
+        //         anim.play();
+        //     }, 500*y)
+        // }
 
         // get the colours
         var colour = f.rgb(f.findColorBetween(this.bunsenColour1, this.bunsenColour2, this.sliderValue));
@@ -441,6 +471,10 @@ export default class Slider {
             display: "block", alpha:1, x:0
         })
     }
+
+    private bubbleLoopComplete() {
+    }
+
     private callbackQ4(e: any) {
         // get value from slider
         this.sliderValue = e.srcElement.value;
@@ -448,6 +482,48 @@ export default class Slider {
         // get the colours
         var colour = f.rgb(f.findColorBetween(this.bunsenColour1, this.bunsenColour2, this.sliderValue));
         this.busenFillEl.style.fill = colour;
+
+        // set the number of bubbles
+        this.bubbleCount = Math.ceil(this.sliderValue / 10);
+
+
+        console.log(this.sliderValue, this.bubbleCount, this.activeBubbles);
+
+        // if (this.bubbleCount > this.activeBubbles) {
+        //     for (var i=this.activeBubbles-1; i<this.bubbleCount; i++) {
+        //         if (this.loopingAnimations[i].paused()) this.loopingAnimations[i].play();
+        //     }
+        // } else if (this.bubbleCount < this.activeBubbles) {
+        //     console.log("decrease", this.activeBubbles-1, this.bubbleCount-1);
+        //     if (this.activeBubbles == 0) return;
+        //     for (var i=this.activeBubbles-1; i>this.bubbleCount-1; i--) {
+        //         console.log(i);
+        //         if (!this.loopingAnimations[i].paused()){
+        //             this.loopingAnimations[i].time(0);
+        //             this.loopingAnimations[i].pause();
+        //         }
+        //     }
+        // }
+
+        // this.activeBubbles = this.bubbleCount;
+
+        // // get the bubbles
+        // var slider = f.find(this.el, ".slider-q4");
+        // var width = slider.getBoundingClientRect().width;
+        // var height = slider.getBoundingClientRect().height;
+        
+        // this.bubbleCount = this.imgs.length/2
+
+        // // move the bubbles
+        // for (var i=0; i<this.bubbleCount; i++) {
+        //     this.loopingAnimations.push(
+        //         TweenMax.fromTo(this.imgs[i], 5, {
+        //             x: f.getRandom(0, width-100), y:200
+        //         }, {
+        //             x: f.getRandom(0, width-100), y:-200 + -height, delay: i*0.1, repeat: -1, ease: "linear"
+        //         })
+        //     )
+        // }
     }
 
     private showQ5() {

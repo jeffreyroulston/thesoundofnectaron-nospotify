@@ -116,7 +116,7 @@ export default class QuickFireQ {
 
         if (this.timerCount >= 0) {
             this.updateTimerElements();
-            setTimeout(this.updateTimer.bind(this), 10000);
+            setTimeout(this.updateTimer.bind(this), 1000);
         } else {
             this.active = false;
             this.roundComplete(this.el);
