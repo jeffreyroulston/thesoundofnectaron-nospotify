@@ -205,11 +205,11 @@ const waterFragShader = `
 
 
     void main() {
-        vec2 samplePoint = vUv * size * 0.015;
-        vec3 c = voronoi( samplePoint + vec2(0.0, time) );
-        float border = smoothstep( 0.00, 1.0, c.x);
+        //vec2 samplePoint = vUv * size * 0.015;
+        //vec3 c = voronoi( samplePoint + vec2(0.0, time) );
+        //float border = smoothstep( 0.00, 1.0, c.x);
         float transition = clamp(transitionGradient - transitionAmount, 0.0, 1.0);
-        vec3 transitionColor = mix(TRANSITION_COL_PURPLE, TRANSITION_COL_ORANGE, transition) * (1.0 - border * 0.025 * (1.0 - transitionAmount));
+        vec3 transitionColor = mix(TRANSITION_COL_PURPLE, TRANSITION_COL_ORANGE, transition);// * (1.0 - border * 0.025 * (1.0 - transitionAmount));
         gl_FragColor = vec4(transitionColor, 1.0);
     }
 `
@@ -346,7 +346,7 @@ export default class Graphics {
         const bgcontainer = document.getElementById('canvas-container-background');
         if (bgcontainer !== null) {
             bgcontainer.append(this.squiggleRenderer.domElement);
-            this.squiggleRenderer.domElement.id = "graphics-canvas";
+            this.squiggleRenderer.domElement.id = "graphics-canvas-background";
         }
 
         this.clock = new THREE.Clock();
@@ -381,6 +381,10 @@ export default class Graphics {
 
         this.clock.start();
         this.render();
+    }
+
+    public setLoadingPercentage(amount: number): void {
+        this.waterMaterial.uniforms.transitionAmount.value = amount;
     }
 
     public switchColorForward(newColour: THREE.Color, time: number) {
@@ -477,7 +481,7 @@ export default class Graphics {
         this.waterMaterial.uniforms.time.value = time;
         this.material.uniforms.lerp.value = this.currentLerp;
 
-        this.waterMaterial.uniforms.transitionAmount.value = Math.sin(time) * 0.5 + 0.5;
+        // this.waterMaterial.uniforms.transitionAmount.value = Math.sin(time) * 0.5 + 0.5;
 
         this.renderer.render(this.scene, this.camera);
         this.squiggleRenderer.render(this.waterScene, this.camera);
