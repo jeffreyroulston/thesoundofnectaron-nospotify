@@ -321,18 +321,18 @@ export default class UI {
     }
 
     private show(e: HTMLElement) {
-        TweenMax.fromTo(e, 0.2, {
-            display : "none", alpha: 0, scale:0.95
+        TweenMax.fromTo(e, 0.15, {
+            display : "none", alpha: 0, scale:0.98
         }, {
             display: "block", alpha: 1, scale:1
         })
     }
 
     private hide(e: HTMLElement) {
-        TweenMax.fromTo(e, 0.2, {
+        TweenMax.fromTo(e, 0.15, {
             display : "block", alpha: 1, scale:1
         }, {
-            display: "none", alpha: 0, scale:0.95
+            display: "none", alpha: 0, scale:0.98
         })
     }
 

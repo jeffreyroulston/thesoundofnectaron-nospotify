@@ -5,12 +5,6 @@
     top: 0;
     left:0;
 
-    .wrapper {
-        height: calc(100% - 200px);
-        top: 100px;
-        border: 1px solid black;
-    }
-
     .question-wrapper {
         overflow: scroll;
         height: 100%;
@@ -44,6 +38,10 @@
         font-weight: 600;
     }
 
+    .meetNectaron {
+        width: 100%;
+    }
+
     .fruit {
         height: 100%;
 
@@ -75,5 +73,11 @@
                 }
             }
         }
+
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            display: none;
+        }
+
     }
 }

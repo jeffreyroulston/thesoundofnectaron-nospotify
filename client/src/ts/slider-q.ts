@@ -172,7 +172,7 @@ export default class Slider {
     }
 
     private toggleFullWidth() {
-        f.find(this.el, ".col-wrapper").classList.toggle("full-width");
+        f.find(this.el, ".col-wrapper.text-column").classList.toggle("full-width");
     }
 
     private showQ1() {
@@ -181,6 +181,9 @@ export default class Slider {
         var sunRays = f.find(this.el, ".sun-rays");
         var rays = f.findAll(sunRays, ".line");
         var stars = f.findAll(sunRays, "polygon.star");
+
+        // hide the content column
+        f.find(this.el, ".col-wrapper.content-column").style.display = "none"
 
         this.setValue(0);
 
@@ -209,32 +212,32 @@ export default class Slider {
 
         // change the sun ray colours
         for (var i=0; i<rays.length; i++) {
-            this.loopingAnimations.push(
-                TweenMax.fromTo(rays[i], 1, {
-                fill: COLOURS.white
-                }, {
-                    fill: COLOURS.yellow, repeat:-1, yoyo:true, ease: "linear", delay: i*0.1
-                })
-            )
+            // this.loopingAnimations.push(
+            //     TweenMax.fromTo(rays[i], 1, {
+            //     fill: COLOURS.white
+            //     }, {
+            //         fill: COLOURS.yellow, repeat:-1, yoyo:true, ease: "linear", delay: i*0.1
+            //     })
+            // )
         }
 
         // stars be twinkling
         for (var i=0; i<stars.length; i++) {
-            this.loopingAnimations.push(
-                TweenMax.fromTo(stars[i], 0.1, {
-                fill: COLOURS.white
-                }, {
-                    fill: COLOURS.purple, repeat:-1, yoyo:true, ease: "linear", delay: i*0.1
-                })
-            )
+            // this.loopingAnimations.push(
+            //     TweenMax.fromTo(stars[i], 0.1, {
+            //     fill: COLOURS.white
+            //     }, {
+            //         fill: COLOURS.purple, repeat:-1, yoyo:true, ease: "linear", delay: i*0.1
+            //     })
+            // )
         }
 
         // make the image pulse
-        this.loopingAnimations.push(
-            TweenMax.to(sunRays, 2, {
-                scale:0.95, repeat:-1, yoyo:true, ease: "linear"
-            })
-        )
+        // this.loopingAnimations.push(
+        //     TweenMax.to(sunRays, 2, {
+        //         scale:0.95, repeat:-1, yoyo:true, ease: "linear"
+        //     })
+        // )
     }
 
     private callbackQ1(e: any) {
@@ -277,6 +280,9 @@ export default class Slider {
 
         // get the width
         this.fruitDefaultWidth = this.imgs[0].getBoundingClientRect().width;
+
+        // show the content column
+        f.find(this.el, ".col-wrapper.content-column").style.display = "block"
 
         // DO THIS ON RESIZE
 
@@ -350,6 +356,9 @@ export default class Slider {
         this.count = 10;
         this.imgs = [];
 
+        // hide the content column
+        f.find(this.el, ".col-wrapper.content-column").style.display = "none"
+
         // make it full width
         this.toggleFullWidth();
 
@@ -412,8 +421,13 @@ export default class Slider {
     }
 
     private showQ4() {
+        // BUNSEN BURNER
+        
         // make it not full width
-        f.el(".col-wrapper").classList.toggle("full-width");
+        this.toggleFullWidth();
+
+        // show the content column
+        f.find(this.el, ".col-wrapper.content-column").style.display = "block"
 
         var slider = f.find(this.el, ".slider-q4");
 

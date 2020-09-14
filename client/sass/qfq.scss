@@ -6,34 +6,37 @@
         color: $purple;
     }
 
-    .question-wrapper {
-        max-width: 800px;
-    }
+    // .question-wrapper {
+    //     max-width: 800px;
+    // }
 
-    .wrapper {
-        height: 100%;
-    }
-
-    .col-wrapper {
-        &.text-column {
-            margin-top: $marginTop_30;
-            width: 100%
-        }
+    // .col-wrapper {
+    //     &.text-column {
+    //         // margin-top: $marginTop_30;
+    //         width: 100%
+    //     }
         
-        text-align: center;
+    //     text-align: center;
 
-        h1 {
-            text-align: center;
-        }
-    }
+    //     h1 {
+    //         text-align: center;
+    //     }
+    // }
 
-    .question {
-        // height: 250px;
-        // text-shadow: 1px 1px 5px $beige;
+    // .question {
+    //     // height: 250px;
+    //     // text-shadow: 1px 1px 5px $beige;
 
-        // < 768px
-        @include maxW($tabletPortraitWidth) {
-            height: 150px;
+    //     // < 768px
+    //     @include maxW($tabletPortraitWidth) {
+    //         height: 150px;
+    //     }
+    // }
+
+    .col-wrapper, .question-wrapper {
+        // < 1280px
+        @include maxW($desktopWidth) {
+            height: 100%;
         }
     }
 
@@ -42,19 +45,15 @@
         font-weight: 600;
         text-align: right;
         color: $blue;
-        position: absolute;
-        // right:120px;
-
         width: 100%;
         text-align: center;
 
-        // < 768px
-        @include maxW($tabletPortraitWidth) {
-            width: 100%;
-            right: 0;
-            bottom: 0;
-            text-align: center;
+        // < 1280px
+        @include maxW($desktopWidth) {
+            position: absolute;
+            height: 100%;
         }
+
 
         &.tens li {
             &:first-child {
@@ -89,23 +88,19 @@
             line-height: 110vh;
             display: inline-block;
 
-            @include maxW($tabletPortraitWidth) {
-                font-size: 70vw;
-            }
 
-
-            // < 768px
-            @include maxW($tabletPortraitWidth) {
+            // < 1280px
+            @include maxW($desktopWidth) {
                 font-size: 70vw;
                 line-height: unset;
-                bottom: 0;
+                @include verticalAlign(relative);
             }
 
             &:first-child {
                 width: 26vw;
 
-                // < 768px
-                @include maxW($tabletPortraitWidth) {
+                // < 1280px
+                @include maxW($desktopWidth) {
                     @include transition(width 0.2s ease);
                     width: 36vw;
                 }
@@ -114,8 +109,8 @@
             &:last-child {
                 width: 35vw;
                 
-                // < 768px
-                @include maxW($tabletPortraitWidth) {
+                // < 1280px
+                @include maxW($desktopWidth) {
                     @include transition(width 0.2s ease);
                     width: 55vw;
                 }
@@ -124,46 +119,43 @@
     }
 
     #answer-wrapper {
-        margin-left: 10px;
-
-        // < 768px
-        @include maxW($tabletPortraitWidth) {
-            text-align: center;
+        @include maxW($desktopWidth) {
+            position: absolute;
+            bottom: 0px;
         }
 
         li {
             background-color: $purple;
-            font-family: "Harbour";
-            font-weight: 600;
+            // font-family: "Harbour";
+            // font-weight: 600;
             color: $orange;
             display: inline-block;
             padding: 10px 20px;
-            font-size: 45px;
+            // font-size: 45px;
             cursor: pointer;
             position: relative;
             top:0px;
 
             @include transition(top 0.2s ease);
+            // // < 1366px
+            // @include maxW($desktopLargeWidth) {
+            //     font-size: 40px;
+            // }
 
-            // < 1366px
-            @include maxW($desktopLargeWidth) {
-                font-size: 40px;
-            }
+            // // < 1280px
+            // @include maxW($desktopWidth) {
+            //     font-size: 35px;
+            // }
 
-            // < 1280px
-            @include maxW($desktopWidth) {
-                font-size: 35px;
-            }
+            // // < 1024px
+            // @include maxW($tabletLandscapeWidth) {
+            //     font-size: 30px;
+            // }
 
-            // < 1024px
-            @include maxW($tabletLandscapeWidth) {
-                font-size: 30px;
-            }
-
-            // < 480px;
-            @include maxW($mobileWidth) {
-                font-size: 20px
-            }
+            // // < 480px;
+            // @include maxW($mobileWidth) {
+            //     font-size: 20px
+            // }
             
             &:first-child {
                 margin-right: 20px;

@@ -3,19 +3,17 @@
 
 #mc-q {
     height: 100%;
-    .wrapper {
-        height: 100%;
-    }
 
-    .col-wrapper {
-        &.text-column {
-            margin-top: $marginTop_30;
-        }
+    // .col-wrapper {
+    //     &.text-column {
+    //         position: relative;
+            
+    //         .question-wrapper {
+    //             @include verticalAlign(relative);
+    //         }
 
-        h1 {
-            height: auto;
-        }
-    }
+    //     }
+    // }
 
     .mc-options {
         position: relative;
@@ -96,6 +94,13 @@
     background-size: 100% auto;
     background-position: center;
 
+    // < 1280px
+    @include maxW($desktopWidth) {
+        height: 50%;
+        top: 50%;
+        background-size: auto 100%;
+    }
+
     li {
         width: 100%;
         height: 0;
@@ -110,5 +115,10 @@
         background-repeat: no-repeat;
         background-size: 100% auto;
         background-position: center;
+
+        // < 1280px
+        @include maxW($desktopWidth) {
+            background-size: auto 100%;
+        }
     }
 }
