@@ -31,6 +31,7 @@ export default class App {
     private ui: UI = new UI(this);
     private profile: si.UserProfile | undefined;
     private topArtists: si.Artist[] | undefined;
+    private topTracks: si.Track[] | undefined;
     // private answeredQuestions: Questions.Question[] = [];
 
     private requestedPlaylistLength: number = 60;
@@ -124,7 +125,7 @@ export default class App {
         // get spotify paramaters
 
         
-        if (this.profile !== undefined && this.topArtists !== undefined) {
+        if (this.profile !== undefined && this.topArtists !== undefined && this.topTracks !== undefined) {
             const name = this.profile.DisplayName;
             const queries = [];
 
@@ -140,19 +141,22 @@ export default class App {
                 }
             }
 
-            
-            const seedArtists = this.topArtists.map(x => x.Id).slice(0, 2);
+            // get a random selection of genres
             let genres: string[] = [];
             this.topArtists.map(x => x.Genres.forEach((genre) => genres.push(genre)));
             shuffle(genres);
             genres = genres.slice(0, 3);
             
+            // get two random top tracks
+            let tracks: string[] = this.topTracks.map(track => track.Id);
+            shuffle(tracks);
+            tracks = tracks.slice(0, 2);
 
             this.spotifyInterface.GetRecommendations({
                 QueryParameters: queries,
                 Count: 100,
-                SeedArtistIDs: seedArtists,
-                SeedGenres: genres
+                SeedGenres: genres,
+                SeedTrackIDs: tracks
             });
         }
         // console.log(data.mcqQuestions);
@@ -218,6 +222,7 @@ export default class App {
 
                 
                 this.spotifyInterface.GetTopArtists();
+                this.spotifyInterface.GetTopTracks();
                 break;
 
             // when we get recommendations back, we can automatically create the new playlist
@@ -260,6 +265,10 @@ export default class App {
                     });
                 }
      
+                break;
+
+            case si.DataType.TopTracks:
+                this.topTracks = (data as si.Track[]);
                 break;
 
             case si.DataType.TopArtists:
