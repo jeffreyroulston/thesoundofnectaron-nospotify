@@ -172,7 +172,7 @@ p, table {
     margin: 0 auto;
     top: 100px;
 
-    border: 1px solid black;
+    // border: 1px solid black;
 
     // < 1024px
     @include maxW($tabletLandscapeWidth) {
@@ -195,7 +195,7 @@ p, table {
     max-width: 600px;
     margin: 0 auto;
     position: relative;
-    border: 1px solid blue;
+    // border: 1px solid blue;
 
     // < 1024px
     @include maxW($tabletLandscapeWidth) {
@@ -211,7 +211,9 @@ p, table {
 }
 
 .question-box-wrapper {
-    border: 1px solid black;
+    // border: 1px solid black;
+    // display: table-cell;
+    // vertical-align: middle;
 }
 
 .question {
