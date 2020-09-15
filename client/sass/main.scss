@@ -53,17 +53,17 @@ h1 {
 
     // < 1024px
     @include maxW($tabletLandscapeWidth) {
-        font-size: 50px;
+        // font-size: 50px;
     }
 
     // < 640px;
     @include maxW($mobileLargeWidth) {
-        font-size: 40px;
+        font-size: 45px;
     }
 
     // < 480px;
     @include maxW($mobileWidth) {
-        font-size: 30px
+        font-size: 35px
     }
 }
 
@@ -185,10 +185,33 @@ p, table {
 //     height: 300px;
 // }
 
+
+.question-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    border: 1px solid blue;
+
+    // // < 1280px
+    @include maxW($desktopWidth) {
+        width: 80%;
+        // max-width: 700px;
+    }
+
+    // // < 1024px
+    // @include maxW($tabletLandscapeWidth) {
+    //     max-width: 500px;
+    // }
+}
+
+.question-box-wrapper {
+    border: 1px solid black;
+}
+
 .question {
     // height: 380px;
     color: $orange;
-    @include verticalAlign(relative);
+    // @include verticalAlign(relative);
     
     // < 1280px
     @include maxW($desktopWidth) {
@@ -196,29 +219,12 @@ p, table {
     }
 }
 
-.question-wrapper {
-    max-width: 600px;
-    margin: 0 auto;
-    position: relative;
-
-    // < 1280px
-    @include maxW($desktopWidth) {
-        width: 80%;
-        max-width: 700px;
-    }
-
-    // < 1024px
-    @include maxW($tabletLandscapeWidth) {
-        max-width: 500px;
-    }
-
-}
-
 .col-wrapper {
     float: right;
     width: 50%;
     height: 100%;
     position: relative;
+    z-index: 1;
 
     &.text-column {
         float: left;
@@ -227,18 +233,17 @@ p, table {
             @include verticalAlign(relative);
         }
 
-        &:not(.full-width) .question-wrapper {
+        &:not(.full-width ) {
+
             // allow the slider to be on the bottom
-            // < 1280px
-            @include maxW($desktopWidth) {
-                height: 100%;
+            .question-wrapper {
+                @include maxW($desktopWidth) {
+                    height: 100%;
+                }
             }
 
-            // remove padding from the bottom
-            .question {
-                @include maxW($desktopWidth) {
-                    margin: 0;
-                }
+            .question-box-wrapper {
+                height: 300px;
             }
         }
     }
@@ -254,6 +259,10 @@ p, table {
 
         h1 {
             text-align: center;
+        }
+
+        .question-box-wrapper {
+            height: 200px;
         }
     }
 
