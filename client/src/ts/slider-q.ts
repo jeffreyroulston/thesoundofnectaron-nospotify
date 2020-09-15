@@ -47,9 +47,9 @@ export default class Slider {
     private moon : HTMLElement = f.find(this.el, ".moon-center");
 
     // q2 (scale)
-    private topFruitDefaultBottomValue : number = 0;
-    private bottomFruitDefaultTopValue : number = 0;
-    private fruitDefaultWidth : number = 300;
+    private sweetFruitOffset : number = 0;
+    private bitterFruitOffset : number = 0;
+    private fruitDefaultHeight : number = 0;
 
     // q4 (bunsen)
     private busenFillEl : HTMLElement = f.find(this.el, ".bunsen-fill");
@@ -100,6 +100,18 @@ export default class Slider {
             case 0:
                 break;
             case 1:
+                // PINEAPPPLE/HOP SLIDER
+
+                // pineapple reset
+                this.imgs[0].style.removeProperty('height');
+                this.imgs[0].style.removeProperty('top');
+
+                //hop reset
+                this.imgs[1].style.removeProperty('height');
+
+                // recalculate
+                this.fruitDefaultHeight = this.imgs[0].getBoundingClientRect().height;
+                this.scaleFruit();
                 break;
             case 2:
                 break;
@@ -280,19 +292,20 @@ export default class Slider {
         var slider = f.find(this.el, ".slider-q2");
         this.imgs = f.findAll(slider, "li img");
 
-        // get the width
-        this.fruitDefaultWidth = this.imgs[0].getBoundingClientRect().width;
-
         // show the content column
         f.find(this.el, ".col-wrapper.content-column").style.display = "block"
+
+        // get the height
+        // this.fruitDefaultWidth = this.imgs[0].getBoundingClientRect().width;
+        this.fruitDefaultHeight = this.imgs[0].getBoundingClientRect().height;
 
         // DO THIS ON RESIZE
 
         // Make it not full width
         this.toggleFullWidth();
 
-        this.topFruitDefaultBottomValue = f.pxToInt(getComputedStyle(this.imgs[0]).bottom);
-        this.bottomFruitDefaultTopValue = f.pxToInt(getComputedStyle(this.imgs[1]).top);
+        // this.topFruitDefaultBottomValue = f.pxToInt(getComputedStyle(this.imgs[0]).bottom);
+        // this.bottomFruitDefaultTopValue = f.pxToInt(getComputedStyle(this.imgs[1]).top);
 
         TweenMax.fromTo(this.imgs, 0.3, {
             alpha:0
@@ -300,13 +313,13 @@ export default class Slider {
             alpha:1
         });
 
-        TweenMax.fromTo(this.imgs[0], 0.8, {
+        TweenMax.fromTo(f.find(slider, "li:first-child"), 0.8, {
             y:-100
         }, {
             y:0
         });
 
-        TweenMax.fromTo(this.imgs[1], 0.8, {
+        TweenMax.fromTo(f.find(slider, "li:last-child"), 0.8, {
             y:100
         }, {
             y:0
@@ -323,31 +336,49 @@ export default class Slider {
 
     private callbackQ2(e: any) {
         this.sliderValue = e.srcElement.value;
+        this.scaleFruit();
+    }
 
-        // // scale fruit
+    scaleFruit() {
+        // scale fruit
         if (this.sliderValue > this.midValue) {
-            this.scaleTopFruit();
+            this.scaleBitter();
         } else if (this.sliderValue  < this.midValue) {
-            this.scaleBottomFruit();
+            this.scaleSweet();
         } else {
             //mid point
             if (this.previousValue > this.midValue) {
-                this.scaleTopFruit();
+                this.scaleBitter();
             } else {
-                this.scaleBottomFruit();
+                this.scaleSweet();
             }
         }
     }
 
-    scaleTopFruit() {
-        this.imgs[0].style.width = f.px(3*(this.sliderValue - this.midValue) + this.fruitDefaultWidth);
-        this.imgs[0].style.bottom = f.px(this.topFruitDefaultBottomValue - 0.5 * (this.sliderValue - this.midValue));
+    scaleBitter() {
+        // get height
+        this.imgs[1].style.height = f.px(5* (this.sliderValue - this.midValue) + this.fruitDefaultHeight);
+        // console.log(this.imgs[1], f.px(3*(this.sliderValue - this.midValue) + this.fruitDefaultHeight));
+
+        // get offset
+        // this.bitterFruitOffset = 0 - 2* (this.sliderValue - this.midValue);
+        // console.log(this.bitterFruitOffset);
+        // this.imgs[1].style.top = f.px(this.bitterFruitOffset);
+        // this.imgs[1].style.top = f.px(this.bottomFruitDefaultTopValue - 0.5 * (this.midValue - this.sliderValue) *-1.5);
         this.previousValue = this.sliderValue;
     }
 
-    scaleBottomFruit() {
-        this.imgs[1].style.width = f.px(3*(this.midValue - this.sliderValue) + this.fruitDefaultWidth);
-        this.imgs[1].style.top = f.px(this.bottomFruitDefaultTopValue - 0.5 * (this.midValue - this.sliderValue));
+    scaleSweet() {
+        console.log("scale bottom")
+        this.imgs[0].style.height= f.px(5* (this.midValue - this.sliderValue) + this.fruitDefaultHeight);
+
+        // get offset
+        this.sweetFruitOffset = 0 - 5* (this.midValue - this.sliderValue);
+        console.log(this.sweetFruitOffset);
+        this.imgs[0].style.top = f.px(this.sweetFruitOffset);
+        
+        // console.log(this.imgs[0], f.px(3*(this.midValue - this.sliderValue) + this.fruitDefaultHeight))
+        // this.imgs[0].style.top = f.px(this.topFruitDefaultBottomValue - * (this.sliderValue - this.midValue)*-3);
         this.previousValue = this.sliderValue;
     }
 
@@ -596,12 +627,12 @@ export default class Slider {
     }
 
     sliderValueSet(e:any) {
-        // if (this.questionIdx < 1) {
-            // lock in slider value to answer
+        // lock in slider value to answer
         this.questions[this.questionIdx].answer = e.srcElement.value;;
         console.log(this.questions[this.questionIdx]);
-        this.getNextQuestion();
-        // }
+        if (this.questionIdx !=1) {
+            this.getNextQuestion();
+        }
     }
 
     setValue(n : number) {
