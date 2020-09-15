@@ -14,12 +14,9 @@
         text-align: center;
         width: 100%;
         padding: 100px 0px;
-
-        background: rgb(136,0,157);
         background: -moz-linear-gradient(0deg, rgba(136,0,157,0) 0%, rgba(144,17,161,0.32) 50%, rgba(153,35,166,0) 100%);
         background: -webkit-linear-gradient(0deg, rgba(136,0,157,0) 0%, rgba(144,17,161,0.32) 50%, rgba(153,35,166,0) 100%);
         background: linear-gradient(0deg, rgba(136,0,157,0) 0%, rgba(144,17,161,0.32) 50%, rgba(153,35,166,0) 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#88009d",endColorstr="#9923a6",GradientType=1);
     }
 
     .logo-wrapper-large, .logo-wrapper-mobile {
@@ -59,7 +56,12 @@
     }
 
     .logo-head {
-        height: 60px;
+        height: 25px;
+        margin-bottom: 20px;
+    }
+
+    .logo {
+        height: 70px;
     }
 
     .logo-mobile {
