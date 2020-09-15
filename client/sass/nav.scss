@@ -27,6 +27,7 @@
     position: absolute;
     top: calc(#{$framePadding} + 5px);
     left: 100px;
+    opacity: 0;
 
     // < 768px
     @include maxW($tabletPortraitWidth) {
@@ -108,7 +109,7 @@
             }
 
             &.active {
-                color: $orange;
+                // color: $orange;
 
                 &::after {
                     opacity: 1;

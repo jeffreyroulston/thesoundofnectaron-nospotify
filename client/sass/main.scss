@@ -25,6 +25,11 @@ body {
     height: calc(var(--vh, 1vh) * 100);
 }
 
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
 li {
     list-style: none;
 }
@@ -72,9 +77,47 @@ h1 {
      }
 }
 
+
+h2 {
+    font-size: 30px;
+    font-weight: 400;
+    color: $purple;
+
+    @include transition(font-size 0.2s ease);
+
+    // // < 1366px
+    // @include maxW($desktopLargeWidth) {
+    //     font-size: 50px;
+    // }
+
+    // // < 1280px
+    // @include maxW($desktopWidth) {
+    //     font-size: 45px;
+    // }
+
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
+        // font-size: 50px;
+    }
+
+    // < 640px;
+    @include maxW($mobileLargeWidth) {
+        font-size: 25px;
+    }
+
+    // < 480px;
+    @include maxW($mobileWidth) {
+        font-size: 20px
+    }
+
+    // really small screens
+    // @include maxW(380px) {
+    //     font-size: 30px;
+    //  }
+}
+
 p, table {
     font-family: "Circular";
-    font-weight: 400;
     // text-align: left;
     font-size: 20px;
     line-height: 1.5;
@@ -179,10 +222,10 @@ p, table {
     margin: 0 auto;
     top: 100px;
 
-    border: 1px solid black;
+    // border: 1px solid black;
 
-    // < 1280px
-    @include maxW($desktopWidth) {
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
         width: 100%;
     }
 
@@ -202,10 +245,10 @@ p, table {
     max-width: 600px;
     margin: 0 auto;
     position: relative;
-    border: 1px solid blue;
+    // border: 1px solid blue;
 
-    // // < 1280px
-    @include maxW($desktopWidth) {
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
         width: 80%;
         text-align: center;
         // max-width: 700px;
@@ -218,7 +261,9 @@ p, table {
 }
 
 .question-box-wrapper {
-    border: 1px solid black;
+    // border: 1px solid black;
+    // display: table-cell;
+    // vertical-align: middle;
 }
 
 .question {
@@ -226,8 +271,8 @@ p, table {
     color: $orange;
     // @include verticalAlign(relative);
     
-    // < 1280px
-    @include maxW($desktopWidth) {
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
         text-align: center;
     }
 }
@@ -250,7 +295,8 @@ p, table {
 
             // allow the slider to be on the bottom
             .question-wrapper {
-                @include maxW($desktopWidth) {
+                // < 1024px
+                @include maxW($tabletLandscapeWidth) {
                     height: 100%;
                 }
             }
@@ -288,8 +334,8 @@ p, table {
         float: right;
     }
 
-    // < 1280px
-    @include maxW($desktopWidth) {
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
         width: 100%;
         float: none;
         position: absolute;
