@@ -44,7 +44,7 @@ export default class Landing {
         this.UI.SetVisibleElements([this.landingPageEl, hop]);
 
         // make the frame text white
-        this.UI.ToggleFrameColours(data.COLOURS.beige);
+        this.UI.ToggleFrameColours(data.COLOURS.beige, true);
 
         // make the border come in
         this.UI.ShowBorder();

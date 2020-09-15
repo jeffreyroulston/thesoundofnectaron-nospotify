@@ -51,8 +51,8 @@ export default class Rounds {
         this.qfq = new QuickFireQ();
 
         // set the question order
-        this.questionGroups = [this.slider, this.mcq, this.qfq];
-        // this.questionGroups = [this.mcq, this.slider, this.mcq];
+        // this.questionGroups = [this.slider, this.mcq, this.qfq];
+        this.questionGroups = [this.mcq, this.slider, this.mcq];
         // this.questionGroups = [this.qfq, this.slider, this.mcq];
 
         // set callbacks
@@ -76,7 +76,7 @@ export default class Rounds {
         this.UI.SetBgColor(currentRound.color);
 
         // make the frame text white
-        this.UI.ToggleFrameColours(data.COLOURS.beige);
+        this.UI.ToggleFrameColours(data.COLOURS.beige, true);
 
         // set wave colour
         this.UI.ToggleWaveColor(currentRound.waveColor);
