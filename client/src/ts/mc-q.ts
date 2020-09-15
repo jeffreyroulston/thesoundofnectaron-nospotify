@@ -87,9 +87,6 @@ export default class MCQ {
         // called from the ui and internally to set the question
         this.currentQuestion = mcqQuestions[this.questionIdx];
 
-        // resize
-        this.onResize();
-
         // set the question copy
         this.questionElement.innerHTML = this.currentQuestion.question;
 
@@ -126,11 +123,12 @@ export default class MCQ {
         });
 
         // show the options
+        console.log("options length", this.currentQuestion.options.length)
         for (var i=0; i<this.currentQuestion.options.length; i++) {
             TweenMax.fromTo(this.optionEls[i], this.time, {
-                display: "none", y:10, alpha:0
+                display: "none", y:10, alpha:0, scale:1
             }, {
-                display: "inline-block", y:0, alpha:1, delay : d + this.time + (0.1*i)
+                display: "inline-block", y:0, scale:1, alpha:1, delay : d + this.time + (0.1*i)
             })
 
             // bounce them
@@ -138,11 +136,13 @@ export default class MCQ {
             //     y:10, repeat:-1, yoyo:true, delay: d + (this.time*2) + (0.1*i)
             // }))
         }
+
+        // resize
+        this.onResize();
     }
 
 
     hide() {
-        console.log("hide");
         this.loopingAnimations.forEach((anim)=> {
             anim.kill();
         })
