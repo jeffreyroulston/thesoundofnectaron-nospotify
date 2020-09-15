@@ -9,6 +9,7 @@ import Landing from "./landing";
 import Game from "./rounds";
 import { easeExpIn } from "d3";
 import { shuffle } from "./helpers";
+import Fire from "./fire";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
 let REDIRECT_URI: string = "http://localhost:8888";
@@ -33,6 +34,8 @@ export default class App {
     private topArtists: si.Artist[] | undefined;
     private topTracks: si.Track[] | undefined;
     // private answeredQuestions: Questions.Question[] = [];
+
+    private flames: Fire = new Fire();
 
     private requestedPlaylistLength: number = 60;
 
