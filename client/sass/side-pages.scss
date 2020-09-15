@@ -19,6 +19,29 @@
         margin-top: 20px;
         // max-width: 580px;
     }
+}
+
+#about {
+    .content-wrapper, .fruit {
+        // < 1280px
+        @include maxW($desktopWidth) {
+            display: none;
+        }
+    }
+
+    h1 {
+        font-weight: 400;
+
+        // > 480px;
+        @include minW($mobileWidth) {
+            font-size: 45px;
+        }
+    }
+
+    .meetNectaron {
+        width: 100%;
+        margin-bottom: 70px;
+    }
 
     table {
         width: 100%;
@@ -38,9 +61,6 @@
         font-weight: 600;
     }
 
-    .meetNectaron {
-        width: 100%;
-    }
 
     .fruit {
         height: 100%;
@@ -72,15 +92,6 @@
                     top: 0px;
                 }
             }
-        }
-    }
-}
-
-#about {
-    .content-wrapper, .fruit {
-        // < 1280px
-        @include maxW($desktopWidth) {
-            display: none;
         }
     }
 }

@@ -32,7 +32,7 @@ li {
 h1, h2 {
     font-family: "Harbour";
     font-weight: 600;
-    text-align: left;
+    // text-align: left;
     line-height: 1.2;
 }
 
@@ -75,7 +75,7 @@ h1 {
 p, table {
     font-family: "Circular";
     font-weight: 400;
-    text-align: left;
+    // text-align: left;
     font-size: 20px;
     line-height: 1.5;
 
@@ -200,6 +200,7 @@ p, table {
     // // < 1280px
     @include maxW($desktopWidth) {
         width: 80%;
+        text-align: center;
         // max-width: 700px;
     }
 
@@ -269,6 +270,15 @@ p, table {
         .question-box-wrapper {
             height: 200px;
         }
+    }
+
+
+    &.left {
+        float: left;
+    }
+
+    &.right {
+        float: right;
     }
 
     // < 1280px
