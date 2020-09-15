@@ -8,23 +8,30 @@
     .question-wrapper {
         overflow: scroll;
         height: 100%;
+        max-width: unset;
     }
 
     h1, p, table {
         color: $purple;
     }
 
-    p {
-        margin-bottom: 40px;
-        margin-top: 20px;
-        // max-width: 580px;
+    p, h2 {
+        // display: inline-block;
+        // max-width: 650px;
+    }
+
+    .wrapper {
+        // width: calc(100% - 400px);
+        // height: calc(100% - 150px);
+        // top: 200px;
+        // top: 150px;
     }
 }
 
 #about {
     .content-wrapper, .fruit {
-        // < 1280px
-        @include maxW($desktopWidth) {
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
             display: none;
         }
     }
@@ -38,9 +45,33 @@
         }
     }
 
+    p {
+        margin-bottom: 40px;
+        margin-top: 20px;
+    }
+
+    h1, p {
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            max-width: 500px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
     .meetNectaron {
         width: 100%;
-        margin-bottom: 70px;
+        max-width: 700px;
+        display: block;
+        margin: 0 auto;
+        margin-top: 50px;
+        margin-bottom: 100px;
+
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            max-width: 500px;
+        }
     }
 
     table {
@@ -93,5 +124,56 @@
                 }
             }
         }
+    }
+
+    .col {
+        width: 45%;
+
+        &.left {
+            float: left;
+        }
+
+        &.right {
+            float: right;
+        }
+
+        // < 1280px
+        @include maxW($desktopWidth) {
+            width: 100%;
+            float: none;
+        }
+    }
+}
+
+#faq {
+    p {
+        margin-bottom: 50px;
+        margin-top: 10px;
+    }
+
+    h2:nth-child(2) {
+        margin-bottom: 50px;
+        margin-top: 10px;
+        color: $orange;
+    }
+
+    h1 {
+        color: $orange;
+    }
+
+    a {
+        text-decoration: underline;
+    }
+
+    .content-wrapper {
+        // background-color: $orange;
+    }
+
+    .desktop {
+        height: 150%;
+        margin: 0 auto;
+        display: block;
+        position: relative;
+        top: -25%;
     }
 }

@@ -77,9 +77,47 @@ h1 {
      }
 }
 
+
+h2 {
+    font-size: 30px;
+    font-weight: 400;
+    color: $purple;
+
+    @include transition(font-size 0.2s ease);
+
+    // // < 1366px
+    // @include maxW($desktopLargeWidth) {
+    //     font-size: 50px;
+    // }
+
+    // // < 1280px
+    // @include maxW($desktopWidth) {
+    //     font-size: 45px;
+    // }
+
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
+        // font-size: 50px;
+    }
+
+    // < 640px;
+    @include maxW($mobileLargeWidth) {
+        font-size: 25px;
+    }
+
+    // < 480px;
+    @include maxW($mobileWidth) {
+        font-size: 20px
+    }
+
+    // really small screens
+    // @include maxW(380px) {
+    //     font-size: 30px;
+    //  }
+}
+
 p, table {
     font-family: "Circular";
-    font-weight: 400;
     // text-align: left;
     font-size: 20px;
     line-height: 1.5;
