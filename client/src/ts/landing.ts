@@ -76,7 +76,7 @@ export default class Landing {
         
         // THE SOUND OF
         TweenMax.from(logoHeadElements, 1, {
-            alpha:0, scale:0, rotation:-45, y:-200, delay:2, stagger: {
+            alpha:0, scale:0, rotation:-45, y:-200, delay:1.5, stagger: {
                 each:0.1
             }
         })

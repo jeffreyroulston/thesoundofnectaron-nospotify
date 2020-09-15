@@ -53,15 +53,47 @@
         display: inline-block;
         width: 100%;
         overflow: visible;
+
+        @include transition(height 0.2s ease);
     }
 
     .logo-head {
-        height: 25px;
+        height: 19px;
         margin-bottom: 20px;
+
+        // < 1366px
+        @include maxW($desktopLargeWidth) {
+            // height: 21px;
+        }
+
+        // < 1280px
+        @include maxW($desktopWidth) {
+            // height: 19px;
+        }
+
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            height: 18px;
+        }
     }
 
     .logo {
-        height: 70px;
+        height: 55px;
+
+        // < 1366px
+        @include maxW($desktopLargeWidth) {
+            // height: 60px
+        }
+
+        // < 1280px
+        @include maxW($desktopWidth) {
+            // height: 55px
+        }
+
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            height: 50px
+        }
     }
 
     .logo-mobile {
@@ -73,6 +105,7 @@
 
     .subheading {
         color: $beige;
+        font-weight: 400;
         margin: 30px 0px;
         text-align: center;
         display: inline-block;
@@ -91,43 +124,43 @@
     }
 }
 
-// >1920px
-@include minW($desktopXLargeWidth) {
-     .text-wrapper {
-        @include transform(scale(1));
-    }
-}
+// // >1920px
+// @include minW($desktopXLargeWidth) {
+//      .text-wrapper {
+//         @include transform(scale(1));
+//     }
+// }
 
-//1920px;
-@include maxW($desktopXLargeWidth) {
-    .text-wrapper {
-        @include transform(scale(0.8));
-    }
-}
+// //1920px;
+// @include maxW($desktopXLargeWidth) {
+//     .text-wrapper {
+//         @include transform(scale(0.8));
+//     }
+// }
 
-//1366px
-@include maxW($desktopLargeWidth) {
-    .text-wrapper {
-        @include transform(scale(0.7));
-    }
-}
+// //1366px
+// @include maxW($desktopLargeWidth) {
+//     .text-wrapper {
+//         @include transform(scale(0.7));
+//     }
+// }
 
-//1280px
-@include maxW($desktopWidth) {
-    .text-wrapper {
-        @include transform(scale(0.7));
-    }
-}
+// //1280px
+// @include maxW($desktopWidth) {
+//     .text-wrapper {
+//         @include transform(scale(0.7));
+//     }
+// }
 
-//768px;
-@include maxW($tabletPortraitWidth) {
-    .text-wrapper {
-        @include transform(scale(0.6));
-    }
-    .subheading span{
-        display: inline-block;
-    }
-}
+// //768px;
+// @include maxW($tabletPortraitWidth) {
+//     .text-wrapper {
+//         @include transform(scale(0.6));
+//     }
+//     .subheading span{
+//         display: inline-block;
+//     }
+// }
 
 //640px
 @include maxW($mobileLargeWidth) {
