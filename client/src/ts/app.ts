@@ -25,7 +25,7 @@ let SCOPES: string[] = [
 
 export default class App {
     private spotifyInterface: si.SpotifyInterface;
-    private graphics: Graphics = new Graphics();
+    // private graphics: Graphics = new Graphics();
     private resourceManager: ResourceManager = new ResourceManager();
     // private ui: UI = new UI(this.graphics);
     private ui: UI = new UI(this);
@@ -65,13 +65,9 @@ export default class App {
         // this.ui.OnLoginPressed = this.Login;
         // this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
 
-        const loadPromises = [];
-        loadPromises.push(this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png"));
-        loadPromises.push(this.resourceManager.loadResourceByPath(GLTFAsset, "assets/water_plane.gltf"));
-
-        Promise.all(loadPromises).then(() => {
-            this.graphics.onInitResources(this.resourceManager);
-        });
+        // this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png").then(() => {
+        //     this.graphics.onInitResources(this.resourceManager);
+        // });
 
         this.getProfile();
 
@@ -103,11 +99,11 @@ export default class App {
     }
 
     public switchGraphics(color : THREE.Color) {
-        this.graphics.switchColorForward(color, 0.5)
+        // this.graphics.switchColorForward(color, 0.5)
     }
 
     public resetGraphics() {
-        this.graphics.switchColorBackward();
+        // this.graphics.switchColorBackward();
     }
 
     public Login() {

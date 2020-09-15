@@ -5,12 +5,6 @@
     top: 0;
     left:0;
 
-    .wrapper {
-        height: calc(100% - 200px);
-        top: 100px;
-        border: 1px solid black;
-    }
-
     .question-wrapper {
         overflow: scroll;
         height: 100%;
@@ -24,6 +18,29 @@
         margin-bottom: 40px;
         margin-top: 20px;
         // max-width: 580px;
+    }
+}
+
+#about {
+    .content-wrapper, .fruit {
+        // < 1280px
+        @include maxW($desktopWidth) {
+            display: none;
+        }
+    }
+
+    h1 {
+        font-weight: 400;
+
+        // > 480px;
+        @include minW($mobileWidth) {
+            font-size: 45px;
+        }
+    }
+
+    .meetNectaron {
+        width: 100%;
+        margin-bottom: 70px;
     }
 
     table {
@@ -43,6 +60,7 @@
     td:first-child {
         font-weight: 600;
     }
+
 
     .fruit {
         height: 100%;

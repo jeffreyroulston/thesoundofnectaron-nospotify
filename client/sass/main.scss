@@ -32,7 +32,7 @@ li {
 h1, h2 {
     font-family: "Harbour";
     font-weight: 600;
-    text-align: left;
+    // text-align: left;
     line-height: 1.2;
 }
 
@@ -41,33 +41,71 @@ h1 {
 
     @include transition(font-size 0.2s ease);
 
-    // < 1366px
-    @include maxW($desktopLargeWidth) {
-        font-size: 50px;
-    }
+    // // < 1366px
+    // @include maxW($desktopLargeWidth) {
+    //     font-size: 50px;
+    // }
 
-    // < 1280px
-    @include maxW($desktopWidth) {
-        font-size: 45px;
-    }
+    // // < 1280px
+    // @include maxW($desktopWidth) {
+    //     font-size: 45px;
+    // }
 
     // < 1024px
     @include maxW($tabletLandscapeWidth) {
-        font-size: 40px;
+        // font-size: 50px;
+    }
+
+    // < 640px;
+    @include maxW($mobileLargeWidth) {
+        font-size: 45px;
     }
 
     // < 480px;
     @include maxW($mobileWidth) {
-        font-size: 30px
+        font-size: 35px
     }
+
+    // really small screens
+    @include maxW(380px) {
+        font-size: 30px;
+     }
 }
 
 p, table {
     font-family: "Circular";
     font-weight: 400;
-    text-align: left;
+    // text-align: left;
     font-size: 20px;
     line-height: 1.5;
+
+    @include transition(font-size 0.2s ease);
+
+
+    // // < 1366px
+    // @include maxW($desktopLargeWidth) {
+    //     // font-size: 19px;
+    // }
+
+    // // < 1280px
+    // @include maxW($desktopWidth) {
+    //     font-size: 18px;
+    // }
+
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
+        font-size: 18px;
+    }
+
+    // < 640px;
+    @include maxW($mobileLargeWidth) {
+        font-size: 16px;
+    }
+
+    // < 480px;
+    @include maxW($mobileWidth) {
+        font-size: 14px
+    }
 }
 
 #color-wipe {
@@ -96,15 +134,6 @@ p, table {
     height: 100vh !important; // make this compatible with iphone scroll
     width: 100% !important;
 }
-
-// #icon-bg {
-//     width: 100%;
-//     height: 100vh;
-//     position: absolute;
-//     left: 0;
-//     top: 0;
-//     opacity:0.3;
-// }
 
 .container {
     position: relative;
@@ -143,37 +172,128 @@ p, table {
     @include transition(transform 0.2s ease);
 }
 
-// USED FOR QUESTIONS
 .wrapper {
     width: calc(100% - 200px);
+    height: calc(100% - 200px);
     position: relative;
     margin: 0 auto;
+    top: 100px;
 
-    // < 1024px
-    @include maxW($tabletLandscapeWidth) {
-        width: calc(100% - 200px);
-    }
+    border: 1px solid black;
 
-    // < 768px
-    @include maxW($tabletPortraitWidth) {
+    // < 1280px
+    @include maxW($desktopWidth) {
         width: 100%;
     }
+
+    // < 640px;
+    @include maxW($mobileLargeWidth) {
+        height: calc(100% - 150px);
+        top: 80px;
+    }
 }
 
-.question {
-    height: 380px;
-    color: $orange;
-}
+// .question-box-wrapper {
+//     height: 300px;
+// }
+
 
 .question-wrapper {
     max-width: 600px;
     margin: 0 auto;
+    position: relative;
+    border: 1px solid blue;
+
+    // // < 1280px
+    @include maxW($desktopWidth) {
+        width: 80%;
+        text-align: center;
+        // max-width: 700px;
+    }
+
+    // // < 1024px
+    // @include maxW($tabletLandscapeWidth) {
+    //     max-width: 500px;
+    // }
+}
+
+.question-box-wrapper {
+    border: 1px solid black;
+}
+
+.question {
+    // height: 380px;
+    color: $orange;
+    // @include verticalAlign(relative);
+    
+    // < 1280px
+    @include maxW($desktopWidth) {
+        text-align: center;
+    }
 }
 
 .col-wrapper {
-    float: left;
+    float: right;
     width: 50%;
     height: 100%;
+    position: relative;
+    z-index: 1;
+
+    &.text-column {
+        float: left;
+
+        .question-wrapper {
+            @include verticalAlign(relative);
+        }
+
+        &:not(.full-width ) {
+
+            // allow the slider to be on the bottom
+            .question-wrapper {
+                @include maxW($desktopWidth) {
+                    height: 100%;
+                }
+            }
+
+            .question-box-wrapper {
+                height: 300px;
+            }
+        }
+    }
+
+    &.content-column {
+        float:right;
+    }
+
+    &.full-width {
+        width: 100%;
+        float: none;
+        margin:0;
+
+        h1 {
+            text-align: center;
+        }
+
+        .question-box-wrapper {
+            height: 200px;
+        }
+    }
+
+
+    &.left {
+        float: left;
+    }
+
+    &.right {
+        float: right;
+    }
+
+    // < 1280px
+    @include maxW($desktopWidth) {
+        width: 100%;
+        float: none;
+        position: absolute;
+    }
 }
 
 .next-btn {
@@ -200,52 +320,52 @@ svg.letter, .letter svg{
     }
 }
 
-#questions {
-     // < 768px;
-    @include maxW($tabletPortraitWidth) {
-        .col-wrapper:not(.full-width), .col-wrapper.text-column:not(.full-width) {
-            width: 100%;
-            height: 100%;
-            float: none;
-            margin:0;
-            position: absolute;
-        }
+// #questions {
+//      // < 768px;
+//     @include maxW($tabletPortraitWidth) {
+//         .col-wrapper:not(.full-width), .col-wrapper.text-column:not(.full-width) {
+//             width: 100%;
+//             height: 100%;
+//             float: none;
+//             margin:0;
+//             position: absolute;
+//         }
 
-        .question-wrapper {
-            width: 80%;
-            border: 1px solid black;
+//         .question-wrapper {
+//             width: 80%;
+//             border: 1px solid black;
 
-            .question {
-                top: 100px;
-                text-align: center;
-                margin-top: 50px;
-                text-shadow: 1px 1px 5px $beige;
-            }
+//             .question {
+//                 top: 100px;
+//                 text-align: center;
+//                 margin-top: 50px;
+//                 text-shadow: 1px 1px 5px $beige;
+//             }
 
-            .slide-container {
-                position: absolute;
-                bottom: 80px;
-                width: 80%;
-                left: 10%;
+//             .slide-container {
+//                 position: absolute;
+//                 bottom: 80px;
+//                 width: 80%;
+//                 left: 10%;
 
-                .slider-line {
-                    width: 100%;
-                }
+//                 .slider-line {
+//                     width: 100%;
+//                 }
 
-                .slider-label {
-                    font-size: 16px;
-                }
-            }
-        }
+//                 .slider-label {
+//                     font-size: 16px;
+//                 }
+//             }
+//         }
 
-        .col-wrapper:not(.text-column) {
-            height: calc(100% - 200px);
-            top: 100px;
-            border: 1px solid black;
-            z-index: -1;
-        }
-    }
-}
+//         .col-wrapper:not(.text-column) {
+//             height: calc(100% - 200px);
+//             top: 100px;
+//             border: 1px solid black;
+//             z-index: -1;
+//         }
+//     }
+// }
 
 #end-frame {
     position: absolute;
