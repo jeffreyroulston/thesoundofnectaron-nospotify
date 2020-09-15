@@ -74,7 +74,7 @@ export const ROUNDS : QuestionRound[] = [
         waveColor : "orange",
         numberColor: COLOURS.yellow,
         btnColor : COLOURS.purple,
-        text : "Light? dark? Hazies? Lagers? There’s a science to it. Slide the dial to show what you’re in to..." 
+        text : "Light? dark? Hazies? Lagers? There's a science to it. Slide the dial to show what you're in to..." 
     },
     {
         round : 2,
@@ -82,7 +82,7 @@ export const ROUNDS : QuestionRound[] = [
         waveColor : "purple",
         numberColor: COLOURS.yellow,
         btnColor : COLOURS.orange,
-        text: "It’s time to imbue some of your personality into this thing. What makes you, you?"
+        text: "It's time to imbue some of your personality into this thing. What makes you, you?"
     },
     {
         round: 3,
@@ -90,7 +90,7 @@ export const ROUNDS : QuestionRound[] = [
         waveColor : "blue",
         numberColor: COLOURS.purple,
         btnColor : COLOURS.purple,
-        text: "OK, for this part switch off your brain. Don’t think. Just follow your instinct."
+        text: "OK, for this part switch off your brain. Don't think. Just follow your instinct."
     }
 ]
 
@@ -127,8 +127,8 @@ export const sliderQuestions : Array<SliderQuestion> = [
         question : "How long would you like to boil for?",
         minTextValue : "0 min",
         maxTextValue : "120 min",
-        min : 30,
-        max: 120,
+        min : 120,
+        max: 240,
         answer : 0
     },
     {
@@ -302,7 +302,7 @@ export const qfQuestions : Array<QuickFireQuestion> = [
         answer: false
     },
     {
-        question: "Pants shouldn’t ride higher than your belly button?",
+        question: "Pants shouldn't ride higher than your belly button?",
         answered : false,
         answer: false
     },
@@ -332,7 +332,7 @@ export const qfQuestions : Array<QuickFireQuestion> = [
         answer: false
     },
     {
-        question: "I’ll have the usual?",
+        question: "I'll have the usual?",
         answered : false,
         answer: false
     },
