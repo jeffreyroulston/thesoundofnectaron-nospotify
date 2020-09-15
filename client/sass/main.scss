@@ -163,6 +163,7 @@ p, table {
     height: 100vh; // make this compatible with iphone scroll
     width: 100%;
     z-index: 0;
+    display: none;
 }
 
 #graphics-canvas {
@@ -225,7 +226,6 @@ p, table {
     // < 640px;
     @include maxW($mobileLargeWidth) {
         height: calc(100% - 150px);
-        top: 80px;
     }
 }
 
