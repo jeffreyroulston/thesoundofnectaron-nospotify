@@ -10,7 +10,8 @@ $marginTop_20 : 20vh;
 $marginTop_10 : 10vh;
 $framePadding : 20px;
 $frameLetterSize : 30px;
-$letterSize: 70px;
+// $letterSize: 70px;
+$zIndexNav: 1000;
 
 @function center($containerWidth, $elWidth) {
     @return calc(#{$containerWidth}/2 - (#{$elWidth}.2));

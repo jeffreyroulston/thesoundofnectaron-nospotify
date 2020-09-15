@@ -1,8 +1,24 @@
 @import "shared";
 
+#burger {
+    position: absolute;
+    z-index: $zIndexNav;
+    top: 20px;
+    right: 20px;
+    height: 15px;
+    width: 20px;
+
+    display: none;
+
+    // < 640px;
+    @include maxW($mobileLargeWidth) {
+        display: block;
+    }
+}
+
 #nav-wrapper {
     position: absolute;
-    z-index: 100;
+    z-index: $zIndexNav;
     width: 100%;
 
     // < 768px
