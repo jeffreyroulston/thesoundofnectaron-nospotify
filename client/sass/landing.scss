@@ -23,32 +23,6 @@
         width: 100%;
     }
 
-    .logo-wrapper-large {
-        @include maxW($mobileLargeWidth) {
-            display: none;
-        }
-    }
-
-    .logo-wrapper-mobile {
-        display: none;
-
-        @include maxW($mobileLargeWidth) {
-            display: block;
-        }
-    }
-
-    #logo-letters {
-        .letter {
-            display:inline-block;
-            position: relative;
-
-            svg {
-                width: $letterSize;
-            }
-        }
-    
-    }
-
     .logo, .logo-head {
         display: inline-block;
         width: 100%;
@@ -57,51 +31,74 @@
         @include transition(height 0.2s ease);
     }
 
-    .logo-head {
-        height: 19px;
-        margin-bottom: 20px;
-
-        // < 1366px
-        @include maxW($desktopLargeWidth) {
-            // height: 21px;
+    .logo-wrapper-large {
+        .logo-head {
+            height: 19px;
+            margin-bottom: 20px;
+    
+            // < 1366px
+            @include maxW($desktopLargeWidth) {
+                // height: 21px;
+            }
+    
+            // < 1280px
+            @include maxW($desktopWidth) {
+                // height: 19px;
+            }
+    
+            // < 1024px
+            @include maxW($tabletLandscapeWidth) {
+                height: 18px;
+            }
+        }
+    
+        .logo {
+            height: 55px;
+    
+            // < 1366px
+            @include maxW($desktopLargeWidth) {
+                // height: 60px
+            }
+    
+            // < 1280px
+            @include maxW($desktopWidth) {
+                // height: 55px
+            }
+    
+            // < 1024px
+            @include maxW($tabletLandscapeWidth) {
+                height: 50px
+            }
         }
 
-        // < 1280px
-        @include maxW($desktopWidth) {
-            // height: 19px;
-        }
-
-        // < 1024px
-        @include maxW($tabletLandscapeWidth) {
-            height: 18px;
+        @include maxW($mobileLargeWidth) {
+            display: none;
         }
     }
 
-    .logo {
-        height: 55px;
+    .logo-wrapper-mobile {
+        display: none;
 
-        // < 1366px
-        @include maxW($desktopLargeWidth) {
-            // height: 60px
+        .logo {
+            height: 50vh;
         }
 
-        // < 1280px
-        @include maxW($desktopWidth) {
-            // height: 55px
-        }
-
-        // < 1024px
-        @include maxW($tabletLandscapeWidth) {
-            height: 50px
+        @include maxW($mobileLargeWidth) {
+            display: block;
         }
     }
 
-    .logo-mobile {
-        height: 0;
-        width: 50%;
-        max-width: 250px;
-        display: inline-block;
-    }
+    // #logo-letters {
+    //     .letter {
+    //         display:inline-block;
+    //         position: relative;
+
+    //         svg {
+    //             width: $letterSize;
+    //         }
+    //     }
+    
+    // }
 
     .subheading {
         color: $beige;
@@ -163,39 +160,39 @@
 // }
 
 //640px
-@include maxW($mobileLargeWidth) {
-    #landing .text-wrapper {
-        @include transform(scale(1));
-    }
+// @include maxW($mobileLargeWidth) {
+//     #landing .text-wrapper {
+//         @include transform(scale(1));
+//     }
 
-    #landing {
-        .logo-head, .logo {
-            display: none;
-        }
+//     #landing {
+//         .logo-head, .logo {
+//             display: none;
+//         }
     
-        .logo-mobile {
-            height:auto;
-        }
+//         .logo-mobile {
+//             height:auto;
+//         }
 
-        .subheading {
-            width: 50%;
-            max-width: 250px;
-            min-width: 210px;
-            display: inline-block;
-            font-size: 16px;
+//         .subheading {
+//             width: 50%;
+//             max-width: 250px;
+//             min-width: 210px;
+//             display: inline-block;
+//             font-size: 16px;
 
-            span {
-                display:inline;
+//             span {
+//                 display:inline;
 
-                &:nth-child(2) {
-                    display: inline
-                }
-            }
-        }
-    }
-}
+//                 &:nth-child(2) {
+//                     display: inline
+//                 }
+//             }
+//         }
+//     }
+// }
 
-//480px;
-@include maxW($mobileWidth) {
+// //480px;
+// @include maxW($mobileWidth) {
 
-}
+// }
