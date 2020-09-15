@@ -75,25 +75,6 @@
 }
 
 
-// >1920px
-@include minW($desktopXLargeWidth) {
-
-}
-
-//1920px;
-@include maxW($desktopXLargeWidth) {
-
-}
-
-//1366px
-@include maxW($desktopLargeWidth) {
-}
-
-//1280px
-@include maxW($desktopWidth) {
-
-}
-
 // >= 901px
 @include minPxW(901) {
     #round-name {

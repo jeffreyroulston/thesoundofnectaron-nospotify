@@ -5,7 +5,8 @@
 
     .col-wrapper:not(.full-width) {
         .slide-container {
-            @include maxW($desktopWidth) {
+            // < 1024px
+            @include maxW($tabletLandscapeWidth) {
                 position: absolute;
                 bottom: 0px;
             }
@@ -164,8 +165,8 @@
     }
 
     .slider-q2, .slider-q4, .slider-q5 {
-        // < 1280px
-        @include maxW($desktopWidth) {
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
             position: relative;
             height: 60%;
             top: 30%;

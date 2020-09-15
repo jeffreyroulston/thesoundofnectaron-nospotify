@@ -22,12 +22,12 @@
     .mc-options {
         position: relative;
         display: inline-block;
-        margin-top: 50px;
+        // margin-top: 50px;
         width: 100%;
         height: 100px;
 
-        // < 1280px
-        @include maxW($desktopWidth) {
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
             text-align: center;
             position: absolute;
             left: 0px;
@@ -38,7 +38,7 @@
         li {
             width: 15%;
             height: 100%;
-            display: inline-block;
+            display: none;
             background-size: 100% auto;
             background-repeat: no-repeat;
             cursor: pointer;
@@ -60,8 +60,8 @@
     background-size: 100% auto;
     background-position: center;
 
-    // < 1280px
-    @include maxW($desktopWidth) {
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
         height: 50%;
         top: 30%;
         background-size: auto 100%;
@@ -82,8 +82,8 @@
         background-size: 100% auto;
         background-position: center;
 
-        // < 1280px
-        @include maxW($desktopWidth) {
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
             background-size: auto 100%;
         }
     }

@@ -174,8 +174,8 @@ p, table {
 
     border: 1px solid black;
 
-    // < 1280px
-    @include maxW($desktopWidth) {
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
         width: 100%;
     }
 
@@ -197,8 +197,8 @@ p, table {
     position: relative;
     border: 1px solid blue;
 
-    // // < 1280px
-    @include maxW($desktopWidth) {
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
         width: 80%;
         text-align: center;
         // max-width: 700px;
@@ -219,8 +219,8 @@ p, table {
     color: $orange;
     // @include verticalAlign(relative);
     
-    // < 1280px
-    @include maxW($desktopWidth) {
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
         text-align: center;
     }
 }
@@ -243,7 +243,8 @@ p, table {
 
             // allow the slider to be on the bottom
             .question-wrapper {
-                @include maxW($desktopWidth) {
+                // < 1024px
+                @include maxW($tabletLandscapeWidth) {
                     height: 100%;
                 }
             }
@@ -281,8 +282,8 @@ p, table {
         float: right;
     }
 
-    // < 1280px
-    @include maxW($desktopWidth) {
+    // < 1024px
+    @include maxW($tabletLandscapeWidth) {
         width: 100%;
         float: none;
         position: absolute;
