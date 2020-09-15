@@ -65,6 +65,11 @@ h1 {
     @include maxW($mobileWidth) {
         font-size: 35px
     }
+
+    // really small screens
+    @include maxW(380px) {
+        font-size: 30px;
+     }
 }
 
 p, table {
