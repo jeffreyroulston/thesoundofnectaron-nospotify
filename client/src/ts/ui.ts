@@ -28,6 +28,7 @@ export default class UI {
     // frame letters
     private frameEl: HTMLElement = f.elByID("frame-letters");
     private frameLetterFill : HTMLElement[] = f.findAll(this.frameEl, ".logo-letter-fill");
+    private currentFrameColor = data.COLOURS.beige;
 
     // waves
     private wavesTopEl : HTMLElement = f.elByID("waves-top");
@@ -37,7 +38,9 @@ export default class UI {
     
     // nav
     private navWrapperEl : HTMLElement = f.elByID("nav-wrapper")
+    private navEl : HTMLElement = f.elByID("nav");
     private burgerEl : HTMLElement = f.elByID("burger");
+    public smallLogoEl : HTMLElement = f.elByID("headerSmall");
 
     // pop up pages
     private currentPopupPageEl : HTMLElement | undefined = undefined;
@@ -67,8 +70,15 @@ export default class UI {
     // binder for images
     public ImagesDownloadedCallback = ()=>{};
 
+    // is mobile
+    public isMobileSize : boolean = false;
+
     // bound to app
     public Login = ()=>{};
+
+    // bound to either landing or rounds
+    private changeToMobile = () => {};
+    private changeToDesktop = () => {};
 
     // private recommendations: si.Track[] | undefined = [];
     // private queryParameters: {[key: string]: si.QueryParameter }  = {
@@ -104,11 +114,20 @@ export default class UI {
     }
 
     private init() {
+        // check dimensions
+        this.isMobileSize = this.burgerEl.getBoundingClientRect().width > 1;
+
         // we playing rounds on the redirect
         if (window.location.href.indexOf("access_token") > -1) {
             // GAMEPLAY
             this.ASSET_URL = "../assets/";
             this.ROUNDS = new Rounds(this);
+            
+            // bind the resizes
+            this.changeToMobile = this.ROUNDS.changeToMobile.bind(this.ROUNDS);
+            this.changeToDesktop = this.ROUNDS.changeToDesktop.bind(this.ROUNDS);
+
+            // start
             this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
         } else {
             // LANDING PAGE
@@ -125,9 +144,39 @@ export default class UI {
         })
     }
 
+    private checkMobileSize() {
+        var m = this.burgerEl.getBoundingClientRect().width > 1;
+        
+        if (m != this.isMobileSize) {
+            if (this.isMobileSize) {
+                this.changeToDesktop();
+            } else {
+                this.changeToMobile();
+            }
+        }
+
+        this.isMobileSize = m;
+    }
+
     private onResize() {
         let vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
+        this.checkMobileSize();
+
+        // change the position of the nav
+        if (this.isMobileSize) {
+            // remove the left offset
+            this.navEl.removeAttribute("style")
+            // remove the colour
+            f.findAll(this.navWrapperEl, "*").forEach((el)=> {
+                el.removeAttribute("style");
+            })
+
+            // console.log(f.findAll(this.navWrapperEl, "*"))
+        } else {
+            // is desktop...
+            this.navEl.style.left = f.px(window.innerWidth/4 - 50 - this.navEl.getBoundingClientRect().width/2)
+        }
     }
 
     // public loadImages(images: string[]) {
@@ -163,6 +212,16 @@ export default class UI {
         TweenMax.fromTo(f.findAll(this.frameEl, "li.right.middle"), 0.5, {x:100}, { x:0})
         // R O N
         TweenMax.fromTo(f.findAll(this.frameEl, "li.bottom"), 0.5, {y:100}, {y:0})
+
+        // change the position of the nav
+        if (this.isMobileSize) {
+            // is mobile
+            this.navEl.removeAttribute("style")
+        } else {
+            // show the listed nav
+            TweenMax.fromTo(this.navEl, 0.5, {opacity:0, y:-100}, {opacity:1, y:0})
+        }
+
     }
 
     public ShowWaves(d: number) {
@@ -177,24 +236,49 @@ export default class UI {
         TweenMax.to(this.wavesTopEl, 1, {y:-500, ease: "linear"})
     }
 
-    public ToggleWaveColor(colour: string) {
-        // change visible wave colours
+    public ToggleWaveColor(color: string) {
+        // change visible wave colors
         TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + this.currentWaveColor), 1, {alpha:1, display:"block"}, {alpha:0, display:"none"})
 
         TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + this.currentWaveColor), 1, {alpha:1, display:"block"}, {alpha:0, display:"none"})
 
-        TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + colour), 1, {alpha:0, display:"none"}, {alpha:1, display:"block"})
+        TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + color), 1, {alpha:0, display:"none"}, {alpha:1, display:"block"})
 
-        TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + colour), 1, {alpha:0, display:"none"}, {alpha:1, display:"block"})
+        TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + color), 1, {alpha:0, display:"none"}, {alpha:1, display:"block"})
 
-        this.currentWaveColor = colour;
+        this.currentWaveColor = color;
     }
 
-    public ToggleFrameColours(colour : string) {
-        // change colour of letters in the border
+    public ToggleFrameColours(color : string, setValue : boolean) {
+        // change color of letters in the border
         this.frameLetterFill.forEach((el)=> {
-            el.style.fill = colour;
+            el.style.fill = color;
         })
+
+        if (this.isMobileSize) {
+            // change the color of the nav
+            // f.findAll(this.navWrapperEl, "*").forEach((el)=> {
+            //     el.removeAttribute("style");
+            // })
+
+            // change the color of the burger
+            f.findAll(this.burgerEl, ".burger-fill").forEach((el)=> {
+                el.style.fill = color;
+            })
+
+            // change the color of the small header logo
+            f.findAll(this.smallLogoEl, ".logo-small-fill").forEach((el)=> {
+                el.style.fill = color;
+            })
+        } else {
+            f.findAll(this.navWrapperEl, "*").forEach((el)=> {
+                el.style.color = color;
+            })
+        }
+
+        if (setValue) {
+            this.currentFrameColor = color;
+        }
     }
 
     public TransitionOut() {
@@ -210,8 +294,8 @@ export default class UI {
         // this.currentPage = PageType.Question;
         this.SetBgColor(data.COLOURS.beige)
 
-        // change the colour of the frame
-        this.ToggleFrameColours(data.COLOURS.purple);
+        // change the color of the frame
+        this.ToggleFrameColours(data.COLOURS.purple, true);
 
         // hide waves
         this.HideWaves(0);
@@ -246,31 +330,31 @@ export default class UI {
         var target = e.srcElement.getAttribute("data");
         
         if (this.currentPopupPage == target) {
+            // if it's the same page, close it
             e.srcElement.classList.toggle("active");
             this.hidePage(this.currentPopupPage);
             this.currentPopupPage = "";
             this.currentPopupPageEl = undefined;
-        } else {            
-            switch (target) {
-                case "link":
-                    // go to the nz hops website
-                    break;
-                case "deg":
-                    // show nelson?
-                    break;
-                default:
-                    if (this.currentPopupPageEl) {
-                        // of there's a page currently showing, so hide it and show the next
-                        this.currentPopupPageEl.classList.toggle("active");
-                        e.srcElement.classList.toggle("active");
-                        this.hidePage(this.currentPopupPage, target);
-                    } else {
-                        // check if it's mobile
-                        e.srcElement.classList.toggle("active");
-                        this.showPage(target);
-                    }
-                    break;
-            }
+
+            // change the frame colours
+            this.ToggleFrameColours(this.currentFrameColor, false);
+
+        } else {  
+            if (target == "about" || target == "faq") {
+                // change the color of the frame but don't set it as the current (so it can be reverted)
+                this.ToggleFrameColours(data.COLOURS.purple, false);
+
+                if (this.currentPopupPageEl) {
+                    // of there's a page currently showing, so hide it and show the next
+                    this.currentPopupPageEl.classList.toggle("active");
+                    e.srcElement.classList.toggle("active");
+                    this.hidePage(this.currentPopupPage, target);
+                } else {
+                    // check if it's mobile
+                    e.srcElement.classList.toggle("active");
+                    this.showPage(target);
+                }
+            }          
 
             this.currentPopupPage = target;
             this.currentPopupPageEl = e.srcElement;
@@ -340,6 +424,8 @@ export default class UI {
         // called from the burger/close
         if (this.navVisible) {
             // close the nav
+            this.ToggleFrameColours(this.currentFrameColor, false);
+
             TweenMax.to(this.navWrapperEl, 0.5, {
                 display: "none", x:-window.innerWidth*2
             })
@@ -348,19 +434,26 @@ export default class UI {
 
         } else {
             // show the nav
+            this.ToggleFrameColours(data.COLOURS.purple, false);
+
             TweenMax.fromTo(this.navWrapperEl, 0.5, {
                 display: "none", x:-window.innerWidth*2
             }, {
                 display: "block", x:0
             })
 
-            TweenMax.fromTo("#nav li", 0.5, {
+            TweenMax.fromTo(f.findAll(this.navEl, "li"), 0.5, {
                 alpha:0, y:50
             }, {
                 alpha: 1, y:0, delay:0.2, stagger : {
                     each: 0.1
                 }
             })
+
+            // turn it into a close sign?
+            // TweenMax.to(f.find(this.burgerEl, ".left-line"), 0.2, {rotate:-45, y:20})
+
+            // TweenMax.to(f.find(this.burgerEl, ".right-line"), 0.2, {rotate:45, y:-50})
 
             this.navVisible = true;
         }
@@ -386,7 +479,7 @@ export default class UI {
     }
 
     // public TransitionOut(color : string) {
-    //     // transition the background colour
+    //     // transition the background color
     //     f.el("body").style.backgroundColor = color;
 
     //     // kill the looping animations

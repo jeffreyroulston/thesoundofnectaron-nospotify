@@ -11,9 +11,55 @@
         }
     }
 
+    .box, .round-name-text, .description {
+         // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            display: block;
+        }
+    }
+
+    .text-wrapper, .scale-wrapper {
+         // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            width: 100%;
+        }
+    }
+
+    .scale-wrapper {
+        position: relative;
+        display: inline-block;
+
+        @include transition(all 0.2s ease);
+
+        //640px
+        @include maxW($mobileLargeWidth) {
+            @include transform(scale(0.8));
+        }
+
+        // < 480px;
+        @include maxW($mobileWidth) {
+            @include transform(scale(0.7));
+        }
+
+        // < 360px
+        @include maxW(360px) {
+            @include transform(scale(0.55));
+        }
+
+
+    }
+
     .round {
+        height: 70px;
+
         svg {
             overflow: visible;
+            height: 100%;
+        }
+
+         // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            left:-40px
         }
     }
 
@@ -23,6 +69,41 @@
 
         svg {
             height: 47px;
+        }
+
+        li {
+            &:first-child {
+                left:-20px;
+            }
+
+            &:nth-child(2) {
+                left:-63px;
+            }
+
+            &:nth-child(3) {
+                left:-66px;
+            }
+
+             // < 1024px
+            @include maxW($tabletLandscapeWidth) {
+                left: unset;
+                right: 0px;
+            }
+        }
+
+         // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            width: 100%;
+            text-align: center;
+            top: -95px;
+
+            svg {
+                height: 60px;
+            }
+
+            li {
+                right: 0px;
+            }
         }
     }
 
@@ -40,6 +121,23 @@
                 height: 200px;
              }
         }
+
+         // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            left: 40px;
+            top: -70px
+        }
+    }
+
+    .description-wrapper {
+        display: inline-block;
+
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            position: relative;
+            top: -80px;
+            width: 80%;
+        }
     }
 
     .description {
@@ -48,11 +146,44 @@
         color: $purple;
         text-align: center;
         position: relative;
+        width: 250px;
+        height: 135px;
+        z-index: -1;
+        top: -110px;
+        left: -6px;
+        padding: 15px 30px;
+
+        .vertical-align {
+            display: table-cell;
+            vertical-align: middle;
+            height: 135px;
+            width: 100%;
+        }
 
         p {
             font-size: 16px;
             line-height: 1.5;
             text-align: center;
+
+            // < 1024px
+            @include maxW($tabletLandscapeWidth) {
+                padding: 10px;
+            }
+        }
+
+        // > 1024px
+        @include minW(1025px) {
+            @include transform(rotate(-17deg));
+        }
+
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            top : 0px;
+            left: 0px;
+            // width: 80%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 0;
         }
     }
 
@@ -63,6 +194,21 @@
 
     .next-btn {
         display: block;
+        position: absolute;
+        bottom: 80px;
+        right: 0px;
+
+
+         // < 1024px
+         @include maxW($tabletLandscapeWidth) {
+            display: block;
+            width: 100%;
+            bottom: -40px;
+
+            svg {
+                width: 80px;
+            }
+         }
     }
 
     .fruit-whole {
@@ -71,120 +217,9 @@
         position: absolute;
         right: 295px;
         top: -152px;
-    }
-}
 
-
-// >= 901px
-@include minPxW(901) {
-    #round-name {
-        .round-name-text {
-            li {
-                &:first-child {
-                    left:-20px;
-                }
-    
-                &:nth-child(2) {
-                    left:-63px;
-                }
-    
-                &:nth-child(3) {
-                    left:-66px;
-                }
-            }
-        }
-
-        .description {
-            padding: 20px;
-            width: 270px;
-            z-index: -1;
-
-            height: 135px;
-            max-height: 135px;;
-            top: -110px;
-            left: -6px;
-
-            
-
-            p {
-                @include verticalAlign(absolute);
-                padding: 0px 30px;
-                left:0px;
-            }
-        }
-
-        .next-btn {
-            position: absolute;
-            bottom: 80px;
-            right: 0px;
-        }
-    }
-}
-
-// <= 900px
-@include maxPxW(900) {
-    #round-name {
-        .box, .round-name-text, .description {
-            display: block;
-        }
-
-        .text-wrapper {
-            width: 100%;
-        }
-
-        .round {
-            left:-40px
-        }
-
-        .numbers {
-            left: 40px;
-            top: -70px
-        }
-
-        .round-name-text {
-            width: 100%;
-            text-align: center;
-            // right: -65px;
-            // width: 166px;
-            top: -95px;
-
-            svg {
-                height: 60px;
-            }
-
-            li {
-                right: 0px;
-            }
-        }
-
-        .description {
-            top : -163px;
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-
-            p {
-                display: inline-block;
-                padding: 30px;
-                font-size: 20px;
-            }
-        }
-
-        .next-btn {
-            display: block;
-        }
-
-        .next-btn {
-            width: 100%;
-            top: 220px;
-            position: relative;
-
-            svg {
-                width: 120px;
-            }
-        }
-
-        .fruit-whole {
+         // < 1024px
+        @include maxW($tabletLandscapeWidth) {
             right: 33px;
             top: -173px;
             z-index: -1;
@@ -192,14 +227,42 @@
     }
 }
 
-//768px;
-@include maxW($tabletPortraitWidth) {
-}
 
-//640px
-@include maxW($mobileLargeWidth) {
-}
+// >= 901px
+@include maxW($tabletLandscapeWidth) {
+    // #round-name {
+    //     .round-name-text {
+    //         li {
+    //             &:first-child {
+    //                 left:-20px;
+    //             }
+    
+    //             &:nth-child(2) {
+    //                 left:-63px;
+    //             }
+    
+    //             &:nth-child(3) {
+    //                 left:-66px;
+    //             }
+    //         }
+    //     }
 
-//480px;
-@include maxW($mobileWidth) {
+        // .description {
+        //     padding: 20px;
+        //     width: 270px;
+        //     z-index: -1;
+        //     height: 135px;
+        //     max-height: 135px;;
+        //     top: -110px;
+        //     left: -6px;
+
+            
+
+        //     p {
+        //         @include verticalAlign(absolute);
+        //         padding: 0px 30px;
+        //         left:0px;
+        //     }
+        // }
+    // }
 }

@@ -12,6 +12,10 @@
     width: 20px;
     top: 20px; 
 
+    svg {
+        overflow: visible;
+    }
+
     // < 640px;
     @include maxW($mobileLargeWidth) {
         display: block;
