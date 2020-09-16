@@ -61,6 +61,7 @@ export default class UI {
     
     // nav
     private navVisible : boolean = false;
+    private frameVisible : boolean = false;
 
     // assets
     private assetCounter : number = 0;
@@ -196,6 +197,23 @@ export default class UI {
                 this.navEl.style.left = f.px(window.innerWidth/4 - 50 - this.navEl.getBoundingClientRect().width/2)
             }
         }
+
+        // frame
+        if (window.innerWidth <= 768) {
+            if (this.frameVisible) {
+                this.frameOut();
+                console.log("frame out")
+                this.frameVisible = false;
+            }
+
+        } else {
+            console.log("huh?")
+            if (!this.frameVisible) {
+                this.frameIn();
+                console.log("frame in")
+                this.frameVisible = true;
+            }
+        }
     }
 
     public loadImages(images: string[]) {
@@ -234,14 +252,7 @@ export default class UI {
 
     public showBorder() {
         // show the border letters
-        // N E C
-        TweenMax.fromTo(f.findAll(this.frameEl, "li.top"), 0.5, {y:-100}, {y:0})
-        // T
-        TweenMax.fromTo(f.findAll(this.frameEl,"li.left.middle"), 0.5, {x:-100}, {x:0})
-        // A
-        TweenMax.fromTo(f.findAll(this.frameEl, "li.right.middle"), 0.5, {x:100}, { x:0})
-        // R O N
-        TweenMax.fromTo(f.findAll(this.frameEl, "li.bottom"), 0.5, {y:100}, {y:0})
+        // this.frameIn();
 
         // change the position of the nav
         if (this.isMobileSize) {
@@ -255,6 +266,28 @@ export default class UI {
             TweenMax.fromTo(this.navEl, 0.5, {dispplay: "none", y:-100}, {display:"block", y:0})
         }
 
+    }
+
+    private frameIn() {
+        // N E C
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.top"), 0.5, {display:"none", y:-100}, {y:0, display:"block"})
+        // T
+        TweenMax.fromTo(f.findAll(this.frameEl,"li.left.middle"), 0.5, {display:"none", x:-100}, {x:0, display:"block"})
+        // A
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.right.middle"), 0.5, {display:"none", x:100}, { x:0, display:"block"})
+        // R O N
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.bottom"), 0.5, {display:"none", y:100}, {y:0, display:"block"})
+    }
+
+    private frameOut() {
+        // N E C
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.top"), 0.5, {display:"block", y:-0}, {y:-100, display:"none"})
+        // T
+        TweenMax.fromTo(f.findAll(this.frameEl,"li.left.middle"), 0.5, {display:"block", x:-0}, {x:-100, display:"none"})
+        // A
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.right.middle"), 0.5, {display:"block", x:0}, { x:100, display:"none"})
+        // R O N
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.bottom"), 0.5, {display:"block", y:0}, {y:100, display:"none"})
     }
 
     public showWaves(d: number) {
