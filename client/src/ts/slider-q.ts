@@ -120,10 +120,17 @@ export default class Slider {
     }
 
     private sliderChange(e: any) {
-        this.draggableCurrentPos = e.x;
+        if (e.x == undefined) {
+            console.log(e.touches[0].pageX)
+            this.draggableCurrentPos = e.touches[0].pageX
+        } else {
+            console.log(e.x);
+            this.draggableCurrentPos = e.x;
+        }
         // return Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100);
         // console.log(this.draggableCurrentPos, this.draggableOffset, this.sliderValue)
-
+        // console.log(e.x, e.touches, e.touches.length, e);
+        // console.log(this.draggableCurrentPos, Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100));
         this.callbackCurrentQuestion(Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100))
     }
 
