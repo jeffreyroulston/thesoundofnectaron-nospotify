@@ -70,9 +70,16 @@ export default class App {
         // this.ui.OnLoginPressed = this.Login;
         // this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
 
-        // this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png").then(() => {
-        //     this.graphics.onInitResources(this.resourceManager);
-        // });
+        this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png").then(() => {
+            this.flames.onInitResources(this.resourceManager);
+        });
+
+        const bgcontainer = document.getElementById('canvas-container-background');
+        if (bgcontainer !== null) {
+            bgcontainer.style.zIndex = '100000';
+            bgcontainer.append(this.flames.domElement);
+            this.flames.domElement.id = "graphics-canvas";
+        }
 
         this.getProfile();
 
