@@ -58,6 +58,15 @@ export default class UI {
 
     // for between pages
     private elementsToHide : HTMLElement[] = [];
+
+    // loader
+    private loaderCircleWrapperEl = f.elByID("loader-circle-wrapper");
+    private loaderCircleEl = f.elByID("loader-circle");
+    private loaderPercentEl = f.elByID("loader-percent");
+    private currentLoaderCount = 0;
+    private nextLoaderCount = 0;
+    private imgCount = 0;
+    private imgsLoaded = 0;
     
     // nav
     private navVisible : boolean = false;
@@ -69,19 +78,11 @@ export default class UI {
 
     // looping animations
     private loopingAnimations : TweenMax[] = [];
-
-    // binder for images
-    public ImagesDownloadedCallback = ()=>{};
-
     // is mobile
     public isMobileSize : boolean = false;
 
     // bound to app
     public Login = ()=>{};
-
-    // bound to either landing or rounds
-    // private changeToMobile = () => {};
-    // private changeToDesktop = () => {};
 
     constructor(app : App) {
         // pass in the app to use for spotify interface
@@ -101,24 +102,6 @@ export default class UI {
         // check dimensions
         this.isMobileSize = this.burgerEl.getBoundingClientRect().width > 1;
 
-        // we playing rounds on the redirect
-        if (window.location.href.indexOf("access_token") > -1) {
-            // GAMEPLAY
-            this.ASSET_URL = "../assets/";
-            this.ROUNDS = new Rounds(this);
-
-            // start
-            this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
-            this.ROUNDS.showRound(0)
-        } else {
-            // LANDING PAGE
-            this.LANDING = new Landing(this);
-            this.LANDING.onLoginPressed = this.Login.bind(this)
-            this.LANDING.show();
-        }
-
-        // this.showEndFrame("nothing");
-
         // used for the mobile menu
         this.burgerEl.addEventListener("click", this.toggleNav.bind(this));
 
@@ -127,8 +110,70 @@ export default class UI {
             li.addEventListener("click", this.togglePage.bind(this))
         })
 
-        console.log(this.LANDING, "resize");
-        this.onResize();
+        // we playing rounds on the redirect
+        if (window.location.href.indexOf("access_token") > -1) {
+            // GAMEPLAY
+            this.ROUNDS = new Rounds(this);
+
+            // start
+            this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
+            this.ROUNDS.showRound(0)
+        } else {
+            // LANDING PAGE
+            this.LANDING = new Landing(this);
+            this.LANDING.onLoginPressed = this.Login.bind(this);
+            this.loadImages(data.preloadList)
+            // if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
+            //     this.LANDING.show();
+            // } else {
+            //     this.loaderInit();
+            // }
+            // this.LANDING.show();
+        }
+
+        // this.showEndFrame("nothing");
+    }
+
+    private loaderInit() {
+        this.loaderCircleWrapperEl.style.height = "200px";
+        this.loaderCircleWrapperEl.style.width = "200px";
+        this.loadImages(data.preloadList)
+    }
+
+    async loadImages(images: string[]) {
+        this.imgCount = images.length;
+        console.log(this.imgCount);
+        
+        images.forEach((imgSrc)=> {
+            let imgObject = new Image();
+            imgObject.onload = this.incrementLoader.bind(this);
+            imgObject.src = this.ASSET_URL + imgSrc;
+        })
+    }
+
+    private incrementLoader() {
+        this.imgsLoaded++;
+        var percent = this.imgsLoaded/this.imgCount * 100;
+        console.log(percent);
+        // this.loaderPercentEl.innerHTML = Math.round(percent).toString() + "%";
+
+        // if (this.imgsLoaded == this.imgCount) {
+
+
+        //     this.onResize();
+        // } else {
+        //     var scale = (percent > 1) ? percent : 1
+        //     this.loaderCircleEl.style.transform = "scale(" + scale + ")";
+        // }
+
+        if (this.imgsLoaded == this.imgCount) this.LANDING?.show();
+    }
+
+    private isCached(src: string) {
+        var image = new Image();
+        image.src = src;
+        console.log(src, image.complete)
+        return image.complete;
     }
 
     private checkMobileSize() {
@@ -210,24 +255,6 @@ export default class UI {
                 this.frameIn();
                 this.frameVisible = true;
             }
-        }
-    }
-
-    public loadImages(images: string[]) {
-        this.assetCounter += images.length;
-        
-        images.forEach((imgSrc)=> {
-            let imgObject = new Image();
-            imgObject.onload = this.imgDownloaded.bind(this);
-            imgObject.src = this.ASSET_URL + imgSrc;
-        })
-    }
-
-    private imgDownloaded() {
-        console.log("image downloaded");
-        this.assetsLoaded++;
-        if (this.assetsLoaded == this.assetCounter) {
-            this.ImagesDownloadedCallback();
         }
     }
 

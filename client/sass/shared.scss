@@ -11,10 +11,10 @@ $marginTop_10 : 10vh;
 $framePadding : 20px;
 $frameLetterSize : 30px;
 // $letterSize: 70px;
-$zIndexNav: 1000;
-$zIndexNavBar: 1002;
-$zIndexPopupPages: 999;
-$zIndexPopupPagesMobile: 1001;
+$zIndexNav: 100;
+$zIndexNavBar: 102;
+$zIndexPopupPages: 99;
+$zIndexPopupPagesMobile: 101;
 
 @function center($containerWidth, $elWidth) {
     @return calc(#{$containerWidth}/2 - (#{$elWidth}.2));
