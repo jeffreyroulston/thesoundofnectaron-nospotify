@@ -41,16 +41,16 @@ export default class Landing {
         var btn = f.find(this.landingPageEl, "#start-btn");
 
         // elements to hide
-        this.UI.SetVisibleElements([this.landingPageEl, hop]);
+        this.UI.setVisibleElements([this.landingPageEl, hop]);
 
         // make the frame text white
-        this.UI.ToggleFrameColours(data.COLOURS.beige, true);
+        this.UI.toggleFrameColours(data.COLOURS.beige, true);
 
         // make the border come in
-        this.UI.ShowBorder();
+        this.UI.showBorder();
 
         // waves
-        this.UI.ShowWaves(0);
+        this.UI.showWaves(0);
 
         // show elements
         this.landingPageEl.style.display = "block";
@@ -76,7 +76,7 @@ export default class Landing {
         
         // THE SOUND OF
         TweenMax.from(logoHeadElements, 1, {
-            alpha:0, scale:0, rotation:-45, y:-200, delay:2, stagger: {
+            alpha:0, scale:0, rotation:-45, y:-200, delay:1.5, stagger: {
                 each:0.1
             }
         })

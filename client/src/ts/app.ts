@@ -12,7 +12,9 @@ import { shuffle } from "./helpers";
 import Fire from "./fire";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
-let REDIRECT_URI: string = "http://localhost:8888";
+let REDIRECT_URI: string = "http://10.100.10.63:8888";
+// let REDIRECT_URI: string = "http://localhost:8888";
+// let REDIRECT_URI: string = "http://thesoundofnectaron.truedigital.co.nz";
 let SCOPES: string[] = [
     'user-top-read', 
     'user-read-private', 
@@ -37,7 +39,7 @@ export default class App {
 
     private flames: Fire = new Fire();
 
-    private requestedPlaylistLength: number = 60;
+    private requestedPlaylistLength: number = 120;
 
     constructor() {
         // console.log(window.location.href);
@@ -136,7 +138,8 @@ export default class App {
                 let q = data.sliderQuestions[i];
 
                 if (q.params === si.QueryParameters.PlaylistLength) {
-                    this.requestedPlaylistLength = q.answer;
+                    this.requestedPlaylistLength = q.answer
+                    console.log("requested playlist length", this.requestedPlaylistLength)
                 }
 
                 else {
@@ -257,13 +260,13 @@ export default class App {
                     this.spotifyInterface.CreatePlaylist({
                         UserId: this.profile.id,
                         TrackUris: trackUris,
-                        Name: "Nectaron",
-                        Description: "Get a load of this ya jabronies",
+                        Name: "The Sound of Nectaron",
+                        Description: "",
                         Public: false,
                         Image: {
                             Width: 72,
                             Height: 72,
-                            Url: "http://localhost:8888/assets/albumCover.jpg"
+                            Url: "http://thesoundofnectaron.truedigital.co.nz/assets/albumCover.jpg"
                         }
                     });
                 }

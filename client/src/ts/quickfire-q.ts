@@ -22,7 +22,7 @@ export default class QuickFireQ {
     private timerTensColumn : HTMLElement = f.find(this.timerEl, "#tensCol");
     private timerOnesColumn : HTMLElement = f.find(this.timerEl, "#onesCol");
 
-    private timerCount : number = 30;
+    private timerCount : number = 20;
     private timerStarted : boolean = false;
     private active : boolean = false;
 

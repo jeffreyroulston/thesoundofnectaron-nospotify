@@ -14,19 +14,63 @@
         text-align: center;
         width: 100%;
         padding: 100px 0px;
-
-        background: rgb(136,0,157);
         background: -moz-linear-gradient(0deg, rgba(136,0,157,0) 0%, rgba(144,17,161,0.32) 50%, rgba(153,35,166,0) 100%);
         background: -webkit-linear-gradient(0deg, rgba(136,0,157,0) 0%, rgba(144,17,161,0.32) 50%, rgba(153,35,166,0) 100%);
         background: linear-gradient(0deg, rgba(136,0,157,0) 0%, rgba(144,17,161,0.32) 50%, rgba(153,35,166,0) 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#88009d",endColorstr="#9923a6",GradientType=1);
     }
 
     .logo-wrapper-large, .logo-wrapper-mobile {
         width: 100%;
     }
 
+    .logo, .logo-head {
+        display: inline-block;
+        width: 100%;
+        overflow: visible;
+
+        @include transition(height 0.2s ease);
+    }
+
     .logo-wrapper-large {
+        .logo-head {
+            height: 19px;
+            margin-bottom: 20px;
+    
+            // < 1366px
+            @include maxW($desktopLargeWidth) {
+                // height: 21px;
+            }
+    
+            // < 1280px
+            @include maxW($desktopWidth) {
+                // height: 19px;
+            }
+    
+            // < 1024px
+            @include maxW($tabletLandscapeWidth) {
+                height: 18px;
+            }
+        }
+    
+        .logo {
+            height: 55px;
+    
+            // < 1366px
+            @include maxW($desktopLargeWidth) {
+                // height: 60px
+            }
+    
+            // < 1280px
+            @include maxW($desktopWidth) {
+                // height: 55px
+            }
+    
+            // < 1024px
+            @include maxW($tabletLandscapeWidth) {
+                height: 50px
+            }
+        }
+
         @include maxW($mobileLargeWidth) {
             display: none;
         }
@@ -35,42 +79,30 @@
     .logo-wrapper-mobile {
         display: none;
 
+        .logo {
+            height: 50vh;
+        }
+
         @include maxW($mobileLargeWidth) {
             display: block;
         }
     }
 
-    #logo-letters {
-        .letter {
-            display:inline-block;
-            position: relative;
+    // #logo-letters {
+    //     .letter {
+    //         display:inline-block;
+    //         position: relative;
 
-            svg {
-                width: $letterSize;
-            }
-        }
+    //         svg {
+    //             width: $letterSize;
+    //         }
+    //     }
     
-    }
-
-    .logo, .logo-head {
-        display: inline-block;
-        width: 100%;
-        overflow: visible;
-    }
-
-    .logo-head {
-        height: 60px;
-    }
-
-    .logo-mobile {
-        height: 0;
-        width: 50%;
-        max-width: 250px;
-        display: inline-block;
-    }
+    // }
 
     .subheading {
         color: $beige;
+        font-weight: 400;
         margin: 30px 0px;
         text-align: center;
         display: inline-block;
@@ -89,78 +121,78 @@
     }
 }
 
-// >1920px
-@include minW($desktopXLargeWidth) {
-     .text-wrapper {
-        @include transform(scale(1));
-    }
-}
+// // >1920px
+// @include minW($desktopXLargeWidth) {
+//      .text-wrapper {
+//         @include transform(scale(1));
+//     }
+// }
 
-//1920px;
-@include maxW($desktopXLargeWidth) {
-    .text-wrapper {
-        @include transform(scale(0.8));
-    }
-}
+// //1920px;
+// @include maxW($desktopXLargeWidth) {
+//     .text-wrapper {
+//         @include transform(scale(0.8));
+//     }
+// }
 
-//1366px
-@include maxW($desktopLargeWidth) {
-    .text-wrapper {
-        @include transform(scale(0.7));
-    }
-}
+// //1366px
+// @include maxW($desktopLargeWidth) {
+//     .text-wrapper {
+//         @include transform(scale(0.7));
+//     }
+// }
 
-//1280px
-@include maxW($desktopWidth) {
-    .text-wrapper {
-        @include transform(scale(0.7));
-    }
-}
+// //1280px
+// @include maxW($desktopWidth) {
+//     .text-wrapper {
+//         @include transform(scale(0.7));
+//     }
+// }
 
-//768px;
-@include maxW($tabletPortraitWidth) {
-    .text-wrapper {
-        @include transform(scale(0.6));
-    }
-    .subheading span{
-        display: inline-block;
-    }
-}
+// //768px;
+// @include maxW($tabletPortraitWidth) {
+//     .text-wrapper {
+//         @include transform(scale(0.6));
+//     }
+//     .subheading span{
+//         display: inline-block;
+//     }
+// }
 
 //640px
-@include maxW($mobileLargeWidth) {
-    #landing .text-wrapper {
-        @include transform(scale(1));
-    }
+// @include maxW($mobileLargeWidth) {
+//     #landing .text-wrapper {
+//         @include transform(scale(1));
+//     }
 
-    #landing {
-        .logo-head, .logo {
-            display: none;
-        }
+//     #landing {
+//         .logo-head, .logo {
+//             display: none;
+//         }
     
-        .logo-mobile {
-            height:auto;
-        }
+//         .logo-mobile {
+//             height:auto;
+//         }
 
-        .subheading {
-            width: 50%;
-            max-width: 250px;
-            min-width: 210px;
-            display: inline-block;
-            font-size: 16px;
+//         .subheading {
+//             width: 50%;
+//             max-width: 250px;
+//             min-width: 210px;
+//             display: inline-block;
+//             font-size: 16px;
 
-            span {
-                display:inline;
+//             span {
+//                 display:inline;
 
-                &:nth-child(2) {
-                    display: inline
-                }
-            }
-        }
-    }
-}
+//                 &:nth-child(2) {
+//                     display: inline
+//                 }
+//             }
+//         }
+//     }
+// }
 
-//480px;
-@include maxW($mobileWidth) {
+// //480px;
+// @include maxW($mobileWidth) {
 
-}
+// }

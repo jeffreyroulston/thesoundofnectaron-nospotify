@@ -1,8 +1,41 @@
 @import "shared";
 
+#burger, #headerSmall {
+    position: absolute;
+    z-index: $zIndexNav;
+    display: none;
+}
+
+#burger {
+    right: 20px;
+    height: 15px;
+    width: 20px;
+    top: 20px; 
+
+    svg {
+        overflow: visible;
+    }
+
+    // < 640px;
+    @include maxW($mobileLargeWidth) {
+        display: block;
+    }
+}
+
+#headerSmall {
+    left: 20px;
+    height: 16px;
+    width: 130px;
+    top: 21px;
+
+    svg {
+        width: 100%;
+    }
+}
+
 #nav-wrapper {
     position: absolute;
-    z-index: 100;
+    z-index: $zIndexNav;
     width: 100%;
 
     // < 768px
@@ -13,7 +46,7 @@
 
     // < 640px;
     @include maxW($mobileLargeWidth) {
-        background-color: white;
+        background-color: $orange;
         position: absolute;
         height: 100%;
         top: 0;
@@ -34,8 +67,10 @@
         position: relative;
         left: 0;
     }
-
+    
+    // < 640px;
     @include maxW($mobileLargeWidth) {
+        opacity: 1;
         width: 100%;
         text-align: center;
         @include verticalAlign(relative);
@@ -62,6 +97,9 @@
             text-transform: uppercase;
             text-align: center;
             color: $yellow;
+
+            font-family: "Harbour";
+            font-weight: 600;
             line-height: 1.7;
 
             &.deg {

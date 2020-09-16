@@ -51,41 +51,49 @@ export default class Rounds {
         this.qfq = new QuickFireQ();
 
         // set the question order
-        // this.questionGroups = [this.slider, this.mcq, this.qfq];
-        this.questionGroups = [this.mcq, this.slider, this.mcq];
+        this.questionGroups = [this.slider, this.mcq, this.qfq];
+        // this.questionGroups = [this.mcq, this.slider, this.qfq];
         // this.questionGroups = [this.qfq, this.slider, this.mcq];
 
         // set callbacks
         this.questionGroups.forEach((q)=> {
-            q.roundComplete = this.RoundComplete.bind(this);
+            q.roundComplete = this.roundComplete.bind(this);
         })
 
         // set initial question
         this.currentQuestionGroup = this.slider;
 
-        this.ShowRound(0);
-
         // bind round page button
         this.btnEl.addEventListener("click", this.next.bind(this));
+
+        // on resize
+        // window.addEventListener('resize', this.onResize.bind(this));
+        // this.onResize();
+
+        // set it off
+        this.showRound(0);
     }
 
-    private ShowRound(d : number) {
+    private showRound(d : number) {
         var currentRound = data.ROUNDS[this.currentRoundIdx];
 
         //do the background
-        this.UI.SetBgColor(currentRound.color);
+        this.UI.setBgColor(currentRound.color);
 
         // make the frame text white
-        this.UI.ToggleFrameColours(data.COLOURS.beige, true);
+        this.UI.toggleFrameColours(data.COLOURS.beige, true);
 
         // set wave colour
-        this.UI.ToggleWaveColor(currentRound.waveColor);
+        this.UI.toggleWaveColor(currentRound.waveColor);
+
+        // make the border come in
+        this.UI.showBorder();
 
         // waves
-        this.UI.ShowWaves(d);
+        this.UI.showWaves(d);
 
         // set round copy
-        this.descriptionEl.innerHTML = "<p>" + currentRound.text + "</p>";
+        f.find(this.descriptionEl, "p").innerHTML= currentRound.text;
 
         // set the arrow colour
         f.find(this.btnEl, ".next-btn-round").style.fill = currentRound.btnColor;
@@ -136,18 +144,21 @@ export default class Rounds {
             alpha:1, x:0, delay:2*d+1
         });
 
-        // show the description box
-        if (window.innerWidth > 900) {
-            TweenMax.fromTo(this.descriptionEl, 0.5, {
-                alpha:0, y:-50, rotation:-17
+        if (this.UI.isMobileSize) {
+            // show the description box
+            TweenMax.fromTo(f.find(this.roundPageEl, ".description-wrapper"), 1, {
+                alpha:0, y:50
             }, {
-                alpha:1, y:0, rotation: -17, delay:2*d+1
+                alpha:1, y:0, delay:2*d+1
             });
+
+            // show the little logo
+            TweenMax.fromTo(this.UI.smallLogoEl, 0.5, {opacity:0, y:-100}, {opacity:1, y:0, display: "block"})
 
         } else {
             // show the description box
-            TweenMax.fromTo(this.descriptionEl, 1, {
-                alpha:0, y:50
+            TweenMax.fromTo(f.find(this.roundPageEl, ".description-wrapper"), 0.5, {
+                alpha:0, y:-50
             }, {
                 alpha:1, y:0, delay:2*d+1
             });
@@ -187,14 +198,14 @@ export default class Rounds {
         })
 
         var q = this.questionGroups[this.currentRoundIdx];
-        this.UI.SetVisibleElements([this.roundPageEl]);
-        this.UI.ShowQuestion();
+        this.UI.setVisibleElements([this.roundPageEl]);
+        this.UI.showQuestion();
         q.set();
     }
 
-    public RoundComplete(el: HTMLElement) {
+    public roundComplete(el: HTMLElement) {
         // Called from slider/MCQ/Quickfire
-        this.UI.SetVisibleElements([el]);
+        this.UI.setVisibleElements([el]);
 
         // hide elements
         this.roundNumberListEls.forEach((n1)=> {
@@ -208,14 +219,27 @@ export default class Rounds {
 
         if (this.currentRoundIdx <2) {
             this.currentRoundIdx++;
-            this.UI.TransitionOut();
-            this.ShowRound(0.7);
+            this.UI.transitionOut();
+            this.showRound(0.7);
         } else {
             // all done
             this.CreatePlaylist();
         }
         // this.UI.TransitionOut();
         // this.CreatePlaylist();
+    }
+
+    public onResize() {
+    }
+
+    public changeToMobile() {
+        console.log("change to mobile");
+        // TweenMax.to(this.descriptionEl, 0.2, {rotation: 0});
+    }
+
+    public changeToDesktop() {
+        console.log("change to desktop");
+        // TweenMax.to(this.descriptionEl, 0.2, {rotation: -17});
     }
 
 

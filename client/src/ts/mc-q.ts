@@ -40,7 +40,7 @@ export default class MCQ {
         // bind interactions
         this.optionEls.forEach((e)=> {
             e.addEventListener("mouseover", ()=> {
-                TweenMax.to(e, 0.1, {scale:1.3, zIndex:50})
+                TweenMax.to(e, 0.1, {scale:1.1, zIndex:50})
             });
 
             e.addEventListener("mouseleave", ()=> {

@@ -5,6 +5,12 @@
     top: 0;
     left:0;
 
+    z-index: $zIndexPopupPages;
+
+    @include maxW($mobileLargeWidth) {
+        z-index: $zIndexNav;
+    }
+
     .question-wrapper {
         overflow: scroll;
         height: 100%;
@@ -21,10 +27,10 @@
     }
 
     .wrapper {
-        // width: calc(100% - 400px);
-        // height: calc(100% - 150px);
-        // top: 200px;
-        // top: 150px;
+        // < 640px;
+        @include maxW($mobileLargeWidth) {
+            height: calc(100% - 100px);
+        }
     }
 }
 
@@ -113,7 +119,7 @@
                     bottom: 0px;
                 }
     
-                z-index: 100;
+                z-index: 1;
             }
 
             &:nth-child(2) {

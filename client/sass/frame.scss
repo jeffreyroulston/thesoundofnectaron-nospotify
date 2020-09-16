@@ -7,7 +7,7 @@
         position: absolute;
         height: $frameLetterSize;
         width: $frameLetterSize;
-        z-index: 1000;
+        z-index: $zIndexNav;
 
         &.left {
             left: $framePadding;
