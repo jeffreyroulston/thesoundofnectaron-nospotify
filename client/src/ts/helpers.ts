@@ -54,6 +54,16 @@ export function getRandomInt(min:number, max:number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+export function roundTo(n: number, digits: number) {
+    if (digits === undefined) {
+        digits = 0;
+    }
+
+    var multiplicator = Math.pow(10, digits);
+    n = parseFloat((n * multiplicator).toFixed(11));
+    return Math.round(n) / multiplicator;
+}
+
 export function shuffle(array : any[]) {
     for (let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));

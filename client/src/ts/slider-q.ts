@@ -78,7 +78,7 @@ export default class Slider {
     private resetDraggable : boolean = false;
 
     private showCurrentQuestion: () => void;
-    private callbackCurrentQuestion : (e:any) => void;
+    private callbackCurrentQuestion : (n : number) => void;
 
     // called from ui
     public initiated = false;
@@ -121,8 +121,10 @@ export default class Slider {
 
     private sliderChange(e: any) {
         this.draggableCurrentPos = e.x;
-        this.sliderValue = Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100);
-        console.log(this.draggableCurrentPos, this.draggableOffset, this.sliderValue)
+        // return Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100);
+        // console.log(this.draggableCurrentPos, this.draggableOffset, this.sliderValue)
+
+        this.callbackCurrentQuestion(Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100))
     }
 
     private setSliderValue(n : number) {
@@ -134,8 +136,10 @@ export default class Slider {
     }
 
     private sliderValueSet(e:any) {
-        // this.sliderValue = Math.round((this.draggableCurrentPos - this.draggableStartPos)/this.draggableMax * 100);
-        // console.log(this.questions[this.questionIdx]);
+        var q = sliderQuestions[this.questionIdx];
+        var v = (q.max - q.min)/100 * this.sliderValue + q.min;
+        sliderQuestions[this.questionIdx].answer = f.roundTo(v, 2);
+        // console.log(this.sliderValue, sliderQuestions[this.questionIdx]);
         // if (this.questionIdx !=1) {
         //     this.getNextQuestion();
         // }
@@ -311,9 +315,11 @@ export default class Slider {
         // )
     }
 
-    private callbackQ1(e: any) {
-        // get value from slider
-        this.sliderValue = e.srcElement.value;
+    private callbackQ1(n : number) {
+        if (n < 0 || n > 100) return;
+
+        // set the slider value
+        this.sliderValue = n;
 
         // get the colours
         var colour = f.rgb(f.findColorBetween(this.colour1, this.colour2, this.sliderValue));
@@ -394,8 +400,10 @@ export default class Slider {
         // }))
     }
 
-    private callbackQ2(e: any) {
-        this.sliderValue = e.srcElement.value;
+    private callbackQ2(n : number) {
+        if (n < 0 || n > 100) return;
+
+        this.sliderValue = n;
         this.scaleFruit();
     }
 
@@ -494,9 +502,11 @@ export default class Slider {
         }
     }
 
-    private callbackQ3(e: any) {
+    private callbackQ3(n : number) {
+        if (n < 0 || n > 100) return;
+
         // get value from slider
-        this.sliderValue = e.srcElement.value;
+        this.sliderValue = n;
 
         var round= Math.round((this.sliderValue / this.maxValue)*10);
         var sharp = this.count - round;
@@ -571,9 +581,11 @@ export default class Slider {
     private bubbleLoopComplete() {
     }
 
-    private callbackQ4(e: any) {
+    private callbackQ4(n: number) {
+        if (n < 0 || n > 100) return;
+        
         // get value from slider
-        this.sliderValue = e.srcElement.value;
+        this.sliderValue = n
 
         // get the colours
         var colour = f.rgb(f.findColorBetween(this.bunsenColour1, this.bunsenColour2, this.sliderValue));
@@ -654,9 +666,11 @@ export default class Slider {
         // }
     }
 
-    private callbackQ5(e: any) {
+    private callbackQ5(n : number) {
+        if (n < 0 || n > 100) return;
+        
         // get value from slider
-        this.sliderValue = e.srcElement.value;
+        this.sliderValue = n;
         var ratio = 25;
         
         var v = this.sliderValue / ratio;

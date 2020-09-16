@@ -109,8 +109,8 @@ export const sliderQuestions : Array<SliderQuestion> = [
         question : "How bitter would you like your brew?",
         minTextValue : "0 IBU",
         maxTextValue : "100 IBU",
-        min : 0,
-        max: 0.5,
+        min : 0.1,
+        max: 0.4,
         answer : 0
     },
     {
