@@ -177,6 +177,11 @@
         position: relative;
         width: 100%;
         left: 10px;
+        margin-top: 20px;
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            margin: 0;
+        }
     }
 
     .slider-thumb {
