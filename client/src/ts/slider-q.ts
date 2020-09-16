@@ -6,6 +6,7 @@ import {COLOURS, sliderQuestions, SliderQuestion } from "./data";
 
 import { Draggable } from "gsap/dist/Draggable";
 import gsap from "gsap";
+import { version } from "d3";
 gsap.registerPlugin(Draggable);
 
 export default class Slider {
@@ -19,9 +20,9 @@ export default class Slider {
     private time = 0.3;
 
     // shared elements
-    private sliderEl : HTMLInputElement = <HTMLInputElement>f.find(this.el, ".slider-input");
-    // private sliderThumbEl : HTMLElement = f.find(this.el, " .slider-thumb");
-    private sliderThumbEl : HTMLElement = f.find(this.el, ".test");
+    // private sliderEl : HTMLInputElement = <HTMLInputElement>f.find(this.el, ".slider-input");
+    private sliderThumbEl : HTMLElement = f.find(this.el, " .slider-thumb");
+    // private sliderThumbEl : HTMLElement = f.find(this.el, ".test");
     private questionElement: HTMLElement = f.find(this.el, ".question");
     private minValueLabel : HTMLElement = f.find(this.el, "#min-value-label");
     private maxValueLabel : HTMLElement = f.find(this.el, "#max-value-label");
@@ -67,7 +68,7 @@ export default class Slider {
     private loopingAnimations : TweenMax[] = [];
 
     // private
-    private draggableStartPos : number = 0;
+    private draggableOffset : number = 0;
     private draggableNextPos : number = 0;
     private draggableCurrentPos : number = 0;
     private draggableWidth : number = 0;
@@ -90,35 +91,56 @@ export default class Slider {
         this.callbackCurrentQuestion = this.callbackQ1.bind(this)
 
         // // set bindings
-        this.sliderEl.addEventListener("input",this.sliderChange.bind(this));
-        this.sliderEl.addEventListener("change", this.sliderValueSet.bind(this));
+        // this.sliderEl.addEventListener("input",this.sliderChange.bind(this));
+        // this.sliderEl.addEventListener("change", this.sliderValueSet.bind(this));
         window.addEventListener("resize", this.onResize.bind(this));
 
-        var d = Draggable.create(".slider-thumb", {
-            type:"x", edgeResistance:1, bounds:".slide-container", inertia:false, onDrag : this.onDrag.bind(this), onDragStart : this.onDragStart.bind(this)
+        Draggable.create(".slider-thumb", {
+            type:"x", edgeResistance:1, bounds:".slide-container", inertia:false, onDragStart : this.sliderInit.bind(this), onDrag : this.sliderChange.bind(this), onDragEnd : this.sliderValueSet.bind(this)
         });
     }
 
-    private onDragStart(e: any) {
-        // starts with the assumption that the start value is 0
+    private sliderInit(e: any) {
+        if (this.sliderValue < 50) {
+            // is 0
+            this.draggableOffset = e.x;
+        } else {
+            // is 50
+            this.draggableOffset = e.x - 0.5*this.draggableWidth;
+        }
+        console.log("init", e.x);
+    }
+
+    private sliderResize() {
         this.draggableWidth = this.sliderLineEl.getBoundingClientRect().width;
-        this.draggableMultiplier = Math.round(this.draggableWidth/100)
-        this.draggableStartPos = e.x;
-
-        console.log(this.draggableWidth, this.draggableMultiplier, this.draggableStartPos);
-
         this.draggableMax = this.draggableWidth;
-        this.draggableMin = 0;;
-
-        // this.draggableMax = this.draggableStartPos + this.draggableWidth;
-        // this.draggableMin = this.draggableStartPos;
-
+        this.draggableMin = 0;
+        console.log("SLIDER RESIZE, width", this.draggableWidth);
     }
 
-    private onDrag(e: any) {
-        var value = Math.round((e.x - this.draggableStartPos)/this.draggableMax * 100);
-        console.log(value);
+    private sliderChange(e: any) {
+        this.draggableCurrentPos = e.x;
+        this.sliderValue = Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100);
+        console.log(this.draggableCurrentPos, this.draggableOffset, this.sliderValue)
     }
+
+    private setSliderValue(n : number) {
+        this.sliderValue = n;
+        var v = n/100 * this.draggableWidth
+        console.log("set slider value", n, v);
+        TweenMax.to(this.sliderThumbEl, 0, {x:v});
+        // console.log(e.x)
+    }
+
+    private sliderValueSet(e:any) {
+        // this.sliderValue = Math.round((this.draggableCurrentPos - this.draggableStartPos)/this.draggableMax * 100);
+        // console.log(this.questions[this.questionIdx]);
+        // if (this.questionIdx !=1) {
+        //     this.getNextQuestion();
+        // }
+        this.getNextQuestion();
+    }
+
 
     private onResize(e: any) {
         console.log(this.questionIdx)
@@ -163,8 +185,8 @@ export default class Slider {
             this.maxValueLabel.innerHTML = q.maxTextValue.toString();
 
             // set value to default
-            this.sliderValue = 50;
-            this.sliderEl.value = "50";
+            // this.sliderValue = 0
+            // this.setSliderValue(this.sliderValue)
             // this.sliderReset();
 
             // show it
@@ -178,6 +200,8 @@ export default class Slider {
         var delay = this.initiated ? 0 : this.delay;
         this.initiated = true;
         this.el.style.display = "block";
+
+        if (this.draggableWidth < 1) this.sliderResize();
         
         // show the element with images
         this.imgEl.style.display = "block";
@@ -226,7 +250,8 @@ export default class Slider {
         // hide the content column
         f.find(this.el, ".col-wrapper.content-column").style.display = "none"
 
-        // this.setValue(0);
+        // set slider value
+        this.setSliderValue(0)
 
         this.imgs = rays;
         this.imgs2 = stars;
@@ -318,6 +343,9 @@ export default class Slider {
         // PINEAPPLE AND HOPS
         var slider = f.find(this.el, ".slider-q2");
         this.imgs = f.findAll(slider, "li img");
+
+        // set slider value
+        this.setSliderValue(50);
 
         // show the content column
         f.find(this.el, ".col-wrapper.content-column").style.display = "block"
@@ -415,6 +443,9 @@ export default class Slider {
         this.count = 10;
         this.imgs = [];
 
+        // set slider value
+        this.setSliderValue(50);
+
         // hide the content column
         f.find(this.el, ".col-wrapper.content-column").style.display = "none"
 
@@ -481,6 +512,9 @@ export default class Slider {
 
     private showQ4() {
         // BUNSEN BURNER
+
+        // set slider value
+        this.setSliderValue(50);
 
         // make it not full width
         this.toggleFullWidth();
@@ -586,9 +620,10 @@ export default class Slider {
     private showQ5() {
         // HANDS
         this.count = 5;
-        this.sliderValue = 0;
-        this.sliderEl.value = "0";
-        this.sliderReset();
+        // set slider value
+        this.setSliderValue(0);
+        // this.sliderEl.value = "0";
+        // this.sliderReset();
 
         // set perspective?
         TweenMax.to(this.imgEl, 0, {perspective:800})
@@ -633,42 +668,42 @@ export default class Slider {
         }
     }
 
-    sliderChange(e: any){
-        this.sliderValue = e.srcElement.value;
-        this.sliderWidth = e.srcElement.clientWidth;
+    // sliderChange(e: any){
+    //     this.sliderValue = e.srcElement.value;
+    //     this.sliderWidth = e.srcElement.clientWidth;
 
-        // // get the next position of the arrow
-        // move the triangle to match the position of the slider thumb
-        // this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumbEl.getBoundingClientRect().width/2);
+    //     // // get the next position of the arrow
+    //     // move the triangle to match the position of the slider thumb
+    //     // this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumbEl.getBoundingClientRect().width/2);
 
-        this.callbackCurrentQuestion(e);
-    }
+    //     this.callbackCurrentQuestion(e);
+    // }
 
-    sliderReset(){
-        this.sliderWidth = this.sliderEl.clientWidth;
+    // sliderReset(){
+    //     this.sliderWidth = this.sliderEl.clientWidth;
 
-        // // get the next position of the arrow
-        // move the triangle to match the position of the slider thumb
-        this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumbEl.getBoundingClientRect().width/2);
-    }
+    //     // // get the next position of the arrow
+    //     // move the triangle to match the position of the slider thumb
+    //     this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumbEl.getBoundingClientRect().width/2);
+    // }
 
-    sliderValueSet(e:any) {
-        // lock in slider value to answer
-        this.questions[this.questionIdx].answer = e.srcElement.value;;
-        console.log(this.questions[this.questionIdx]);
-        // if (this.questionIdx !=1) {
-        //     this.getNextQuestion();
-        // }
-        this.getNextQuestion();
-    }
+    // sliderValueSet(e:any) {
+    //     // lock in slider value to answer
+    //     this.questions[this.questionIdx].answer = e.srcElement.value;;
+    //     console.log(this.questions[this.questionIdx]);
+    //     // if (this.questionIdx !=1) {
+    //     //     this.getNextQuestion();
+    //     // }
+    //     this.getNextQuestion();
+    // }
 
-    setValue(n : number) {
-        this.sliderValue = n;
-        this.sliderEl.value = n.toString();
-        this.sliderWidth = this.sliderEl.getBoundingClientRect().width;
+    // setValue(n : number) {
+    //     this.sliderValue = n;
+    //     this.sliderEl.value = n.toString();
+    //     this.sliderWidth = this.sliderEl.getBoundingClientRect().width;
 
-        this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumbEl.getBoundingClientRect().width/2);
-    }
+    //     this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumbEl.getBoundingClientRect().width/2);
+    // }
 
     getNextQuestion() {
         var showFunctions = [
@@ -721,7 +756,7 @@ export default class Slider {
             }
         });
 
-        // show the question
+        // hide the question
         TweenMax.to(this.questionElement, this.time, {
             alpha:0, x:-20
         });
