@@ -8,7 +8,7 @@
             // < 1024px
             @include maxW($tabletLandscapeWidth) {
                 position: absolute;
-                bottom: 0px;
+                bottom: 10px;
             }
         }
     }
@@ -176,8 +176,7 @@
     .slide-container {
         position: relative;
         width: 100%;
-        left:10px;
-        background: blue;
+        left: 10px;
     }
 
     .slider-thumb {
