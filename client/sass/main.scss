@@ -562,3 +562,52 @@ p, table {
     }
 
 }
+
+#shit-browser-alert {
+    background-color: $beige;
+
+    .wrapper {
+        height: 100%;
+        width: 100%;
+        top: 0;
+    }
+    
+    .question-wrapper {
+        max-width: 1000px;
+        text-align: center;
+
+        @include maxW($tabletLandscapeWidth) {
+            top: 50%;
+            transform: translateY(-50%)
+        }
+    }
+
+    h1 {
+        margin-bottom: 50px;
+    }
+
+    img {
+        margin-top: 50px;
+        width: 50%;
+        min-width: 300px;
+    }
+
+    h1, p {
+        color: $purple;
+    }
+
+    .small {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+    }
+
+    .small p {
+        font-size: 10px;
+    }
+
+    em {
+        color: $orange;
+        font-style: normal;
+    }
+}

@@ -72,12 +72,11 @@ export default class UI {
     private navVisible : boolean = false;
     private frameVisible : boolean = false;
 
-    // assets
-    private assetCounter : number = 0;
-    private assetsLoaded : number= 0;
-
     // looping animations
     private loopingAnimations : TweenMax[] = [];
+
+    private nope : boolean = false;
+
     // is mobile
     public isMobileSize : boolean = false;
 
@@ -88,10 +87,14 @@ export default class UI {
         // pass in the app to use for spotify interface
         this.app = app;
 
-        // check if it's fucking internet explorer
-        // if (!Modernizr.svg) {
-        //     console.log("it's internet fucking explorer")
-        //   }
+        // check if it's a shit browser
+        if (!Modernizr.svg) {
+            this.nope = true;
+            f.elByID("shit-browser-alert").style.display = "block";
+        }
+
+        // this.nope = true;
+        // f.elByID("shit-browser-alert").style.display = "block";
 
         // Set custom height
         window.addEventListener('resize', this.onResize.bind(this));
@@ -99,6 +102,8 @@ export default class UI {
     }
 
     private init() {
+        if (this.nope) return;
+
         // check dimensions
         this.isMobileSize = this.burgerEl.getBoundingClientRect().width > 1;
 
@@ -155,11 +160,9 @@ export default class UI {
         this.imgsLoaded++;
         var percent = this.imgsLoaded/this.imgCount * 100;
         console.log(percent);
+
         // this.loaderPercentEl.innerHTML = Math.round(percent).toString() + "%";
-
         // if (this.imgsLoaded == this.imgCount) {
-
-
         //     this.onResize();
         // } else {
         //     var scale = (percent > 1) ? percent : 1
@@ -218,6 +221,8 @@ export default class UI {
     }
 
     private onResize() {
+        if (this.nope) return;
+
         let vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
         this.checkMobileSize();
