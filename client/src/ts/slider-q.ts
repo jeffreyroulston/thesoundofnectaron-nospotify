@@ -75,6 +75,7 @@ export default class Slider {
     private draggableMax : number = 0;
     private draggableMin : number = 0;
     private draggableMultiplier : number = 0;
+    private resetDraggable : boolean = false;
 
     private showCurrentQuestion: () => void;
     private callbackCurrentQuestion : (e:any) => void;
@@ -144,6 +145,10 @@ export default class Slider {
 
     private onResize(e: any) {
         console.log(this.questionIdx)
+
+        // resize slider
+        this.sliderResize();
+        this.setSliderValue(this.sliderValue);
 
         switch(this.questionIdx) {
             case 0:
