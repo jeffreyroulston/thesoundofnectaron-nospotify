@@ -86,6 +86,9 @@ export default class Rounds {
         // set wave colour
         this.UI.ToggleWaveColor(currentRound.waveColor);
 
+        // make the border come in
+        this.UI.ShowBorder();
+
         // waves
         this.UI.ShowWaves(d);
 
