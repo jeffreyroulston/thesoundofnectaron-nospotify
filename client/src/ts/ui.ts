@@ -146,6 +146,10 @@ export default class UI {
     }
 
     private changeToDesktop() {
+        // small logo
+        TweenMax.to(this.smallLogoEl, 0.5, {display: "none", y:-100})
+
+        // reset nav
         this.navVisible = false;
         this.navWrapperEl.removeAttribute("style");
 
@@ -160,6 +164,10 @@ export default class UI {
 
     private changeToMobile() {
         this.navWrapperEl.removeAttribute("style");
+
+        // small logo
+        TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+
         this.ROUNDS?.changeToMobile();
     }
 
@@ -238,7 +246,10 @@ export default class UI {
         // change the position of the nav
         if (this.isMobileSize) {
             // is mobile
-            this.navEl.removeAttribute("style")
+            this.navEl.removeAttribute("style");
+
+            // small logo
+            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
         } else {
             // show the listed nav
             TweenMax.fromTo(this.navEl, 0.5, {dispplay: "none", y:-100}, {display:"block", y:0})
