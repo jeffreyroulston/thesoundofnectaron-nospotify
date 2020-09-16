@@ -8,9 +8,13 @@
             // < 1024px
             @include maxW($tabletLandscapeWidth) {
                 position: absolute;
-                bottom: 10px;
+                bottom: 0px;
             }
         }
+    }
+
+    .full-width .question-wrapper {
+        @include verticalAlign(relative);
     }
 
     .slider-q {
@@ -177,6 +181,11 @@
         position: relative;
         width: 100%;
         left: 10px;
+        margin-top: 20px;
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            margin: 0;
+        }
     }
 
     .slider-thumb {

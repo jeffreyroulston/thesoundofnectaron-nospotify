@@ -14,6 +14,9 @@ export default class Landing {
         "waves/wave-purple.svg"
     ]
 
+    // BUTTON
+    private btnActive : boolean = false;
+
     public onLoginPressed = ()=> {};
 
     constructor(ui : UI) {
@@ -24,6 +27,8 @@ export default class Landing {
     }
 
     private login() {
+        if (!this.btnActive) return;
+        
         this.onLoginPressed();
     }
 
@@ -102,5 +107,7 @@ export default class Landing {
         TweenMax.from(btn, 0.5, {
             alpha:0, scale:0.9, delay:4
         })
+
+        this.btnActive = true;
     }
 }

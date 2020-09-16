@@ -37,6 +37,9 @@ export default class Rounds {
     // ANIMATION
     private loopingAnimations: TweenMax[] = [];
 
+    // BUTTON
+    private btnActive : boolean = false;
+
     // CALLBACK
     public CreatePlaylist = () => {};
 
@@ -51,9 +54,9 @@ export default class Rounds {
         this.qfq = new QuickFireQ();
 
         // set the question order
-        this.questionGroups = [this.slider, this.mcq, this.qfq];
+        // this.questionGroups = [this.slider, this.mcq, this.qfq];
         // this.questionGroups = [this.mcq, this.slider, this.qfq];
-        // this.questionGroups = [this.qfq, this.slider, this.mcq];
+        this.questionGroups = [this.qfq, this.slider, this.mcq];
 
         // set callbacks
         this.questionGroups.forEach((q)=> {
@@ -144,24 +147,18 @@ export default class Rounds {
             alpha:1, x:0, delay:2*d+1
         });
 
-        if (this.UI.isMobileSize) {
-            // show the description box
-            TweenMax.fromTo(f.find(this.roundPageEl, ".description-wrapper"), 1, {
-                alpha:0, y:50
-            }, {
-                alpha:1, y:0, delay:2*d+1
-            });
+        // show the description box
+        TweenMax.fromTo(f.find(this.roundPageEl, ".description-wrapper"), 1, {
+            alpha:0, y:50
+        }, {
+            alpha:1, y:0, delay:2*d+1
+        });
 
+        if (this.UI.isMobileSize) {
             // show the little logo
             TweenMax.fromTo(this.UI.smallLogoEl, 0.5, {opacity:0, y:-100}, {opacity:1, y:0, display: "block"})
 
         } else {
-            // show the description box
-            TweenMax.fromTo(f.find(this.roundPageEl, ".description-wrapper"), 0.5, {
-                alpha:0, y:-50
-            }, {
-                alpha:1, y:0, delay:2*d+1
-            });
         }
 
         // bring in the fruit
@@ -179,9 +176,9 @@ export default class Rounds {
 
         // show the arrow
         TweenMax.fromTo(this.btnEl, 0.5, {
-            alpha:0, scale:0.9
+            alpha:0, scale:0.9, display: "none"
         }, {
-            alpha:1, scale: 1, ease: "linear", delay:2*d+2.5
+            alpha:1, scale: 1, display:"block", ease: "linear", delay:2*d+2.5
         })
 
         // bounce the arrow
@@ -190,9 +187,14 @@ export default class Rounds {
         //         scale:0.9, ease: "linear", delay:2*d+3, repeat:-1, yoyo:true
         //     })
         // )
+
+        this.btnActive = true;
     }
 
     private next() {
+        if (!this.btnActive) return;
+
+        this.btnActive = false;
         this.loopingAnimations.forEach((anim)=> {
             anim.kill();
         })
@@ -223,6 +225,7 @@ export default class Rounds {
             this.showRound(0.7);
         } else {
             // all done
+            this.UI.transitionOut();
             this.CreatePlaylist();
         }
         // this.UI.TransitionOut();

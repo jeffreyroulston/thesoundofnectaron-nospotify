@@ -34,7 +34,9 @@ export default class UI {
     private wavesTopEl : HTMLElement = f.elByID("waves-top");
     private wavesBottomEl : HTMLElement = f.elByID("waves-bottom");
     private currentWaveColor: string = "purple";
-    private wavesVisible : boolean = false;
+
+    // end frame
+    private endFrameEl : HTMLElement = f.elByID("end-frame");
     
     // nav
     private navWrapperEl : HTMLElement = f.elByID("nav-wrapper")
@@ -59,6 +61,7 @@ export default class UI {
     
     // nav
     private navVisible : boolean = false;
+    private frameVisible : boolean = false;
 
     // assets
     private assetCounter : number = 0;
@@ -77,25 +80,8 @@ export default class UI {
     public Login = ()=>{};
 
     // bound to either landing or rounds
-    private changeToMobile = () => {};
-    private changeToDesktop = () => {};
-
-    // private recommendations: si.Track[] | undefined = [];
-    // private queryParameters: {[key: string]: si.QueryParameter }  = {
-    //     "acousticness" : qDefault(),
-    //     "danceability" : qDefault(),
-    //     "energy" : qDefault(),
-    //     "instrumentalness" : qDefault(),
-    //     "liveness" : qDefault(),
-    //     "loudness" : qDefault(),
-    //     "speechiness" : qDefault(),
-    //     "valence" : qDefault(),
-    //     "tempo" : qDefault()
-    // }
-    
-    // PUBLIC VARIABLES
-    // public OnLoginPressed = () => {};
-    // public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: q.Question): void}[] = [];
+    // private changeToMobile = () => {};
+    // private changeToDesktop = () => {};
 
     constructor(app : App) {
         // pass in the app to use for spotify interface
@@ -124,8 +110,8 @@ export default class UI {
             this.ROUNDS = new Rounds(this);
             
             // bind the resizes
-            this.changeToMobile = this.ROUNDS.changeToMobile.bind(this.ROUNDS);
-            this.changeToDesktop = this.ROUNDS.changeToDesktop.bind(this.ROUNDS);
+            // this.changeToMobile = this.ROUNDS.changeToMobile.bind(this.ROUNDS);
+            // this.changeToDesktop = this.ROUNDS.changeToDesktop.bind(this.ROUNDS);
 
             // start
             this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
@@ -134,6 +120,8 @@ export default class UI {
             this.LANDING = new Landing(this);
             this.LANDING.onLoginPressed = this.Login.bind(this)
         }
+
+        // this.showEndFrame("nothing");
 
         // used for the mobile menu
         this.burgerEl.addEventListener("click", this.toggleNav.bind(this));
@@ -158,6 +146,32 @@ export default class UI {
         this.isMobileSize = m;
     }
 
+    private changeToDesktop() {
+        // small logo
+        TweenMax.to(this.smallLogoEl, 0.5, {display: "none", y:-100})
+
+        // reset nav
+        this.navVisible = false;
+        this.navWrapperEl.removeAttribute("style");
+
+        TweenMax.fromTo(this.navEl, 0.2, {
+            display: "none", y:-100
+        }, {
+            display: "block", y:0
+        })
+
+        this.ROUNDS?.changeToDesktop();
+    }
+
+    private changeToMobile() {
+        this.navWrapperEl.removeAttribute("style");
+
+        // small logo
+        TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+
+        this.ROUNDS?.changeToMobile();
+    }
+
     private onResize() {
         let vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -174,20 +188,33 @@ export default class UI {
 
             // console.log(f.findAll(this.navWrapperEl, "*"))
         } else {
-            // is desktop...
-            this.navEl.style.left = f.px(window.innerWidth/4 - 50 - this.navEl.getBoundingClientRect().width/2)
+            if (window.innerWidth <= 768) {
+                console.log("remove nav width");
+                this.navEl.style.left = "0";
+            } else {
+                console.log("reposition nav");
+                // is desktop...
+                this.navEl.style.left = f.px(window.innerWidth/4 - 50 - this.navEl.getBoundingClientRect().width/2)
+            }
+        }
+
+        // frame
+        if (window.innerWidth <= 768) {
+            if (this.frameVisible) {
+                this.frameOut();
+                console.log("frame out")
+                this.frameVisible = false;
+            }
+
+        } else {
+            console.log("huh?")
+            if (!this.frameVisible) {
+                this.frameIn();
+                console.log("frame in")
+                this.frameVisible = true;
+            }
         }
     }
-
-    // public loadImages(images: string[]) {
-    //     this.assetCounter += images.length;
-        
-    //     images.forEach((imgSrc)=> {
-    //         let imgObject = new Image();
-    //         imgObject.onload = this.imgDownloaded.bind(this);
-    //         imgObject.src = this.ASSETURL + imgSrc;
-    //     })
-    // }
 
     public loadImages(images: string[]) {
         this.assetCounter += images.length;
@@ -225,24 +252,42 @@ export default class UI {
 
     public showBorder() {
         // show the border letters
-        // N E C
-        TweenMax.fromTo(f.findAll(this.frameEl, "li.top"), 0.5, {y:-100}, {y:0})
-        // T
-        TweenMax.fromTo(f.findAll(this.frameEl,"li.left.middle"), 0.5, {x:-100}, {x:0})
-        // A
-        TweenMax.fromTo(f.findAll(this.frameEl, "li.right.middle"), 0.5, {x:100}, { x:0})
-        // R O N
-        TweenMax.fromTo(f.findAll(this.frameEl, "li.bottom"), 0.5, {y:100}, {y:0})
+        // this.frameIn();
 
         // change the position of the nav
         if (this.isMobileSize) {
             // is mobile
-            this.navEl.removeAttribute("style")
+            this.navEl.removeAttribute("style");
+
+            // small logo
+            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
         } else {
             // show the listed nav
-            TweenMax.fromTo(this.navEl, 0.5, {opacity:0, y:-100}, {opacity:1, y:0})
+            TweenMax.fromTo(this.navEl, 0.5, {dispplay: "none", y:-100}, {display:"block", y:0})
         }
 
+    }
+
+    private frameIn() {
+        // N E C
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.top"), 0.5, {display:"none", y:-100}, {y:0, display:"block"})
+        // T
+        TweenMax.fromTo(f.findAll(this.frameEl,"li.left.middle"), 0.5, {display:"none", x:-100}, {x:0, display:"block"})
+        // A
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.right.middle"), 0.5, {display:"none", x:100}, { x:0, display:"block"})
+        // R O N
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.bottom"), 0.5, {display:"none", y:100}, {y:0, display:"block"})
+    }
+
+    private frameOut() {
+        // N E C
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.top"), 0.5, {display:"block", y:-0}, {y:-100, display:"none"})
+        // T
+        TweenMax.fromTo(f.findAll(this.frameEl,"li.left.middle"), 0.5, {display:"block", x:-0}, {x:-100, display:"none"})
+        // A
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.right.middle"), 0.5, {display:"block", x:0}, { x:100, display:"none"})
+        // R O N
+        TweenMax.fromTo(f.findAll(this.frameEl, "li.bottom"), 0.5, {display:"block", y:0}, {y:100, display:"none"})
     }
 
     public showWaves(d: number) {
@@ -325,25 +370,33 @@ export default class UI {
         this.transitionOut();
     }
 
-    private showEndFrame() {
+    public showEndFrame(description: string) {
         // this.currentPage = PageType.EndFrame;
-        // this.setBG(data.COLOURS.beige);
-        // anim.endFrameIn.play();
-        // endFrameIn.to("#end-frame", 0, {
-        //     display: "block"
-        // }).fromTo("#playlist-title", 0.3, {
-        //     alpha:0, x:-20
-        // }, {
-        //     alpha:1, x:0
-        // }, 0.4).fromTo("#playlist-desc", 0.3, {
-        //     alpha:0, x:-20
-        // }, {
-        //     alpha:1, x:0
-        // }, 0.5).fromTo("#album-cover", 0.3, {
-        //     alpha:0, scale:0.5
-        // }, {
-        //     alpha: 1, scale:1, delay: 0.7
-        // }, 0.7)
+        this.setBgColor(data.COLOURS.beige);
+        this.toggleFrameColours(data.COLOURS.purple, true);
+
+        f.elByID("playlist-desc").innerHTML = description;
+
+        this.endFrameEl.style.display = "block";
+        var d = 0.5;
+
+        TweenMax.fromTo(f.find(this.endFrameEl, "#playlist-title"), 0.5, {
+            alpha: 0, x:-100
+        }, {
+            alpha: 1, x:0, delay: d
+        });
+
+        TweenMax.fromTo(f.find(this.endFrameEl, "#playlist-desc"), 0.5, {
+            alpha: 0, x:-100
+        }, {
+            alpha: 1, x:0, delay: d+0.1
+        });
+
+        TweenMax.fromTo(f.find(this.endFrameEl, "#album-cover"), 0.5, {
+            alpha:0, scale:0.9
+        }, {
+            alpha: 1, scale:1, delay: d+0.2
+        });
     }
 
     private togglePage(e: any) {
@@ -479,5 +532,10 @@ export default class UI {
             this.navVisible = true;
         }
 
+    }
+
+    public playlistCreated(url: string) {
+        console.log("playlist created", url)
+        f.elByID("playlist-url").innerHTML = url;
     }
 }

@@ -47,25 +47,25 @@ h1 {
 
     @include transition(font-size 0.2s ease);
 
-    // // < 1366px
-    // @include maxW($desktopLargeWidth) {
-    //     font-size: 50px;
-    // }
+    // < 1366px
+    @include maxW($desktopLargeWidth) {
+        font-size: 50px;
+    }
 
-    // // < 1280px
-    // @include maxW($desktopWidth) {
-    //     font-size: 45px;
-    // }
+    // < 1280px
+    @include maxW($desktopWidth) {
+        font-size: 45px;
+    }
 
     // < 1024px
     @include maxW($tabletLandscapeWidth) {
-        // font-size: 50px;
+        font-size: 40px;
     }
 
     // < 640px;
-    @include maxW($mobileLargeWidth) {
-        font-size: 45px;
-    }
+    // @include maxW($mobileLargeWidth) {
+    //     font-size: 45px;
+    // }
 
     // < 480px;
     @include maxW($mobileWidth) {
@@ -218,7 +218,8 @@ p, table {
 }
 
 .wrapper {
-    width: calc(100% - 200px);
+    width: calc(100% - 300px);
+    // width: calc(100% - 400px);
     height: calc(100% - 200px);
     position: relative;
     margin: 0 auto;
@@ -233,7 +234,9 @@ p, table {
 
     // < 640px;
     @include maxW($mobileLargeWidth) {
-        height: calc(100% - 150px);
+        height: calc(100% - 125px);
+        top: 75px;
+        // border: 1px solid blue;
     }
 }
 
@@ -244,7 +247,8 @@ p, table {
 
 .question-wrapper {
     max-width: 600px;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
     position: relative;
     // border: 1px solid blue;
 
@@ -290,6 +294,12 @@ p, table {
 
         .question-wrapper {
             @include verticalAlign(relative);
+            top: 45%;
+            // margin-top: 30vh;
+
+            @include maxW($tabletLandscapeWidth) {
+                margin-top: 0;
+            }
         }
 
         &:not(.full-width ) {
@@ -304,6 +314,12 @@ p, table {
 
             .question-box-wrapper {
                 height: 300px;
+                // border: 1px solid black;
+                
+                // < 1024px
+                @include maxW($tabletLandscapeWidth) {
+                    height: 200px;
+                }
             }
         }
     }
@@ -347,8 +363,8 @@ p, table {
     width: 50px;
 
     svg {
-        width: inherit;
         overflow: visible;
+        width: 50px;
     }
 
     &:hover {
@@ -415,33 +431,100 @@ p, table {
 // }
 
 #end-frame {
-    position: absolute;
+    // position: absolute;
+
+    // .wrapper {
+    //     color: $purple;
+    // }
+
+    // #playlist-title {
+    //     font-family: "Harbour";
+    //     font-weight: 600;
+    // }
+
+    // #playlist-desc {
+    //     margin-top: 30px;
+    // }
+
+    // #album-cover {
+    //     display: block;
+    //     width: 100%;
+    //     margin: 0 auto;
+    // }
+
+    // .col-wrapper {
+    //     width: 65%;
+    //     margin-top: 22vh;
+
+    //     &:first-child {
+    //         width: 35%;
+    //     }
+    // }
 
     .wrapper {
-        color: $purple;
-    }
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            @include verticalAlign(relative);
+            height: auto;
 
-    #playlist-title {
-        font-family: "Harbour";
-        font-weight: 600;
-    }
-
-    #playlist-desc {
-        margin-top: 30px;
-    }
-
-    #album-cover {
-        display: block;
-        width: 100%;
-        margin: 0 auto;
+        }
     }
 
     .col-wrapper {
-        width: 65%;
-        margin-top: 22vh;
+        // border: 1px solid black;
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            float: none;
+            position: relative;
 
-        &:first-child {
-            width: 35%;
+        }
+    }
+
+    .text-column {
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            height: auto;
+            margin-bottom: 50px;
+        }
+    }
+
+    .content-column {
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            height: 30vh;
+        }
+    }
+
+    .question-wrapper {
+        top: calc(50% - 10vh);
+
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            top: 0;
+            transform: none;
+
+        }
+    }
+
+    h1 {
+        margin-bottom: 40px;
+    }
+
+    #album-cover {
+        // width: calc(100% - 200px);
+        width: 100%;
+        @include verticalAlign(absolute);
+        // left:-100px
+
+        @include maxW($tabletLandscapeWidth) {
+            width: auto;
+            height: 100%;
+            top: 0;
+            transform: none;
+            margin: 0 auto;
+            display: block;
+            position: relative;
+
         }
     }
 }
