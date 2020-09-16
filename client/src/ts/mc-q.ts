@@ -161,11 +161,12 @@ export default class MCQ {
         if (!this.interactable) return;
 
         // get the answer
+        var bg = e.srcElement.style.backgroundImage;
         var answer = e.srcElement.getAttribute("data");
         mcqQuestions[this.questionIdx].answer = answer;
 
         // set the thing
-        this.canGraphicEls[this.questionIdx].style.backgroundImage = this.getCanPath(answer);
+        this.canGraphicEls[this.questionIdx].style.backgroundImage = this.getCanPath(bg);
 
         // peel it on
         TweenMax.to(this.canGraphicEls[this.questionIdx], this.time, {alpha:1})

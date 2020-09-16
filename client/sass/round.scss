@@ -168,7 +168,7 @@
         // < 1024px
         @include maxW($tabletLandscapeWidth) {
             position: relative;
-            top: -105px;
+            top: -90px;
             width: 80%;
         }
     }
@@ -248,9 +248,9 @@
             width: 100%;
             bottom: 0px;
 
-            svg {
-                width: 65px;
-            }
+            // svg {
+            //     width: 65px;
+            // }
          }
     }
 
@@ -267,6 +267,7 @@
             left: 60%;
             top: -115px;
             z-index: -1;
+            width: 50px;
         }
     }
 }

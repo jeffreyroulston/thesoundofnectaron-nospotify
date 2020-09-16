@@ -93,7 +93,7 @@ export default class QuickFireQ {
             alpha:0, x:200
         }, {
             alpha:1, x:0, delay: delay, onComplete: ()=> {
-            setTimeout(this.updateTimer.bind(this), 1000)
+            // setTimeout(this.updateTimer.bind(this), 1000)
         }})
     }
 

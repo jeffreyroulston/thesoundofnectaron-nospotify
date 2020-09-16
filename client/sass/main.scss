@@ -227,7 +227,9 @@ p, table {
 
     // < 640px;
     @include maxW($mobileLargeWidth) {
-        height: calc(100% - 150px);
+        height: calc(100% - 125px);
+        top: 75px;
+        // border: 1px solid blue;
     }
 }
 
@@ -238,7 +240,8 @@ p, table {
 
 .question-wrapper {
     max-width: 600px;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
     position: relative;
     // border: 1px solid blue;
 
@@ -284,6 +287,12 @@ p, table {
 
         .question-wrapper {
             @include verticalAlign(relative);
+            top: 45%;
+            // margin-top: 30vh;
+
+            @include maxW($tabletLandscapeWidth) {
+                margin-top: 0;
+            }
         }
 
         &:not(.full-width ) {
@@ -298,6 +307,12 @@ p, table {
 
             .question-box-wrapper {
                 height: 300px;
+                // border: 1px solid black;
+                
+                // < 1024px
+                @include maxW($tabletLandscapeWidth) {
+                    height: 200px;
+                }
             }
         }
     }
@@ -341,8 +356,8 @@ p, table {
     width: 50px;
 
     svg {
-        width: inherit;
         overflow: visible;
+        width: 50px;
     }
 
     &:hover {
