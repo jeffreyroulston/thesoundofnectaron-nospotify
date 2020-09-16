@@ -79,8 +79,8 @@ export default class UI {
     public Login = ()=>{};
 
     // bound to either landing or rounds
-    private changeToMobile = () => {};
-    private changeToDesktop = () => {};
+    // private changeToMobile = () => {};
+    // private changeToDesktop = () => {};
 
     constructor(app : App) {
         // pass in the app to use for spotify interface
@@ -109,8 +109,8 @@ export default class UI {
             this.ROUNDS = new Rounds(this);
             
             // bind the resizes
-            this.changeToMobile = this.ROUNDS.changeToMobile.bind(this.ROUNDS);
-            this.changeToDesktop = this.ROUNDS.changeToDesktop.bind(this.ROUNDS);
+            // this.changeToMobile = this.ROUNDS.changeToMobile.bind(this.ROUNDS);
+            // this.changeToDesktop = this.ROUNDS.changeToDesktop.bind(this.ROUNDS);
 
             // start
             this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
@@ -120,7 +120,7 @@ export default class UI {
             this.LANDING.onLoginPressed = this.Login.bind(this)
         }
 
-        // this.showEndFrame();
+        // this.showEndFrame("nothing");
 
         // used for the mobile menu
         this.burgerEl.addEventListener("click", this.toggleNav.bind(this));
@@ -145,6 +145,24 @@ export default class UI {
         this.isMobileSize = m;
     }
 
+    private changeToDesktop() {
+        this.navVisible = false;
+        this.navWrapperEl.removeAttribute("style");
+
+        TweenMax.fromTo(this.navEl, 0.2, {
+            display: "none", y:-100
+        }, {
+            display: "block", y:0
+        })
+
+        this.ROUNDS?.changeToDesktop();
+    }
+
+    private changeToMobile() {
+        this.navWrapperEl.removeAttribute("style");
+        this.ROUNDS?.changeToMobile();
+    }
+
     private onResize() {
         let vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -161,8 +179,14 @@ export default class UI {
 
             // console.log(f.findAll(this.navWrapperEl, "*"))
         } else {
-            // is desktop...
-            this.navEl.style.left = f.px(window.innerWidth/4 - 50 - this.navEl.getBoundingClientRect().width/2)
+            if (window.innerWidth <= 768) {
+                console.log("remove nav width");
+                this.navEl.style.left = "0";
+            } else {
+                console.log("reposition nav");
+                // is desktop...
+                this.navEl.style.left = f.px(window.innerWidth/4 - 50 - this.navEl.getBoundingClientRect().width/2)
+            }
         }
     }
 
@@ -217,7 +241,7 @@ export default class UI {
             this.navEl.removeAttribute("style")
         } else {
             // show the listed nav
-            TweenMax.fromTo(this.navEl, 0.5, {opacity:0, y:-100}, {opacity:1, y:0})
+            TweenMax.fromTo(this.navEl, 0.5, {dispplay: "none", y:-100}, {display:"block", y:0})
         }
 
     }
@@ -464,5 +488,10 @@ export default class UI {
             this.navVisible = true;
         }
 
+    }
+
+    public playlistCreated(url: string) {
+        console.log("playlist created", url)
+        f.elByID("playlist-url").innerHTML = url;
     }
 }
