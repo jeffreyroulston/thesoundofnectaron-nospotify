@@ -78,19 +78,19 @@ export default class Rounds {
         var currentRound = data.ROUNDS[this.currentRoundIdx];
 
         //do the background
-        this.UI.SetBgColor(currentRound.color);
+        this.UI.setBgColor(currentRound.color);
 
         // make the frame text white
-        this.UI.ToggleFrameColours(data.COLOURS.beige, true);
+        this.UI.toggleFrameColours(data.COLOURS.beige, true);
 
         // set wave colour
-        this.UI.ToggleWaveColor(currentRound.waveColor);
+        this.UI.toggleWaveColor(currentRound.waveColor);
 
         // make the border come in
-        this.UI.ShowBorder();
+        this.UI.showBorder();
 
         // waves
-        this.UI.ShowWaves(d);
+        this.UI.showWaves(d);
 
         // set round copy
         f.find(this.descriptionEl, "p").innerHTML= currentRound.text;
@@ -198,14 +198,14 @@ export default class Rounds {
         })
 
         var q = this.questionGroups[this.currentRoundIdx];
-        this.UI.SetVisibleElements([this.roundPageEl]);
-        this.UI.ShowQuestion();
+        this.UI.setVisibleElements([this.roundPageEl]);
+        this.UI.showQuestion();
         q.set();
     }
 
     public roundComplete(el: HTMLElement) {
         // Called from slider/MCQ/Quickfire
-        this.UI.SetVisibleElements([el]);
+        this.UI.setVisibleElements([el]);
 
         // hide elements
         this.roundNumberListEls.forEach((n1)=> {
@@ -219,7 +219,7 @@ export default class Rounds {
 
         if (this.currentRoundIdx <2) {
             this.currentRoundIdx++;
-            this.UI.TransitionOut();
+            this.UI.transitionOut();
             this.showRound(0.7);
         } else {
             // all done

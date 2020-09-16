@@ -189,6 +189,16 @@ export default class UI {
     //     })
     // }
 
+    public loadImages(images: string[]) {
+        this.assetCounter += images.length;
+        
+        images.forEach((imgSrc)=> {
+            let imgObject = new Image();
+            imgObject.onload = this.imgDownloaded.bind(this);
+            imgObject.src = this.ASSET_URL + imgSrc;
+        })
+    }
+
     private imgDownloaded() {
         console.log("image downloaded");
         this.assetsLoaded++;
@@ -202,7 +212,18 @@ export default class UI {
         this.elementsToHide = [];
     }
 
-    public ShowBorder() {
+
+    public setVisibleElements(elements : HTMLElement[]) {
+        elements.forEach((e)=> {
+            this.elementsToHide.push(e);
+        })
+    }
+
+    public setBgColor(color: string) {
+        f.el("body").style.backgroundColor = color;
+    }
+
+    public showBorder() {
         // show the border letters
         // N E C
         TweenMax.fromTo(f.findAll(this.frameEl, "li.top"), 0.5, {y:-100}, {y:0})
@@ -224,19 +245,19 @@ export default class UI {
 
     }
 
-    public ShowWaves(d: number) {
+    public showWaves(d: number) {
         TweenMax.fromTo([this.wavesTopEl, this.wavesBottomEl], 2, {display:"none", alpha:0}, {display:"block", alpha:0.95, ease: "linear", delay: d})
         TweenMax.fromTo(this.wavesBottomEl, 3, {y:100}, {y:0, ease: "linear", delay: d})
         TweenMax.fromTo(this.wavesTopEl, 3, {y:-100}, {y:0, ease: "linear", delay: d})
     }
 
-    public HideWaves(delay: number) {
+    public hideWaves(delay: number) {
         TweenMax.to([this.wavesTopEl, this.wavesBottomEl], 1, {display:"none", alpha:0, ease: "linear"})
         TweenMax.to(this.wavesBottomEl, 1, {y:500, ease: "linear"})
         TweenMax.to(this.wavesTopEl, 1, {y:-500, ease: "linear"})
     }
 
-    public ToggleWaveColor(color: string) {
+    public toggleWaveColor(color: string) {
         // change visible wave colors
         TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + this.currentWaveColor), 1, {alpha:1, display:"block"}, {alpha:0, display:"none"})
 
@@ -249,7 +270,7 @@ export default class UI {
         this.currentWaveColor = color;
     }
 
-    public ToggleFrameColours(color : string, setValue : boolean) {
+    public toggleFrameColours(color : string, setValue : boolean) {
         // change color of letters in the border
         this.frameLetterFill.forEach((el)=> {
             el.style.fill = color;
@@ -281,7 +302,7 @@ export default class UI {
         }
     }
 
-    public TransitionOut() {
+    public transitionOut() {
         console.log("elements to hide", this.elementsToHide);
         // hide the elements
         TweenMax.to(this.elementsToHide, 0.5, {
@@ -289,19 +310,19 @@ export default class UI {
         })
     }
 
-    public ShowQuestion() { 
+    public showQuestion() { 
         // called from UI.ROUNDS
         // this.currentPage = PageType.Question;
-        this.SetBgColor(data.COLOURS.beige)
+        this.setBgColor(data.COLOURS.beige)
 
         // change the color of the frame
-        this.ToggleFrameColours(data.COLOURS.purple, true);
+        this.toggleFrameColours(data.COLOURS.purple, true);
 
         // hide waves
-        this.HideWaves(0);
+        this.hideWaves(0);
 
         // hide the elements
-        this.TransitionOut();
+        this.transitionOut();
     }
 
     private showEndFrame() {
@@ -337,12 +358,12 @@ export default class UI {
             this.currentPopupPageEl = undefined;
 
             // change the frame colours
-            this.ToggleFrameColours(this.currentFrameColor, false);
+            this.toggleFrameColours(this.currentFrameColor, false);
 
         } else {  
             if (target == "about" || target == "faq") {
                 // change the color of the frame but don't set it as the current (so it can be reverted)
-                this.ToggleFrameColours(data.COLOURS.purple, false);
+                this.toggleFrameColours(data.COLOURS.purple, false);
 
                 if (this.currentPopupPageEl) {
                     // of there's a page currently showing, so hide it and show the next
@@ -424,7 +445,7 @@ export default class UI {
         // called from the burger/close
         if (this.navVisible) {
             // close the nav
-            this.ToggleFrameColours(this.currentFrameColor, false);
+            this.toggleFrameColours(this.currentFrameColor, false);
 
             TweenMax.to(this.navWrapperEl, 0.5, {
                 display: "none", x:-window.innerWidth*2
@@ -434,7 +455,7 @@ export default class UI {
 
         } else {
             // show the nav
-            this.ToggleFrameColours(data.COLOURS.purple, false);
+            this.toggleFrameColours(data.COLOURS.purple, false);
 
             TweenMax.fromTo(this.navWrapperEl, 0.5, {
                 display: "none", x:-window.innerWidth*2
@@ -459,87 +480,4 @@ export default class UI {
         }
 
     }
-
-    // **************
-    // PUBLIC
-    // **************
-
-    // public Authorize() {
-    //     this.authorized = true;
-    // }
-
-    public SetVisibleElements(elements : HTMLElement[]) {
-        elements.forEach((e)=> {
-            this.elementsToHide.push(e);
-        })
-    }
-
-    public SetBgColor(color: string) {
-        f.el("body").style.backgroundColor = color;
-    }
-
-    // public TransitionOut(color : string) {
-    //     // transition the background color
-    //     f.el("body").style.backgroundColor = color;
-
-    //     // kill the looping animations
-    //     // this.loopingAnimations.forEach((anim)=> {
-    //     //     anim.kill();
-    //     // })
-
-    //     // this.loopingAnimations = [];
-
-    //     // hide the elements
-    //     TweenMax.to(this.elementsToHide, 0.5, {
-    //         alpha:0, scale:0.95, display: "none", onComplete: this.clearHiddenElements.bind(this)
-    //     })
-    // }
-
-    public LoadImages(images: string[]) {
-        this.assetCounter += images.length;
-        
-        images.forEach((imgSrc)=> {
-            let imgObject = new Image();
-            imgObject.onload = this.imgDownloaded.bind(this);
-            imgObject.src = this.ASSET_URL + imgSrc;
-        })
-    }
-
-    // public RoundComplete(el: HTMLElement) {
-    //     // Called from slider/MCQ/Quickfire
-    //     this.elementsToHide.push(el);
-
-    //     if (this.currentRoundIdx == this.questionGroups.length-1) {
-    //         console.log("questions completed");
-    //         this.showEndFrame();
-    //     } else {
-    //         this.next();
-    //     }
-    // }
-
-    public OnUserData(type: si.DataType, data: si.Data): void {
-
-        // switch(type) {
-        //     case si.DataType.UserProfile:
-        //         const profile: si.UserProfile = (data as si.UserProfile);
-        //         if (profile.images != null && profile.DisplayName != null) {
-        //             this.ShowUserData(profile.images[0], profile.DisplayName);
-        //         }
-
-        //         break;
-
-        //     case si.DataType.Recommendations:
-        //         this.recommendations = (data as si.Track[]);
-        //         break;
-
-        //     case si.DataType.TopArtists:
-        //         // this.artists = (data as si.Artist[]);
-        //         break;
-        // }
-    }
-    
-    public ShowUserData(imageURL: string, displayName: string): void {
-    }
-
-    
 }
