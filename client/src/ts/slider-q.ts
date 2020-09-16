@@ -432,7 +432,7 @@ export default class Slider {
 
     scaleBitter() {
         // get height
-        this.imgs[1].style.height = f.px(7* (this.sliderValue - this.midValue) + this.fruitDefaultHeight);
+        this.imgs[1].style.height = f.px(5* (this.sliderValue - this.midValue) + this.fruitDefaultHeight);
         // console.log(this.imgs[1], f.px(3*(this.sliderValue - this.midValue) + this.fruitDefaultHeight));
 
         // get offset
@@ -445,10 +445,10 @@ export default class Slider {
 
     scaleSweet() {
         console.log("scale bottom")
-        this.imgs[0].style.height= f.px(7* (this.midValue - this.sliderValue) + this.fruitDefaultHeight);
+        this.imgs[0].style.height= f.px(5* (this.midValue - this.sliderValue) + this.fruitDefaultHeight);
 
         // get offset
-        this.sweetFruitOffset = 0 - 7* (this.midValue - this.sliderValue);
+        this.sweetFruitOffset = 0 - 5* (this.midValue - this.sliderValue);
         this.imgs[0].style.top = f.px(this.sweetFruitOffset);
         
         // console.log(this.imgs[0], f.px(3*(this.midValue - this.sliderValue) + this.fruitDefaultHeight))
