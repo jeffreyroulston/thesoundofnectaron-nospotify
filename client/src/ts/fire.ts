@@ -29,7 +29,8 @@ const fireFrag = `
 
     void main() {
         vec4 texCol = texture2D(flameTexture, vUv);
-        gl_FragColor = texCol;
+        // gl_FragColor = texCol;
+        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
     }
 `
 
@@ -215,7 +216,7 @@ export default class Fire {
                 // let scale = fit01(Math.random(), 0.01, 0.05);
 
                 let life = Math.random() * 0.5 + 0.5;
-                let scale = Math.random() * 0.1 + 0.05;
+                let scale = Math.random() * 0.05 + 0.025;
     
                 flame.birth(this.tempVector, life, scale, this.currentSpeed);
             }
