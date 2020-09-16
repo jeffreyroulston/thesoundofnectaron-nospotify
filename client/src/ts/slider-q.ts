@@ -4,6 +4,10 @@ import ROUND from "./rounds";
 import {TweenMax} from "gsap"
 import {COLOURS, sliderQuestions, SliderQuestion } from "./data";
 
+import { Draggable } from "gsap/dist/Draggable";
+import gsap from "gsap";
+gsap.registerPlugin(Draggable);
+
 export default class Slider {
     // the element
     private el : HTMLElement = f.elByID("slider-q");
@@ -16,7 +20,8 @@ export default class Slider {
 
     // shared elements
     private sliderEl : HTMLInputElement = <HTMLInputElement>f.find(this.el, ".slider-input");
-    private sliderThumbEl : HTMLElement = f.find(this.el, " .slider-thumb");
+    // private sliderThumbEl : HTMLElement = f.find(this.el, " .slider-thumb");
+    private sliderThumbEl : HTMLElement = f.find(this.el, ".test");
     private questionElement: HTMLElement = f.find(this.el, ".question");
     private minValueLabel : HTMLElement = f.find(this.el, "#min-value-label");
     private maxValueLabel : HTMLElement = f.find(this.el, "#max-value-label");
@@ -30,8 +35,8 @@ export default class Slider {
     private maxValue : number = 100;
 
     // starts in the middle
-    private sliderValue : number = 50;
-    private previousValue : number = 50;
+    private sliderValue : number = 0;
+    private previousValue : number = 0;
     private midValue = 50;
 
     // these change per question
@@ -61,17 +66,14 @@ export default class Slider {
     // for looping animations
     private loopingAnimations : TweenMax[] = [];
 
-    // private fruitDefaultWidth : number;
-    // private topFruitDefaultBottomValue : number;
-    // private bottomFruitDefaultTopValue : number;
-
-    // private min : number = 0;
-    // private max : number = 0;
-    // private mid : number = 0;
-    // private value : number = 0;
-    // private prevValue : number = 0
-
-    // private initialised : boolean = false;
+    // private
+    private draggableStartPos : number = 0;
+    private draggableNextPos : number = 0;
+    private draggableCurrentPos : number = 0;
+    private draggableWidth : number = 0;
+    private draggableMax : number = 0;
+    private draggableMin : number = 0;
+    private draggableMultiplier : number = 0;
 
     private showCurrentQuestion: () => void;
     private callbackCurrentQuestion : (e:any) => void;
@@ -91,6 +93,31 @@ export default class Slider {
         this.sliderEl.addEventListener("input",this.sliderChange.bind(this));
         this.sliderEl.addEventListener("change", this.sliderValueSet.bind(this));
         window.addEventListener("resize", this.onResize.bind(this));
+
+        var d = Draggable.create(".slider-thumb", {
+            type:"x", edgeResistance:1, bounds:".slide-container", inertia:false, onDrag : this.onDrag.bind(this), onDragStart : this.onDragStart.bind(this)
+        });
+    }
+
+    private onDragStart(e: any) {
+        // starts with the assumption that the start value is 0
+        this.draggableWidth = this.sliderLineEl.getBoundingClientRect().width;
+        this.draggableMultiplier = Math.round(this.draggableWidth/100)
+        this.draggableStartPos = e.x;
+
+        console.log(this.draggableWidth, this.draggableMultiplier, this.draggableStartPos);
+
+        this.draggableMax = this.draggableWidth;
+        this.draggableMin = 0;;
+
+        // this.draggableMax = this.draggableStartPos + this.draggableWidth;
+        // this.draggableMin = this.draggableStartPos;
+
+    }
+
+    private onDrag(e: any) {
+        var value = Math.round((e.x - this.draggableStartPos)/this.draggableMax * 100);
+        console.log(value);
     }
 
     private onResize(e: any) {
@@ -138,7 +165,7 @@ export default class Slider {
             // set value to default
             this.sliderValue = 50;
             this.sliderEl.value = "50";
-            this.sliderReset();
+            // this.sliderReset();
 
             // show it
             this.show();
@@ -199,7 +226,7 @@ export default class Slider {
         // hide the content column
         f.find(this.el, ".col-wrapper.content-column").style.display = "none"
 
-        this.setValue(0);
+        // this.setValue(0);
 
         this.imgs = rays;
         this.imgs2 = stars;
@@ -612,7 +639,7 @@ export default class Slider {
 
         // // get the next position of the arrow
         // move the triangle to match the position of the slider thumb
-        this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumbEl.getBoundingClientRect().width/2);
+        // this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumbEl.getBoundingClientRect().width/2);
 
         this.callbackCurrentQuestion(e);
     }

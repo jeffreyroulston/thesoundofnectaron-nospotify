@@ -176,22 +176,24 @@
     .slide-container {
         position: relative;
         width: 100%;
+        left:10px;
     }
 
     .slider-thumb {
         width: 0;
         height: 0;
+        left: -10px;
         border-left: 11px solid transparent;
         border-right: 11px solid transparent;
         border-bottom: 16px solid $purple;
         position: absolute;
-        left: calc(50% - 9px);
+        // left: calc(50% - 9px);
 
-        @include maxW($tabletPortraitWidth) {
-            border-left: 25px solid transparent;
-            border-right: 25px solid transparent;
-            border-bottom: 35px solid $purple;
-        }
+        // @include maxW($tabletPortraitWidth) {
+        //     border-left: 25px solid transparent;
+        //     border-right: 25px solid transparent;
+        //     border-bottom: 35px solid $purple;
+        // }
     }
 
     .slider-label {
@@ -205,11 +207,13 @@
     }
 
     #max-value-label {
-        right: -20px;
+        // right: -20px;
+        right: 0px;
     }
 
     .slider-line {
-        width:inherit;
+        width: calc(100% - 20px);
+        // width: 100%;
         display: block;
         border-top: 2px solid $purple;
     }
@@ -218,6 +222,7 @@
         width: 100%;
         opacity: 1;
         position: relative;
+        display: none;
     }
 
     .slider-thumb, .slider-input {

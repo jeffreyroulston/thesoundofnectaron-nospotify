@@ -1,5 +1,9 @@
 @import 'shared';
 
+#test {
+    display: none;
+}
+
 #round-name {
     .round, .round-name-text, .numbers, .description {
         display: inline-block;
@@ -197,7 +201,7 @@
         position: absolute;
         bottom: 80px;
         right: 0px;
-
+        z-index: 1;
 
          // < 1024px
          @include maxW($tabletLandscapeWidth) {
