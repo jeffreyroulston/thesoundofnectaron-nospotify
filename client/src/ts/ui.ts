@@ -34,7 +34,9 @@ export default class UI {
     private wavesTopEl : HTMLElement = f.elByID("waves-top");
     private wavesBottomEl : HTMLElement = f.elByID("waves-bottom");
     private currentWaveColor: string = "purple";
-    private wavesVisible : boolean = false;
+
+    // end frame
+    private endFrameEl : HTMLElement = f.elByID("end-frame");
     
     // nav
     private navWrapperEl : HTMLElement = f.elByID("nav-wrapper")
@@ -80,23 +82,6 @@ export default class UI {
     private changeToMobile = () => {};
     private changeToDesktop = () => {};
 
-    // private recommendations: si.Track[] | undefined = [];
-    // private queryParameters: {[key: string]: si.QueryParameter }  = {
-    //     "acousticness" : qDefault(),
-    //     "danceability" : qDefault(),
-    //     "energy" : qDefault(),
-    //     "instrumentalness" : qDefault(),
-    //     "liveness" : qDefault(),
-    //     "loudness" : qDefault(),
-    //     "speechiness" : qDefault(),
-    //     "valence" : qDefault(),
-    //     "tempo" : qDefault()
-    // }
-    
-    // PUBLIC VARIABLES
-    // public OnLoginPressed = () => {};
-    // public OnQuestionAnswered: {(totalQuestions: number, questionNumber: number, question: q.Question): void}[] = [];
-
     constructor(app : App) {
         // pass in the app to use for spotify interface
         this.app = app;
@@ -134,6 +119,8 @@ export default class UI {
             this.LANDING = new Landing(this);
             this.LANDING.onLoginPressed = this.Login.bind(this)
         }
+
+        // this.showEndFrame();
 
         // used for the mobile menu
         this.burgerEl.addEventListener("click", this.toggleNav.bind(this));
@@ -178,16 +165,6 @@ export default class UI {
             this.navEl.style.left = f.px(window.innerWidth/4 - 50 - this.navEl.getBoundingClientRect().width/2)
         }
     }
-
-    // public loadImages(images: string[]) {
-    //     this.assetCounter += images.length;
-        
-    //     images.forEach((imgSrc)=> {
-    //         let imgObject = new Image();
-    //         imgObject.onload = this.imgDownloaded.bind(this);
-    //         imgObject.src = this.ASSETURL + imgSrc;
-    //     })
-    // }
 
     public loadImages(images: string[]) {
         this.assetCounter += images.length;
@@ -325,25 +302,33 @@ export default class UI {
         this.transitionOut();
     }
 
-    private showEndFrame() {
+    public showEndFrame(description: string) {
         // this.currentPage = PageType.EndFrame;
-        // this.setBG(data.COLOURS.beige);
-        // anim.endFrameIn.play();
-        // endFrameIn.to("#end-frame", 0, {
-        //     display: "block"
-        // }).fromTo("#playlist-title", 0.3, {
-        //     alpha:0, x:-20
-        // }, {
-        //     alpha:1, x:0
-        // }, 0.4).fromTo("#playlist-desc", 0.3, {
-        //     alpha:0, x:-20
-        // }, {
-        //     alpha:1, x:0
-        // }, 0.5).fromTo("#album-cover", 0.3, {
-        //     alpha:0, scale:0.5
-        // }, {
-        //     alpha: 1, scale:1, delay: 0.7
-        // }, 0.7)
+        this.setBgColor(data.COLOURS.beige);
+        this.toggleFrameColours(data.COLOURS.purple, true);
+
+        f.elByID("playlist-desc").innerHTML = description;
+
+        this.endFrameEl.style.display = "block";
+        var d = 0.5;
+
+        TweenMax.fromTo(f.find(this.endFrameEl, "#playlist-title"), 0.5, {
+            alpha: 0, x:-100
+        }, {
+            alpha: 1, x:0, delay: d
+        });
+
+        TweenMax.fromTo(f.find(this.endFrameEl, "#playlist-desc"), 0.5, {
+            alpha: 0, x:-100
+        }, {
+            alpha: 1, x:0, delay: d+0.1
+        });
+
+        TweenMax.fromTo(f.find(this.endFrameEl, "#album-cover"), 0.5, {
+            alpha:0, scale:0.9
+        }, {
+            alpha: 1, scale:1, delay: d+0.2
+        });
     }
 
     private togglePage(e: any) {

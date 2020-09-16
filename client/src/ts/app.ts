@@ -11,8 +11,8 @@ import { easeExpIn } from "d3";
 import { shuffle } from "./helpers";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
-let REDIRECT_URI: string = "http://10.100.10.63:8888";
-// let REDIRECT_URI: string = "http://localhost:8888";
+// let REDIRECT_URI: string = "http://10.100.10.63:8888";
+let REDIRECT_URI: string = "http://localhost:8888";
 // let REDIRECT_URI: string = "http://thesoundofnectaron.truedigital.co.nz";
 let SCOPES: string[] = [
     'user-top-read', 
@@ -120,7 +120,113 @@ export default class App {
 
     public CreatePlaylist() {
         console.log("create playlist");
+        this.ui.showEndFrame(this.createPlaylistDescription());
         this.generatePlaylist();
+    }
+
+    public createPlaylistDescription() {
+        // create the playlist description
+        var desc = "";
+
+        var settingMap = [
+            "Best savoured on a sizzling beach day, ",
+            "Best savoured against the backdrop of city lights, ",
+            "Best savoured against the skyline of towering mountains, ",
+            "Best savoured on your local park bench, ",
+        ]
+
+        var buddyMap = [
+            "a travelling circus clown.",
+            "a roaring T-Rex.",
+            "a cheeky Leprechaun.",
+            "at a Masquerade ball.",
+            "a robot from the year 3000.",
+            "an extra cool snowman."
+        ]
+
+        var setting = settingMap[data.mcqQuestions[0].options.indexOf(data.mcqQuestions[0].answer)] 
+        var buddy = buddyMap[data.mcqQuestions[2].options.indexOf(data.mcqQuestions[2].answer)];
+
+        desc = setting + "your brew is extra fresh and topped off with just a dash of liquid " + data.mcqQuestions[4].answer.replace("ingredient_x_", "") + ". "
+
+        var seg1, seg2, seg3, seg4;
+
+        data.sliderQuestions.forEach((q)=> {
+            switch(q.params) {
+                case si.QueryParameters.Danceability:
+                    if (q.answer <=10) {
+                        seg1 = "Kick back and chill "
+                    } else if (q.answer <= 35) {
+                        seg1 = "Get that toe tappin' "
+                    } else if (q.answer <= 66) {
+                        seg1 = "Shake that thang "
+                    } else {
+                        seg1 = "Raise the roof "
+                    }
+                    break;
+                
+                case si.QueryParameters.Energy:
+                    if (q.answer <=10) {
+                        seg2 = "with low key tunes "
+                    } else if (q.answer <= 35) {
+                        seg2 = "to easy listening tunes "
+                    } else if (q.answer <= 66) {
+                        seg2 = "to feel-good tunes "
+                    } else {
+                        seg2 = "with heavy-hitter bangers "
+                    }
+                    break;
+
+                case si.QueryParameters.Valence:
+                    if (q.answer <=10) {
+                        seg3 = "filled with all the right feels."
+                    } else if (q.answer <= 35) {
+                        seg3 = "that’ll get you unwinding."
+                    } else if (q.answer <= 66) {
+                        seg3 = "that hit just right."
+                    } else {
+                        seg3 = "that’ll have you feeling like " + buddy;
+                    }
+                    break;
+                
+                case si.QueryParameters.Speechiness:
+                    break;
+                
+                default:
+                    break;
+            }
+        })
+
+        desc = desc + seg1 + seg2 + seg3;
+        return desc;
+
+    // 0 - 0.10 
+    // Dance - Kick back and chill... 
+    // Duration - for a sec... 
+    // Energy - with low key tunes…
+    // Valance - filled with all the right feels. 
+
+    // 0.11 - 0.33
+    // Dance - Get that toe tappin’...
+    // Energy -  to easy listening tunes…
+    // Valance - that’ll get you unwinding…
+    // Pull from rapid-fire - just like you’re in your favourite <micro pub>.
+
+    // 0.34 - 0.66
+    // Dance - Shake that thang...
+    // Energy - to feel-good tunes…
+    // Valance - that hit just right.
+    // Pull from rapid-fire - just like you’re in your favourite <brew bar>.
+
+    // 0.67 - 0.99
+    // Dance - Raise the roof…
+    // Duration - all night long... 
+    // Energy - with heavy-hitter bangers…
+    // Valance - that’ll have you feeling like <Godzilla>. Note: insert chosen drinking buddy
+
+    // EXAMPLE:
+    // Raise the roof all night long with heavy-hitter bangers and podcasts that’ll have you feeling like <Godzilla>.
+
     }
 
     async generatePlaylist() {

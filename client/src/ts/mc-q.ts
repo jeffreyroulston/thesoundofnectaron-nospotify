@@ -93,6 +93,7 @@ export default class MCQ {
         // set the things
         for (var i=0; i<this.currentQuestion.options.length; i++) {
             this.optionEls[i].style.backgroundImage = this.getImgPath(i);
+            this.optionEls[i].setAttribute("data", this.currentQuestion?.options[i]);
         }
 
         // show it
@@ -160,7 +161,7 @@ export default class MCQ {
         if (!this.interactable) return;
 
         // get the answer
-        var answer = e.srcElement.style.backgroundImage;
+        var answer = e.srcElement.getAttribute("data");
         mcqQuestions[this.questionIdx].answer = answer;
 
         // set the thing

@@ -47,25 +47,25 @@ h1 {
 
     @include transition(font-size 0.2s ease);
 
-    // // < 1366px
-    // @include maxW($desktopLargeWidth) {
-    //     font-size: 50px;
-    // }
+    // < 1366px
+    @include maxW($desktopLargeWidth) {
+        font-size: 50px;
+    }
 
-    // // < 1280px
-    // @include maxW($desktopWidth) {
-    //     font-size: 45px;
-    // }
+    // < 1280px
+    @include maxW($desktopWidth) {
+        font-size: 45px;
+    }
 
     // < 1024px
     @include maxW($tabletLandscapeWidth) {
-        // font-size: 50px;
+        font-size: 40px;
     }
 
     // < 640px;
-    @include maxW($mobileLargeWidth) {
-        font-size: 45px;
-    }
+    // @include maxW($mobileLargeWidth) {
+    //     font-size: 45px;
+    // }
 
     // < 480px;
     @include maxW($mobileWidth) {
@@ -211,7 +211,8 @@ p, table {
 }
 
 .wrapper {
-    width: calc(100% - 200px);
+    width: calc(100% - 300px);
+    // width: calc(100% - 400px);
     height: calc(100% - 200px);
     position: relative;
     margin: 0 auto;
@@ -408,33 +409,48 @@ p, table {
 // }
 
 #end-frame {
-    position: absolute;
+    // position: absolute;
 
-    .wrapper {
-        color: $purple;
+    // .wrapper {
+    //     color: $purple;
+    // }
+
+    // #playlist-title {
+    //     font-family: "Harbour";
+    //     font-weight: 600;
+    // }
+
+    // #playlist-desc {
+    //     margin-top: 30px;
+    // }
+
+    // #album-cover {
+    //     display: block;
+    //     width: 100%;
+    //     margin: 0 auto;
+    // }
+
+    // .col-wrapper {
+    //     width: 65%;
+    //     margin-top: 22vh;
+
+    //     &:first-child {
+    //         width: 35%;
+    //     }
+    // }
+
+    .question-wrapper {
+        top: calc(50% - 10vh)
     }
 
-    #playlist-title {
-        font-family: "Harbour";
-        font-weight: 600;
-    }
-
-    #playlist-desc {
-        margin-top: 30px;
+    h1 {
+        margin-bottom: 40px;
     }
 
     #album-cover {
-        display: block;
+        // width: calc(100% - 200px);
         width: 100%;
-        margin: 0 auto;
-    }
-
-    .col-wrapper {
-        width: 65%;
-        margin-top: 22vh;
-
-        &:first-child {
-            width: 35%;
-        }
+        @include verticalAlign(absolute);
+        // left:-100px
     }
 }

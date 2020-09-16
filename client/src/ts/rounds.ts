@@ -223,6 +223,7 @@ export default class Rounds {
             this.showRound(0.7);
         } else {
             // all done
+            this.UI.transitionOut();
             this.CreatePlaylist();
         }
         // this.UI.TransitionOut();

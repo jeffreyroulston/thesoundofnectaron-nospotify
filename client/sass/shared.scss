@@ -157,29 +157,37 @@ $mobileWidth: 480px;
     }
  }
 
+// // < 1920px
+// @include maxW($desktopXLargeWidth) {
+
+// }
+
 // // < 1366px
 // @include maxW($desktopLargeWidth) {
-//     font-size: 55px;
+
 // }
 
 // // < 1280px
 // @include maxW($desktopWidth) {
-//     font-size: 55px;
+
 // }
 
 // // < 1024px
 // @include maxW($tabletLandscapeWidth) {
-//     font-size: 50px;
+
 // }
 
 // // < 768px
 // @include maxW($tabletPortraitWidth) {
+
 // }
 
 // // < 640px;
 // @include maxW($mobileLargeWidth) {
+
 // }
 
 // // < 480px;
 // @include maxW($mobileWidth) {
+    
 // }
