@@ -2,7 +2,7 @@
 
 #burger, #headerSmall {
     position: absolute;
-    z-index: $zIndexNav;
+    z-index: $zIndexNavBar;
     display: none;
 }
 
@@ -60,7 +60,8 @@
     position: absolute;
     top: calc(#{$framePadding} + 5px);
     left: 100px;
-    opacity: 0;
+    // opacity: 0;
+    display: none;
 
     // < 768px
     @include maxW($tabletPortraitWidth) {
@@ -70,7 +71,7 @@
     
     // < 640px;
     @include maxW($mobileLargeWidth) {
-        opacity: 1;
+        display: block;
         width: 100%;
         text-align: center;
         @include verticalAlign(relative);

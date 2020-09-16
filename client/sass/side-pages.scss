@@ -8,7 +8,7 @@
     z-index: $zIndexPopupPages;
 
     @include maxW($mobileLargeWidth) {
-        z-index: $zIndexNav;
+        z-index: $zIndexPopupPagesMobile;
     }
 
     .question-wrapper {

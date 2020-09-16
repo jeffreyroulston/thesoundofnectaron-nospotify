@@ -12,7 +12,9 @@ $framePadding : 20px;
 $frameLetterSize : 30px;
 // $letterSize: 70px;
 $zIndexNav: 1000;
+$zIndexNavBar: 1002;
 $zIndexPopupPages: 999;
+$zIndexPopupPagesMobile: 1001;
 
 @function center($containerWidth, $elWidth) {
     @return calc(#{$containerWidth}/2 - (#{$elWidth}.2));

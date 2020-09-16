@@ -23,7 +23,6 @@ export default class Landing {
         this.UI = ui;
 
         f.find(this.landingPageEl, ".next-btn").addEventListener("click", this.login.bind(this))
-        this.Show();
     }
 
     private login() {
@@ -32,7 +31,7 @@ export default class Landing {
         this.onLoginPressed();
     }
 
-    public Show() {
+    public show() {
         // elements
         var logoDesktop = f.find(this.landingPageEl, ".logo-wrapper-large");
         var logoMobile = f.find(this.landingPageEl, ".logo-wrapper-mobile");
@@ -52,7 +51,7 @@ export default class Landing {
         this.UI.toggleFrameColours(data.COLOURS.beige, true);
 
         // make the border come in
-        this.UI.showBorder();
+        this.UI.showNavBar();
 
         // waves
         this.UI.showWaves(0);

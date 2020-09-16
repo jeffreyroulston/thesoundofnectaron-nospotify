@@ -4,6 +4,7 @@
 #frame-letters {
     // display: none;
     li {
+        display: none;
         position: absolute;
         height: $frameLetterSize;
         width: $frameLetterSize;
@@ -34,7 +35,10 @@
         }
     }
 
-    @include maxW($tabletPortraitWidth) {
-        display: none;
-    }
+    // @include transform(scale(1));
+    // @include transition(transform 0.2s ease);
+
+    // @include maxW($tabletPortraitWidth) {
+    //     @include transform(scale(0));
+    // }
 }

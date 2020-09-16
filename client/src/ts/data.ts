@@ -144,7 +144,7 @@ export const sliderQuestions : Array<SliderQuestion> = [
 
 export const mcqQuestions : Array<MCQuestion> = [
     {
-        question : "Where is you Nectaron brew savoured?",
+        question : "Where is your Nectaron brew savoured?",
         id: "bg",
         options : ["beach_skyline", "city_skyline", "mountains_skyline", "park_skyline"],
         answer : ""

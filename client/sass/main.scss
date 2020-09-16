@@ -227,8 +227,8 @@ p, table {
 
     // < 640px;
     @include maxW($mobileLargeWidth) {
-        height: calc(100% - 125px);
-        top: 75px;
+        // height: calc(100% - 125px);
+        // top: 75px;
         // border: 1px solid blue;
     }
 }
@@ -292,6 +292,8 @@ p, table {
 
             @include maxW($tabletLandscapeWidth) {
                 margin-top: 0;
+                top: 0;
+                transform: none;
             }
         }
 

@@ -94,8 +94,6 @@ export default class UI {
 
         // Set custom height
         window.addEventListener('resize', this.onResize.bind(this));
-        this.onResize();
-
         document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
     }
 
@@ -108,17 +106,15 @@ export default class UI {
             // GAMEPLAY
             this.ASSET_URL = "../assets/";
             this.ROUNDS = new Rounds(this);
-            
-            // bind the resizes
-            // this.changeToMobile = this.ROUNDS.changeToMobile.bind(this.ROUNDS);
-            // this.changeToDesktop = this.ROUNDS.changeToDesktop.bind(this.ROUNDS);
 
             // start
             this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
+            this.ROUNDS.showRound(0)
         } else {
             // LANDING PAGE
             this.LANDING = new Landing(this);
             this.LANDING.onLoginPressed = this.Login.bind(this)
+            this.LANDING.show();
         }
 
         // this.showEndFrame("nothing");
@@ -130,6 +126,9 @@ export default class UI {
         f.findAll(this.navWrapperEl, "li").forEach(li => {
             li.addEventListener("click", this.togglePage.bind(this))
         })
+
+        console.log(this.LANDING, "resize");
+        this.onResize();
     }
 
     private checkMobileSize() {
@@ -167,7 +166,8 @@ export default class UI {
         this.navWrapperEl.removeAttribute("style");
 
         // small logo
-        TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+        console.log(this.LANDING);
+        if (this.LANDING == undefined) TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
 
         this.ROUNDS?.changeToMobile();
     }
@@ -202,15 +202,12 @@ export default class UI {
         if (window.innerWidth <= 768) {
             if (this.frameVisible) {
                 this.frameOut();
-                console.log("frame out")
                 this.frameVisible = false;
             }
 
         } else {
-            console.log("huh?")
             if (!this.frameVisible) {
                 this.frameIn();
-                console.log("frame in")
                 this.frameVisible = true;
             }
         }
@@ -250,7 +247,7 @@ export default class UI {
         f.el("body").style.backgroundColor = color;
     }
 
-    public showBorder() {
+    public showNavBar() {
         // show the border letters
         // this.frameIn();
 
@@ -260,7 +257,8 @@ export default class UI {
             this.navEl.removeAttribute("style");
 
             // small logo
-            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+            console.log(this.LANDING);
+            if (this.LANDING == undefined) TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
         } else {
             // show the listed nav
             TweenMax.fromTo(this.navEl, 0.5, {dispplay: "none", y:-100}, {display:"block", y:0})
