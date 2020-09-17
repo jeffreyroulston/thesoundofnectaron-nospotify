@@ -5,6 +5,7 @@ import {TweenMax} from "gsap"
 import App from "./app";
 import Landing from "./landing";
 import Rounds from "./rounds";
+import Modernizr from "modernizr";
 
 var qDefault = function() { return { value: 0, include: false } };
 
