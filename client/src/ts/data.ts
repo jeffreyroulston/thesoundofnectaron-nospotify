@@ -53,7 +53,8 @@ export interface SliderQuestion extends Question {
     maxTextValue : string,
     min: number,
     max: number,
-    answer : number
+    answer : number,
+    startValue : number
 }
 
 export interface MCQuestion extends Question {
@@ -100,24 +101,27 @@ export const sliderQuestions : Array<SliderQuestion> = [
         question : "What brew style are you after?",
         minTextValue : "Light",
         maxTextValue : "Dark",
+        startValue : 0,
         min : 0,
         max: 1,
-        answer : 0
+        answer : 0,
     },
     {
         params: si.QueryParameters.Speechiness,
         question : "How bitter would you like your brew?",
         minTextValue : "0 IBU",
         maxTextValue : "100 IBU",
+        startValue : 50,
         min : 0.1,
         max: 0.4,
-        answer : 0
+        answer : 0,
     },
     {
         params: si.QueryParameters.Energy,
         question : "What mouthfeel would you like?",
         minTextValue : "Sharp",
         maxTextValue : "Round",
+        startValue : 50,
         min : 0,
         max: 1,
         answer : 0
@@ -127,6 +131,7 @@ export const sliderQuestions : Array<SliderQuestion> = [
         question : "How long would you like to boil for?",
         minTextValue : "0 min",
         maxTextValue : "120 min",
+        startValue : 50,
         min : 120,
         max: 240,
         answer : 0
@@ -136,6 +141,7 @@ export const sliderQuestions : Array<SliderQuestion> = [
         question : "How strong are the beer goggles on this one??",
         minTextValue : "Weak",
         maxTextValue : "Strong",
+        startValue : 0,
         min : 0.2,
         max: 0.8,
         answer : 0

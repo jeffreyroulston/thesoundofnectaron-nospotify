@@ -130,9 +130,10 @@ export default class Slider {
             console.log(e.touches[0].pageX)
             this.draggableCurrentPos = e.touches[0].pageX
         } else {
-            console.log(e.x);
+            // console.log(e.x);
             this.draggableCurrentPos = e.x;
         }
+        console.log(Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100));
         // return Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100);
         // console.log(this.draggableCurrentPos, this.draggableOffset, this.sliderValue)
         // console.log(e.x, e.touches, e.touches.length, e);
@@ -211,6 +212,9 @@ export default class Slider {
             // this.setSliderValue(this.sliderValue)
             // this.sliderReset();
 
+            // set slider value
+            this.setSliderValue(q.startValue);
+
             // show it
             this.show();
             this.showCurrentQuestion();
@@ -235,11 +239,24 @@ export default class Slider {
             alpha:1, x:0, delay: delay
         });
 
+        // hide the slider thumb
+        TweenMax.to(this.sliderThumbEl, this.time, { alpha:0 });
+
         // show the line
         TweenMax.fromTo(this.sliderLineEl, this.time, {
             scaleX:0, transformOrigin: "right"
         }, {
-            scaleX:1, delay: delay
+            scaleX:1, delay: delay, onComplete : ()=> {
+                this.sliderResize();
+                this.setSliderValue(this.sliderValue);
+
+                // show the thumb
+                TweenMax.fromTo(this.sliderThumbEl, this.time, {
+                    alpha:0, y:20
+                }, {
+                    alpha:1, y:0
+                });
+            }
         });
 
         // show the labels
@@ -250,12 +267,11 @@ export default class Slider {
         })
 
         // show the thumb
-        TweenMax.fromTo(this.sliderThumbEl, this.time, {
-            alpha:0, y:20
-        }, {
-            alpha:1, y:0, delay: delay
-        });
-
+        // TweenMax.fromTo(this.sliderThumbEl, this.time, {
+        //     alpha:0, y:20
+        // }, {
+        //     alpha:1, y:0, delay: delay
+        // });
     }
 
     private toggleFullWidth() {
@@ -470,7 +486,7 @@ export default class Slider {
         this.imgs = [];
 
         // set slider value
-        this.setSliderValue(50);
+        // this.setSliderValue(50);
 
         // hide the content column
         f.find(this.el, ".col-wrapper.content-column").style.display = "none"
@@ -554,7 +570,7 @@ export default class Slider {
         this.fire.run();
 
         // set slider value
-        this.setSliderValue(50);
+        // this.setSliderValue(50);
         this.fire?.setSpeed(50/50);
 
         // make it not full width
@@ -602,7 +618,7 @@ export default class Slider {
         // HANDS
         this.count = 5;
         // set slider value
-        this.setSliderValue(0);
+        // this.setSliderValue(0);
         // this.sliderEl.value = "0";
         // this.sliderReset();
 
