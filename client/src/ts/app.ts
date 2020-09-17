@@ -70,7 +70,7 @@ export default class App {
         // this.ui.OnLoginPressed = this.Login;
         // this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
 
-        this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png").then(() => {
+        this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/spritesheet.png").then(() => {
             this.flames.onInitResources(this.resourceManager);
         });
 

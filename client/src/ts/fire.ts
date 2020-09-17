@@ -1,6 +1,5 @@
-import { scaleBand } from 'd3';
+import { partition, scaleBand } from 'd3';
 import * as THREE from 'three';
-import { Vector3 } from 'three';
 import SimplexNoise from "simplex-noise";
 import ResourceManager from './resource-manager';
 
@@ -14,23 +13,36 @@ function fit01(val: number, min: number, max: number) {
 
 const fireVert = `
 
+    attribute float age;
+
     varying vec2 vUv;
+    varying float vAge;
 
     void main() {
         vUv = uv;
+        vAge = age;
         gl_Position = projectionMatrix * viewMatrix * vec4(position, 1.0);
     }
 `
 
 const fireFrag = `
+
+    const float spriteDim = 5.0;
+
     uniform sampler2D flameTexture;
 
     varying vec2 vUv;
+    varying float vAge;
 
     void main() {
-        vec4 texCol = texture2D(flameTexture, vUv);
-        // gl_FragColor = texCol;
-        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        float index = floor(vAge * spriteDim * spriteDim);
+        float x = mod(index, spriteDim) / spriteDim;
+        float y = 1.0 - floor(index / spriteDim) / spriteDim;
+        vec2 spriteUvs = vUv * (1.0 / spriteDim) + vec2(x, y);
+        vec4 texCol = texture2D(flameTexture, spriteUvs);
+        gl_FragColor = vec4(texCol.rgb, texCol.a);
+        //gl_FragColor = vec4(index / spriteDim / spriteDim, 0.0, 0.0, 1.0);
+        // gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
     }
 `
 
@@ -53,11 +65,12 @@ export default class Fire {
     private frameResized: boolean = true;
 
     // meshes
-    private maxFlames: number = 200;
-    private spawnRate: number = 100;
+    private maxFlames: number = 25000;
+    private spawnRate: number = 10000;
     private mesh: THREE.Mesh;
     private geo: THREE.BufferGeometry;
     private buffer: Float32Array;
+    private ageBuffer: Float32Array;
 
     // flames
     private flames: FlamePoint[] = [];
@@ -65,7 +78,8 @@ export default class Fire {
     private currentSpeed: number = 1.0;
 
     // utilities
-    private tempVector: THREE.Vector3 = new Vector3();
+    private tempVector: THREE.Vector3 = new THREE.Vector3();
+    private tempMatrix: THREE.Matrix3 = new THREE.Matrix3();
 
     constructor() {
 
@@ -83,8 +97,9 @@ export default class Fire {
         this.camera.position.z = 0;
 
         this.buffer = new Float32Array(this.maxFlames * 18.0);
+        this.ageBuffer = new Float32Array(this.maxFlames * 6.0);
         this.geo = new THREE.BufferGeometry();
-
+            
         const uvsBuffer = new Float32Array(this.maxFlames * 12.0);
         for (let i = 0; i < this.maxFlames; i++) {
             uvsBuffer[i * 12 + 0] = 0.0;
@@ -108,6 +123,7 @@ export default class Fire {
 
         this.geo.setAttribute('position', new THREE.Float32BufferAttribute(this.buffer, 3));
         this.geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvsBuffer, 2));
+        this.geo.setAttribute('age', new THREE.Float32BufferAttribute(this.ageBuffer, 1));
         
         this.material = new THREE.ShaderMaterial({
             vertexShader: fireVert,
@@ -116,7 +132,9 @@ export default class Fire {
                 flameTexture: {value: undefined}
             },
             side: THREE.DoubleSide,
-            transparent: true
+            transparent: true,
+            // blending: THREE.AdditiveBlending,
+            depthWrite: false
         });
 
         for (let i = 0; i < this.maxFlames; i++) {
@@ -148,14 +166,14 @@ export default class Fire {
     }
 
     public onInitResources(resourceManager: ResourceManager) {
-        const image = resourceManager.getResourceByPath(HTMLImageElement, "assets/noise-tex.png");
+        const image = resourceManager.getResourceByPath(HTMLImageElement, "assets/spritesheet.png");
 
         const tex = new THREE.Texture(image);
-        tex.format = THREE.RedFormat;
-        tex.wrapS = THREE.RepeatWrapping;
-        tex.wrapT = THREE.RepeatWrapping;
-        tex.magFilter = THREE.NearestFilter;
-        tex.minFilter = THREE.NearestFilter;
+        tex.format = THREE.RGBAFormat;
+        tex.wrapS = THREE.ClampToEdgeWrapping;
+        tex.wrapT = THREE.ClampToEdgeWrapping;
+        tex.magFilter = THREE.LinearFilter;
+        tex.minFilter = THREE.LinearFilter;
         tex.needsUpdate = true;
 
         this.material.uniforms.flameTexture.value = tex;
@@ -174,11 +192,11 @@ export default class Fire {
 
         this.updateParticles(elapsed, dt);
 
-        this.updateGeometry();
+        this.updateGeometry(elapsed, dt);
 
         this.checkResize();
 
-        this.currentSpeed = Math.sin(elapsed * 0.5) + 1.1;
+        this.currentSpeed = Math.sin(elapsed * 0.5) + 1.0;
 
         this.renderer.render(this.scene, this.camera);
     }
@@ -208,7 +226,7 @@ export default class Fire {
                 }
 
                 let x = Math.random() * 2.0 - 1.0;
-                let y = -1.0;
+                let y = -1.5;
                 let z = 0.0;
                 this.tempVector.set(x * this.currentAspect, y, z);
     
@@ -216,7 +234,7 @@ export default class Fire {
                 // let scale = fit01(Math.random(), 0.01, 0.05);
 
                 let life = Math.random() * 0.5 + 0.5;
-                let scale = Math.random() * 0.05 + 0.025;
+                let scale = Math.random() * 0.5 + 0.25;
     
                 flame.birth(this.tempVector, life, scale, this.currentSpeed);
             }
@@ -253,9 +271,10 @@ export default class Fire {
         this.camera.updateProjectionMatrix();
     }
 
-    private updateGeometry(): void {
+    private updateGeometry(elapsed: number, dt: number): void {
         const aliveParticles = this.flames.length;
         const position = this.buffer;
+        const ageBuffer = this.ageBuffer;
         let aliveParticlesCount = 0;
 
         for (let index = 0; index < aliveParticles; index++) {
@@ -264,32 +283,58 @@ export default class Fire {
                 continue;
             }
 
+            let randomRotation = (simplex.noise2D(particle.id, elapsed) * 0.5 + 0.5) * 2.0 * Math.PI;
+            this.tempMatrix.elements[0] = this.tempMatrix.elements[4] = Math.cos(randomRotation);
+            this.tempMatrix.elements[3] = -Math.sin(randomRotation);
+            this.tempMatrix.elements[1] = Math.sin(randomRotation);
+            this.tempMatrix.elements[8] = 1;
+
             aliveParticlesCount += 1;
-            const i = aliveParticlesCount * 18;
+            const positionIndex = aliveParticlesCount * 18;
+            const ageIndex = aliveParticlesCount * 6;
 
-            position[i + 0] = particle.position.x - particle.scale;
-            position[i + 1] = particle.position.y - particle.scale;
-            position[i + 2] = 0.0;
+            this.tempVector.set(-particle.scale, -particle.scale, 0.0);
+            this.tempVector.applyMatrix3(this.tempMatrix);
+            position[positionIndex + 0] = particle.position.x + this.tempVector.x;
+            position[positionIndex + 1] = particle.position.y + this.tempVector.y;
+            position[positionIndex + 2] = 0.0;
+            
+            this.tempVector.set(-particle.scale, particle.scale, 0.0);
+            this.tempVector.applyMatrix3(this.tempMatrix);
+            position[positionIndex + 3] = particle.position.x + this.tempVector.x;
+            position[positionIndex + 4] = particle.position.y + this.tempVector.y;
+            position[positionIndex + 5] = 0.0;
 
-            position[i + 3] = particle.position.x - particle.scale;
-            position[i + 4] = particle.position.y + particle.scale;
-            position[i + 5] = 0.0;
+            this.tempVector.set(particle.scale, particle.scale, 0.0);
+            this.tempVector.applyMatrix3(this.tempMatrix);
+            position[positionIndex + 6] = particle.position.x + this.tempVector.x;
+            position[positionIndex + 7] = particle.position.y + this.tempVector.y;
+            position[positionIndex + 8] = 0.0;
 
-            position[i + 6] = particle.position.x + particle.scale;
-            position[i + 7] = particle.position.y + particle.scale;
-            position[i + 8] = 0.0;
+            this.tempVector.set(-particle.scale, -particle.scale, 0.0);
+            this.tempVector.applyMatrix3(this.tempMatrix);
+            position[positionIndex + 9] = particle.position.x + this.tempVector.x;
+            position[positionIndex + 10] = particle.position.y + this.tempVector.y;
+            position[positionIndex + 11] = 0.0;
 
-            position[i + 9] = particle.position.x - particle.scale;
-            position[i + 10] = particle.position.y - particle.scale;
-            position[i + 11] = 0.0;
+            this.tempVector.set(particle.scale, particle.scale, 0.0);
+            this.tempVector.applyMatrix3(this.tempMatrix);
+            position[positionIndex + 12] = particle.position.x + this.tempVector.x;
+            position[positionIndex + 13] = particle.position.y + this.tempVector.y;
+            position[positionIndex + 14] = 0.0;
 
-            position[i + 12] = particle.position.x + particle.scale;
-            position[i + 13] = particle.position.y + particle.scale;
-            position[i + 14] = 0.0;
+            this.tempVector.set(particle.scale, -particle.scale, 0.0);
+            this.tempVector.applyMatrix3(this.tempMatrix);
+            position[positionIndex + 15] = particle.position.x + this.tempVector.x;
+            position[positionIndex + 16] = particle.position.y + this.tempVector.y;
+            position[positionIndex + 17] = 0.0;
 
-            position[i + 15] = particle.position.x + particle.scale;
-            position[i + 16] = particle.position.y - particle.scale;
-            position[i + 17] = 0.0;
+            ageBuffer[ageIndex + 0] = particle.normalisedAge;
+            ageBuffer[ageIndex + 1] = particle.normalisedAge;
+            ageBuffer[ageIndex + 2] = particle.normalisedAge;
+            ageBuffer[ageIndex + 3] = particle.normalisedAge;
+            ageBuffer[ageIndex + 4] = particle.normalisedAge;
+            ageBuffer[ageIndex + 5] = particle.normalisedAge;
         }
 
         if (this.geo.attributes.position instanceof THREE.BufferAttribute) {
@@ -297,18 +342,40 @@ export default class Fire {
             this.geo.attributes.position.needsUpdate = true;
         }   
 
+        if (this.geo.attributes.age instanceof THREE.BufferAttribute) {
+            this.geo.attributes.age.copyArray(this.ageBuffer);
+            this.geo.attributes.age.needsUpdate = true;
+        }
+
         this.geo.setDrawRange(0, aliveParticlesCount * 6.0);
+    }
+
+    public destroy() {
+        this.material.dispose();
+        this.geo.dispose();
+        this.flames = [];
+        this.renderer.dispose();
     }
 }
 
 class FlamePoint {
 
-    private _position: Vector3 = new THREE.Vector3();
+    private _position: THREE.Vector3 = new THREE.Vector3();
 
+    static currentID = 0;
+    private _id: number = 0;
     private speed: number = 0;
     private _life: number = 0;
     private _age: number = 0;
     private _scale: number = 0;
+
+    constructor() {
+        this._id = FlamePoint.currentID++;
+    }
+
+    public get id(): number {
+        return this._id;
+    }
 
     public birth(startingPosition: THREE.Vector3, life: number, scale: number, speed: number): void {
         this._position.copy(startingPosition);
@@ -320,7 +387,7 @@ class FlamePoint {
 
     public update(elapsed: number, dt: number) {
         this._position.y += this.speed * dt;
-        this._position.x += simplex.noise3D(this.position.y * 2.0, this.position.x * 2.0, elapsed) * dt * this.speed;
+        this._position.x += simplex.noise3D(this.position.y * 2.0, this.position.x * 2.0, elapsed) * dt * this.speed * 0.25;
 
         this._age += dt;
     }
