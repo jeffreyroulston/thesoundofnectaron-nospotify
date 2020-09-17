@@ -89,10 +89,10 @@ export default class UI {
         this.app = app;
 
         // check if it's a shit browser
-        if (!Modernizr.svg) {
-            this.nope = true;
-            f.elByID("shit-browser-alert").style.display = "block";
-        }
+        // if (!Modernizr.svg) {
+        //     this.nope = true;
+        //     f.elByID("shit-browser-alert").style.display = "block";
+        // }
 
         // this.nope = true;
         // f.elByID("shit-browser-alert").style.display = "block";
