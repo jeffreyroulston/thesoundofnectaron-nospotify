@@ -92,12 +92,11 @@ export default class UI {
         // if (!Modernizr.svg) {
         //     this.nope = true;
         //     f.elByID("shit-browser-alert").style.display = "block";
+        // } else {
+        //     window.addEventListener('resize', this.onResize.bind(this));
+        //     document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
         // }
 
-        // this.nope = true;
-        // f.elByID("shit-browser-alert").style.display = "block";
-
-        // Set custom height
         window.addEventListener('resize', this.onResize.bind(this));
         document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
     }
@@ -172,8 +171,8 @@ export default class UI {
         // }
 
         if (this.imgsLoaded == this.imgCount) {
-            this.onResize();
             this.LANDING?.show();
+            this.onResize();
         }
     }
 
@@ -207,9 +206,9 @@ export default class UI {
         this.navWrapperEl.removeAttribute("style");
 
         TweenMax.fromTo(this.navEl, 0.2, {
-            display: "none", y:-100
+            y:-100
         }, {
-            display: "block", y:0
+            y:0
         })
 
         this.ROUNDS?.changeToDesktop();
@@ -297,7 +296,7 @@ export default class UI {
             if (this.LANDING == undefined) TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
         } else {
             // show the listed nav
-            TweenMax.fromTo(this.navEl, 0.5, {dispplay: "none", y:-100}, {display:"block", y:0})
+            TweenMax.fromTo(this.navEl, 0.5, {y:-100}, {y:0})
         }
 
     }

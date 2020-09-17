@@ -61,7 +61,8 @@
     top: calc(#{$framePadding} + 5px);
     left: 100px;
     // opacity: 0;
-    display: none;
+    // display: none;
+    transform: translateY(-100px);
 
     // < 768px
     @include maxW($tabletPortraitWidth) {
