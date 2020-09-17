@@ -29,6 +29,7 @@
     "gsap": "file:src/js/gsap-bonus.tgz",
     "gulp-cli": "^2.3.0",
     "gulp-watch": "^5.0.1",
+    "modernizr": "^3.11.3",
     "three": "^0.118.3"
   }
 }
