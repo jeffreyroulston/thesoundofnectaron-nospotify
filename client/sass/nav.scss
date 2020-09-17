@@ -131,6 +131,10 @@
         font-size: 14px;
         color: $beige;
         cursor: pointer;
+        padding-bottom: 3px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0);
+        border-color: rgba(255, 255, 255, 0);
+        transition: border-color 0.3s ease;
 
         &.deg {
             display: none;
@@ -147,6 +151,8 @@
             font-family: "Harbour";
             font-weight: 600;
             line-height: 1.7;
+            padding: 0;
+            border: none;
 
             &.deg {
                 display: block;
@@ -165,40 +171,37 @@
         }
 
         &:nth-child(n+3) {
-            &::before {
-                content: "";
-                display: inline-block;
-                width: 12px;
-                height: 1px;
-                background: $beige;
-                position: relative;
-                top: -4px;
-                margin-right: 10px;
-                margin-left: 5px;
-                
-                // < 640px;
-                @include maxW($mobileLargeWidth) {
-                    display: none;
-                }
-            }
+            margin-left: 30px;;
 
-            &::after {
-                content: "x";
-                position: absolute;
-                top: 0px;
-                opacity: 0;
-                left: calc(50% + 12px);
-                transform: translateX(-50%);
-                @include transition(all 0.2s ease);
-            }
+            // &::before {
+            //     content: "";
+            //     display: inline-block;
+            //     width: 12px;
+            //     height: 1px;
+            //     background: $beige;
+            //     position: relative;
+            //     top: -4px;
+            //     margin-right: 10px;
+            //     margin-left: 5px;
+                
+            //     // < 640px;
+            //     @include maxW($mobileLargeWidth) {
+            //         display: none;
+            //     }
+            // }
+
+            // &::after {
+            //     content: "x";
+            //     position: absolute;
+            //     top: 0px;
+            //     opacity: 0;
+            //     left: calc(50% + 12px);
+            //     transform: translateX(-50%);
+            //     @include transition(all 0.2s ease);
+            // }
 
             &.active {
-                // color: $orange;
-
-                &::after {
-                    opacity: 1;
-                    top: 20px;
-                }
+                border-color: $orange;
             }
         }
     }

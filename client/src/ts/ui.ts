@@ -75,6 +75,7 @@ export default class UI {
 
     // looping animations
     private loopingAnimations : TweenMax[] = [];
+    private inPageLoopingAnimations : TweenMax[] = [];
 
     private nope : boolean = false;
 
@@ -201,7 +202,7 @@ export default class UI {
         if (show) {
             TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
         } else {
-            TweenMax.to(this.smallLogoEl, 0.5, {display: "none", y:-100})
+            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "block", y:0}, {display: "none", y:0})
         }
     }
 
@@ -438,126 +439,30 @@ export default class UI {
         });
     }
 
-    private togglePage(e: any) {
-        // used for nav (About/Contact/Order)
-        var target = e.srcElement.getAttribute("data");
-        
-        if (this.currentPopupPage == target) {
-            // if it's the same page, close it
-            e.srcElement.classList.toggle("active");
-            this.hidePage(this.currentPopupPage);
-            this.currentPopupPage = "";
-            this.currentPopupPageEl = undefined;
-
-            // change the frame colours
-            this.toggleFrameColours(this.currentFrameColor, false);
-
-        } else {  
-            if (target == "about" || target == "faq") {
-                // change the color of the frame but don't set it as the current (so it can be reverted)
-                this.toggleFrameColours(data.COLOURS.purple, false);
-
-                if (this.currentPopupPageEl) {
-                    // of there's a page currently showing, so hide it and show the next
-                    this.currentPopupPageEl.classList.toggle("active");
-                    e.srcElement.classList.toggle("active");
-                    this.hidePage(this.currentPopupPage, target);
-                } else {
-                    // check if it's mobile
-                    e.srcElement.classList.toggle("active");
-                    this.showPage(target);
-                }
-            }          
-
-            this.currentPopupPage = target;
-            this.currentPopupPageEl = e.srcElement;
-        }
-    }
-
-    private showPage(p : string) {
-        // animations for different pages
-        switch(p) {
-            case "about" :
-                // bop the fruit
-                this.loopingAnimations.push(TweenMax.fromTo(this.aboutHopTopEl, 3, {
-                    rotate: -10, x:-50
-                }, {
-                    rotate: 10, x:50, repeat: -1, yoyo: true, ease: "linear"
-                }))
-
-                this.loopingAnimations.push(TweenMax.to(this.aboutHopBottomEl, 1.5, {
-                    y: -20, repeat: -1, yoyo: true, ease: "linear"
-                }))
-
-                this.show(this.aboutEl);
-                break;
-            case "faq":
-                this.show(this.faqEl);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private hidePage(p : string, p2?: string) {
-        // animations for different pages
-        switch(p) {
-            case "about" :
-                this.hide(this.aboutEl)
-                break;
-            case "faq":
-                this.hide(this.faqEl)
-                break;
-            default:
-                break;
-        }
-
-        if (p2) {
-            this.showPage(p2);
-        }
-    }
-
-    private show(e: HTMLElement) {
-        TweenMax.fromTo(e, 0.15, {
-            display : "none", alpha: 0, scale:0.98
-        }, {
-            display: "block", alpha: 1, scale:1
-        })
-    }
-
-    private hide(e: HTMLElement) {
-        TweenMax.fromTo(e, 0.15, {
-            display : "block", alpha: 1, scale:1
-        }, {
-            display: "none", alpha: 0, scale:0.98
-        })
-    }
-
     private toggleNav() {
         // called from the burger/close
-        if (this.navVisible) {
-            // close the nav
-            this.toggleFrameColours(this.currentFrameColor, false);
 
-            TweenMax.to(this.navWrapperEl, 1, {
-                display: "none", x:-window.innerWidth*2, ease: "easeOut"
-            })
+        // BURGER OPEN
+        if (this.navVisible) {
+            if (this.currentPopupPage) {
+                this.hidePage(this.currentPopupPage);
+            } else {
+                this.slideOut(this.navWrapperEl);
+            }
+
+            // revert the frame colours
+            this.toggleFrameColours(this.currentFrameColor, false);
 
             // hide the small logo
             if (this.LANDING) this.toggleHeaderLogo(false);
-
             this.navVisible = false;
 
         } else {
             // show the nav
             this.toggleFrameColours(data.COLOURS.purple, false);
+            this.slideIn(this.navWrapperEl);
 
-            TweenMax.fromTo(this.navWrapperEl, 0.5, {
-                display: "none", x:-window.innerWidth*2
-            }, {
-                display: "block", x:0
-            })
-
+            // bounce in the things
             TweenMax.fromTo(f.findAll(this.navEl, "li"), 0.5, {
                 alpha:0, y:50
             }, {
@@ -568,12 +473,155 @@ export default class UI {
 
             // show the small logo
             if (this.LANDING) this.toggleHeaderLogo(true);
-
             this.navVisible = true;
         }
 
         this.burgerEl.classList.toggle("opened");
 
+    }
+
+    private togglePage(e: any) {
+        // used for nav (About/Contact/Order)
+        var target = e.srcElement.getAttribute("data");
+
+        if (this.isMobileSize) {
+            // MOBILE
+            if (target == "about" || target == "faq") {
+                this.showPage(target);
+
+                // hide the nav wrapper
+                this.slideOut(this.navWrapperEl);
+            }
+        } else {
+            // DEKSTOP
+            if (this.currentPopupPage == target) {
+                // if it's the same page, close it
+
+                // show the underline on the next page
+                e.srcElement.classList.toggle("active");
+
+                // hide the current page
+                this.hidePage(this.currentPopupPage);
+    
+                // change the frame colours
+                this.toggleFrameColours(this.currentFrameColor, false);
+
+                // set current pop up page to nothing
+                this.currentPopupPageEl = undefined;
+    
+            } else {  
+                if (target == "about" || target == "faq") {
+                    // change the color of the frame but don't set it as the current (so it can be reverted)
+                    this.toggleFrameColours(data.COLOURS.orange, false);
+    
+                    if (this.currentPopupPage.length) {
+                        // if there's a page currently showing, so hide it and show the next
+                        this.currentPopupPageEl?.classList.toggle("active");
+
+                        // hide the current page and show the next one 
+                        this.hidePage(this.currentPopupPage, target);
+                    } else {
+                        // nothing else visible, show the damn page
+                        this.showPage(target);
+                    } 
+
+                    // set the currrent list element to active
+                    this.currentPopupPageEl = e.srcElement;
+                    this.currentPopupPageEl?.classList.toggle("active");
+                }          
+            }
+        }
+    }
+
+    private showPage(p : string, delay?: number) {
+        // animations for different pages
+        if (p == "about") {
+            // bop the fruit
+            this.inPageLoopingAnimations.push(TweenMax.fromTo(this.aboutHopTopEl, 3, {
+                rotate: -10, x:-50
+            }, {
+                rotate: 10, x:50, repeat: -1, yoyo: true, ease: "linear"
+            }))
+
+            this.inPageLoopingAnimations.push(TweenMax.to(this.aboutHopBottomEl, 1.5, {
+                y: -50, repeat: -1, yoyo: true, ease: "linear"
+            }))
+
+            if (this.isMobileSize) {
+                this.slideIn(this.aboutEl)
+            } else {
+                delay? this.show(this.aboutEl, delay) : this.show(this.aboutEl)
+            }
+        } else if (p == "faq") {
+            if (this.isMobileSize) {
+                this.slideIn(this.faqEl);
+            } else {
+                delay? this.show(this.faqEl, delay) : this.show(this.faqEl)
+            }
+        }
+
+        this.currentPopupPage = p;
+        // this.currentPopupPageEl = f.elByID(p);
+        console.log("show page", this.currentPopupPage, this.currentPopupPageEl);
+    }
+
+    private hidePage(p : string, p2?: string) {
+        if (p == "about") {
+            if (this.isMobileSize) {
+                this.slideOut(this.aboutEl)
+            } else {
+                this.hide(this.aboutEl);
+            }
+        } else if (p == "faq") {
+            if (this.isMobileSize) {
+                this.slideOut(this.faqEl);
+            } else {
+                this.hide(this.faqEl);
+            }
+        }
+
+        this.inPageLoopingAnimations.forEach((anim)=> {
+            anim.kill();
+        });
+
+        this.inPageLoopingAnimations = [];
+        this.currentPopupPage = "";
+        // this.currentPopupPageEl = undefined;
+        console.log("hide page", p, this.currentPopupPageEl);
+
+        if (p2) this.showPage(p2, 0.3);
+    }
+
+    private show(e: HTMLElement, delay?: number) {
+        var d = delay ? delay : 0; 
+
+        TweenMax.fromTo(e, 0.3, {
+            display : "none", alpha: 0
+        }, {
+            display: "block", alpha: 1, delay: d
+        })
+    }
+
+    private hide(e: HTMLElement) {
+        TweenMax.fromTo(e, 0.3, {
+            display : "block", alpha: 1
+        }, {
+            display: "none", alpha: 0
+        })
+    }
+
+    private slideIn(e: HTMLElement) {
+        TweenMax.fromTo(e, 0.5, {
+            display: "none", x:-window.innerWidth*2
+        }, {
+            display: "block", x:0, ease: "easeOut"
+        })
+    }
+
+    private slideOut(e: HTMLElement) {
+        TweenMax.to(e, 1, {
+            display: "none", x:-window.innerWidth*2, ease: "easeOut"
+        })
     }
 
     public playlistCreated(url: string) {

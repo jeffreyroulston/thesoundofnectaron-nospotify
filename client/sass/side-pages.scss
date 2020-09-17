@@ -14,7 +14,6 @@
     .question-wrapper {
         overflow: scroll;
         height: 100%;
-        max-width: unset;
     }
 
     h1, p, table {
@@ -26,21 +25,54 @@
         // max-width: 650px;
     }
 
-    .wrapper {
-        // < 640px;
-        @include maxW($mobileLargeWidth) {
-            height: calc(100% - 100px);
+    // .wrapper {
+    //     // < 640px;
+    //     @include maxW($mobileLargeWidth) {
+    //         height: calc(100% - 100px);
+    //     }
+    // }
+
+    .col-wrapper {
+        width: 100%;
+    }
+
+    .content-wrapper {
+        position: absolute;
+    }
+
+    .col {
+        width: 45%;
+
+        &.left {
+            float: left;
+        }
+
+        &.right {
+            float: right;
+        }
+
+        // < 768px
+        @include maxW($tabletPortraitWidth) {
+            width: 100%;
+            float: none;
         }
     }
 }
 
 #about {
-    .content-wrapper, .fruit {
-        // < 1024px
-        @include maxW($tabletLandscapeWidth) {
-            display: none;
-        }
+    .content-wrapper{
+        opacity: 0.65;
+
+        // // < 1024px
+        // @include maxW($tabletLandscapeWidth) {
+        //     display: none;
+        // }
     }
+
+    .question-wrapper {
+        max-width: 1075px;
+    }
+
 
     h1 {
         font-weight: 400;
@@ -68,11 +100,12 @@
 
     .meetNectaron {
         width: 100%;
-        max-width: 700px;
+        max-width: 600px;
         display: block;
-        margin: 0 auto;
-        // margin-top: 50px;
-        margin-bottom: 100px;
+        margin-top: 20px;
+        margin-bottom: 50px;
+        margin-left: auto;
+        margin-right: auto;
 
         // < 1024px
         @include maxW($tabletLandscapeWidth) {
@@ -131,27 +164,15 @@
             }
         }
     }
-
-    .col {
-        width: 45%;
-
-        &.left {
-            float: left;
-        }
-
-        &.right {
-            float: right;
-        }
-
-        // < 1280px
-        @include maxW($desktopWidth) {
-            width: 100%;
-            float: none;
-        }
-    }
 }
 
 #faq {
+
+    .question-wrapper {
+        max-width: 800px;
+        text-align: center;
+    }
+
     p {
         margin-bottom: 50px;
         margin-top: 10px;
@@ -161,10 +182,13 @@
         margin-bottom: 50px;
         margin-top: 10px;
         color: $orange;
+        text-align: center;
     }
 
     h1 {
         color: $orange;
+        text-align: center;
+        margin-top: 20px;
     }
 
     a {
@@ -172,7 +196,7 @@
     }
 
     .content-wrapper {
-        // background-color: $orange;
+        opacity: 0.1;
     }
 
     .desktop {
@@ -181,5 +205,10 @@
         display: block;
         position: relative;
         top: -25%;
+
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
+            display: none;
+        }
     }
 }
