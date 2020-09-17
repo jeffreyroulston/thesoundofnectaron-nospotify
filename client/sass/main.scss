@@ -167,6 +167,13 @@ p, table {
     display: none;
 }
 
+#canvas-container-background {
+    position: absolute;
+    height: 100vh; // make this compatible with iphone scroll
+    width: 100%;
+    z-index: -1000;
+}
+
 #graphics-canvas {
     display:block;
     height: 100vh !important; // make this compatible with iphone scroll
