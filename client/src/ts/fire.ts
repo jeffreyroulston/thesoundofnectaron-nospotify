@@ -68,8 +68,8 @@ export default class Fire {
     private frameResized: boolean = true;
 
     // meshes
-    private maxFlames: number = 10000;
-    private spawnRate: number = 10000;
+    private maxFlames: number = 1000;
+    private spawnRate: number = 1000;
     private mesh: THREE.Mesh;
     private geo: THREE.BufferGeometry;
     private buffer: Float32Array;
@@ -238,7 +238,7 @@ export default class Fire {
                 // let scale = fit01(Math.random(), 0.01, 0.05);
 
                 let life = Math.random() * 0.5 + 0.5;
-                let scale = Math.random() * 0.5 + 0.25;
+                let scale = Math.random() * 0.75 + 0.375;
 
                 let speedChange = 1.0 + simplex.noise2D(x * 2.0, elapsed) * 0.5;
     
