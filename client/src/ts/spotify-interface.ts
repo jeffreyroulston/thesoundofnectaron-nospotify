@@ -95,8 +95,11 @@ export class SpotifyInterface {
     public OnAuthorisedListeners: {(): void} [] = [];
     public OnDataListeners: {(type: DataType, data: Data): void}[] = [];
     public OnErrorListeners: {(type: ErrorType, data?: any): void}[] = [];
+    public PlaylistUrlCreated =  (url : string) => {};
+    public NameSet = (name : string) => {};
 
     public sessionAuthorised : boolean = false;
+    public playlistUrl : string = "";
 
     constructor(params: SpotifyInterfaceParams) {
         this.params = params;
@@ -201,6 +204,8 @@ export class SpotifyInterface {
                         id: json["id"],
                         images: imageURLs
                     }
+
+                    this.NameSet(profile.DisplayName);
 
                     // broadcast to listeners
                     this.OnDataListeners.forEach(callback => {
@@ -447,7 +452,7 @@ export class SpotifyInterface {
 
         // TODO: consider setting market to NZ
         
-        //console.log(url.href);
+        console.log(url.href);
 
         fetch(url.href, {headers: {'Authorization': auth}})
         .then((response: Response) => {
