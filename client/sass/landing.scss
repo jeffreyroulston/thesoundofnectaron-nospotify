@@ -79,8 +79,14 @@
     .logo-wrapper-mobile {
         display: none;
 
+        .logo-head {
+            margin-bottom: 20px;
+            display: inline-block;
+            width: 57%;
+        }
+
         .logo {
-            height: 50vh;
+            height: 40vh;
         }
 
         @include maxW($mobileLargeWidth) {

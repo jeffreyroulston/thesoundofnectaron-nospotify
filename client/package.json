@@ -24,6 +24,7 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
+    "@types/modernizr": "^3.5.3",
     "d3": "^5.16.0",
     "gsap": "file:src/js/gsap-bonus.tgz",
     "gulp-cli": "^2.3.0",

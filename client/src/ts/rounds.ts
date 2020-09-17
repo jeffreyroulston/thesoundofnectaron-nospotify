@@ -74,10 +74,10 @@ export default class Rounds {
         // this.onResize();
 
         // set it off
-        this.showRound(0);
+        // this.showRound(0);
     }
 
-    private showRound(d : number) {
+    public showRound(d : number) {
         var currentRound = data.ROUNDS[this.currentRoundIdx];
 
         //do the background
@@ -90,7 +90,7 @@ export default class Rounds {
         this.UI.toggleWaveColor(currentRound.waveColor);
 
         // make the border come in
-        this.UI.showBorder();
+        this.UI.showNavBar();
 
         // waves
         this.UI.showWaves(d);

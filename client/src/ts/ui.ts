@@ -5,6 +5,7 @@ import {TweenMax} from "gsap"
 import App from "./app";
 import Landing from "./landing";
 import Rounds from "./rounds";
+import Modernizr from "modernizr";
 
 var qDefault = function() { return { value: 0, include: false } };
 
@@ -58,20 +59,24 @@ export default class UI {
 
     // for between pages
     private elementsToHide : HTMLElement[] = [];
+
+    // loader
+    private loaderCircleWrapperEl = f.elByID("loader-circle-wrapper");
+    private loaderCircleEl = f.elByID("loader-circle");
+    private loaderPercentEl = f.elByID("loader-percent");
+    private currentLoaderCount = 0;
+    private nextLoaderCount = 0;
+    private imgCount = 0;
+    private imgsLoaded = 0;
     
     // nav
     private navVisible : boolean = false;
     private frameVisible : boolean = false;
 
-    // assets
-    private assetCounter : number = 0;
-    private assetsLoaded : number= 0;
-
     // looping animations
     private loopingAnimations : TweenMax[] = [];
 
-    // binder for images
-    public ImagesDownloadedCallback = ()=>{};
+    private nope : boolean = false;
 
     // is mobile
     public isMobileSize : boolean = false;
@@ -79,49 +84,29 @@ export default class UI {
     // bound to app
     public Login = ()=>{};
 
-    // bound to either landing or rounds
-    // private changeToMobile = () => {};
-    // private changeToDesktop = () => {};
-
     constructor(app : App) {
         // pass in the app to use for spotify interface
         this.app = app;
 
-        // check if it's fucking internet explorer
-        // if (!Modernizr.svg) {
-        //     console.log("it's internet fucking explorer")
-        //   }
+        // check if it's a shit browser
+        if (!Modernizr.svg) {
+            this.nope = true;
+            f.elByID("shit-browser-alert").style.display = "block";
+        }
+
+        // this.nope = true;
+        // f.elByID("shit-browser-alert").style.display = "block";
 
         // Set custom height
         window.addEventListener('resize', this.onResize.bind(this));
-        this.onResize();
-
         document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
     }
 
     private init() {
+        if (this.nope) return;
+
         // check dimensions
         this.isMobileSize = this.burgerEl.getBoundingClientRect().width > 1;
-
-        // we playing rounds on the redirect
-        if (window.location.href.indexOf("access_token") > -1) {
-            // GAMEPLAY
-            this.ASSET_URL = "../assets/";
-            this.ROUNDS = new Rounds(this);
-            
-            // bind the resizes
-            // this.changeToMobile = this.ROUNDS.changeToMobile.bind(this.ROUNDS);
-            // this.changeToDesktop = this.ROUNDS.changeToDesktop.bind(this.ROUNDS);
-
-            // start
-            this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
-        } else {
-            // LANDING PAGE
-            this.LANDING = new Landing(this);
-            this.LANDING.onLoginPressed = this.Login.bind(this)
-        }
-
-        // this.showEndFrame("nothing");
 
         // used for the mobile menu
         this.burgerEl.addEventListener("click", this.toggleNav.bind(this));
@@ -130,6 +115,69 @@ export default class UI {
         f.findAll(this.navWrapperEl, "li").forEach(li => {
             li.addEventListener("click", this.togglePage.bind(this))
         })
+
+        // we playing rounds on the redirect
+        if (window.location.href.indexOf("access_token") > -1) {
+            // GAMEPLAY
+            this.ROUNDS = new Rounds(this);
+
+            // start
+            this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
+            this.ROUNDS.showRound(0)
+        } else {
+            // LANDING PAGE
+            this.LANDING = new Landing(this);
+            this.LANDING.onLoginPressed = this.Login.bind(this);
+            this.loadImages(data.preloadList)
+            // if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
+            //     this.LANDING.show();
+            // } else {
+            //     this.loaderInit();
+            // }
+            // this.LANDING.show();
+        }
+
+        // this.showEndFrame("nothing");
+    }
+
+    private loaderInit() {
+        this.loaderCircleWrapperEl.style.height = "200px";
+        this.loaderCircleWrapperEl.style.width = "200px";
+        this.loadImages(data.preloadList)
+    }
+
+    async loadImages(images: string[]) {
+        this.imgCount = images.length;
+        console.log(this.imgCount);
+        
+        images.forEach((imgSrc)=> {
+            let imgObject = new Image();
+            imgObject.onload = this.incrementLoader.bind(this);
+            imgObject.src = this.ASSET_URL + imgSrc;
+        })
+    }
+
+    private incrementLoader() {
+        this.imgsLoaded++;
+        var percent = this.imgsLoaded/this.imgCount * 100;
+        console.log(percent);
+
+        // this.loaderPercentEl.innerHTML = Math.round(percent).toString() + "%";
+        // if (this.imgsLoaded == this.imgCount) {
+        //     this.onResize();
+        // } else {
+        //     var scale = (percent > 1) ? percent : 1
+        //     this.loaderCircleEl.style.transform = "scale(" + scale + ")";
+        // }
+
+        if (this.imgsLoaded == this.imgCount) this.LANDING?.show();
+    }
+
+    private isCached(src: string) {
+        var image = new Image();
+        image.src = src;
+        console.log(src, image.complete)
+        return image.complete;
     }
 
     private checkMobileSize() {
@@ -167,12 +215,15 @@ export default class UI {
         this.navWrapperEl.removeAttribute("style");
 
         // small logo
-        TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+        console.log(this.LANDING);
+        if (this.LANDING == undefined) TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
 
         this.ROUNDS?.changeToMobile();
     }
 
     private onResize() {
+        if (this.nope) return;
+
         let vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
         this.checkMobileSize();
@@ -202,35 +253,14 @@ export default class UI {
         if (window.innerWidth <= 768) {
             if (this.frameVisible) {
                 this.frameOut();
-                console.log("frame out")
                 this.frameVisible = false;
             }
 
         } else {
-            console.log("huh?")
             if (!this.frameVisible) {
                 this.frameIn();
-                console.log("frame in")
                 this.frameVisible = true;
             }
-        }
-    }
-
-    public loadImages(images: string[]) {
-        this.assetCounter += images.length;
-        
-        images.forEach((imgSrc)=> {
-            let imgObject = new Image();
-            imgObject.onload = this.imgDownloaded.bind(this);
-            imgObject.src = this.ASSET_URL + imgSrc;
-        })
-    }
-
-    private imgDownloaded() {
-        console.log("image downloaded");
-        this.assetsLoaded++;
-        if (this.assetsLoaded == this.assetCounter) {
-            this.ImagesDownloadedCallback();
         }
     }
 
@@ -250,7 +280,7 @@ export default class UI {
         f.el("body").style.backgroundColor = color;
     }
 
-    public showBorder() {
+    public showNavBar() {
         // show the border letters
         // this.frameIn();
 
@@ -260,7 +290,8 @@ export default class UI {
             this.navEl.removeAttribute("style");
 
             // small logo
-            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+            console.log(this.LANDING);
+            if (this.LANDING == undefined) TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
         } else {
             // show the listed nav
             TweenMax.fromTo(this.navEl, 0.5, {dispplay: "none", y:-100}, {display:"block", y:0})
