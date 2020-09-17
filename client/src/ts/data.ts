@@ -207,11 +207,6 @@ export const qfQuestions : Array<QuickFireQuestion> = [
         answer: false
     },
     {
-        question: "Wipe from front to back over back to front?",
-        answered : false,
-        answer: false
-    },
-    {
         question: "Take your shoes off in the house?",
         answered : false,
         answer: false
@@ -247,6 +242,16 @@ export const qfQuestions : Array<QuickFireQuestion> = [
         answer: false
     },
     {
+        question: "Gingers have no soul?",
+        answered : false,
+        answer: false
+    },
+    {
+        question: "Freedom doesn't exist?",
+        answered : false,
+        answer: false
+    },
+    {
         question: "The Big Bang Theory is better than Modern Family?",
         answered : false,
         answer: false
@@ -267,12 +272,12 @@ export const qfQuestions : Array<QuickFireQuestion> = [
         answer: false
     },
     {
-        question: "Macaulay Culkin is not telling the truth?",
+        question: "In a marriage, everything becomes 50% off?",
         answered : false,
         answer: false
     },
     {
-        question: "In a marriage, everything becomes 50% off?",
+        question: "Last GoT episode was horseshit?",
         answered : false,
         answer: false
     },
@@ -303,6 +308,21 @@ export const qfQuestions : Array<QuickFireQuestion> = [
     },
     {
         question: "Pants shouldn't ride higher than your belly button?",
+        answered : false,
+        answer: false
+    },
+    {
+        question: "Front door over back door?",
+        answered : false,
+        answer: false
+    },
+    {
+        question: "Joe Rogan over The Guardian?",
+        answered : false,
+        answer: false
+    },
+    {
+        question: "The Big Bang did not create Earth?",
         answered : false,
         answer: false
     },
