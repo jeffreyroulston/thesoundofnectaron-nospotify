@@ -130,29 +130,29 @@ export default class UI {
             location.reload();
         })
 
-        // // we playing rounds on the redirect
-        // if (window.location.href.indexOf("access_token") > -1) {
-        //     // GAMEPLAY
-        //     this.ROUNDS = new Rounds(this);
+        // we playing rounds on the redirect
+        if (window.location.href.indexOf("access_token") > -1) {
+            // GAMEPLAY
+            this.ROUNDS = new Rounds(this);
 
-        //     // start
-        //     this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
-        //     this.ROUNDS.showRound(0)
-        //     this.onResize();
-        // } else {
-        //     // LANDING PAGE
-        //     this.LANDING = new Landing(this);
-        //     this.LANDING.onLoginPressed = this.Login.bind(this);
-        //     this.loadImages(data.preloadList)
-        //     // if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
-        //     //     this.LANDING.show();
-        //     // } else {
-        //     //     this.loaderInit();
-        //     // }
-        //     // this.LANDING.show();
-        // }
+            // start
+            this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
+            this.ROUNDS.showRound(0)
+            this.onResize();
+        } else {
+            // LANDING PAGE
+            this.LANDING = new Landing(this);
+            this.LANDING.onLoginPressed = this.Login.bind(this);
+            this.loadImages(data.preloadList)
+            // if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
+            //     this.LANDING.show();
+            // } else {
+            //     this.loaderInit();
+            // }
+            // this.LANDING.show();
+        }
 
-        this.showEndFrame("Best savoured on your local park bench, your brew is extra fresh and topped off with just a dash of liquid poison. Kick back and chill with low key tunes filled with all the right feels, that'll have you feeling like an extra cool snowman.");
+        // this.showEndFrame("Best savoured on your local park bench, your brew is extra fresh and topped off with just a dash of liquid poison. Kick back and chill with low key tunes filled with all the right feels, that'll have you feeling like an extra cool snowman.");
     }
 
     private loaderInit() {

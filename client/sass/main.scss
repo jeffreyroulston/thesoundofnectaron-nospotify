@@ -462,7 +462,7 @@ p, table {
         }
 
         @include maxPxH(730) {
-            height: 100px;
+            height: 150px;
          }
     }
 
@@ -514,7 +514,7 @@ p, table {
         @include maxPxH(730) {
             padding: 10px;
             margin-top: 20px;
-         }
+        }
     }
 
     #share {
@@ -522,9 +522,16 @@ p, table {
     }
 
     #subscribe-btn {
-        font-size: 14px;
-        margin-top: 10px;
+        margin-top: 50px;
         display: inline-block;
+
+        @include maxPxH(730) {
+            margin-top: 20px;
+        }
+
+        &:hover {
+            color: $purple;
+        }
     }
 
     // #playlist-url, #brew-again {
