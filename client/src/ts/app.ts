@@ -236,7 +236,7 @@ export default class App {
             let genres: string[] = [];
 
             if (this.topArtists.length < 1) {
-                genres.push("pop", "alternative", "dance");
+                genres.push("pop", "alternative");
             }
 
             else {
