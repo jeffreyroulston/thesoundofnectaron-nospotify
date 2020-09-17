@@ -32,6 +32,8 @@ export default class Landing {
     }
 
     public show() {
+        f.el("body").style.backgroundColor = data.COLOURS.purple;
+
         // elements
         var logoDesktop = f.find(this.landingPageEl, ".logo-wrapper-large");
         var logoMobile = f.find(this.landingPageEl, ".logo-wrapper-mobile");

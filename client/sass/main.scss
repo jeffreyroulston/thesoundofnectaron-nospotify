@@ -20,7 +20,8 @@ html {
 }
 
 body {
-    background-color: $purple;
+    // background-color: $purple;
+    background-color: $orange;
     @include transition(background-color 1s ease);
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
@@ -582,6 +583,8 @@ p, table {
         height: 100%;
         border-radius: 100%;
         background-color: purple;
+
+        transition: all 0.1s linear;
     }
 
     #loader-percent {

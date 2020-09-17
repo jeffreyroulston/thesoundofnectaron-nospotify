@@ -61,11 +61,10 @@ export default class UI {
     private elementsToHide : HTMLElement[] = [];
 
     // loader
-    private loaderCircleWrapperEl = f.elByID("loader-circle-wrapper");
-    private loaderCircleEl = f.elByID("loader-circle");
-    private loaderPercentEl = f.elByID("loader-percent");
-    private currentLoaderCount = 0;
-    private nextLoaderCount = 0;
+    private loaderEl = f.elByID("loader")
+    private loaderCircleWrapperEl = f.find(this.loaderEl, "#loader-circle-wrapper");
+    private loaderCircleEl = f.find(this.loaderEl, "#loader-circle");
+    private loaderPercentEl =f.find(this.loaderEl, "#loader-percent");
     private imgCount = 0;
     private imgsLoaded = 0;
     
@@ -132,6 +131,9 @@ export default class UI {
 
         // we playing rounds on the redirect
         if (window.location.href.indexOf("access_token") > -1) {
+            // hide the loader
+            this.loaderEl.style.display = "none";
+
             // GAMEPLAY
             this.ROUNDS = new Rounds(this);
 
@@ -140,15 +142,19 @@ export default class UI {
             this.ROUNDS.showRound(0)
             this.onResize();
         } else {
+            // show the loader
+            this.loaderEl.style.display = "block";
+
             // LANDING PAGE
             this.LANDING = new Landing(this);
             this.LANDING.onLoginPressed = this.Login.bind(this);
-            this.loadImages(data.preloadList)
-            // if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
-            //     this.LANDING.show();
-            // } else {
-            //     this.loaderInit();
-            // }
+            // this.loaderInit();
+            // this.loadImages(data.preloadList)
+            if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
+                this.LANDING.show();
+            } else {
+                this.loaderInit();
+            }
             // this.LANDING.show();
         }
 
@@ -159,6 +165,9 @@ export default class UI {
         this.loaderCircleWrapperEl.style.height = "200px";
         this.loaderCircleWrapperEl.style.width = "200px";
         this.loadImages(data.preloadList)
+
+        // this.imgCount = 100;
+        // this.incrementLoader();
     }
 
     async loadImages(images: string[]) {
@@ -175,26 +184,30 @@ export default class UI {
     private incrementLoader() {
         this.imgsLoaded++;
         var percent = this.imgsLoaded/this.imgCount * 100;
-        // console.log(percent);
 
-        // this.loaderPercentEl.innerHTML = Math.round(percent).toString() + "%";
-        // if (this.imgsLoaded == this.imgCount) {
-        //     this.onResize();
-        // } else {
-        //     var scale = (percent > 1) ? percent : 1
-        //     this.loaderCircleEl.style.transform = "scale(" + scale + ")";
-        // }
-
+        this.loaderPercentEl.innerHTML = Math.round(percent).toString() + "%";
         if (this.imgsLoaded == this.imgCount) {
-            this.LANDING?.show();
+            TweenMax.to(this.loaderEl, 0.2, {
+                alpha: 0, display: "none", onComplete : this.LANDING?.show.bind(this.LANDING)
+            })
+            // this.LANDING?.show();
             this.onResize();
+        } else {
+            var scale = (percent > 1) ? (1 + percent*0.2) : 1;
+            console.log(scale);
+            this.loaderCircleEl.style.transform = "scale(" + scale + ")";
         }
+
+        // if (this.imgsLoaded == this.imgCount) {
+        //     this.LANDING?.show();
+        //     this.onResize();
+        // }
     }
 
     private isCached(src: string) {
         var image = new Image();
         image.src = src;
-        console.log(src, image.complete)
+        console.log("CACHED?", src, image.complete)
         return image.complete;
     }
 
@@ -657,7 +670,7 @@ export default class UI {
     }
 
     public nameSet(name : string) {
-        var n = name.split(" ");
-        f.elByID("playlist-title").innerHTML = n[0] + "'s Playlist"
+        this.name = name.split(" ")[0];
+        f.elByID("playlist-title").innerHTML = this.name + "'s Playlist"
     }
 }
