@@ -20,8 +20,8 @@ html {
 }
 
 body {
-    // background-color: $purple;
-    background-color: $orange;
+    background-color: $purple;
+    // background-color: $orange;
     @include transition(background-color 1s ease);
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);

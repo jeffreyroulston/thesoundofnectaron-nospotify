@@ -132,7 +132,7 @@ export default class UI {
         // we playing rounds on the redirect
         if (window.location.href.indexOf("access_token") > -1) {
             // hide the loader
-            this.loaderEl.style.display = "none";
+            // this.loaderEl.style.display = "none";
 
             // GAMEPLAY
             this.ROUNDS = new Rounds(this);
@@ -143,18 +143,18 @@ export default class UI {
             this.onResize();
         } else {
             // show the loader
-            this.loaderEl.style.display = "block";
+            // this.loaderEl.style.display = "block";
 
             // LANDING PAGE
             this.LANDING = new Landing(this);
             this.LANDING.onLoginPressed = this.Login.bind(this);
-            // this.loaderInit();
+            this.loaderInit();
             // this.loadImages(data.preloadList)
-            if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
-                this.LANDING.show();
-            } else {
-                this.loaderInit();
-            }
+            // if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
+            //     this.LANDING.show();
+            // } else {
+            //     this.loaderInit();
+            // }
             // this.LANDING.show();
         }
 
@@ -186,22 +186,22 @@ export default class UI {
         var percent = this.imgsLoaded/this.imgCount * 100;
 
         this.loaderPercentEl.innerHTML = Math.round(percent).toString() + "%";
-        if (this.imgsLoaded == this.imgCount) {
-            TweenMax.to(this.loaderEl, 0.2, {
-                alpha: 0, display: "none", onComplete : this.LANDING?.show.bind(this.LANDING)
-            })
-            // this.LANDING?.show();
-            this.onResize();
-        } else {
-            var scale = (percent > 1) ? (1 + percent*0.2) : 1;
-            console.log(scale);
-            this.loaderCircleEl.style.transform = "scale(" + scale + ")";
-        }
-
         // if (this.imgsLoaded == this.imgCount) {
-        //     this.LANDING?.show();
+        //     TweenMax.to(this.loaderEl, 0.2, {
+        //         alpha: 0, display: "none", onComplete : this.LANDING?.show.bind(this.LANDING)
+        //     })
+        //     // this.LANDING?.show();
         //     this.onResize();
+        // } else {
+        //     var scale = (percent > 1) ? (1 + percent*0.2) : 1;
+        //     console.log(scale);
+        //     this.loaderCircleEl.style.transform = "scale(" + scale + ")";
         // }
+
+        if (this.imgsLoaded == this.imgCount) {
+            this.LANDING?.show();
+            this.onResize();
+        }
     }
 
     private isCached(src: string) {
