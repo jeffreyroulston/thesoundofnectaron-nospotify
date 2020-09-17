@@ -34,6 +34,7 @@ export default class App {
     private profile: si.UserProfile | undefined;
     private topArtists: si.Artist[] | undefined;
     private topTracks: si.Track[] | undefined;
+    private playlistCreated: si.Playlist | undefined;
     // private answeredQuestions: Questions.Question[] = [];
 
     private requestedPlaylistLength: number = 120;
@@ -382,6 +383,10 @@ export default class App {
 
             case si.DataType.TopArtists:
                 this.topArtists = (data as si.Artist[]);
+                break;
+
+            case si.DataType.PlaylistCreated:
+                this.playlistCreated = (data as si.Playlist);
                 break;
         }
     }
