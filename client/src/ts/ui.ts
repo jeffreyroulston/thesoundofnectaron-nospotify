@@ -79,6 +79,9 @@ export default class UI {
 
     private nope : boolean = false;
 
+    // for end page
+    private name : string = "Your";
+
     // is mobile
     public isMobileSize : boolean = false;
 
@@ -122,29 +125,34 @@ export default class UI {
             e.addEventListener("click", this.closePage.bind(this));
         })
 
-        // we playing rounds on the redirect
-        if (window.location.href.indexOf("access_token") > -1) {
-            // GAMEPLAY
-            this.ROUNDS = new Rounds(this);
+        // reload
+        f.elByID("brew-again").addEventListener("click", ()=> {
+            location.reload();
+        })
 
-            // start
-            this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
-            this.ROUNDS.showRound(0)
-            this.onResize();
-        } else {
-            // LANDING PAGE
-            this.LANDING = new Landing(this);
-            this.LANDING.onLoginPressed = this.Login.bind(this);
-            this.loadImages(data.preloadList)
-            // if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
-            //     this.LANDING.show();
-            // } else {
-            //     this.loaderInit();
-            // }
-            // this.LANDING.show();
-        }
+        // // we playing rounds on the redirect
+        // if (window.location.href.indexOf("access_token") > -1) {
+        //     // GAMEPLAY
+        //     this.ROUNDS = new Rounds(this);
 
-        // this.showEndFrame("nothing");
+        //     // start
+        //     this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
+        //     this.ROUNDS.showRound(0)
+        //     this.onResize();
+        // } else {
+        //     // LANDING PAGE
+        //     this.LANDING = new Landing(this);
+        //     this.LANDING.onLoginPressed = this.Login.bind(this);
+        //     this.loadImages(data.preloadList)
+        //     // if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
+        //     //     this.LANDING.show();
+        //     // } else {
+        //     //     this.loaderInit();
+        //     // }
+        //     // this.LANDING.show();
+        // }
+
+        this.showEndFrame("Best savoured on your local park bench, your brew is extra fresh and topped off with just a dash of liquid poison. Kick back and chill with low key tunes filled with all the right feels, that'll have you feeling like an extra cool snowman.");
     }
 
     private loaderInit() {
@@ -231,6 +239,7 @@ export default class UI {
 
     private changeToMobile() {
         this.navWrapperEl.removeAttribute("style");
+        f.elByID("album-cover").removeAttribute("style");
 
         // small logo
         if (this.LANDING == undefined) this.toggleHeaderLogo(true);
@@ -645,5 +654,10 @@ export default class UI {
     public playlistCreated(url: string) {
         console.log("playlist created", url)
         f.elByID("playlist-url").innerHTML = url;
+    }
+
+    public nameSet(name : string) {
+        var n = name.split(" ");
+        f.elByID("playlist-title").innerHTML = n[0] + "'s Playlist"
     }
 }

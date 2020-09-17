@@ -19,11 +19,8 @@ export default class QuickFireQ {
     // elements
     private questionEl: HTMLElement = f.find(this.el, " .question");
     private timerEl : HTMLElement = f.find(this.el, "#timer");
-    // private timerTensColumn : HTMLElement = f.find(this.timerEl, "#tensCol");
-    // private timerOnesColumn : HTMLElement = f.find(this.timerEl, "#onesCol");
 
     private timerCount : number = 20;
-    // private timerStarted : boolean = false;
     private timerActive : boolean = true;
     private active : boolean = false;
 
@@ -53,33 +50,15 @@ export default class QuickFireQ {
     }
 
     set() {
-        if (!this.active) this.active = true;
-        // if (!this.timerStarted) {
-        //     this.timerEl.innerHTML = this.timerCount.toString();
-        //     this.timerStarted = true;
-        // }
-
-        // set the question text
-        this.questionEl.innerHTML = this.questionsAsked[this.questionsAsked.length-1].question
-
-        // animate it in
-        if (!this.initiated) this.show();
-    }
-
-    // set(q : QuickFireQuestion) {
-    //     // this.questionElement.innerHTML = q.question;
-
-    //     // // show element
-    //     // el(this.el).style.display = "block";
-    // }
-
-    show() {
+        this.active = true;
         var delay = this.initiated ? 0 : this.delay;
         this.initiated = true;
+
+        this.questionEl.innerHTML = this.questionsAsked[this.questionsAsked.length-1].question
         this.el.style.display = "block";
 
         TweenMax.fromTo(this.questionEl, this.time, {
-            alpha:0, x:-20
+            alpha:0, x:-50
         }, {
             alpha:1, x:0, delay:delay
         });
@@ -104,17 +83,39 @@ export default class QuickFireQ {
             var idx = f.getRandomInt(0, this.questionsUnanswered.length-1);
             this.questionsAsked.push(this.questionsUnanswered[idx]);
             this.questionsUnanswered.splice(idx, 1);
-            if (this.initiated) this.set();
+            this.hideQuestion();
         } else {
+            this.hideQuestion();
             this.timerActive = false;
             this.roundComplete(this.el);
         }
     }
 
-    hide() {
-        // TweenMax.to(this.el, this., {opacity:0, scale:0.7, onComplete: ()=> {
-        //     el("#questions").style.display = "none";
-        // }});
+    showQuestion() {
+        this.active = true;
+        this.questionEl.innerHTML = this.questionsAsked[this.questionsAsked.length-1].question
+
+        TweenMax.fromTo(this.questionEl, 0.2, {
+            alpha:0, x:-50
+        }, {
+            alpha:1, x:0
+        });
+
+        TweenMax.fromTo("#answer-wrapper li", 0.2, {
+            alpha:0, y:50
+        }, {
+            alpha:1, y:0, stagger:0.05
+        });
+    }
+
+    hideQuestion() {
+        TweenMax.to(this.questionEl, 0.2, {
+            alpha:0, x:50
+        });
+
+        TweenMax.to("#answer-wrapper li", 0.2, {
+            alpha:0, y:50, stagger:0.05, onComplete : this.showQuestion.bind(this)
+        });
     }
 
     updateTimer() {
@@ -127,7 +128,7 @@ export default class QuickFireQ {
         } else {
             this.active = false;
             console.log("all questions completed");
-            // this.roundComplete(this.el);
+            this.roundComplete(this.el);
         }
     }
 
@@ -141,34 +142,11 @@ export default class QuickFireQ {
         } else if (this.timerCount < 15) {
             this.timerEl.style.color = COLOURS.yellow
         }
-
-        // if (this.timerCount < 10) {
-        //     this.timerEl.className = "ones";
-        // } else if (this.timerCount < 20) {
-        //     this.timerEl.className = "tens";
-        // }
-
-        // if (this.timerCount < 11) {
-        //     this.timerTensColumn.style.color = COLOURS.orange;
-        //     this.timerOnesColumn.style.color = COLOURS.orange;
-        // } else if (this.timerCount < 21) {
-        //     this.timerTensColumn.style.color = COLOURS.yellow;
-        //     this.timerOnesColumn.style.color = COLOURS.yellow;
-        // }
-
-        // if (this.timerCount > 9) {
-        //     this.timerTensColumn.innerHTML = t[0];
-        //     this.timerOnesColumn.innerHTML = t[1];
-
-        // } else {
-        //     this.timerTensColumn.innerHTML = "";
-        //     this.
-        //     timerOnesColumn.innerHTML = t;
-        // }
     }
 
     answerRetrieved(e: any) {
         if (!this.active) return;
+        this.active = false;
         var value = e.srcElement.data == "true";
         this.questionsAsked[this.questionsAsked.length-1].answered = true;
         this.questionsAsked[this.questionsAsked.length-1].answer = value;

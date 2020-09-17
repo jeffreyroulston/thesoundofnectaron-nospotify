@@ -54,9 +54,9 @@ export default class Rounds {
         this.qfq = new QuickFireQ();
 
         // set the question order
-        // this.questionGroups = [this.slider, this.mcq, this.qfq];
+        this.questionGroups = [this.slider, this.mcq, this.qfq];
         // this.questionGroups = [this.mcq, this.slider, this.qfq];
-        this.questionGroups = [this.qfq, this.slider, this.mcq];
+        // this.questionGroups = [this.qfq, this.slider, this.mcq];
 
         // set callbacks
         this.questionGroups.forEach((q)=> {
@@ -169,9 +169,9 @@ export default class Rounds {
         })
 
         // bop the fruit
-        // this.loopingAnimations.push(TweenMax.to(fruit, 1, {
-        //     y:5, repeat:-1, ease: "linear", yoyo:true, delay:2*d+1.5
-        // }))
+        this.loopingAnimations.push(TweenMax.to(this.fruitEl, 1, {
+            y:5, repeat:-1, ease: "linear", yoyo:true, delay:2*d+1.5
+        }))
 
 
         // show the arrow
@@ -182,11 +182,11 @@ export default class Rounds {
         })
 
         // bounce the arrow
-        // this.loopingAnimations.push(
-        //     TweenMax.to(btn, 1, {
-        //         scale:0.9, ease: "linear", delay:2*d+3, repeat:-1, yoyo:true
-        //     })
-        // )
+        this.loopingAnimations.push(
+            TweenMax.to(this.btnEl, 1, {
+                scale:0.9, ease: "linear", delay:2*d+3, repeat:-1, yoyo:true
+            })
+        )
 
         this.btnActive = true;
     }
@@ -228,8 +228,6 @@ export default class Rounds {
             this.UI.transitionOut();
             this.CreatePlaylist();
         }
-        // this.UI.TransitionOut();
-        // this.CreatePlaylist();
     }
 
     public onResize() {

@@ -426,36 +426,6 @@ p, table {
 // }
 
 #end-frame {
-    // position: absolute;
-
-    // .wrapper {
-    //     color: $purple;
-    // }
-
-    // #playlist-title {
-    //     font-family: "Harbour";
-    //     font-weight: 600;
-    // }
-
-    // #playlist-desc {
-    //     margin-top: 30px;
-    // }
-
-    // #album-cover {
-    //     display: block;
-    //     width: 100%;
-    //     margin: 0 auto;
-    // }
-
-    // .col-wrapper {
-    //     width: 65%;
-    //     margin-top: 22vh;
-
-    //     &:first-child {
-    //         width: 35%;
-    //     }
-    // }
-
     .wrapper {
         // < 1024px
         @include maxW($tabletLandscapeWidth) {
@@ -476,6 +446,8 @@ p, table {
     }
 
     .text-column {
+        text-align: center;
+
         // < 1024px
         @include maxW($tabletLandscapeWidth) {
             height: auto;
@@ -486,12 +458,16 @@ p, table {
     .content-column {
         // < 1024px
         @include maxW($tabletLandscapeWidth) {
-            height: 30vh;
+            height: 200px;
         }
+
+        @include maxPxH(730) {
+            height: 100px;
+         }
     }
 
     .question-wrapper {
-        top: calc(50% - 10vh);
+        // top: calc(50% - 10vh);
 
         // < 1024px
         @include maxW($tabletLandscapeWidth) {
@@ -521,6 +497,42 @@ p, table {
             position: relative;
 
         }
+    }
+
+    #brew-again, #share {
+        background-color: $purple;
+        padding: 15px 20px;
+        border-radius: 0.25em;
+        color: $beige;
+        display: inline-block;
+        margin-top: 50px;
+
+        &:hover {
+            background-color: $orange;
+        }
+
+        @include maxPxH(730) {
+            padding: 10px;
+            margin-top: 20px;
+         }
+    }
+
+    #share {
+        margin-left: 10px;
+    }
+
+    #subscribe-btn {
+        font-size: 14px;
+        margin-top: 10px;
+        display: inline-block;
+    }
+
+    // #playlist-url, #brew-again {
+    //     margin-top: 50px;;
+    // }
+
+    #brew-again, #subscribe-btn, #share {
+        cursor: pointer;
     }
 }
 

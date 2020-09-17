@@ -133,9 +133,9 @@ export default class MCQ {
             })
 
             // bounce them
-            // this.loopingAnimations.push(TweenMax.to(this.optionEls[i], this.time, {
-            //     y:10, repeat:-1, yoyo:true, delay: d + (this.time*2) + (0.1*i)
-            // }))
+            this.loopingAnimations.push(TweenMax.to(this.optionEls[i], this.time, {
+                y:20, repeat:-1, yoyo:true, delay: d + (this.time*2) + (0.1*i)
+            }))
         }
 
         // resize
