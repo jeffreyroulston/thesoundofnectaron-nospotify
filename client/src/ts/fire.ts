@@ -392,10 +392,12 @@ class FlamePoint {
     }
 
     public update(elapsed: number, dt: number) {
-        this._position.y += this.speed * dt;
-        this._position.x += simplex.noise3D(this.position.y * 2.0, this.position.x * 2.0, elapsed) * dt * this.speed * 0.25;
-
         this._age += dt;
+
+        if (!this.dead) {
+            this._position.y += this.speed * dt;
+            this._position.x += simplex.noise3D(this.position.y * 2.0, this.position.x * 2.0, elapsed) * dt * this.speed * 0.25;
+        }
     }
 
     public get position(): THREE.Vector3 {
