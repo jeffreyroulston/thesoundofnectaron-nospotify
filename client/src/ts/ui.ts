@@ -197,9 +197,17 @@ export default class UI {
         this.isMobileSize = m;
     }
 
+    private toggleHeaderLogo(show: boolean) {
+        if (show) {
+            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+        } else {
+            TweenMax.to(this.smallLogoEl, 0.5, {display: "none", y:-100})
+        }
+    }
+
     private changeToDesktop() {
         // small logo
-        TweenMax.to(this.smallLogoEl, 0.5, {display: "none", y:-100})
+        if (this.LANDING == undefined) this.toggleHeaderLogo(false);
 
         // reset nav
         this.navVisible = false;
@@ -218,8 +226,7 @@ export default class UI {
         this.navWrapperEl.removeAttribute("style");
 
         // small logo
-        console.log(this.LANDING);
-        if (this.LANDING == undefined) TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+        if (this.LANDING == undefined) this.toggleHeaderLogo(true);
 
         this.ROUNDS?.changeToMobile();
     }
@@ -292,8 +299,7 @@ export default class UI {
             this.navEl.removeAttribute("style");
 
             // small logo
-            console.log(this.LANDING);
-            if (this.LANDING == undefined) TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+            if (this.LANDING == undefined) this.toggleHeaderLogo(true);
         } else {
             // show the listed nav
             TweenMax.fromTo(this.navEl, 0.5, {y:-100}, {y:0})
@@ -361,11 +367,11 @@ export default class UI {
             // })
 
             // change the color of the burger
-            f.findAll(this.burgerEl, ".burger-fill").forEach((el)=> {
-                el.style.fill = color;
+            f.findAll(this.burgerEl, "li").forEach((el)=> {
+                el.style.backgroundColor = color;
             })
 
-            // change the color of the small header logo
+            // change the color of the small logo
             f.findAll(this.smallLogoEl, ".logo-small-fill").forEach((el)=> {
                 el.style.fill = color;
             })
@@ -533,9 +539,12 @@ export default class UI {
             // close the nav
             this.toggleFrameColours(this.currentFrameColor, false);
 
-            TweenMax.to(this.navWrapperEl, 0.5, {
-                display: "none", x:-window.innerWidth*2
+            TweenMax.to(this.navWrapperEl, 1, {
+                display: "none", x:-window.innerWidth*2, ease: "easeOut"
             })
+
+            // hide the small logo
+            if (this.LANDING) this.toggleHeaderLogo(false);
 
             this.navVisible = false;
 
@@ -557,13 +566,13 @@ export default class UI {
                 }
             })
 
-            // turn it into a close sign?
-            // TweenMax.to(f.find(this.burgerEl, ".left-line"), 0.2, {rotate:-45, y:20})
-
-            // TweenMax.to(f.find(this.burgerEl, ".right-line"), 0.2, {rotate:45, y:-50})
+            // show the small logo
+            if (this.LANDING) this.toggleHeaderLogo(true);
 
             this.navVisible = true;
         }
+
+        this.burgerEl.classList.toggle("opened");
 
     }
 
