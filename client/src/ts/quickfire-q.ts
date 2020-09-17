@@ -19,11 +19,12 @@ export default class QuickFireQ {
     // elements
     private questionEl: HTMLElement = f.find(this.el, " .question");
     private timerEl : HTMLElement = f.find(this.el, "#timer");
-    private timerTensColumn : HTMLElement = f.find(this.timerEl, "#tensCol");
-    private timerOnesColumn : HTMLElement = f.find(this.timerEl, "#onesCol");
+    // private timerTensColumn : HTMLElement = f.find(this.timerEl, "#tensCol");
+    // private timerOnesColumn : HTMLElement = f.find(this.timerEl, "#onesCol");
 
     private timerCount : number = 20;
-    private timerStarted : boolean = false;
+    // private timerStarted : boolean = false;
+    private timerActive : boolean = true;
     private active : boolean = false;
 
     // called from ui
@@ -93,16 +94,21 @@ export default class QuickFireQ {
             alpha:0, x:200
         }, {
             alpha:1, x:0, delay: delay, onComplete: ()=> {
-            // setTimeout(this.updateTimer.bind(this), 1000)
+            setTimeout(this.updateTimer.bind(this), 1000)
         }})
     }
 
     getNextQuestion() {
         // edge case
-        var idx = f.getRandomInt(0, this.questionsUnanswered.length-1);
-        this.questionsAsked.push(this.questionsUnanswered[idx]);
-        this.questionsUnanswered.splice(idx, 1);
-        if (this.initiated) this.set();
+        if (this.questionsUnanswered.length) {
+            var idx = f.getRandomInt(0, this.questionsUnanswered.length-1);
+            this.questionsAsked.push(this.questionsUnanswered[idx]);
+            this.questionsUnanswered.splice(idx, 1);
+            if (this.initiated) this.set();
+        } else {
+            this.timerActive = false;
+            this.roundComplete(this.el);
+        }
     }
 
     hide() {
@@ -112,6 +118,7 @@ export default class QuickFireQ {
     }
 
     updateTimer() {
+        if (!this.timerActive) return;
         this.timerCount--;
 
         if (this.timerCount >= 0) {
@@ -119,7 +126,8 @@ export default class QuickFireQ {
             setTimeout(this.updateTimer.bind(this), 1000);
         } else {
             this.active = false;
-            this.roundComplete(this.el);
+            console.log("all questions completed");
+            // this.roundComplete(this.el);
         }
     }
 
@@ -127,6 +135,12 @@ export default class QuickFireQ {
         var t = this.timerCount.toString();
 
         this.timerEl.innerHTML = t;
+
+        if (this.timerCount < 6) {
+            this.timerEl.style.color = COLOURS.orange
+        } else if (this.timerCount < 15) {
+            this.timerEl.style.color = COLOURS.yellow
+        }
 
         // if (this.timerCount < 10) {
         //     this.timerEl.className = "ones";
