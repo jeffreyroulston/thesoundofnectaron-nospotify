@@ -190,7 +190,8 @@ export default class MCQ {
         } else {
 
             // question set completed
-            TweenMax.to(f.find(this.el, ".text-column"), this.time*2, {width: "25%"});
+            TweenMax.to(f.find(this.el, ".text-column"), 0, {width: "0"});
+            TweenMax.to(f.find(this.el, ".content-column"), this.time*2, {left: "-25%"});
 
             // do something sparkly here
             setTimeout(this.finished.bind(this), 1000);

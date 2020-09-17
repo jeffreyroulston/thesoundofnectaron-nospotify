@@ -219,15 +219,17 @@ export default class Rounds {
         });
 
 
-        if (this.currentRoundIdx <2) {
-            this.currentRoundIdx++;
-            this.UI.transitionOut();
-            this.showRound(0.7);
-        } else {
-            // all done
-            this.UI.transitionOut();
-            this.CreatePlaylist();
-        }
+        // if (this.currentRoundIdx <2) {
+        //     this.currentRoundIdx++;
+        //     this.UI.transitionOut();
+        //     this.showRound(0.7);
+        // } else {
+        //     // all done
+        //     this.UI.transitionOut();
+        //     this.CreatePlaylist();
+        // }
+        this.UI.transitionOut();
+        this.CreatePlaylist();
     }
 
     public onResize() {

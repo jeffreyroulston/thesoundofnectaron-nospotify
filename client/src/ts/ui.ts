@@ -5,6 +5,8 @@ import {TweenMax} from "gsap"
 import App from "./app";
 import Landing from "./landing";
 import Rounds from "./rounds";
+import Graphics from "./graphics";
+import * as THREE from "three";
 // import Modernizr from "modernizr";
 
 var qDefault = function() { return { value: 0, include: false } };
@@ -439,6 +441,19 @@ export default class UI {
     }
 
     public showEndFrame(description: string) {
+        const graphics: Graphics = new Graphics();
+        graphics.onInitResources(App.resourceManager);
+
+        const container = document.getElementById('canvas-container');
+        if (container !== null) {
+            container.append(graphics.domElement);
+            container.style.zIndex ="50";
+            graphics.domElement.style.zIndex = '50';
+            graphics.domElement.id = "graphics-canvas";
+        }
+
+        graphics.switchColorForward(new THREE.Color(0xff00), 1.0);
+
         // this.currentPage = PageType.EndFrame;
         this.setBgColor(data.COLOURS.beige);
         this.toggleFrameColours(data.COLOURS.purple, true);

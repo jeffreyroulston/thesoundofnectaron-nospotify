@@ -727,6 +727,7 @@ export default class Slider {
                     alpha: 0, display: "none", onComplete : ()=> {
                         this.fire?.destroy();
                         this.fire = undefined;
+                        f.elByID("canvas-container-background").style.display = "none";
                     }
                 });
 

@@ -65,6 +65,8 @@ export default class App {
         //     this.flames.onInitResources(this.resourceManager);
         // });
         App.resourceManager.loadResourceByPath(HTMLImageElement, "assets/spritesheet.png");
+        App.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png");
+
         // const bgcontainer = document.getElementById('canvas-container-background');
         // if (bgcontainer !== null) {
         //     bgcontainer.style.zIndex = '100000';
@@ -349,7 +351,9 @@ export default class App {
                         Image: {
                             Width: 72,
                             Height: 72,
-                            Url: "http://thesoundofnectaron.truedigital.co.nz/assets/albumCover.jpg"
+                            // Url: "http://thesoundofnectaron.truedigital.co.nz/assets/albumCover.jpg"
+                            Url: "http://localhost:8888/assets/albumCover.jpg"
+
                         }
                     });
                 }
