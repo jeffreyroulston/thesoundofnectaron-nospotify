@@ -136,47 +136,54 @@ export default class UI {
         })
 
         // reload
-        f.elByID("brew-again").addEventListener("click", ()=> {
+        // let restartBtn = f.find(this.endFrameEl, "#brew-again");
+        // let shareBtn = f.find(this.endFrameEl, "#share");
+        // let subscribeBtn = f.find(this.endFrameEl, "#subscribe-btn");
+        f.find(this.endFrameEl, "#brew-again.active").addEventListener("click", ()=> {
             location.reload();
         })
 
         // copy link
-        f.elByID("share").addEventListener("click", ()=> {
+        f.find(this.endFrameEl, "#share.active").addEventListener("click", ()=> {
             if (this.app.playlistCreated) {
                 this.copyText(this.app.playlistCreated.ShareLink)
             }
         });
 
+        // open subscription dialoge
+        f.find(this.endFrameEl, "#subscribe-btn.active").addEventListener("click", this.openSubscriptionPage.bind(this));
+
         // we playing rounds on the redirect
-        if (window.location.href.indexOf("access_token") > -1) {
-            // hide the loader
-            // this.loaderEl.style.display = "none";
+        // if (window.location.href.indexOf("access_token") > -1) {
+        //     // hide the loader
+        //     // this.loaderEl.style.display = "none";
 
-            // GAMEPLAY
-            this.ROUNDS = new Rounds(this);
+        //     // GAMEPLAY
+        //     this.ROUNDS = new Rounds(this);
 
-            // start
-            this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
-            this.ROUNDS.showRound(0)
-            this.onResize();
-        } else {
-            // show the loader
-            // this.loaderEl.style.display = "block";
+        //     // start
+        //     this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
+        //     this.ROUNDS.showRound(0)
+        //     this.onResize();
+        // } else {
+        //     // show the loader
+        //     // this.loaderEl.style.display = "block";
 
-            // LANDING PAGE
-            this.LANDING = new Landing(this);
-            this.LANDING.onLoginPressed = this.Login.bind(this);
-            this.loaderInit();
-            // this.loadImages(data.preloadList)
-            // if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
-            //     this.LANDING.show();
-            // } else {
-            //     this.loaderInit();
-            // }
-            // this.LANDING.show();
-        }
+        //     // LANDING PAGE
+        //     this.LANDING = new Landing(this);
+        //     this.LANDING.onLoginPressed = this.Login.bind(this);
+        //     this.loaderInit();
 
-        // this.showEndFrame("Best savoured on your local park bench, your brew is extra fresh and topped off with just a dash of liquid poison. Kick back and chill with low key tunes filled with all the right feels, that'll have you feeling like an extra cool snowman.");
+        //     // this.loadImages(data.preloadList)
+        //     // if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
+        //     //     this.LANDING.show();
+        //     // } else {
+        //     //     this.loaderInit();
+        //     // }
+        //     // this.LANDING.show();
+        // }
+
+        this.showEndFrame("Best savoured on your local park bench, your brew is extra fresh and topped off with just a dash of liquid poison. Kick back and chill with low key tunes filled with all the right feels, that'll have you feeling like an extra cool snowman.");
     }
 
     private loaderInit() {
@@ -475,10 +482,15 @@ export default class UI {
         this.setBgColor(data.COLOURS.beige);
         this.toggleFrameColours(data.COLOURS.purple, true);
 
-        f.elByID("playlist-desc").innerHTML = description;
+        // set description
+        f.find(this.endFrameEl, "#playlist-desc").innerHTML = description;
 
         this.endFrameEl.style.display = "block";
-        var d = 0.5;
+        var d = 1;
+
+        let restartBtn = f.find(this.endFrameEl, "#brew-again");
+        let shareBtn = f.find(this.endFrameEl, "#share");
+        let subscribeBtn = f.find(this.endFrameEl, "#subscribe-btn");
 
         TweenMax.fromTo(f.find(this.endFrameEl, "#playlist-title"), 0.5, {
             alpha: 0, x:-100
@@ -489,14 +501,31 @@ export default class UI {
         TweenMax.fromTo(f.find(this.endFrameEl, "#playlist-desc"), 0.5, {
             alpha: 0, x:-100
         }, {
-            alpha: 1, x:0, delay: d+0.1
+            alpha: 1, x:0, delay: d+0.2
         });
 
         TweenMax.fromTo(f.find(this.endFrameEl, "#album-cover"), 0.5, {
             alpha:0, scale:0.9
         }, {
-            alpha: 1, scale:1, delay: d+0.2
+            alpha: 1, scale:1, delay: d+0.4
         });
+
+        TweenMax.fromTo([restartBtn, shareBtn], 0.3, {
+            alpha: 0, y:50
+        }, {
+            alpha:1, y:0, delay: d+1.2, stagger:0.1, onComplete : ()=> {
+                restartBtn.className += " active";
+                shareBtn.className += " active";
+            }
+        })
+
+        TweenMax.fromTo(subscribeBtn, 2, {
+            alpha: 0
+        }, {
+            alpha:1, delay: d+2, onComplete : ()=> {
+                subscribeBtn.className += " active"
+            }
+        })
     }
 
     private toggleNav() {
@@ -694,6 +723,10 @@ export default class UI {
         TweenMax.to(e, 1, {
             display: "none", x:-window.innerWidth*2, ease: "easeOut"
         })
+    }
+
+    private openSubscriptionPage() {
+        
     }
 
     public playlistCreated(url: string) {

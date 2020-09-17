@@ -521,7 +521,7 @@ p, table {
         display: inline-block;
         margin-top: 50px;
 
-        &:hover {
+        &.active:hover {
             background-color: $orange;
         }
 
@@ -543,7 +543,7 @@ p, table {
             margin-top: 20px;
         }
 
-        &:hover {
+        &.active:hover {
             color: $purple;
         }
     }
@@ -552,7 +552,7 @@ p, table {
     //     margin-top: 50px;;
     // }
 
-    #brew-again, #subscribe-btn, #share {
+    .active {
         cursor: pointer;
     }
 }
