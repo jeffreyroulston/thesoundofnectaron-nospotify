@@ -565,6 +565,8 @@ export class SpotifyInterface {
                 // the json body will contain the id we need to continue updating the songs
                 response.json().then((json) => {
 
+                    console.log(json)
+
                     // create the right url
                     const playlistId = json.id;
                     const playlistUrl = new URL(SpotifyInterface.PLAYLIST_UPDATE_ADDRESS.replace('{playlist_id}', playlistId));
@@ -586,27 +588,16 @@ export class SpotifyInterface {
                         // we did it, we created the playlist
                         if (response.ok) {
 
-                            response.json().then((json) => {
+                            // broadcast artist information to listeners
+                            this.OnDataListeners.forEach((callback) => {
 
-                                console.log(json);
+                                if (params.Image !== undefined) {
+                                    this.SetPlaylistImage(playlistId, params.Image.Url);
+                                }
 
-                                // broadcast artist information to listeners
-                                this.OnDataListeners.forEach((callback) => {
-
-                                    if (params.Image !== undefined) {
-                                        this.SetPlaylistImage(playlistId, params.Image.Url);
-                                    }
-
-                                    // TODO: consider what playlist data to return
-                                    callback(DataType.PlaylistCreated, {
-                                        ShareLink: json["external_urls"]["spotify"]
-                                    });
-                                });
-
-                            }).catch((err) => {
-                                // broadcast error
-                                this.OnErrorListeners.forEach((callback) => {
-                                    callback(ErrorType.JsonParseError, err);
+                                // TODO: consider what playlist data to return
+                                callback(DataType.PlaylistCreated, {
+                                    ShareLink: json["external_urls"]["spotify"]
                                 });
                             });
                         }

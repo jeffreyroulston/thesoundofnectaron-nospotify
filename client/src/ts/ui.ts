@@ -104,6 +104,15 @@ export default class UI {
         document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
     }
 
+    private copyText(text: string) {
+        const el = document.createElement('textarea');
+        el.value = text;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+    }
+
     private init() {
         if (this.nope) return;
 
@@ -130,6 +139,13 @@ export default class UI {
         f.elByID("brew-again").addEventListener("click", ()=> {
             location.reload();
         })
+
+        // copy link
+        f.elByID("share").addEventListener("click", ()=> {
+            if (this.app.playlistCreated) {
+                this.copyText(this.app.playlistCreated.ShareLink)
+            }
+        });
 
         // we playing rounds on the redirect
         if (window.location.href.indexOf("access_token") > -1) {
@@ -441,20 +457,21 @@ export default class UI {
     }
 
     public showEndFrame(description: string) {
-        const graphics: Graphics = new Graphics();
-        graphics.onInitResources(App.resourceManager);
+        // f.elByID("canvas-container").style.zIndex = "50";
+        // const graphics: Graphics = new Graphics();
+        // graphics.onInitResources(App.resourceManager);
+        // graphics.switchColorForward(data.COLOURS_THREE[data.COLOURS.beige], 0.3)
 
-        const container = document.getElementById('canvas-container');
-        if (container !== null) {
-            container.append(graphics.domElement);
-            container.style.zIndex ="50";
-            graphics.domElement.style.zIndex = '50';
-            graphics.domElement.id = "graphics-canvas";
-        }
+        // const container = document.getElementById('canvas-container');
+        // if (container !== null) {
+        //     container.append(graphics.domElement);
+        //     container.style.zIndex ="50";
+        //     graphics.domElement.style.zIndex = '50';
+        //     graphics.domElement.id = "graphics-canvas";
+        // }
 
-        graphics.switchColorForward(new THREE.Color(0xff00), 1.0);
+        // graphics.switchColorForward(new THREE.Color(0xff00), 1.0);
 
-        // this.currentPage = PageType.EndFrame;
         this.setBgColor(data.COLOURS.beige);
         this.toggleFrameColours(data.COLOURS.purple, true);
 
@@ -687,5 +704,24 @@ export default class UI {
     public nameSet(name : string) {
         this.name = name.split(" ")[0];
         f.elByID("playlist-title").innerHTML = this.name + "'s Playlist"
+    }
+
+    private copyLink() {
+        var copyText = this.app.playlistCreated?.ShareLink;
+        console.log("copy link", copyText);
+        if (copyText) {
+            var el = <HTMLInputElement>f.elByID("playlist-url-thing");
+            el.value = copyText;
+
+            console.log("value", el.value);
+    
+              /* Select the text field */
+            el.select();
+            el.setSelectionRange(0, 99999); /*For mobile devices*/
+    
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+            console.log("test");
+        }
     }
 }

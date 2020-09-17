@@ -36,7 +36,7 @@ export default class App {
     private profile: si.UserProfile | undefined;
     private topArtists: si.Artist[] | undefined;
     private topTracks: si.Track[] | undefined;
-    private playlistCreated: si.Playlist | undefined;
+    public playlistCreated: si.Playlist | undefined;
     // private answeredQuestions: Questions.Question[] = [];
 
     private flames: Fire = new Fire();
