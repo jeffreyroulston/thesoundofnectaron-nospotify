@@ -237,30 +237,14 @@ export default class App {
 
             // get a random selection of genres
             let genres: string[] = [];
-
-            if (this.topArtists.length < 1) {
-                genres.push("pop", "alternative", "dance");
-            }
-
-            else {
-                this.topArtists.map(x => x.Genres.forEach((genre) => genres.push(genre)));
-                shuffle(genres);
-                genres = genres.slice(0, 3);
-            }
-
-
-            let tracks: string[] = [];
-
-            if (this.topTracks.length < 1) {
-                // what to do here
-            }
-
+            this.topArtists.map(x => x.Genres.forEach((genre) => genres.push(genre)));
+            shuffle(genres);
+            genres = genres.slice(0, 3);
+            
             // get two random top tracks
-            else {
-                this.topTracks.map(track => track.Id);
-                shuffle(tracks);
-                tracks = tracks.slice(0, 2);
-            }
+            let tracks: string[] = this.topTracks.map(track => track.Id);
+            shuffle(tracks);
+            tracks = tracks.slice(0, 2);
 
             this.spotifyInterface.GetRecommendations({
                 QueryParameters: queries,
