@@ -213,9 +213,9 @@ export default class Fire {
         });
 
         // spawn new flame
-
-        const shouldHaveSpawned = Math.floor(this.spawnRate * elapsed % this.maxFlames);
-        const haveAlreadySpawned = Math.floor(this.spawnRate * (elapsed - dt) % this.maxFlames);
+        const aspectSpawnRate = this.spawnRate * Math.min(1.0, this.currentAspect);
+        const shouldHaveSpawned = Math.floor(aspectSpawnRate * elapsed % this.maxFlames);
+        const haveAlreadySpawned = Math.floor(aspectSpawnRate * (elapsed - dt) % this.maxFlames);
         const toSpawn = shouldHaveSpawned - haveAlreadySpawned;
 
         for(let i = 0; i < toSpawn; i++) {
