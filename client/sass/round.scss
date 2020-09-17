@@ -254,20 +254,29 @@
          }
     }
 
+    .fruit-wrapper {
+        @include maxW($tabletLandscapeWidth) {
+            width: 100%;
+            display: inline-block;
+        }
+    }
+
     .fruit-whole {
         width: 180px;
         display: block;
         position: absolute;
-        right: 295px;
+        right: -12px;
         top: -152px;
 
          // < 1024px
         @include maxW($tabletLandscapeWidth) {
-            @include horizontalAlign(absolute);
-            left: 60%;
-            top: -115px;
-            z-index: -1;
-            width: 50px;
+            width: auto;
+            height: 300px;
+            display: inline-block;
+            margin-top: -300px;
+            position: relative;
+            right: -150px;
+            top: 130px;
         }
     }
 }
