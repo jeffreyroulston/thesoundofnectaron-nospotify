@@ -30,7 +30,7 @@ let SCOPES: string[] = [
 export default class App {
     private spotifyInterface: si.SpotifyInterface;
     // private graphics: Graphics = new Graphics();
-    private resourceManager: ResourceManager = new ResourceManager();
+    static resourceManager: ResourceManager = new ResourceManager();
     // private ui: UI = new UI(this.graphics);
     private ui: UI = new UI(this);
     private profile: si.UserProfile | undefined;
@@ -51,18 +51,6 @@ export default class App {
         this.ui.Login = this.Login.bind(this);
         this.spotifyInterface.NameSet = this.ui.nameSet.bind(this.ui);
 
-        // this.CheckAuthorization();
-
-        // if (this.spotifyInterface.Authorized) {
-        //     if (document.cookie == "landingShown") {
-        //         this.ui.startRounds();
-        //     } else {
-        //         this.ui.showLanding();
-        //     }
-        // } else {
-        //     this.ui.showLanding();
-        // }
-
         // // we need these binds to make sure and 'this' in callbacks is bound to the correct object
         //this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
         this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this));
@@ -73,16 +61,16 @@ export default class App {
         // this.ui.OnLoginPressed = this.Login;
         // this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
 
-        this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/spritesheet.png").then(() => {
-            this.flames.onInitResources(this.resourceManager);
-        });
-
-        const bgcontainer = document.getElementById('canvas-container-background');
-        if (bgcontainer !== null) {
-            bgcontainer.style.zIndex = '100000';
-            bgcontainer.append(this.flames.domElement);
-            this.flames.domElement.id = "graphics-canvas";
-        }
+        // this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/spritesheet.png").then(() => {
+        //     this.flames.onInitResources(this.resourceManager);
+        // });
+        App.resourceManager.loadResourceByPath(HTMLImageElement, "assets/spritesheet.png");
+        // const bgcontainer = document.getElementById('canvas-container-background');
+        // if (bgcontainer !== null) {
+        //     bgcontainer.style.zIndex = '100000';
+        //     bgcontainer.append(this.flames.domElement);
+        //     this.flames.domElement.id = "graphics-canvas";
+        // }
 
         this.getProfile();
 

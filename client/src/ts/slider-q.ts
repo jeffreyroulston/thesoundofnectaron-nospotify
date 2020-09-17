@@ -7,6 +7,8 @@ import {COLOURS, sliderQuestions, SliderQuestion } from "./data";
 import { Draggable } from "gsap/dist/Draggable";
 import gsap from "gsap";
 import { version } from "d3";
+import Fire from "./fire";
+import App from "./app";
 gsap.registerPlugin(Draggable);
 
 export default class Slider {
@@ -83,6 +85,10 @@ export default class Slider {
     // called from ui
     public initiated = false;
     public isComplete = false;
+
+    // FIRE
+    private fire : Fire | undefined;
+    private fireOn : boolean = false;
 
     // bound to ui
     public roundComplete = (e: HTMLElement)=> {};
@@ -534,9 +540,22 @@ export default class Slider {
 
     private showQ4() {
         // BUNSEN BURNER
+        this.fire = new Fire();
+        this.fire.onInitResources(App.resourceManager);
+        this.fireOn = true;
+
+        const bgcontainer = document.getElementById('canvas-container-background');
+        if (bgcontainer !== null) {
+            bgcontainer.style.zIndex = '5';
+            bgcontainer.append(this.fire.domElement);
+            this.fire.domElement.id = "graphics-canvas";
+        }
+
+        this.fire.run();
 
         // set slider value
         this.setSliderValue(50);
+        this.fire?.setSpeed(50/50);
 
         // make it not full width
         this.toggleFullWidth();
@@ -548,32 +567,7 @@ export default class Slider {
 
         // get the bubbles
         this.imgs = f.findAll(slider, "#bubbles li");
-        var width = slider.getBoundingClientRect().width;
-        var height = slider.getBoundingClientRect().height;
         
-        this.bubbleCount = this.imgs.length/2;
-        this.activeBubbles = this.imgs.length/2;
-
-        // // add the bubble animations to a list
-        // for (var i=0; i<this.imgs.length; i++) {
-        //     let anim = TweenMax.fromTo(this.imgs[i], 5, {
-        //         x: f.getRandom(0, width-100), y:200
-        //     }, {
-        //         x: f.getRandom(0, width-100), y:-200 + -height, delay: i*0.5, repeat: -1, ease: "linear", onComplete: this.bubbleLoopComplete.bind(this)
-        //     });
-
-        //     anim.pause();
-        //     this.loopingAnimations.push(anim);
-        // }
-        
-        // // move half of the bubbles
-        // for (var y=0; y<this.bubbleCount; y++) {
-        //     let anim = this.loopingAnimations[y]
-        //     setTimeout(()=> {
-        //         anim.play();
-        //     }, 500*y)
-        // }
-
         // get the colours
         var colour = f.rgb(f.findColorBetween(this.bunsenColour1, this.bunsenColour2, this.sliderValue));
         this.busenFillEl.style.fill = colour;
@@ -590,6 +584,8 @@ export default class Slider {
 
     private callbackQ4(n: number) {
         if (n < 0 || n > 100) return;
+
+        this.fire?.setSpeed(n/50);
         
         // get value from slider
         this.sliderValue = n
@@ -600,45 +596,6 @@ export default class Slider {
 
         // set the number of bubbles
         this.bubbleCount = Math.ceil(this.sliderValue / 10);
-
-
-        console.log(this.sliderValue, this.bubbleCount, this.activeBubbles);
-
-        // if (this.bubbleCount > this.activeBubbles) {
-        //     for (var i=this.activeBubbles-1; i<this.bubbleCount; i++) {
-        //         if (this.loopingAnimations[i].paused()) this.loopingAnimations[i].play();
-        //     }
-        // } else if (this.bubbleCount < this.activeBubbles) {
-        //     console.log("decrease", this.activeBubbles-1, this.bubbleCount-1);
-        //     if (this.activeBubbles == 0) return;
-        //     for (var i=this.activeBubbles-1; i>this.bubbleCount-1; i--) {
-        //         console.log(i);
-        //         if (!this.loopingAnimations[i].paused()){
-        //             this.loopingAnimations[i].time(0);
-        //             this.loopingAnimations[i].pause();
-        //         }
-        //     }
-        // }
-
-        // this.activeBubbles = this.bubbleCount;
-
-        // // get the bubbles
-        // var slider = f.find(this.el, ".slider-q4");
-        // var width = slider.getBoundingClientRect().width;
-        // var height = slider.getBoundingClientRect().height;
-        
-        // this.bubbleCount = this.imgs.length/2
-
-        // // move the bubbles
-        // for (var i=0; i<this.bubbleCount; i++) {
-        //     this.loopingAnimations.push(
-        //         TweenMax.fromTo(this.imgs[i], 5, {
-        //             x: f.getRandom(0, width-100), y:200
-        //         }, {
-        //             x: f.getRandom(0, width-100), y:-200 + -height, delay: i*0.1, repeat: -1, ease: "linear"
-        //         })
-        //     )
-        // }
     }
 
     private showQ5() {
@@ -763,6 +720,18 @@ export default class Slider {
             // resent bindings
             this.showCurrentQuestion = showFunctions[this.questionIdx];
             this.callbackCurrentQuestion = callbackFunctions[this.questionIdx];
+
+            // if there's fire
+            if (this.fireOn && this.fire) {
+                TweenMax.to(this.fire.domElement, 0.5, {
+                    alpha: 0, display: "none", onComplete : ()=> {
+                        this.fire?.destroy();
+                        this.fire = undefined;
+                    }
+                });
+
+                this.fireOn = false;
+            }
 
             // hide out the things
             this.hide();

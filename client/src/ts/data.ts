@@ -460,4 +460,5 @@ export const preloadList : string[] = [
     "round2/q5/ingredient_x_skull.png",
     "album.png",
     "albumCover.jpg",
+    "spritesheet.png"
 ]

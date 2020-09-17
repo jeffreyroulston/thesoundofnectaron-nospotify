@@ -68,8 +68,8 @@ export default class Fire {
     private frameResized: boolean = true;
 
     // meshes
-    private maxFlames: number = 1000;
-    private spawnRate: number = 1000;
+    private maxFlames: number = 500;
+    private spawnRate: number = 500;
     private mesh: THREE.Mesh;
     private geo: THREE.BufferGeometry;
     private buffer: Float32Array;
@@ -83,6 +83,9 @@ export default class Fire {
     // utilities
     private tempVector: THREE.Vector3 = new THREE.Vector3();
     private tempMatrix: THREE.Matrix3 = new THREE.Matrix3();
+
+    // runspeed
+    private shouldRun = false;
 
     constructor() {
 
@@ -186,9 +189,17 @@ export default class Fire {
         this.currentSpeed = value;
     }
 
+    public run() {
+        this.shouldRun = true;
+    }
+
     public update(): void {
 
         requestAnimationFrame(this.update.bind(this));
+
+        if (!this.shouldRun) {
+            return;
+        }
 
         let dt = this.clock.getDelta();
         dt = Math.min(dt, 0.2);
@@ -200,7 +211,7 @@ export default class Fire {
 
         this.checkResize();
 
-        this.currentSpeed = Math.sin(elapsed * 0.5) + 1.0;
+        // this.currentSpeed = Math.sin(elapsed * 0.5) + 1.0;
 
         this.renderer.render(this.scene, this.camera);
     }
@@ -357,6 +368,7 @@ export default class Fire {
     }
 
     public destroy() {
+        this.shouldRun = false;
         this.material.dispose();
         this.geo.dispose();
         this.flames = [];
