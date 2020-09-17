@@ -32,12 +32,12 @@
     .text-wrapper {
         // < 1920px
         @include maxW($desktopXLargeWidth) {
-            @include transform(scale(0.8));
+            // @include transform(scale(0.));
         }
 
         // < 1366px
         @include maxW($desktopLargeWidth) {
-            @include transform(scale(0.75));
+            @include transform(scale(0.8));
         }
 
         // < 1280px

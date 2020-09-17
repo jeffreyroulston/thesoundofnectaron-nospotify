@@ -53,7 +53,9 @@ export interface Track {
     Length: number
 }
 
-export interface Playlist { }
+export interface Playlist { 
+    ShareLink: string;
+}
 
 export interface Artist {
     Name: string,
@@ -579,15 +581,28 @@ export class SpotifyInterface {
                         // we did it, we created the playlist
                         if (response.ok) {
 
-                            // broadcast artist information to listeners
-                            this.OnDataListeners.forEach((callback) => {
+                            response.json().then((json) => {
 
-                                if (params.Image !== undefined) {
-                                    this.SetPlaylistImage(playlistId, params.Image.Url);
-                                }
-                                // TODO: consider what playlist data to return
-                                callback(DataType.PlaylistCreated, {});
+                                console.log(json);
 
+                                // broadcast artist information to listeners
+                                this.OnDataListeners.forEach((callback) => {
+
+                                    if (params.Image !== undefined) {
+                                        this.SetPlaylistImage(playlistId, params.Image.Url);
+                                    }
+
+                                    // TODO: consider what playlist data to return
+                                    callback(DataType.PlaylistCreated, {
+                                        ShareLink: json["external_urls"]["spotify"]
+                                    });
+                                });
+
+                            }).catch((err) => {
+                                // broadcast error
+                                this.OnErrorListeners.forEach((callback) => {
+                                    callback(ErrorType.JsonParseError, err);
+                                });
                             });
                         }
 

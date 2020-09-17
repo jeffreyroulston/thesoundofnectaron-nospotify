@@ -15,8 +15,8 @@
     .question-wrapper {
         // top: 50%;
 
-        // < 768px
-        @include maxW($tabletPortraitWidth) {
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
             height: 80%;
             top: 10%;
             transform : none;
@@ -27,16 +27,16 @@
     .question-box-wrapper {
         // display: table-cell;
         // vertical-align: middle;
-        height: 250px;
-        max-width: 700px;
+        // height: 250px;
+        // max-width: 700px;
 
         // < 768px
         // @include maxW($tabletPortraitWidth) {
         //     height: 200px;
         // }
 
-        // < 768px
-        @include maxW($tabletPortraitWidth) {
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
             // display: inline-block;
             height: auto;
             
@@ -180,8 +180,8 @@
     #answer-wrapper {
         text-align: center;
 
-        // < 768px
-        @include maxW($tabletPortraitWidth) {
+        // < 1024px
+        @include maxW($tabletLandscapeWidth) {
             position: absolute;
             bottom: 0px;
             width: 100%;

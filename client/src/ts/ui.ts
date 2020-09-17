@@ -5,7 +5,7 @@ import {TweenMax} from "gsap"
 import App from "./app";
 import Landing from "./landing";
 import Rounds from "./rounds";
-import Modernizr from "modernizr";
+// import Modernizr from "modernizr";
 
 var qDefault = function() { return { value: 0, include: false } };
 
@@ -75,6 +75,7 @@ export default class UI {
 
     // looping animations
     private loopingAnimations : TweenMax[] = [];
+    private inPageLoopingAnimations : TweenMax[] = [];
 
     private nope : boolean = false;
 
@@ -92,6 +93,7 @@ export default class UI {
         // if (!Modernizr.svg) {
         //     this.nope = true;
         //     f.elByID("shit-browser-alert").style.display = "block";
+<<<<<<< HEAD
         // }
 
         // this.nope = true;
@@ -99,11 +101,20 @@ export default class UI {
 
         // Set custom height
         window.addEventListener('resize', this.onResize.bind(this));
+=======
+        // } else {
+        //     window.addEventListener('resize', this.onResize.bind(this));
+        //     document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
+        // }
+>>>>>>> ui-test
         document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
     }
 
     private init() {
         if (this.nope) return;
+
+        // resize callback
+        window.addEventListener('resize', this.onResize.bind(this));
 
         // check dimensions
         this.isMobileSize = this.burgerEl.getBoundingClientRect().width > 1;
@@ -116,6 +127,11 @@ export default class UI {
             li.addEventListener("click", this.togglePage.bind(this))
         })
 
+        // page close buttons
+        f.elList(".close-btn").forEach((e)=> {
+            e.addEventListener("click", this.closePage.bind(this));
+        })
+
         // we playing rounds on the redirect
         if (window.location.href.indexOf("access_token") > -1) {
             // GAMEPLAY
@@ -124,6 +140,7 @@ export default class UI {
             // start
             this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
             this.ROUNDS.showRound(0)
+            this.onResize();
         } else {
             // LANDING PAGE
             this.LANDING = new Landing(this);
@@ -148,7 +165,7 @@ export default class UI {
 
     async loadImages(images: string[]) {
         this.imgCount = images.length;
-        console.log(this.imgCount);
+        // console.log(this.imgCount);
         
         images.forEach((imgSrc)=> {
             let imgObject = new Image();
@@ -160,7 +177,7 @@ export default class UI {
     private incrementLoader() {
         this.imgsLoaded++;
         var percent = this.imgsLoaded/this.imgCount * 100;
-        console.log(percent);
+        // console.log(percent);
 
         // this.loaderPercentEl.innerHTML = Math.round(percent).toString() + "%";
         // if (this.imgsLoaded == this.imgCount) {
@@ -170,7 +187,10 @@ export default class UI {
         //     this.loaderCircleEl.style.transform = "scale(" + scale + ")";
         // }
 
-        if (this.imgsLoaded == this.imgCount) this.LANDING?.show();
+        if (this.imgsLoaded == this.imgCount) {
+            this.LANDING?.show();
+            this.onResize();
+        }
     }
 
     private isCached(src: string) {
@@ -194,18 +214,26 @@ export default class UI {
         this.isMobileSize = m;
     }
 
+    private toggleHeaderLogo(show: boolean) {
+        if (show) {
+            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+        } else {
+            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "block", y:0}, {display: "none", y:0})
+        }
+    }
+
     private changeToDesktop() {
         // small logo
-        TweenMax.to(this.smallLogoEl, 0.5, {display: "none", y:-100})
+        if (this.LANDING == undefined) this.toggleHeaderLogo(false);
 
         // reset nav
         this.navVisible = false;
         this.navWrapperEl.removeAttribute("style");
 
         TweenMax.fromTo(this.navEl, 0.2, {
-            display: "none", y:-100
+            y:-100
         }, {
-            display: "block", y:0
+            y:0
         })
 
         this.ROUNDS?.changeToDesktop();
@@ -215,8 +243,7 @@ export default class UI {
         this.navWrapperEl.removeAttribute("style");
 
         // small logo
-        console.log(this.LANDING);
-        if (this.LANDING == undefined) TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+        if (this.LANDING == undefined) this.toggleHeaderLogo(true);
 
         this.ROUNDS?.changeToMobile();
     }
@@ -245,7 +272,8 @@ export default class UI {
             } else {
                 console.log("reposition nav");
                 // is desktop...
-                this.navEl.style.left = f.px(window.innerWidth/4 - 50 - this.navEl.getBoundingClientRect().width/2)
+                console.log(window.innerWidth, window.innerWidth)
+                this.navEl.style.left = f.px((window.innerWidth/2 - this.navEl.getBoundingClientRect().width)/2)
             }
         }
 
@@ -257,6 +285,7 @@ export default class UI {
             }
 
         } else {
+            console.log("frame visible", this.frameVisible);
             if (!this.frameVisible) {
                 this.frameIn();
                 this.frameVisible = true;
@@ -281,20 +310,16 @@ export default class UI {
     }
 
     public showNavBar() {
-        // show the border letters
-        // this.frameIn();
-
         // change the position of the nav
         if (this.isMobileSize) {
             // is mobile
             this.navEl.removeAttribute("style");
 
             // small logo
-            console.log(this.LANDING);
-            if (this.LANDING == undefined) TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+            if (this.LANDING == undefined) this.toggleHeaderLogo(true);
         } else {
             // show the listed nav
-            TweenMax.fromTo(this.navEl, 0.5, {dispplay: "none", y:-100}, {display:"block", y:0})
+            TweenMax.fromTo(this.navEl, 0.5, {y:-100}, {y:0})
         }
 
     }
@@ -359,11 +384,11 @@ export default class UI {
             // })
 
             // change the color of the burger
-            f.findAll(this.burgerEl, ".burger-fill").forEach((el)=> {
-                el.style.fill = color;
+            f.findAll(this.burgerEl, "li").forEach((el)=> {
+                el.style.backgroundColor = color;
             })
 
-            // change the color of the small header logo
+            // change the color of the small logo
             f.findAll(this.smallLogoEl, ".logo-small-fill").forEach((el)=> {
                 el.style.fill = color;
             })
@@ -430,123 +455,30 @@ export default class UI {
         });
     }
 
-    private togglePage(e: any) {
-        // used for nav (About/Contact/Order)
-        var target = e.srcElement.getAttribute("data");
-        
-        if (this.currentPopupPage == target) {
-            // if it's the same page, close it
-            e.srcElement.classList.toggle("active");
-            this.hidePage(this.currentPopupPage);
-            this.currentPopupPage = "";
-            this.currentPopupPageEl = undefined;
-
-            // change the frame colours
-            this.toggleFrameColours(this.currentFrameColor, false);
-
-        } else {  
-            if (target == "about" || target == "faq") {
-                // change the color of the frame but don't set it as the current (so it can be reverted)
-                this.toggleFrameColours(data.COLOURS.purple, false);
-
-                if (this.currentPopupPageEl) {
-                    // of there's a page currently showing, so hide it and show the next
-                    this.currentPopupPageEl.classList.toggle("active");
-                    e.srcElement.classList.toggle("active");
-                    this.hidePage(this.currentPopupPage, target);
-                } else {
-                    // check if it's mobile
-                    e.srcElement.classList.toggle("active");
-                    this.showPage(target);
-                }
-            }          
-
-            this.currentPopupPage = target;
-            this.currentPopupPageEl = e.srcElement;
-        }
-    }
-
-    private showPage(p : string) {
-        // animations for different pages
-        switch(p) {
-            case "about" :
-                // bop the fruit
-                this.loopingAnimations.push(TweenMax.fromTo(this.aboutHopTopEl, 3, {
-                    rotate: -10, x:-50
-                }, {
-                    rotate: 10, x:50, repeat: -1, yoyo: true, ease: "linear"
-                }))
-
-                this.loopingAnimations.push(TweenMax.to(this.aboutHopBottomEl, 1.5, {
-                    y: -20, repeat: -1, yoyo: true, ease: "linear"
-                }))
-
-                this.show(this.aboutEl);
-                break;
-            case "faq":
-                this.show(this.faqEl);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private hidePage(p : string, p2?: string) {
-        // animations for different pages
-        switch(p) {
-            case "about" :
-                this.hide(this.aboutEl)
-                break;
-            case "faq":
-                this.hide(this.faqEl)
-                break;
-            default:
-                break;
-        }
-
-        if (p2) {
-            this.showPage(p2);
-        }
-    }
-
-    private show(e: HTMLElement) {
-        TweenMax.fromTo(e, 0.15, {
-            display : "none", alpha: 0, scale:0.98
-        }, {
-            display: "block", alpha: 1, scale:1
-        })
-    }
-
-    private hide(e: HTMLElement) {
-        TweenMax.fromTo(e, 0.15, {
-            display : "block", alpha: 1, scale:1
-        }, {
-            display: "none", alpha: 0, scale:0.98
-        })
-    }
-
     private toggleNav() {
         // called from the burger/close
+
+        // BURGER OPEN
         if (this.navVisible) {
-            // close the nav
+            if (this.currentPopupPage) {
+                this.hidePage(this.currentPopupPage);
+            } else {
+                this.slideOut(this.navWrapperEl);
+            }
+
+            // revert the frame colours
             this.toggleFrameColours(this.currentFrameColor, false);
 
-            TweenMax.to(this.navWrapperEl, 0.5, {
-                display: "none", x:-window.innerWidth*2
-            })
-
+            // hide the small logo
+            if (this.LANDING) this.toggleHeaderLogo(false);
             this.navVisible = false;
 
         } else {
             // show the nav
             this.toggleFrameColours(data.COLOURS.purple, false);
+            this.slideIn(this.navWrapperEl);
 
-            TweenMax.fromTo(this.navWrapperEl, 0.5, {
-                display: "none", x:-window.innerWidth*2
-            }, {
-                display: "block", x:0
-            })
-
+            // bounce in the things
             TweenMax.fromTo(f.findAll(this.navEl, "li"), 0.5, {
                 alpha:0, y:50
             }, {
@@ -555,14 +487,169 @@ export default class UI {
                 }
             })
 
-            // turn it into a close sign?
-            // TweenMax.to(f.find(this.burgerEl, ".left-line"), 0.2, {rotate:-45, y:20})
-
-            // TweenMax.to(f.find(this.burgerEl, ".right-line"), 0.2, {rotate:45, y:-50})
-
+            // show the small logo
+            if (this.LANDING) this.toggleHeaderLogo(true);
             this.navVisible = true;
         }
 
+        this.burgerEl.classList.toggle("opened");
+
+    }
+
+    private togglePage(e: any) {
+        // used for nav (About/Contact/Order)
+        var target = e.srcElement.getAttribute("data");
+
+        if (this.isMobileSize) {
+            // MOBILE
+            if (target == "about" || target == "faq") {
+                this.showPage(target);
+
+                // hide the nav wrapper
+                this.slideOut(this.navWrapperEl);
+            }
+        } else {
+            // DEKSTOP
+            if (this.currentPopupPage == target) {
+                // if it's the same page, close it
+
+                // show the underline on the next page
+                e.srcElement.classList.toggle("active");
+
+                // hide the current page
+                this.hidePage(this.currentPopupPage);
+    
+                // change the frame colours
+                this.toggleFrameColours(this.currentFrameColor, false);
+
+                // set current pop up page to nothing
+                this.currentPopupPageEl = undefined;
+    
+            } else {  
+                if (target == "about" || target == "faq") {
+                    // change the color of the frame but don't set it as the current (so it can be reverted)
+                    this.toggleFrameColours(data.COLOURS.orange, false);
+    
+                    if (this.currentPopupPage.length) {
+                        // if there's a page currently showing, so hide it and show the next
+                        this.currentPopupPageEl?.classList.toggle("active");
+
+                        // hide the current page and show the next one 
+                        this.hidePage(this.currentPopupPage, target);
+                    } else {
+                        // nothing else visible, show the damn page
+                        this.showPage(target);
+                    } 
+
+                    // set the currrent list element to active
+                    this.currentPopupPageEl = e.srcElement;
+                    this.currentPopupPageEl?.classList.toggle("active");
+                }          
+            }
+        }
+    }
+
+    private closePage() {
+        // called from x buttons on desktop page
+        this.hidePage(this.currentPopupPage);
+        this.toggleFrameColours(this.currentFrameColor, false);
+        this.currentPopupPageEl?.classList.toggle("active");
+        this.currentPopupPageEl = undefined;
+    }
+
+    private showPage(p : string, delay?: number) {
+        // animations for different pages
+        if (p == "about") {
+            // bop the fruit
+            this.inPageLoopingAnimations.push(TweenMax.fromTo(this.aboutHopTopEl, 3, {
+                rotate: -10, x:-50
+            }, {
+                rotate: 10, x:50, repeat: -1, yoyo: true, ease: "linear"
+            }))
+
+            this.inPageLoopingAnimations.push(TweenMax.to(this.aboutHopBottomEl, 1.5, {
+                y: -50, repeat: -1, yoyo: true, ease: "linear"
+            }))
+
+            if (this.isMobileSize) {
+                this.slideIn(this.aboutEl)
+            } else {
+                delay? this.show(this.aboutEl, delay) : this.show(this.aboutEl)
+            }
+        } else if (p == "faq") {
+            this.inPageLoopingAnimations.push(TweenMax.to(f.elByID("faq-bg"), 2, {
+                scale: 1.01, repeat: -1, yoyo: true, ease: "linear"
+            }))
+
+            if (this.isMobileSize) {
+                this.slideIn(this.faqEl);
+            } else {
+                delay? this.show(this.faqEl, delay) : this.show(this.faqEl)
+            }
+        }
+
+        this.currentPopupPage = p;
+        // this.currentPopupPageEl = f.elByID(p);
+        console.log("show page", this.currentPopupPage, this.currentPopupPageEl);
+    }
+
+    private hidePage(p : string, p2?: string) {
+        if (p == "about") {
+            if (this.isMobileSize) {
+                this.slideOut(this.aboutEl)
+            } else {
+                this.hide(this.aboutEl);
+            }
+        } else if (p == "faq") {
+            if (this.isMobileSize) {
+                this.slideOut(this.faqEl);
+            } else {
+                this.hide(this.faqEl);
+            }
+        }
+
+        this.inPageLoopingAnimations.forEach((anim)=> {
+            anim.kill();
+        });
+
+        this.inPageLoopingAnimations = [];
+        this.currentPopupPage = "";
+        // this.currentPopupPageEl = undefined;
+        console.log("hide page", p, this.currentPopupPageEl);
+
+        if (p2) this.showPage(p2, 0.3);
+    }
+
+    private show(e: HTMLElement, delay?: number) {
+        var d = delay ? delay : 0; 
+
+        TweenMax.fromTo(e, 0.3, {
+            display : "none", alpha: 0
+        }, {
+            display: "block", alpha: 1, delay: d
+        })
+    }
+
+    private hide(e: HTMLElement) {
+        TweenMax.fromTo(e, 0.3, {
+            display : "block", alpha: 1
+        }, {
+            display: "none", alpha: 0
+        })
+    }
+
+    private slideIn(e: HTMLElement) {
+        TweenMax.fromTo(e, 0.5, {
+            display: "none", x:-window.innerWidth*2
+        }, {
+            display: "block", x:0, ease: "easeOut"
+        })
+    }
+
+    private slideOut(e: HTMLElement) {
+        TweenMax.to(e, 1, {
+            display: "none", x:-window.innerWidth*2, ease: "easeOut"
+        })
     }
 
     public playlistCreated(url: string) {
