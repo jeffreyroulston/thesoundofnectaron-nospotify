@@ -46,8 +46,6 @@ export default class App {
         this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
 
         this.ui.Login = this.Login.bind(this);
-
-        this.spotifyInterface.PlaylistUrlCreated = this.playlistCreated.bind(this);
         this.spotifyInterface.NameSet = this.ui.nameSet.bind(this.ui);
 
         // this.CheckAuthorization();
@@ -105,10 +103,10 @@ export default class App {
         }
     }
 
-    private playlistCreated(url : string) {
-        console.log("playlist created", url);
-        this.ui.playlistCreated(url);
-    }
+    // private playlistCreated(url : string) {
+    //     console.log("playlist created", url);
+    //     this.ui.playlistCreated(url);
+    // }
 
     public switchGraphics(color : THREE.Color) {
         // this.graphics.switchColorForward(color, 0.5)
