@@ -57,6 +57,24 @@
             float: none;
         }
     }
+
+    .close-btn {
+        height: 30px;
+        display: block;
+        margin: 0 auto;
+        cursor: pointer;
+        transform: rotate(0deg);
+        transition: transform 0.5s ease;
+
+        &:hover {
+            transform: rotate(360deg);
+        }
+
+        // < 640px;
+        @include maxW($mobileLargeWidth) {
+            display: none;
+        }
+    }
 }
 
 #about {

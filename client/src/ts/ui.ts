@@ -97,13 +97,14 @@ export default class UI {
         //     window.addEventListener('resize', this.onResize.bind(this));
         //     document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
         // }
-
-        window.addEventListener('resize', this.onResize.bind(this));
         document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
     }
 
     private init() {
         if (this.nope) return;
+
+        // resize callback
+        window.addEventListener('resize', this.onResize.bind(this));
 
         // check dimensions
         this.isMobileSize = this.burgerEl.getBoundingClientRect().width > 1;
@@ -114,6 +115,11 @@ export default class UI {
         // navigation elements
         f.findAll(this.navWrapperEl, "li").forEach(li => {
             li.addEventListener("click", this.togglePage.bind(this))
+        })
+
+        // page close buttons
+        f.elList(".close-btn").forEach((e)=> {
+            e.addEventListener("click", this.closePage.bind(this));
         })
 
         // we playing rounds on the redirect
@@ -533,6 +539,14 @@ export default class UI {
         }
     }
 
+    private closePage() {
+        // called from x buttons on desktop page
+        this.hidePage(this.currentPopupPage);
+        this.toggleFrameColours(this.currentFrameColor, false);
+        this.currentPopupPageEl?.classList.toggle("active");
+        this.currentPopupPageEl = undefined;
+    }
+
     private showPage(p : string, delay?: number) {
         // animations for different pages
         if (p == "about") {
@@ -553,6 +567,10 @@ export default class UI {
                 delay? this.show(this.aboutEl, delay) : this.show(this.aboutEl)
             }
         } else if (p == "faq") {
+            this.inPageLoopingAnimations.push(TweenMax.to(f.elByID("faq-bg"), 2, {
+                scale: 1.01, repeat: -1, yoyo: true, ease: "linear"
+            }))
+
             if (this.isMobileSize) {
                 this.slideIn(this.faqEl);
             } else {
