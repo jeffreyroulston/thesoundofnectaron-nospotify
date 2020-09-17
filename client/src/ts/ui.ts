@@ -93,20 +93,10 @@ export default class UI {
         // if (!Modernizr.svg) {
         //     this.nope = true;
         //     f.elByID("shit-browser-alert").style.display = "block";
-<<<<<<< HEAD
-        // }
-
-        // this.nope = true;
-        // f.elByID("shit-browser-alert").style.display = "block";
-
-        // Set custom height
-        window.addEventListener('resize', this.onResize.bind(this));
-=======
         // } else {
         //     window.addEventListener('resize', this.onResize.bind(this));
         //     document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
         // }
->>>>>>> ui-test
         document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
     }
 

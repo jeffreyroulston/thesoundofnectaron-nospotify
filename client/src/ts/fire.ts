@@ -34,13 +34,16 @@ const fireFrag = `
     varying vec2 vUv;
     varying float vAge;
 
+    #define TINT vec3(186.0 / 255.0, 64.0 / 255.0, 0.0 / 255.0)
+
     void main() {
         float index = floor(vAge * spriteDim * spriteDim);
         float x = mod(index, spriteDim) / spriteDim;
         float y = 1.0 - floor(index / spriteDim) / spriteDim;
         vec2 spriteUvs = vUv * (1.0 / spriteDim) + vec2(x, y);
         vec4 texCol = texture2D(flameTexture, spriteUvs);
-        gl_FragColor = vec4(texCol.rgb, texCol.a);
+        vec3 color = mix(texCol.rgb, texCol.rgb * TINT, vAge);
+        gl_FragColor = vec4(color, texCol.a);
         //gl_FragColor = vec4(index / spriteDim / spriteDim, 0.0, 0.0, 1.0);
         // gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
     }
@@ -65,7 +68,7 @@ export default class Fire {
     private frameResized: boolean = true;
 
     // meshes
-    private maxFlames: number = 25000;
+    private maxFlames: number = 10000;
     private spawnRate: number = 10000;
     private mesh: THREE.Mesh;
     private geo: THREE.BufferGeometry;
@@ -187,7 +190,8 @@ export default class Fire {
 
         requestAnimationFrame(this.update.bind(this));
 
-        const dt = this.clock.getDelta();
+        let dt = this.clock.getDelta();
+        dt = Math.min(dt, 0.2);
         const elapsed = this.clock.getElapsedTime();
 
         this.updateParticles(elapsed, dt);
@@ -235,8 +239,10 @@ export default class Fire {
 
                 let life = Math.random() * 0.5 + 0.5;
                 let scale = Math.random() * 0.5 + 0.25;
+
+                let speedChange = 1.0 + simplex.noise2D(x * 2.0, elapsed) * 0.5;
     
-                flame.birth(this.tempVector, life, scale, this.currentSpeed);
+                flame.birth(this.tempVector, life, scale, this.currentSpeed * speedChange);
             }
         }
     }
@@ -258,7 +264,7 @@ export default class Fire {
     }
 
     public resize(width: number, height: number): void {
-        this.renderer.setSize(width, height);
+        this.renderer.setSize(width * 0.5, height * 0.5);
         this.renderer.getDrawingBufferSize(this.currentRendererSize);
 
 
