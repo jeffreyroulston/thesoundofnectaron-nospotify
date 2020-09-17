@@ -5,7 +5,7 @@ import {TweenMax} from "gsap"
 import App from "./app";
 import Landing from "./landing";
 import Rounds from "./rounds";
-import Modernizr from "modernizr";
+// import Modernizr from "modernizr";
 
 var qDefault = function() { return { value: 0, include: false } };
 
@@ -89,10 +89,10 @@ export default class UI {
         this.app = app;
 
         // check if it's a shit browser
-        if (!Modernizr.svg) {
-            this.nope = true;
-            f.elByID("shit-browser-alert").style.display = "block";
-        }
+        // if (!Modernizr.svg) {
+        //     this.nope = true;
+        //     f.elByID("shit-browser-alert").style.display = "block";
+        // }
 
         // this.nope = true;
         // f.elByID("shit-browser-alert").style.display = "block";
@@ -124,6 +124,7 @@ export default class UI {
             // start
             this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
             this.ROUNDS.showRound(0)
+            this.onResize();
         } else {
             // LANDING PAGE
             this.LANDING = new Landing(this);
@@ -148,7 +149,7 @@ export default class UI {
 
     async loadImages(images: string[]) {
         this.imgCount = images.length;
-        console.log(this.imgCount);
+        // console.log(this.imgCount);
         
         images.forEach((imgSrc)=> {
             let imgObject = new Image();
@@ -160,7 +161,7 @@ export default class UI {
     private incrementLoader() {
         this.imgsLoaded++;
         var percent = this.imgsLoaded/this.imgCount * 100;
-        console.log(percent);
+        // console.log(percent);
 
         // this.loaderPercentEl.innerHTML = Math.round(percent).toString() + "%";
         // if (this.imgsLoaded == this.imgCount) {
@@ -170,7 +171,10 @@ export default class UI {
         //     this.loaderCircleEl.style.transform = "scale(" + scale + ")";
         // }
 
-        if (this.imgsLoaded == this.imgCount) this.LANDING?.show();
+        if (this.imgsLoaded == this.imgCount) {
+            this.onResize();
+            this.LANDING?.show();
+        }
     }
 
     private isCached(src: string) {
@@ -245,7 +249,8 @@ export default class UI {
             } else {
                 console.log("reposition nav");
                 // is desktop...
-                this.navEl.style.left = f.px(window.innerWidth/4 - 50 - this.navEl.getBoundingClientRect().width/2)
+                console.log(window.innerWidth, window.innerWidth)
+                this.navEl.style.left = f.px((window.innerWidth/2 - this.navEl.getBoundingClientRect().width)/2)
             }
         }
 
@@ -257,6 +262,7 @@ export default class UI {
             }
 
         } else {
+            console.log("frame visible", this.frameVisible);
             if (!this.frameVisible) {
                 this.frameIn();
                 this.frameVisible = true;
@@ -281,9 +287,6 @@ export default class UI {
     }
 
     public showNavBar() {
-        // show the border letters
-        // this.frameIn();
-
         // change the position of the nav
         if (this.isMobileSize) {
             // is mobile
