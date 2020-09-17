@@ -15,6 +15,7 @@
 
     .full-width .question-wrapper {
         @include verticalAlign(relative);
+        max-width: 600px;
     }
 
     .slider-q {
