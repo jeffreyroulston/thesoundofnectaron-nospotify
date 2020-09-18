@@ -52,16 +52,12 @@ export default class UI {
     private popupPageEl : HTMLElement = f.elByID("popupPage");
     private popupPageVisible : boolean = false;
     private currentPopupPageEl : HTMLElement | undefined = undefined;
-    private currentPopupPage : string = "";
 
     // about page
     private aboutEl : HTMLElement = f.elByID("about");
     private aboutHopTopEl : HTMLElement = f.find(this.aboutEl, ".hopTop");
     private aboutHopBottomEl : HTMLElement = f.find(this.aboutEl, ".hopBottom")
     
-    // faq page
-    private faqEl : HTMLElement = f.elByID("faq");
-
     // for between pages
     private elementsToHide : HTMLElement[] = [];
 
@@ -126,7 +122,7 @@ export default class UI {
         this.isMobileSize = this.burgerEl.getBoundingClientRect().width > 1;
 
         // used for the mobile menu
-        this.burgerEl.addEventListener("click", this.navClicked.bind(this));
+        this.burgerEl.addEventListener("click", this.mobileMenuClicked.bind(this));
 
         // navigation elements
         f.findAll(this.navWrapperEl, "li").forEach(li => {
@@ -155,9 +151,11 @@ export default class UI {
         });
 
         // open subscription dialoge
-        f.find(this.endFrameEl, "#subscribe-btn").addEventListener("click", (e:any)=> {
-            this.togglePage("subscribe");
-        });
+        f.elList(".subscribe-btn").forEach((e)=> {
+            e.addEventListener("click", (e:any)=> {
+                this.togglePage("subscribe");
+            });
+        })
 
         // we playing rounds on the redirect
         if (window.location.href.indexOf("access_token") > -1) {
@@ -300,26 +298,26 @@ export default class UI {
         this.checkMobileSize();
 
         // change the position of the nav
-        if (this.isMobileSize) {
-            // remove the left offset
-            this.navEl.removeAttribute("style")
-            // remove the colour
-            f.findAll(this.navWrapperEl, "*").forEach((el)=> {
-                el.removeAttribute("style");
-            })
+        // if (this.isMobileSize) {
+        //     // remove the left offset
+        //     this.navEl.removeAttribute("style")
+        //     // remove the colour
+        //     f.findAll(this.navWrapperEl, "*").forEach((el)=> {
+        //         el.removeAttribute("style");
+        //     })
 
-            // console.log(f.findAll(this.navWrapperEl, "*"))
-        } else {
-            if (window.innerWidth <= 768) {
-                console.log("remove nav width");
-                this.navEl.style.left = "0";
-            } else {
-                console.log("reposition nav");
-                // is desktop...
-                console.log(window.innerWidth, window.innerWidth)
-                this.navEl.style.left = f.px((window.innerWidth/2 - this.navEl.getBoundingClientRect().width)/2)
-            }
-        }
+        //     // console.log(f.findAll(this.navWrapperEl, "*"))
+        // } else {
+        //     if (window.innerWidth <= 768) {
+        //         console.log("remove nav width");
+        //         this.navEl.style.left = "0";
+        //     } else {
+        //         console.log("reposition nav");
+        //         // is desktop...
+        //         console.log(window.innerWidth, window.innerWidth)
+        //         this.navEl.style.left = f.px((window.innerWidth/2 - this.navEl.getBoundingClientRect().width)/2)
+        //     }
+        // }
 
         // frame
         if (window.innerWidth <= 768) {
@@ -525,7 +523,7 @@ export default class UI {
             }
         })
 
-        TweenMax.fromTo(f.find(this.endFrameEl, "#subscribe-btn"), 2, {
+        TweenMax.fromTo(f.find(this.endFrameEl, ".subscribe-btn"), 2, {
             alpha: 0
         }, {
             alpha:1, delay: d+2
@@ -540,46 +538,47 @@ export default class UI {
         // iFrame.contentDocument?.body.appendChild(link);
     }
 
-    // private toggleNav() {
-    //     // called from the burger/close
+    private mobileMenuClicked() {
+        // called from the burger/close
+        console.log("burger clicked", this.navVisible);
 
-    //     // BURGER OPEN
-    //     if (this.navVisible) {
-    //         if (this.currentPopupPage) {
-    //             this.hidePage(this.currentPopupPage);
-    //         } else {
-    //             this.slideOut(this.navWrapperEl);
-    //         }
+        if (this.navVisible) {
+            this.slideOut(this.navWrapperEl);
 
-    //         // revert the frame Colors
-    //         this.toggleFrameColors(this.currentFrameColor, false);
+            // revert the frame Colors
+            this.toggleFrameColors(this.currentFrameColor, false);
 
-    //         // hide the small logo
-    //         if (this.LANDING) this.toggleHeaderLogo(false);
-    //         this.navVisible = false;
+            // hide the small logo
+            if (this.LANDING) this.toggleHeaderLogo(false);
+            this.navVisible = false;
 
-    //     } else {
-    //         // show the nav
-    //         this.toggleFrameColors(data.COLORS.purple, false);
-    //         this.slideIn(this.navWrapperEl);
+        } else {
+            if (this.currentPopupPageEl) {
+                this.closePage();
 
-    //         // bounce in the things
-    //         TweenMax.fromTo(f.findAll(this.navEl, "li"), 0.5, {
-    //             alpha:0, y:50
-    //         }, {
-    //             alpha: 1, y:0, delay:0.2, stagger : {
-    //                 each: 0.1
-    //             }
-    //         })
+            } else {
+                // show the nav
+                this.toggleFrameColors(data.COLORS.purple, false);
+                this.slideIn(this.navWrapperEl);
 
-    //         // show the small logo
-    //         if (this.LANDING) this.toggleHeaderLogo(true);
-    //         this.navVisible = true;
-    //     }
+                // bounce in the things
+                TweenMax.fromTo(f.findAll(this.navEl, "li"), 0.5, {
+                    alpha:0, y:50
+                }, {
+                    alpha: 1, y:0, delay:0.2, stagger : {
+                        each: 0.1
+                    }
+                })
 
-    //     this.burgerEl.classList.toggle("opened");
+                // show the small logo
+                if (this.LANDING) this.toggleHeaderLogo(true);
+                this.navVisible = true;
+            }
+        }
 
-    // }
+        this.burgerEl.classList.toggle("opened");
+    }
+
 
     private navClicked(e: any) {
         var target = e.srcElement.getAttribute("data");
@@ -589,6 +588,11 @@ export default class UI {
     private togglePage(target: string) {
         // used for nav (About/Contact/Subscribe)
         // console.log(document.querySelector("#hs-form-iframe-0"))
+
+        if (this.navVisible) {
+            this.slideOut(this.navWrapperEl);
+            this.navVisible = false;
+        }
 
         if (this.popupPageVisible) {
             // something is already visible
@@ -849,7 +853,7 @@ export default class UI {
         })
     }
 
-    private slideOut(e: HTMLElement, reset?: boolean) {
+    private slideOut(e: HTMLElement) {
         TweenMax.to(e, 0.5, {
             display: "none", x:-window.innerWidth*2, ease: "linear"
         })

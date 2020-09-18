@@ -539,27 +539,27 @@ p, table {
     #share {
         margin-left: 10px;
     }
-
-    #subscribe-btn {
-        margin-top: 50px;
-        display: inline-block;
-        cursor: pointer;
-
-        @include maxPxH(730) {
-            margin-top: 20px;
-        }
-
-        &.active:hover {
-            color: $purple;
-        }
-    }
-
     // #playlist-url, #brew-again {
     //     margin-top: 50px;;
     // }
 
     .active {
         cursor: pointer;
+    }
+}
+
+.subscribe-btn {
+    margin-top: 50px;
+    display: inline-block;
+    cursor: pointer;
+
+    @include maxPxH(730) {
+        margin-top: 20px;
+    }
+
+    &:hover {
+        color: $purple;
+        text-decoration: underline;
     }
 }
 

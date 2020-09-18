@@ -26,8 +26,9 @@
         color: $purple;
     }
 
-    .col-wrapper {
+    .col-wrapper:not(.content-wrapper) {
         width: 100%;
+        overflow: scroll;
     }
 
     .content-wrapper {
@@ -81,6 +82,13 @@
 }
 
 #about {
+
+    .subscribe-btn
+     {
+         margin-top: 20px;
+         margin-bottom: 50px;
+     }
+
     .content-wrapper{
         opacity: 0.65;
 
