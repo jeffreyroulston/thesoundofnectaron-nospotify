@@ -101,7 +101,6 @@
 }
 
 #nav {
-    border: 1px solid black;
     position: absolute;
     top: 25px;
     left: 0px;
@@ -122,7 +121,6 @@
     }
 
     li {
-        border: 1px solid black;
         position: relative;
         display: inline-block;
         font-family: "Circular";
@@ -131,7 +129,7 @@
         color: $beige;
         cursor: pointer;
 
-        &.deg, &:last-child {
+        &.deg {
             display: none;
         }
 
@@ -163,19 +161,36 @@
                 }
             }
 
-            &:last-child {
-                display: block;
-            }
-
         }
 
         &:nth-child(n+3) {
             margin-left: 30px;
+            
+            // < 640px;
+            @include maxW($mobileLargeWidth) {
+                margin: 0
+            }
 
             &.active {
                 border-color: $orange;
             }
         }
+    }
+}
+
+#true-mob{
+    display: none;
+    font-family: "Circular";
+    font-weight: 400;
+    font-size: 14px;
+    color: $purple;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+
+    // < 640px;
+    @include maxW($mobileLargeWidth) {
+        display: block;
     }
 }
 
