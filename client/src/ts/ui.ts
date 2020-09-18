@@ -73,6 +73,10 @@ export default class UI {
     private navVisible : boolean = false;
     private frameVisible : boolean = false;
 
+    private degTopEl : HTMLElement= f.elByID("deg-top");
+    private degBottomEl : HTMLElement= f.elByID("deg-bottom");
+    private trueLinkEl : HTMLElement= f.elByID("true");
+
     // looping animations
     private loopingAnimations : TweenMax[] = [];
     private inPageLoopingAnimations : TweenMax[] = [];
@@ -114,6 +118,8 @@ export default class UI {
 
     private init() {
         if (this.nope) return;
+
+        console.log(this.degTopEl, this.degBottomEl, this.trueLinkEl);
 
         // resize callback
         window.addEventListener('resize', this.onResize.bind(this));
@@ -271,11 +277,9 @@ export default class UI {
         this.navVisible = false;
         this.navWrapperEl.removeAttribute("style");
 
-        TweenMax.fromTo(this.navEl, 0.2, {
-            y:-100
-        }, {
-            y:0
-        })
+
+        TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
+        TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
 
         this.ROUNDS?.changeToDesktop();
     }
@@ -361,7 +365,8 @@ export default class UI {
             if (this.LANDING == undefined) this.toggleHeaderLogo(true);
         } else {
             // show the listed nav
-            TweenMax.fromTo(this.navEl, 0.5, {y:-100}, {y:0})
+            TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
+            TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
         }
 
     }

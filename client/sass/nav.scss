@@ -218,6 +218,7 @@
     width: 50%;
     right: 0px;
     top: 25px;
+    transform: translateY(-100px);
 
     // < 768px
     @include maxW($tabletPortraitWidth) {
@@ -229,6 +230,7 @@
     width: 50%;
     left: 0px;
     bottom: 25px;
+    transform: translateY(100px);
 
     span {
         display: none;
@@ -244,6 +246,7 @@
     width: 50%;
     right: 0px;
     bottom: 25px;
+    transform: translateY(100px);
 }
 
 #deg-bottom, #true {

@@ -20,7 +20,7 @@ export default class QuickFireQ {
     private questionEl: HTMLElement = f.find(this.el, " .question");
     private timerEl : HTMLElement = f.find(this.el, "#timer");
 
-    private timerCount : number = 1;
+    private timerCount : number = 20;
     private timerActive : boolean = true;
     private active : boolean = false;
 
