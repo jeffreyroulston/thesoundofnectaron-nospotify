@@ -192,11 +192,11 @@ export default class App {
                     if (q.answer <=10) {
                         valence = "filled with all the right feels."
                     } else if (q.answer <= 33) {
-                        valence = "that’ll get you unwinding."
+                        valence = "that'll get you unwinding."
                     } else if (q.answer <= 66) {
                         valence = "that hit just right."
                     } else {
-                        valence = "that’ll have you feeling like " + buddy;
+                        valence = "that'll have you feeling like " + buddy;
                     }
                     break;
                 
