@@ -139,9 +139,6 @@ export default class UI {
         })
 
         // reload
-        // let restartBtn = f.find(this.endFrameEl, "#brew-again");
-        // let shareBtn = f.find(this.endFrameEl, "#share");
-        // let subscribeBtn = f.find(this.endFrameEl, "#subscribe-btn");
         f.find(this.endFrameEl, "#brew-again").addEventListener("click", (e: any)=> {
             if (!(e.target.className.indexOf("active") > -1)) return;
 
@@ -159,73 +156,41 @@ export default class UI {
 
         // open subscription dialoge
         f.find(this.endFrameEl, "#subscribe-btn").addEventListener("click", (e:any)=> {
-            let iframe = <HTMLIFrameElement>document.querySelector("#hs-form-iframe-0");
-            // console.log(iframe);
-            // if (iframe != null) {
-            //     let link = document.createElement("link");
-            //     link.href = "subscription.css";      /**** your CSS file ****/ 
-            //     link.rel = "stylesheet"; 
-            //     link.type = "text/css"; 
-            //     console.log(link);
-            //     iframe.contentDocument?.head.appendChild(link);
-            // }
-            // let doc = iframe.contentDocument;
-            // if (doc) doc.body.innerHTML = doc.body.innerHTML + '<style>form {background-color: blue;} body {background-color: green}</style>';
-
-            // this.togglePage("subscribe");
+            this.togglePage("subscribe");
         });
 
-        // window.onload = function() {
-        //     let link = document.createElement("link");
-        //     link.href = "subscription.css";      /**** your CSS file ****/ 
-        //     link.rel = "stylesheet"; 
-        //     link.type = "text/css"; 
-        //     frames[0].document.head.appendChild(link); /**** 0 is an index of your iframe ****/ 
-        //   }
-
-
-        // frames[0].document.head.appendChild(link); /**** 0 is an index of your iframe ****/ 
-
-        // styling the subscription form
-        // let iFrame = <HTMLIFrameElement>document.querySelector("iframe");
-        // let doc = iFrame.contentDocument;
-        // if (doc) {
-        //     doc.body.innerHTML = doc.body.innerHTML + '<style>/******* Put your styles here *******</style>'
-        // }
-        
-
         // we playing rounds on the redirect
-        // if (window.location.href.indexOf("access_token") > -1) {
-        //     // hide the loader
-        //     // this.loaderEl.style.display = "none";
+        if (window.location.href.indexOf("access_token") > -1) {
+            // hide the loader
+            // this.loaderEl.style.display = "none";
 
-        //     // GAMEPLAY
-        //     this.ROUNDS = new Rounds(this);
+            // GAMEPLAY
+            this.ROUNDS = new Rounds(this);
 
-        //     // start
-        //     this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
-        //     this.ROUNDS.showRound(0)
-        //     this.onResize();
-        // } else {
-        //     // show the loader
-        //     // this.loaderEl.style.display = "block";
+            // start
+            this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
+            this.ROUNDS.showRound(0)
+            this.onResize();
+        } else {
+            // show the loader
+            // this.loaderEl.style.display = "block";
 
-        //     // LANDING PAGE
-        //     this.LANDING = new Landing(this);
-        //     this.LANDING.onLoginPressed = this.Login.bind(this);
-        //     this.loaderInit();
+            // LANDING PAGE
+            this.LANDING = new Landing(this);
+            this.LANDING.onLoginPressed = this.Login.bind(this);
+            this.loaderInit();
 
-        //     // this.loadImages(data.preloadList)
-        //     // if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
-        //     //     this.LANDING.show();
-        //     // } else {
-        //     //     this.loaderInit();
-        //     // }
-        //     // this.LANDING.show();
-        // }
+            // this.loadImages(data.preloadList)
+            // if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
+            //     this.LANDING.show();
+            // } else {
+            //     this.loaderInit();
+            // }
+            // this.LANDING.show();
+        }
 
-        this.showNavBar();
-        this.showEndFrame("Best savoured on your local park bench, your brew is extra fresh and topped off with just a dash of liquid poison. Kick back and chill with low key tunes filled with all the right feels, that'll have you feeling like an extra cool snowman.");
+        // this.showNavBar();
+        // this.showEndFrame("Best savoured on your local park bench, your brew is extra fresh and topped off with just a dash of liquid poison. Kick back and chill with low key tunes filled with all the right feels, that'll have you feeling like an extra cool snowman.");
     }
 
     private loaderInit() {

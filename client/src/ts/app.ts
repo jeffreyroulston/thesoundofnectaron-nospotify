@@ -37,9 +37,7 @@ export default class App {
     private topArtists: si.Artist[] | undefined;
     private topTracks: si.Track[] | undefined;
     public playlistCreated: si.Playlist | undefined;
-    // private answeredQuestions: Questions.Question[] = [];
-
-    private flames: Fire = new Fire();
+    private playlistDescription = "";
 
     private requestedPlaylistLength: number = 120;
 
@@ -127,75 +125,78 @@ export default class App {
     }
 
     public CreatePlaylist() {
-        console.log("create playlist");
-        this.ui.showEndFrame(this.createPlaylistDescription());
-        this.generatePlaylist();
+        this.createPlaylistDescription();
     }
 
-    public createPlaylistDescription() {
+    private createPlaylistDescription() {
         // create the playlist description
-        var desc = "";
+        var intro = "Here's your special brew, with a dash of ";
+
+        var ingredientMap = [
+            "liquid sparkle. ",
+            "something explosive. ",
+            "liquid lightning. ",
+            "liquid passion. ",
+            "liquid mortality. ",
+            "liquid alchemy. "
+        ]
 
         var settingMap = [
-            "Best savoured on a sizzling beach day, ",
-            "Best savoured against the backdrop of city lights, ",
-            "Best savoured against the skyline of towering mountains, ",
-            "Best savoured on your local park bench, ",
+            "at the beach, ",
+            "against the city skyline, ",
+            "out in the countryside, ",
+            "in the park, ",
         ]
 
         var buddyMap = [
-            "a travelling circus clown.",
-            "a roaring T-Rex.",
+            "you're the star of a circus.",
+            "Gojira.",
             "a cheeky Leprechaun.",
-            "at a Masquerade ball.",
-            "a robot from the year 3000.",
-            "an extra cool snowman."
+            "you're in 'that scene' in Eyes Wide Shut.",
+            "you're in your prime",
+            "a thug of a snowman. Respect the drip."
         ]
 
-        var ingredienMap = [];
-
+        var ingredient = ingredientMap[data.mcqQuestions[4].options.indexOf(data.mcqQuestions[4].answer)] 
         var setting = settingMap[data.mcqQuestions[0].options.indexOf(data.mcqQuestions[0].answer)] 
         var buddy = buddyMap[data.mcqQuestions[2].options.indexOf(data.mcqQuestions[2].answer)];
-
-        desc = setting + "your brew is extra fresh and topped off with just a dash of liquid " + data.mcqQuestions[4].answer.replace("ingredient_x_", "") + ". "
-
-        var seg1, seg2, seg3;
+        var danceability = "", energy = "", valence = "";
 
         data.sliderQuestions.forEach((q)=> {
             switch(q.params) {
                 case si.QueryParameters.Danceability:
                     if (q.answer <=10) {
-                        seg1 = "Kick back and chill "
+                        danceability = "Kick back and chill "
                     } else if (q.answer <= 33) {
-                        seg1 = "Get that toe tappin' "
+                        danceability = "Get that toe tappin' "
                     } else if (q.answer <= 66) {
-                        seg1 = "Shake that thang "
+                        danceability = "Shake that thang "
                     } else {
-                        seg1 = "Raise the roof "
+                        danceability = "Raise the roof "
                     }
                     break;
                 
                 case si.QueryParameters.Energy:
                     if (q.answer <=10) {
-                        seg2 = "with low key tunes "
+                        energy = "with low key tunes "
                     } else if (q.answer <= 33) {
-                        seg2 = "to easy listening tunes "
+                        energy = "to easy listening tunes "
                     } else if (q.answer <= 66) {
-                        seg2 = "to feel-good tunes "
+                        energy = "to feel-good tunes "
                     } else {
-                        seg2 = "with heavy-hitter bangers "
+                        energy = "with heavy-hitter bangers "
                     }
                     break;
 
                 case si.QueryParameters.Valence:
                     if (q.answer <=10) {
-                        seg3 = "filled with all the right feels, that'll have you feeling like " + buddy
+                        valence = "filled with all the right feels."
                     } else if (q.answer <= 33) {
-                        seg3 = "that’ll get you unwinding and have you feeling like " + buddy
+                        valence = "that’ll get you unwinding."
                     } else if (q.answer <= 66) {
-                        seg3 = "that hit just right. And and will have you feeling like " + buddy
+                        valence = "that hit just right."
                     } else {
-                        seg3 = "that’ll have you feeling like " + buddy;
+                        valence = "that’ll have you feeling like " + buddy;
                     }
                     break;
                 
@@ -207,8 +208,10 @@ export default class App {
             }
         })
 
-        desc = desc + seg1 + seg2 + seg3;
-        return desc;
+        var longDesc = intro + ingredient + danceability + setting + energy + valence;
+        this.playlistDescription = danceability + energy + valence;
+        this.ui.showEndFrame(longDesc);
+        this.generatePlaylist();
     }
 
     async generatePlaylist() {
