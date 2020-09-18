@@ -2,7 +2,7 @@ import * as f from "./helpers";
 import UI from "./ui";
 import ROUND from "./rounds";
 import {TweenMax} from "gsap"
-import {COLOURS, sliderQuestions, SliderQuestion } from "./data";
+import {COLORS, sliderQuestions, SliderQuestion } from "./data";
 
 import { Draggable } from "gsap/dist/Draggable";
 import gsap from "gsap";
@@ -49,8 +49,8 @@ export default class Slider {
 
     //q1 (color slider)
     private colorWipeEl :HTMLElement = f.elByID("color-wipe");
-    private colour1 = f.convertHexToRgb("FCF1DB");
-    private colour2 = f.convertHexToRgb("281333");
+    private color1 = f.convertHexToRgb("FCF1DB");
+    private color2 = f.convertHexToRgb("281333");
     private imgs2 : HTMLElement[] = [];
     private moon : HTMLElement = f.find(this.el, ".moon-center");
 
@@ -61,8 +61,8 @@ export default class Slider {
 
     // q4 (bunsen)
     private busenFillEl : HTMLElement = f.find(this.el, ".bunsen-fill");
-    private bunsenColour1 = f.convertHexToRgb("88009D");
-    private bunsenColour2 = f.convertHexToRgb("FF1900");
+    private bunsencolor1 = f.convertHexToRgb("88009D");
+    private bunsencolor2 = f.convertHexToRgb("FF1900");
     private bubbleCount = 0;
     private activeBubbles = 0;
 
@@ -298,13 +298,13 @@ export default class Slider {
         // make it full width
         this.toggleFullWidth();
         
-        // bring in the colour wipe (this is the container for the colour change)
+        // bring in the color wipe (this is the container for the color change)
         TweenMax.fromTo(this.colorWipeEl, 0.2, {
             display:"none", alpha:0
         }, {
             display:"block", alpha:1, delay: this.delay
         })
-        this.colorWipeEl.style.backgroundColor = f.rgb(this.colour1);
+        this.colorWipeEl.style.backgroundColor = f.rgb(this.color1);
 
 
         // fade it in
@@ -314,13 +314,13 @@ export default class Slider {
             alpha:1, delay:this.delay, ease:"linear"
         })
 
-        // change the sun ray colours
+        // change the sun ray colors
         for (var i=0; i<rays.length; i++) {
             this.loopingAnimations.push(
                 TweenMax.fromTo(rays[i], 1, {
-                fill: COLOURS.white
+                fill: COLORS.white
                 }, {
-                    fill: COLOURS.yellow, repeat:-1, yoyo:true, ease: "linear", delay: i*0.1
+                    fill: COLORS.yellow, repeat:-1, yoyo:true, ease: "linear", delay: i*0.1
                 })
             )
         }
@@ -329,9 +329,9 @@ export default class Slider {
         for (var i=0; i<stars.length; i++) {
             this.loopingAnimations.push(
                 TweenMax.fromTo(stars[i], 0.1, {
-                fill: COLOURS.white
+                fill: COLORS.white
                 }, {
-                    fill: COLOURS.purple, repeat:-1, yoyo:true, ease: "linear", delay: i*0.1
+                    fill: COLORS.purple, repeat:-1, yoyo:true, ease: "linear", delay: i*0.1
                 })
             )
         }
@@ -350,9 +350,9 @@ export default class Slider {
         // set the slider value
         this.sliderValue = n;
 
-        // get the colours
-        var colour = f.rgb(f.findColorBetween(this.colour1, this.colour2, this.sliderValue));
-        this.colorWipeEl.style.backgroundColor = colour;
+        // get the colors
+        var color = f.rgb(f.findColorBetween(this.color1, this.color2, this.sliderValue));
+        this.colorWipeEl.style.backgroundColor = color;
 
         // turn it round proportional to the thing
         var ratio = this.sliderValue/this.maxValue;
@@ -584,9 +584,9 @@ export default class Slider {
         // get the bubbles
         this.imgs = f.findAll(slider, "#bubbles li");
         
-        // get the colours
-        var colour = f.rgb(f.findColorBetween(this.bunsenColour1, this.bunsenColour2, this.sliderValue));
-        this.busenFillEl.style.fill = colour;
+        // get the colors
+        var color = f.rgb(f.findColorBetween(this.bunsencolor1, this.bunsencolor2, this.sliderValue));
+        this.busenFillEl.style.fill = color;
 
         TweenMax.fromTo(slider, 0.5, {
             display:"none", alpha:0, x:window.innerWidth/2
@@ -606,9 +606,9 @@ export default class Slider {
         // get value from slider
         this.sliderValue = n
 
-        // get the colours
-        var colour = f.rgb(f.findColorBetween(this.bunsenColour1, this.bunsenColour2, this.sliderValue));
-        this.busenFillEl.style.fill = colour;
+        // get the colors
+        var color = f.rgb(f.findColorBetween(this.bunsencolor1, this.bunsencolor2, this.sliderValue));
+        this.busenFillEl.style.fill = color;
 
         // set the number of bubbles
         this.bubbleCount = Math.ceil(this.sliderValue / 10);

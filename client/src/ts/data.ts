@@ -2,7 +2,7 @@ import * as si from "./spotify-interface";
 import { Colors } from "three";
 import * as THREE from 'three';
 
-export const COLOURS = {
+export const COLORS = {
     beige : "#FCF1DB",
     orange : "#FF1900",
     purple : "#88009D",
@@ -11,7 +11,7 @@ export const COLOURS = {
     white : "#FFFFFF"
 }
 
-export const COLOURS_THREE : { [id: string] : THREE.Color } = {
+export const COLORS_THREE : { [id: string] : THREE.Color } = {
     "#FCF1DB" : new THREE.Color(0xFCF1DB),
     "#FF1900" : new THREE.Color(0xFF2000),
     "#88009D" : new THREE.Color(0x88009D),
@@ -20,11 +20,11 @@ export const COLOURS_THREE : { [id: string] : THREE.Color } = {
 }
 
 export const CONTRAST : { [id: string] : string } = {
-    "#FCF1DB" : COLOURS.purple,
-    "#FF2000" : COLOURS.purple,
-    "FF1900" : COLOURS.orange,
-    "#00C1F5" : COLOURS.yellow,
-    "#FFE700" : COLOURS.purple
+    "#FCF1DB" : COLORS.purple,
+    "#FF2000" : COLORS.purple,
+    "FF1900" : COLORS.orange,
+    "#00C1F5" : COLORS.yellow,
+    "#FFE700" : COLORS.purple
 }
 
 export enum QuestionType {
@@ -71,26 +71,26 @@ export interface QuickFireQuestion extends Question {
 export const ROUNDS : QuestionRound[] = [
     {
         round: 1,
-        color: COLOURS.orange,
+        color: COLORS.orange,
         waveColor : "orange",
-        numberColor: COLOURS.yellow,
-        btnColor : COLOURS.purple,
+        numberColor: COLORS.yellow,
+        btnColor : COLORS.purple,
         text : "Light? dark? Hazies? Lagers? There's a science to it. Slide the dial to show what you're in to..." 
     },
     {
         round : 2,
-        color: COLOURS.purple,
+        color: COLORS.purple,
         waveColor : "purple",
-        numberColor: COLOURS.yellow,
-        btnColor : COLOURS.orange,
+        numberColor: COLORS.yellow,
+        btnColor : COLORS.orange,
         text: "It's time to imbue some of your personality into this thing. What makes you, you?"
     },
     {
         round: 3,
-        color: COLOURS.blue,
+        color: COLORS.blue,
         waveColor : "blue",
-        numberColor: COLOURS.purple,
-        btnColor : COLOURS.purple,
+        numberColor: COLORS.purple,
+        btnColor : COLORS.purple,
         text: "OK, for this part switch off your brain. Don't think. Just follow your instinct."
     }
 ]

@@ -1,6 +1,6 @@
 import ResourceManager, { GLTFAsset } from "./resource-manager";
 import * as THREE from 'three';
-import {COLOURS} from "./data";
+import {COLORS} from "./data";
 import Squiggles from "./squiggles";
 import { BufferAttribute, Scene } from "three";
 
@@ -259,8 +259,8 @@ export default class Graphics {
     private currentLerp: number = 0.0;
 
     // colors
-    private firstColor: THREE.Color = new THREE.Color(COLOURS.beige);
-    private secondColor: THREE.Color = new THREE.Color(COLOURS.beige);
+    private firstColor: THREE.Color = new THREE.Color(COLORS.beige);
+    private secondColor: THREE.Color = new THREE.Color(COLORS.beige);
 
     public transitionedCallback: () => void = () => {};
 

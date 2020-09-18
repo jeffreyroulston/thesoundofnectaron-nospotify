@@ -46,7 +46,7 @@ export default class Rounds {
     constructor(ui : UI) {
         this.UI = ui;
 
-        f.el("body").style.backgroundColor = data.COLOURS.orange;
+        f.el("body").style.backgroundColor = data.COLORS.orange;
 
         // initialise questions
         this.slider= new Slider();
@@ -84,7 +84,7 @@ export default class Rounds {
         this.UI.setBgColor(currentRound.color);
 
         // make the frame text white
-        this.UI.toggleFrameColours(data.COLOURS.beige, true);
+        this.UI.toggleFrameColors(data.COLORS.beige, true);
 
         // set wave colour
         this.UI.toggleWaveColor(currentRound.waveColor);
@@ -103,7 +103,7 @@ export default class Rounds {
 
         // if round 3, change the colour of zero to purple
         if (this.currentRoundIdx == 3) {
-            this.roundNumberPaths[0].style.stroke = data.COLOURS.purple;
+            this.roundNumberPaths[0].style.stroke = data.COLORS.purple;
         }
 
         // show elements
@@ -169,9 +169,9 @@ export default class Rounds {
         })
 
         // bop the fruit
-        this.loopingAnimations.push(TweenMax.to(this.fruitEl, 1, {
-            y:5, repeat:-1, ease: "linear", yoyo:true, delay:2*d+1.5
-        }))
+        // this.loopingAnimations.push(TweenMax.to(this.fruitEl, 1, {
+        //     y:5, repeat:-1, ease: "linear", yoyo:true, delay:2*d+1.5
+        // }))
 
 
         // show the arrow
@@ -182,11 +182,11 @@ export default class Rounds {
         })
 
         // bounce the arrow
-        this.loopingAnimations.push(
-            TweenMax.to(this.btnEl, 1, {
-                scale:0.9, ease: "linear", delay:2*d+3, repeat:-1, yoyo:true
-            })
-        )
+        // this.loopingAnimations.push(
+        //     TweenMax.to(this.btnEl, 1, {
+        //         scale:0.9, ease: "linear", delay:2*d+3, repeat:-1, yoyo:true
+        //     })
+        // )
 
         this.btnActive = true;
     }

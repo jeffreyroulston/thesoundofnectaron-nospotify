@@ -1,5 +1,5 @@
 import UI from "./ui";
-import {QuickFireQuestion, qfQuestions, COLOURS} from "./data";
+import {QuickFireQuestion, qfQuestions, COLORS} from "./data";
 import * as f from "./helpers";
 import {TweenMax} from "gsap"
 import { Color } from "three";
@@ -138,9 +138,9 @@ export default class QuickFireQ {
         this.timerEl.innerHTML = t;
 
         if (this.timerCount < 6) {
-            this.timerEl.style.color = COLOURS.orange
+            this.timerEl.style.color = COLORS.orange
         } else if (this.timerCount < 15) {
-            this.timerEl.style.color = COLOURS.yellow
+            this.timerEl.style.color = COLORS.yellow
         }
     }
 

@@ -32,7 +32,7 @@ export default class Landing {
     }
 
     public show() {
-        f.el("body").style.backgroundColor = data.COLOURS.purple;
+        f.el("body").style.backgroundColor = data.COLORS.purple;
 
         // elements
         var logoDesktop = f.find(this.landingPageEl, ".logo-wrapper-large");
@@ -50,7 +50,7 @@ export default class Landing {
         this.UI.setVisibleElements([this.landingPageEl, hop]);
 
         // make the frame text white
-        this.UI.toggleFrameColours(data.COLOURS.beige, true);
+        this.UI.toggleFrameColors(data.COLORS.beige, true);
 
         // make the border come in
         this.UI.showNavBar();
