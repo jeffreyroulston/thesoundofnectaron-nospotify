@@ -187,11 +187,15 @@
     text-align: center;
     font-size: 14px;
     color: $beige;
-    border: 1px solid black;
 
     span {
         cursor: pointer;
         display: inline-block
+    }
+
+    // < 640px;
+    @include maxW($mobileLargeWidth) {
+        display: none;
     }
 }
 
@@ -199,16 +203,42 @@
     width: 50%;
     right: 0px;
     top: 25px;
+
+    // < 768px
+    @include maxW($tabletPortraitWidth) {
+        display: none;
+    }
 }
 
 #deg-bottom {
     width: 50%;
     left: 0px;
     bottom: 25px;
+
+    span {
+        display: none;
+
+        // < 768px
+        @include maxW($tabletPortraitWidth) {
+            display: inline;
+        }
+    }
 }
 
 #true {
     width: 50%;
     right: 0px;
     bottom: 25px;
+}
+
+#deg-bottom, #true {
+    // < 768px
+    @include maxW($tabletPortraitWidth) {
+        font-size: 12px;
+    }
+
+    // < 640px;
+    @include maxW($mobileLargeWidth) {
+        display: none;
+    }
 }
