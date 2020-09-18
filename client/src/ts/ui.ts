@@ -545,7 +545,7 @@ export default class UI {
             alpha: 1, x:0, delay: d+0.2
         });
 
-        TweenMax.fromTo(f.find(this.endFrameEl, "#album-cover"), 0.5, {
+        TweenMax.fromTo(f.find(this.endFrameEl, "#album-wrapper"), 0.5, {
             alpha:0, scale:0.9
         }, {
             alpha: 1, scale:1, delay: d+0.4
