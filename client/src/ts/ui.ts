@@ -216,8 +216,8 @@ export default class UI {
     private incrementLoader() {
         this.imgsLoaded++;
         var percent = this.imgsLoaded/this.imgCount * 100;
-
-        this.loaderPercentEl.innerHTML = Math.round(percent).toString() + "%";
+        console.log(percent);
+        // this.loaderPercentEl.innerHTML = Math.round(percent).toString() + "%";
         // if (this.imgsLoaded == this.imgCount) {
         //     TweenMax.to(this.loaderEl, 0.2, {
         //         alpha: 0, display: "none", onComplete : this.LANDING?.show.bind(this.LANDING)

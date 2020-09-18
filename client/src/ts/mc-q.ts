@@ -74,7 +74,7 @@ export default class MCQ {
     private getImgPath(idx: number) {
         var prefix = "url(./assets/round2/q" + (this.questionIdx+1).toString() + "/"
         var name = this.currentQuestion?.options[idx] + ".png)";
-        console.log(prefix + name)
+        // console.log(prefix + name)
 ;        return prefix + name;
     }
 
@@ -123,18 +123,23 @@ export default class MCQ {
             alpha:1, x:0, delay: d
         });
 
+        // set all the options as display block
+        for (var i=0; i<this.currentQuestion.options.length; i++) {
+            this.optionEls[i].style.display = "inline-block"
+        }
+
         // show the options
-        console.log("options length", this.currentQuestion.options.length)
+        // console.log("options length", this.currentQuestion.options.length)
         for (var i=0; i<this.currentQuestion.options.length; i++) {
             TweenMax.fromTo(this.optionEls[i], this.time, {
-                display: "none", y:10, alpha:0, scale:1
+                y:50, alpha:0
             }, {
-                display: "inline-block", y:0, scale:1, alpha:1, delay : d + this.time + (0.1*i)
+                y:0, alpha:1, delay : d + this.time + (0.1*i), ease: "linear"
             })
 
             // bounce them
             this.loopingAnimations.push(TweenMax.to(this.optionEls[i], this.time, {
-                y:20, repeat:-1, yoyo:true, delay: d + (this.time*2) + (0.1*i)
+                y:50, repeat:-1, yoyo:true, delay: d + (this.time*2) + (0.1*i), ease: "linear"
             }))
         }
 
@@ -189,9 +194,13 @@ export default class MCQ {
             this.set();
         } else {
 
-            // question set completed
-            TweenMax.to(f.find(this.el, ".text-column"), 0, {width: "0"});
-            TweenMax.to(f.find(this.el, ".content-column"), this.time*2, {left: "-25%"});
+            if (window.innerWidth > 1024) {
+                // question set completed
+                TweenMax.to(f.find(this.el, ".text-column"), 0, {width: "0"});
+                TweenMax.to(f.find(this.el, ".content-column"), this.time*2, {left: "-25%"});
+            } else {
+                TweenMax.to(f.find(this.el, ".content-column"), this.time*2, {scale: 1.5});
+            }
 
             // do something sparkly here
             setTimeout(this.finished.bind(this), 1000);

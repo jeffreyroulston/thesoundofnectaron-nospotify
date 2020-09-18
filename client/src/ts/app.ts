@@ -133,12 +133,12 @@ export default class App {
         var intro = "Here's your special brew, with a dash of ";
 
         var ingredientMap = [
-            "liquid sparkle. ",
-            "something explosive. ",
-            "liquid lightning. ",
-            "liquid passion. ",
-            "liquid mortality. ",
-            "liquid alchemy. "
+            "liquid sparkle.<br />",
+            "something explosive.<br /",
+            "liquid lightning.<br />",
+            "liquid passion.<br />",
+            "liquid mortality.<br />",
+            "liquid alchemy.<br />"
         ]
 
         var settingMap = [
@@ -349,7 +349,7 @@ export default class App {
                         UserId: this.profile.id,
                         TrackUris: trackUris,
                         Name: "The Sound of Nectaron",
-                        Description: "",
+                        Description: this.playlistDescription,
                         Public: false,
                         Image: {
                             Width: 72,
