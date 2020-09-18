@@ -442,6 +442,11 @@ export default class UI {
         } else {
             f.findAll(this.navWrapperEl, "*").forEach((el)=> {
                 el.style.color = color;
+            });
+
+            var e = [this.degTopEl, this.degBottomEl, this.trueLinkEl];
+            e.forEach((el)=> {
+                el.style.color = color;
             })
         }
 

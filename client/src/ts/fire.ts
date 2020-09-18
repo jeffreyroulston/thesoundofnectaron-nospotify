@@ -68,8 +68,8 @@ export default class Fire {
     private frameResized: boolean = true;
 
     // meshes
-    private maxFlames: number = 500;
-    private spawnRate: number = 500;
+    private maxFlames: number = 1000;
+    private spawnRate: number = 1000;
     private mesh: THREE.Mesh;
     private geo: THREE.BufferGeometry;
     private buffer: Float32Array;

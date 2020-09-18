@@ -69,9 +69,9 @@ export default class Landing {
         })
 
         // BOUNCE DAT HOP
-        // this.loopingAnimations.push(TweenMax.to(hop, 2, {
-        //     scale:0.99, ease: "linear", delay:1, repeat:-1, yoyo:true
-        // }))
+        this.loopingAnimations.push(TweenMax.to(hop, 2, {
+            scale:0.99, ease: "linear", delay:1, repeat:-1, yoyo:true
+        }))
 
         // NECTARON
         TweenMax.from(logoElements, 1, {
@@ -86,19 +86,7 @@ export default class Landing {
                 each:0.1
             }
         })
-        
-        // TweenMax.from(".logo-head path:nth-child(even)", 1, {
-        //     alpha:0, scale:0, rotation:45, y:50, delay:1, stagger: {
-        //         each:0.1, from: "random"
-        //     }
-        // })
-        
-        // TweenMax.from(".logo-head path:nth-child(odd)", 1, {
-        //     alpha:0, scale:0, rotation:-45, y:-200, delay:1, stagger: {
-        //         each:0.1, from: "random"
-        //     }
-        // })
-        
+
         // BREW YOUR OWN....
         TweenMax.from(subheading, 0.5, {
             alpha:0, y:5, delay:3
@@ -110,11 +98,11 @@ export default class Landing {
         })
 
         // bounce the arrow
-        // this.loopingAnimations.push(
-        //     TweenMax.to(btn, 1, {
-        //         scale:0.9, ease: "linear", delay:4.5, repeat:-1, yoyo:true
-        //     })
-        // )
+        this.loopingAnimations.push(
+            TweenMax.to(btn, 1, {
+                scale:0.9, ease: "linear", delay:4.5, repeat:-1, yoyo:true
+            })
+        )
 
         this.btnActive = true;
     }
