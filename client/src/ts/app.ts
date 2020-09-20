@@ -39,6 +39,8 @@ export default class App {
     public playlistCreated: si.Playlist | undefined;
     private playlistDescription = "";
 
+    private alreadyAskedForRecommendations = false;
+
     private requestedPlaylistLength: number = 120;
 
     constructor() {
@@ -235,11 +237,18 @@ export default class App {
                 }
             }
 
+
+
             // get a random selection of genres
             let genres: string[] = [];
+
             this.topArtists.map(x => x.Genres.forEach((genre) => genres.push(genre)));
-            shuffle(genres);
-            genres = genres.slice(0, 3);
+                shuffle(genres);
+                genres = genres.slice(0, 3);
+
+            if (genres.length == 0) {
+                genres.push("pop", "alternative");
+            }
             
             // get two random top tracks
             let tracks: string[] = this.topTracks.map(track => track.Id);
@@ -302,12 +311,12 @@ export default class App {
     // }
 
     // most of this stuff is temporary, will hook up the proper handlers with the ui state
-    public OnUserData(type: si.DataType, data: si.Data): void {
+    public OnUserData(type: si.DataType, userData: si.Data): void {
 
         switch (type) {
             case si.DataType.UserProfile:
             
-                this.profile = (data as si.UserProfile);
+                this.profile = (userData as si.UserProfile);
                 // console.log(this.profile);
                 // // could pass through the profile here but I'm trying to keep everything as separated as possible
                 // if (this.profile.images != null && this.profile.DisplayName != null) {
@@ -322,57 +331,99 @@ export default class App {
             // when we get recommendations back, we can automatically create the new playlist
             case si.DataType.Recommendations:
 
-                var recommendations = (data as si.Track[]);
+                var recommendations = (userData as si.Track[]);
                 console.log(recommendations);
 
-                // all this below is to build a playlist just over four hours
-                const playlistLengthSeconds = 60 * this.requestedPlaylistLength;
-                let trackCount = 0;
-                let currentLengthSeconds = 0;
-                for (trackCount = 0; trackCount <  recommendations.length; trackCount++) {
-                    if (currentLengthSeconds < playlistLengthSeconds) {
-                        currentLengthSeconds += recommendations[trackCount].Length / 1000;
-                    }
 
-                    else {
-                        break;
+
+                // no recommendations
+                if (recommendations.length == 0 && !this.alreadyAskedForRecommendations) {
+
+                    this.alreadyAskedForRecommendations = true;
+
+                    if (this.topArtists !== undefined) {
+
+                        if (this.topArtists.length == 0) {
+                            // need generic playlist here
+                        }
+
+                        else {
+                            const queries = [];
+                            for (var i=0; i<data.sliderQuestions.length; i++) {
+                                let q = data.sliderQuestions[i];
+                
+                                if (q.params === si.QueryParameters.PlaylistLength) {
+                                    this.requestedPlaylistLength = q.answer
+                                    console.log("requested playlist length", this.requestedPlaylistLength)
+                                }
+                
+                                else {
+                                    queries.push({parameter: si.QueryParameters[q.params], value: q.answer});
+                                }
+                            }
+
+                            const seedArtists = this.topArtists.map(x => x.Id).slice(0, 5);
+
+                            this.spotifyInterface.GetRecommendations({
+                                QueryParameters: queries,
+                                Count: 100,
+                                SeedArtistIDs: seedArtists
+                            });
+                        }
                     }
                 }
 
-                // get only just enough tracks to make the playlist time limit
-                const trackUris = recommendations.map(track => track.Uri).slice(0, trackCount);
-
-                // console.log(window.location.href);
-
-                if (this.profile !== undefined) {
-                    this.spotifyInterface.CreatePlaylist({
-                        UserId: this.profile.id,
-                        TrackUris: trackUris,
-                        Name: "The Sound of Nectaron",
-                        Description: this.playlistDescription,
-                        Public: false,
-                        Image: {
-                            Width: 72,
-                            Height: 72,
-                            Url: "http://thesoundofnectaron.truedigital.co.nz/assets/albumCover.jpg"
-                            // Url: "http://localhost:8888/assets/albumCover.jpg"
-
+                // got recommendations so keep going
+                else {
+                    // all this below is to build a playlist just over four hours
+                    const playlistLengthSeconds = 60 * this.requestedPlaylistLength;
+                    let trackCount = 0;
+                    let currentLengthSeconds = 0;
+                    for (trackCount = 0; trackCount <  recommendations.length; trackCount++) {
+                        if (currentLengthSeconds < playlistLengthSeconds) {
+                            currentLengthSeconds += recommendations[trackCount].Length / 1000;
                         }
-                    });
+
+                        else {
+                            break;
+                        }
+                    }
+
+                    // get only just enough tracks to make the playlist time limit
+                    const trackUris = recommendations.map(track => track.Uri).slice(0, trackCount);
+
+                    // console.log(window.location.href);
+
+                    if (this.profile !== undefined) {
+                        this.spotifyInterface.CreatePlaylist({
+                            UserId: this.profile.id,
+                            TrackUris: trackUris,
+                            Name: "The Sound of Nectaron",
+                            Description: this.playlistDescription,
+                            Public: false,
+                            Image: {
+                                Width: 72,
+                                Height: 72,
+                                Url: "http://thesoundofnectaron.truedigital.co.nz/assets/albumCover.jpg"
+                                // Url: "http://localhost:8888/assets/albumCover.jpg"
+
+                            }
+                        });
+                    }
                 }
      
                 break;
 
             case si.DataType.TopTracks:
-                this.topTracks = (data as si.Track[]);
+                this.topTracks = (userData as si.Track[]);
                 break;
 
             case si.DataType.TopArtists:
-                this.topArtists = (data as si.Artist[]);
+                this.topArtists = (userData as si.Artist[]);
                 break;
 
             case si.DataType.PlaylistCreated:
-                this.playlistCreated = (data as si.Playlist);
+                this.playlistCreated = (userData as si.Playlist);
                 break;
         }
     }
