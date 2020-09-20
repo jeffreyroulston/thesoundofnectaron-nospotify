@@ -472,6 +472,12 @@ p, table {
             height: auto;
             margin-bottom: 50px;
         }
+
+        @include maxPxH(600) {
+            @media (orientation: portrait) {
+                margin-bottom: 10px;
+              }
+         }
     }
 
     .content-column {
@@ -481,7 +487,15 @@ p, table {
         }
 
         @include maxPxH(730) {
-            height: 150px;
+            @media (orientation: portrait) {
+                height: 160px;
+              }
+         }
+
+         @include maxPxH(600) {
+            @media (orientation: portrait) {
+                height: 100px;
+              }
          }
     }
 
