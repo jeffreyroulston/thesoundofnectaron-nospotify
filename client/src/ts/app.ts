@@ -134,7 +134,7 @@ export default class App {
 
         var ingredientMap = [
             "liquid sparkle.<br />",
-            "something explosive.<br /",
+            "something explosive.<br />",
             "liquid lightning.<br />",
             "liquid passion.<br />",
             "liquid mortality.<br />",

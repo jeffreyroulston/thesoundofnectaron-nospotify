@@ -27,8 +27,11 @@
     }
 
     .col-wrapper:not(.content-wrapper) {
+        overflow-y: scroll;
+    }
+
+    .col-wrapper {
         width: 100%;
-        overflow: scroll;
     }
 
     .content-wrapper {
@@ -82,13 +85,6 @@
 }
 
 #about {
-
-    .subscribe-btn
-     {
-         margin-top: 20px;
-         margin-bottom: 50px;
-     }
-
     .content-wrapper{
         opacity: 0.65;
 
@@ -246,5 +242,12 @@
         @include maxW($tabletLandscapeWidth) {
             display: none;
         }
+    }
+
+    .subscribe-btn {
+        margin-top: 20px;
+        margin-bottom: 50px;
+        color: orange;
+        text-decoration: underline;
     }
 }
