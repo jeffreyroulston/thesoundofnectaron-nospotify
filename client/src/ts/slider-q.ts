@@ -115,14 +115,14 @@ export default class Slider {
             // is 50
             this.draggableOffset = e.x - 0.5*this.draggableWidth;
         }
-        console.log("init", e.x);
+        // console.log("init", e.x);
     }
 
     private sliderResize() {
         this.draggableWidth = this.sliderLineEl.getBoundingClientRect().width;
         this.draggableMax = this.draggableWidth;
         this.draggableMin = 0;
-        console.log("SLIDER RESIZE, width", this.draggableWidth);
+        // console.log("SLIDER RESIZE, width", this.draggableWidth);
     }
 
     private sliderChange(e: any) {
@@ -133,7 +133,7 @@ export default class Slider {
             // console.log(e.x);
             this.draggableCurrentPos = e.x;
         }
-        console.log(Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100));
+        // console.log(Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100));
         // return Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100);
         // console.log(this.draggableCurrentPos, this.draggableOffset, this.sliderValue)
         // console.log(e.x, e.touches, e.touches.length, e);
@@ -144,7 +144,7 @@ export default class Slider {
     private setSliderValue(n : number) {
         this.sliderValue = n;
         var v = n/100 * this.draggableWidth
-        console.log("set slider value", n, v);
+        // console.log("set slider value", n, v);
         TweenMax.to(this.sliderThumbEl, 0, {x:v});
         // console.log(e.x)
     }

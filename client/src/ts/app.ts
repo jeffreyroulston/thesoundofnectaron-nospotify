@@ -210,7 +210,7 @@ export default class App {
             }
         })
 
-        var longDesc = intro + ingredient + danceability + setting + energy + valence;
+        var longDesc = intro + ingredient + danceability + setting + energy + valence
         this.playlistDescription = danceability + energy + valence;
         this.ui.showEndFrame(longDesc);
         this.generatePlaylist();
@@ -402,8 +402,8 @@ export default class App {
                             Description: this.playlistDescription,
                             Public: false,
                             Image: {
-                                Width: 72,
-                                Height: 72,
+                                Width: 100,
+                                Height: 100,
                                 Url: "http://thesoundofnectaron.truedigital.co.nz/assets/albumCover.jpg"
                                 // Url: "http://localhost:8888/assets/albumCover.jpg"
 
@@ -424,6 +424,8 @@ export default class App {
 
             case si.DataType.PlaylistCreated:
                 this.playlistCreated = (userData as si.Playlist);
+                console.log("playlist created in app");
+                this.ui.playlistCreated(this.playlistCreated.ShareLink);
                 break;
         }
     }

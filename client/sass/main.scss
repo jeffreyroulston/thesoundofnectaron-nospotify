@@ -537,7 +537,7 @@ p, table {
         }
     }
 
-    #brew-again, #share {
+    #brew-again, #listen {
         background-color: $purple;
         padding: 15px 20px;
         border-radius: 0.25em;
@@ -555,8 +555,14 @@ p, table {
         }
     }
 
-    #share {
+    #listen {
         margin-left: 10px;
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            font-size: inherit;
+        }
     }
     // #playlist-url, #brew-again {
     //     margin-top: 50px;;

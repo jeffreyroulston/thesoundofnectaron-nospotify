@@ -32,6 +32,12 @@
 
     .col-wrapper {
         width: 100%;
+        height: calc(100% - 30px);
+
+        // < 640px;
+        @include maxW($mobileLargeWidth) {
+            height: 100%;
+        }
     }
 
     .content-wrapper {
@@ -49,8 +55,8 @@
             float: right;
         }
 
-        // < 768px
-        @include maxW($tabletPortraitWidth) {
+        // < 900px
+        @include maxPxW(900) {
             width: 100%;
             float: none;
         }
@@ -59,7 +65,9 @@
     .close-btn {
         height: 30px;
         display: block;
-        margin: 0 auto;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 30px;
         cursor: pointer;
         transform: rotate(0deg);
         transition: transform 0.5s ease;
@@ -125,16 +133,17 @@
 
     .meetNectaron {
         width: 100%;
-        max-width: 600px;
+        max-width: 500px;
         display: block;
-        margin-top: 20px;
+        // margin-top: 20px;
         margin-bottom: 50px;
         margin-left: auto;
         margin-right: auto;
 
-        // < 1024px
-        @include maxW($tabletLandscapeWidth) {
-            max-width: 500px;
+        // < 640px;
+        @include maxW($mobileLargeWidth) {
+            // max-width: 500px;
+            margin-top: 30px;
         }
     }
 
@@ -213,12 +222,17 @@
     h1 {
         color: $orange;
         text-align: center;
-        margin-top: 50px;
+        // margin-top: 50px;
+
+         // < 640px;
+         @include maxW($mobileLargeWidth) {
+            margin-top: 30px;
+        }
 
         // < 640px;
-        @include maxW($mobileLargeWidth) {
-            margin-top: 20px;
-        }
+        // @include maxW($mobileLargeWidth) {
+        //     margin-top: 20px;
+        // }
     }
 
     a {
@@ -249,5 +263,17 @@
         margin-bottom: 50px;
         color: $orange;
         text-decoration: underline;
+    }
+}
+
+#subscribe {
+    #subscribe-wrapper {
+        width: 80%;
+        max-width: 500px;
+        overflow: hidden;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 30px;
     }
 }

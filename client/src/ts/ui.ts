@@ -8,6 +8,7 @@ import Rounds from "./rounds";
 import Graphics from "./graphics";
 import * as THREE from "three";
 import { animation } from "modernizr";
+import { brushSelection } from "d3";
 // import Modernizr from "modernizr";
 
 var qDefault = function() { return { value: 0, include: false } };
@@ -148,13 +149,13 @@ export default class UI {
         })
 
         // copy link
-        f.find(this.endFrameEl, "#share").addEventListener("click", (e: any)=> {
-            if (!(e.target.className.indexOf("active") > -1)) return;
+        // f.find(this.endFrameEl, "#share").addEventListener("click", (e: any)=> {
+        //     if (!(e.target.className.indexOf("active") > -1)) return;
 
-            if (this.app.playlistCreated) {
-                this.copyText(this.app.playlistCreated.ShareLink)
-            }
-        });
+        //     if (this.app.playlistCreated) {
+        //         this.copyText(this.app.playlistCreated.ShareLink)
+        //     }
+        // });
 
         // open subscription dialoge
         f.elList(".subscribe-btn").forEach((e)=> {
@@ -504,7 +505,8 @@ export default class UI {
         var d = 1;
 
         let restartBtn = f.find(this.endFrameEl, "#brew-again");
-        let shareBtn = f.find(this.endFrameEl, "#share");
+        // let shareBtn = f.find(this.endFrameEl, "#share");
+        let playlistBtn = f.find(this.endFrameEl, "#listen")
 
         TweenMax.fromTo(f.find(this.endFrameEl, "#playlist-title"), 0.5, {
             alpha: 0, x:-100
@@ -524,12 +526,12 @@ export default class UI {
             alpha: 1, scale:1, delay: d+0.4
         });
 
-        TweenMax.fromTo([restartBtn, shareBtn], 0.3, {
+        TweenMax.fromTo([playlistBtn, restartBtn], 0.3, {
             alpha: 0, y:50
         }, {
             alpha:1, y:0, delay: d+1.2, stagger:0.1, onComplete : ()=> {
                 restartBtn.className += " active";
-                shareBtn.className += " active";
+                playlistBtn.className += " active";
             }
         })
 
@@ -870,8 +872,13 @@ export default class UI {
     }
 
     public playlistCreated(url: string) {
-        console.log("playlist created", url)
-        f.elByID("playlist-url").innerHTML = url;
+        console.log("playlist created!!", url)
+        // f.elByID("playlist-url").innerHTML = url;
+
+        // set the button
+        var btn = <HTMLLinkElement>f.el("#listen a");
+        console.log(btn);
+        btn.href = url;
     }
 
     public nameSet(name : string) {
