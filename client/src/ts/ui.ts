@@ -520,11 +520,11 @@ export default class UI {
             alpha: 1, x:0, delay: d+0.2
         });
 
-        TweenMax.fromTo(f.find(this.endFrameEl, "#album-wrapper"), 0.5, {
-            alpha:0, scale:0.9
-        }, {
-            alpha: 1, scale:1, delay: d+0.4
-        });
+        // TweenMax.fromTo(f.find(this.endFrameEl, "#album-wrapper"), 0.5, {
+        //     alpha:0, scale:0.9
+        // }, {
+        //     alpha: 1, scale:1, delay: d+0.4
+        // });
 
         TweenMax.fromTo([playlistBtn, restartBtn], 0.3, {
             alpha: 0, y:50
@@ -872,13 +872,25 @@ export default class UI {
     }
 
     public playlistCreated(url: string) {
-        console.log("playlist created!!", url)
+        console.log("playlist created", url);
+        var split = url.split("/");
+        var id = split[split.length-1];
+        console.log(split, id)
         // f.elByID("playlist-url").innerHTML = url;
 
         // set the button
-        var btn = <HTMLLinkElement>f.el("#listen a");
-        console.log(btn);
-        btn.href = url;
+        // var btn = <HTMLLinkElement>f.el("#listen a");
+        // console.log(btn);
+        // btn.href = url;
+
+        // create the embed
+        f.elByID("embed").innerHTML = '<iframe src="https://open.spotify.com/embed/playlist/' + id + '" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>'
+
+        // f.elByID("embed").innerHTML = '<iframe src="https://open.spotify.com/embed/playlist/' + id + '" width="300" height="80" frameborder="0" data-mce-fragment="1"></iframe>'
+
+        // <iframe src="https://open.spotify.com/embed/playlist/6xJs7RQhcQwMDf4azJPqiZ" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe
+
+        // <iframe src="https://open.spotify.com/embed/track/4Dg5moVCTqxAb7Wr8Dq2T5" width="300" height="80" frameborder="0" data-mce-fragment="1"></iframe>
     }
 
     public nameSet(name : string) {

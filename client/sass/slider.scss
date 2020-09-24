@@ -211,6 +211,10 @@
         position: absolute;
         top: -35px;
         color: $purple;
+
+        span {
+            font-weight: 600;
+        }
     }
 
     #min-value-label {
@@ -226,7 +230,10 @@
         width: calc(100% - 20px);
         // width: 100%;
         display: block;
-        border-top: 2px solid $purple;
+        // border-top: 3px solid $purple;
+        height: 3px;
+        background: rgb(136,0,157);
+        background: linear-gradient(90deg, rgba(136,0,157,1) 0%, rgba(255,25,0,1) 100%);
     }
 
     .slider-input {
