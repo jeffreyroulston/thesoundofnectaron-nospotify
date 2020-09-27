@@ -614,6 +614,9 @@ export default class Slider {
         for (var i=idx+1; i<this.imgs.length; i++) {
             this.imgs[i].style.opacity = "0";
         }
+
+        var blur = Math.ceil(this.sliderValue / 20);
+        f.el("body").style.webkitFilter = "blur(" + blur.toString() + "px)";
     }
 
     getNextQuestion() {
@@ -676,6 +679,7 @@ export default class Slider {
         // hide out the things
         TweenMax.to(".slider-q" + this.questionIdx.toString(), this.time, {
             alpha:0, scale: 1.1, display: "none", onComplete : ()=> {
+                f.el("body").style.webkitFilter = "blur(0px)";
                 if (!this.isComplete) this.set();
             }
         });
@@ -706,9 +710,5 @@ export default class Slider {
                 width: 0, transformOrigin:"left", display:"none"
             })
         }
-    }
-
-    completed() {
-        this.el.style.display = "none";
     }
 }
