@@ -1,7 +1,7 @@
 import * as f from "./helpers";
-import ROUND from "./rounds";
 import {mcqQuestions, MCQuestion} from "./data";
 import {TweenMax} from "gsap"
+import {easeCubic, easeCubicIn, easeCubicInOut, easeElastic, easeExp, easeExpIn } from "d3";
 
 export default class MCQ {
     // the element
@@ -136,7 +136,7 @@ export default class MCQ {
             this.loopingAnimations.push(TweenMax.fromTo(this.optionEls[i], 0.5, {
                 y:-30
             }, {
-                y:30, repeat:-1, yoyo:true, delay: d + (0.1*i), ease: "linear"
+                y:30, repeat:-1, yoyo:true, delay: d + (0.1*i), ease: easeCubicIn
             }))
         }
 
