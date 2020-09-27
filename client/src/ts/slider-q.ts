@@ -134,6 +134,12 @@ export default class Slider {
 
     private setSliderValue(n : number) {
         this.sliderValue = n;
+
+        // slider colour
+        var color = f.rgb(f.findColorBetween(this.sliderColor1, this.sliderColor2, this.sliderValue));
+        this.sliderThumbEl.style.borderBottomColor = color;
+
+        // slider position
         var v = n/100 * this.draggableWidth;
         TweenMax.to(this.sliderThumbEl, 0, {x:v});
     }
