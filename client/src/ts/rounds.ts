@@ -221,6 +221,7 @@ export default class Rounds {
         if (this.currentRoundIdx <2) {
             this.currentRoundIdx++;
             this.UI.transitionOut();
+            this.UI.hideLogoSlider();
             this.showRound(0.7);
         } else {
             // all done

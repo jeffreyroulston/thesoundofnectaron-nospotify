@@ -22,19 +22,15 @@ export default class Slider {
     private time = 0.3;
 
     // shared elements
-    // private sliderEl : HTMLInputElement = <HTMLInputElement>f.find(this.el, ".slider-input");
-    private sliderThumbEl : HTMLElement = f.find(this.el, " .slider-thumb");
-    // private sliderThumbEl : HTMLElement = f.find(this.el, ".test");
     private questionElement: HTMLElement = f.find(this.el, ".question");
     private minValueLabel : HTMLElement = f.find(this.el, "#min-value-label");
     private maxValueLabel : HTMLElement = f.find(this.el, "#max-value-label");
-
-    // other bits
+    private sliderThumbEl : HTMLElement = f.find(this.el, " .slider-thumb");
     private sliderLineEl : HTMLElement = f.find(this.el, ".slider-line")
 
     // from question
-    private sliderWidth : number = 0;
-    private minValue : number = 0;
+    // private sliderWidth : number = 0;
+    // private minValue : number = 0;
     private maxValue : number = 100;
 
     // starts in the middle
@@ -47,6 +43,22 @@ export default class Slider {
     private imgEl : HTMLElement = f.find(this.el, ".slider-q1");
     private count : number = 0;
 
+    // for looping animations
+    private loopingAnimations : TweenMax[] = [];
+
+    // slider
+    private draggableOffset : number = 0;
+    private draggableCurrentPos : number = 0;
+    private draggableWidth : number = 0;
+    private draggableMax : number = 0;
+    private draggableMin : number = 0;
+    private sliderColor1 = f.convertHexToRgb("88009D");
+    private sliderColor2 = f.convertHexToRgb("FF1900");
+
+    // called from ui
+    public initiated = false;
+    public isComplete = false;
+
     //q1 (color slider)
     private colorWipeEl :HTMLElement = f.elByID("color-wipe");
     private color1 = f.convertHexToRgb("FCF1DB");
@@ -56,50 +68,26 @@ export default class Slider {
 
     // q2 (scale)
     private sweetFruitOffset : number = 0;
-    private bitterFruitOffset : number = 0;
     private fruitDefaultHeight : number = 0;
 
     // q4 (bunsen)
     private busenFillEl : HTMLElement = f.find(this.el, ".bunsen-fill");
     private bunsencolor1 = f.convertHexToRgb("88009D");
     private bunsencolor2 = f.convertHexToRgb("FF1900");
-    private bubbleCount = 0;
-    private activeBubbles = 0;
-
-    // for looping animations
-    private loopingAnimations : TweenMax[] = [];
-
-    // private
-    private draggableOffset : number = 0;
-    private draggableNextPos : number = 0;
-    private draggableCurrentPos : number = 0;
-    private draggableWidth : number = 0;
-    private draggableMax : number = 0;
-    private draggableMin : number = 0;
-    private draggableMultiplier : number = 0;
-    private resetDraggable : boolean = false;
-
-    private showCurrentQuestion: () => void;
-    private callbackCurrentQuestion : (n : number) => void;
-
-    // called from ui
-    public initiated = false;
-    public isComplete = false;
-
-    // FIRE
     private fire : Fire | undefined;
     private fireOn : boolean = false;
 
     // bound to ui
     public roundComplete = (e: HTMLElement)=> {};
 
+    // internal call backs
+    private showCurrentQuestion: () => void;
+    private callbackCurrentQuestion : (n : number) => void;
+
     constructor() {
         this.showCurrentQuestion = this.showQ1.bind(this);
         this.callbackCurrentQuestion = this.callbackQ1.bind(this)
 
-        // // set bindings
-        // this.sliderEl.addEventListener("input",this.sliderChange.bind(this));
-        // this.sliderEl.addEventListener("change", this.sliderValueSet.bind(this));
         window.addEventListener("resize", this.onResize.bind(this));
 
         Draggable.create(".slider-thumb", {
@@ -115,14 +103,12 @@ export default class Slider {
             // is 50
             this.draggableOffset = e.x - 0.5*this.draggableWidth;
         }
-        // console.log("init", e.x);
     }
 
     private sliderResize() {
         this.draggableWidth = this.sliderLineEl.getBoundingClientRect().width;
         this.draggableMax = this.draggableWidth;
         this.draggableMin = 0;
-        // console.log("SLIDER RESIZE, width", this.draggableWidth);
     }
 
     private sliderChange(e: any) {
@@ -130,33 +116,32 @@ export default class Slider {
             console.log(e.touches[0].pageX)
             this.draggableCurrentPos = e.touches[0].pageX
         } else {
-            // console.log(e.x);
             this.draggableCurrentPos = e.x;
         }
-        // console.log(Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100));
-        // return Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100);
-        // console.log(this.draggableCurrentPos, this.draggableOffset, this.sliderValue)
-        // console.log(e.x, e.touches, e.touches.length, e);
-        // console.log(this.draggableCurrentPos, Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100));
-        this.callbackCurrentQuestion(Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100))
+
+        // chamge the slider thumb colour
+        var value = Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100);
+        if (value >= 0 && value <= 100) {
+            this.sliderValue = value;
+
+            var color = f.rgb(f.findColorBetween(this.sliderColor1, this.sliderColor2, this.sliderValue));
+            this.sliderThumbEl.style.borderBottomColor = color;
+            this.callbackCurrentQuestion(this.sliderValue);
+        }
+
+        // this.callbackCurrentQuestion(Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100))
     }
 
     private setSliderValue(n : number) {
         this.sliderValue = n;
-        var v = n/100 * this.draggableWidth
-        // console.log("set slider value", n, v);
+        var v = n/100 * this.draggableWidth;
         TweenMax.to(this.sliderThumbEl, 0, {x:v});
-        // console.log(e.x)
     }
 
     private sliderValueSet(e:any) {
         var q = sliderQuestions[this.questionIdx];
         var v = (q.max - q.min)/100 * this.sliderValue + q.min;
         sliderQuestions[this.questionIdx].answer = f.roundTo(v, 2);
-        // console.log(this.sliderValue, sliderQuestions[this.questionIdx]);
-        // if (this.questionIdx !=1) {
-        //     this.getNextQuestion();
-        // }
         this.getNextQuestion();
     }
 
@@ -173,7 +158,6 @@ export default class Slider {
                 break;
             case 1:
                 // PINEAPPPLE/HOP SLIDER
-
                 // pineapple reset
                 this.imgs[0].style.removeProperty('height');
                 this.imgs[0].style.removeProperty('top');
@@ -206,11 +190,6 @@ export default class Slider {
             // set question labels
             this.minValueLabel.innerHTML = q.minTextValue.toString();
             this.maxValueLabel.innerHTML = q.maxTextValue.toString();
-
-            // set value to default
-            // this.sliderValue = 0
-            // this.setSliderValue(this.sliderValue)
-            // this.sliderReset();
 
             // set slider value
             this.setSliderValue(q.startValue);
@@ -265,13 +244,6 @@ export default class Slider {
         }, {
             alpha: 1, y:0, delay: delay
         })
-
-        // show the thumb
-        // TweenMax.fromTo(this.sliderThumbEl, this.time, {
-        //     alpha:0, y:20
-        // }, {
-        //     alpha:1, y:0, delay: delay
-        // });
     }
 
     private toggleFullWidth() {
@@ -345,11 +317,6 @@ export default class Slider {
     }
 
     private callbackQ1(n : number) {
-        if (n < 0 || n > 100) return;
-
-        // set the slider value
-        this.sliderValue = n;
-
         // get the colors
         var color = f.rgb(f.findColorBetween(this.color1, this.color2, this.sliderValue));
         this.colorWipeEl.style.backgroundColor = color;
@@ -376,6 +343,14 @@ export default class Slider {
             star.style.opacity = starOpacity.toString();
         })
 
+        // the background
+        // console.log(this.sliderValue);
+        // if (this.sliderValue >=50) {
+        //     f.elByID("nectaron-slide").style.opacity = "0.01"
+        // } else {
+        //     f.elByID("nectaron-slide").style.opacity = "0.2"
+        // }
+
         this.moon.style.opacity = ratio.toString();
     }
 
@@ -391,16 +366,10 @@ export default class Slider {
         f.find(this.el, ".col-wrapper.content-column").style.display = "block"
 
         // get the height
-        // this.fruitDefaultWidth = this.imgs[0].getBoundingClientRect().width;
         this.fruitDefaultHeight = this.imgs[0].getBoundingClientRect().height;
-
-        // DO THIS ON RESIZE
 
         // Make it not full width
         this.toggleFullWidth();
-
-        // this.topFruitDefaultBottomValue = f.pxToInt(getComputedStyle(this.imgs[0]).bottom);
-        // this.bottomFruitDefaultTopValue = f.pxToInt(getComputedStyle(this.imgs[1]).top);
 
         TweenMax.fromTo(this.imgs, 0.3, {
             alpha:0
@@ -430,9 +399,6 @@ export default class Slider {
     }
 
     private callbackQ2(n : number) {
-        if (n < 0 || n > 100) return;
-
-        this.sliderValue = n;
         this.scaleFruit();
     }
 
@@ -453,28 +419,14 @@ export default class Slider {
     }
 
     scaleBitter() {
-        // get height
         this.imgs[1].style.height = f.px(5* (this.sliderValue - this.midValue) + this.fruitDefaultHeight);
-        // console.log(this.imgs[1], f.px(3*(this.sliderValue - this.midValue) + this.fruitDefaultHeight));
-
-        // get offset
-        // this.bitterFruitOffset = 0 - 2* (this.sliderValue - this.midValue);
-        // console.log(this.bitterFruitOffset);
-        // this.imgs[1].style.top = f.px(this.bitterFruitOffset);
-        // this.imgs[1].style.top = f.px(this.bottomFruitDefaultTopValue - 0.5 * (this.midValue - this.sliderValue) *-1.5);
         this.previousValue = this.sliderValue;
     }
 
     scaleSweet() {
-        console.log("scale bottom")
         this.imgs[0].style.height= f.px(5* (this.midValue - this.sliderValue) + this.fruitDefaultHeight);
-
-        // get offset
         this.sweetFruitOffset = 0 - 5* (this.midValue - this.sliderValue);
         this.imgs[0].style.top = f.px(this.sweetFruitOffset);
-        
-        // console.log(this.imgs[0], f.px(3*(this.midValue - this.sliderValue) + this.fruitDefaultHeight))
-        // this.imgs[0].style.top = f.px(this.topFruitDefaultBottomValue - * (this.sliderValue - this.midValue)*-3);
         this.previousValue = this.sliderValue;
     }
 
@@ -484,9 +436,6 @@ export default class Slider {
         container.style.display = "block";
         this.count = 10;
         this.imgs = [];
-
-        // set slider value
-        // this.setSliderValue(50);
 
         // hide the content column
         f.find(this.el, ".col-wrapper.content-column").style.display = "none"
@@ -532,19 +481,12 @@ export default class Slider {
     }
 
     private callbackQ3(n : number) {
-        if (n < 0 || n > 100) return;
-
-        // get value from slider
-        this.sliderValue = n;
-
         var round= Math.round((this.sliderValue / this.maxValue)*10);
         var sharp = this.count - round;
 
         for (var i=0; i<this.count; i++) {
             this.imgs[i].className = i<sharp ? "sharp" : "round";
         }
-
-        // console.log("slider value: " + this.sliderValue.toString() + " sharp counter: " + sharp.toString() + " round counter: " + round.toString());
     }
 
     private q3Resize() {
@@ -595,32 +537,17 @@ export default class Slider {
         })
     }
 
-    private bubbleLoopComplete() {
-    }
-
     private callbackQ4(n: number) {
-        if (n < 0 || n > 100) return;
-
         this.fire?.setSpeed(n/50);
-        
-        // get value from slider
-        this.sliderValue = n
 
         // get the colors
         var color = f.rgb(f.findColorBetween(this.bunsencolor1, this.bunsencolor2, this.sliderValue));
         this.busenFillEl.style.fill = color;
-
-        // set the number of bubbles
-        this.bubbleCount = Math.ceil(this.sliderValue / 10);
     }
 
     private showQ5() {
         // HANDS
         this.count = 5;
-        // set slider value
-        // this.setSliderValue(0);
-        // this.sliderEl.value = "0";
-        // this.sliderReset();
 
         // set perspective?
         TweenMax.to(this.imgEl, 0, {perspective:800})
@@ -647,12 +574,7 @@ export default class Slider {
     }
 
     private callbackQ5(n : number) {
-        if (n < 0 || n > 100) return;
-        
-        // get value from slider
-        this.sliderValue = n;
         var ratio = 25;
-        
         var v = this.sliderValue / ratio;
         var idx = Math.ceil(v);
         idx = idx < 1 ? 1 : idx; // always at least zero
@@ -666,43 +588,6 @@ export default class Slider {
             this.imgs[i].style.opacity = "0";
         }
     }
-
-    // sliderChange(e: any){
-    //     this.sliderValue = e.srcElement.value;
-    //     this.sliderWidth = e.srcElement.clientWidth;
-
-    //     // // get the next position of the arrow
-    //     // move the triangle to match the position of the slider thumb
-    //     // this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumbEl.getBoundingClientRect().width/2);
-
-    //     this.callbackCurrentQuestion(e);
-    // }
-
-    // sliderReset(){
-    //     this.sliderWidth = this.sliderEl.clientWidth;
-
-    //     // // get the next position of the arrow
-    //     // move the triangle to match the position of the slider thumb
-    //     this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumbEl.getBoundingClientRect().width/2);
-    // }
-
-    // sliderValueSet(e:any) {
-    //     // lock in slider value to answer
-    //     this.questions[this.questionIdx].answer = e.srcElement.value;;
-    //     console.log(this.questions[this.questionIdx]);
-    //     // if (this.questionIdx !=1) {
-    //     //     this.getNextQuestion();
-    //     // }
-    //     this.getNextQuestion();
-    // }
-
-    // setValue(n : number) {
-    //     this.sliderValue = n;
-    //     this.sliderEl.value = n.toString();
-    //     this.sliderWidth = this.sliderEl.getBoundingClientRect().width;
-
-    //     this.sliderThumbEl.style.left = f.px(((this.sliderValue - this.minValue) / (this.maxValue - this.minValue) * (this.sliderWidth)) - this.sliderThumbEl.getBoundingClientRect().width/2);
-    // }
 
     getNextQuestion() {
         var showFunctions = [
@@ -797,7 +682,6 @@ export default class Slider {
     }
 
     completed() {
-        console.log("completed");
         this.el.style.display = "none";
     }
 }

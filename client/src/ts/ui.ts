@@ -82,6 +82,11 @@ export default class UI {
     private loopingAnimations : TweenMax[] = [];
     private inPageLoopingAnimations : TweenMax[] = [];
 
+    // logo slide
+    public logoSlideEl : HTMLElement = f.elByID("nectaron-slide");
+    // private logoSlide1 : TweenMax;
+    // private logoSlide2 : TweenMax;
+
     private nope : boolean = false;
 
     // for end page
@@ -105,6 +110,12 @@ export default class UI {
         //     window.addEventListener('resize', this.onResize.bind(this));
         //     document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
         // }
+        // this.logoSlide1 = TweenMax.to(f.findAll(this.logoSlideEl, "li:nth-child(odd)"), 30, {backgroundPositionX: "100%", repeat: -1, ease:"linear", yoyo:true});
+        // this.logoSlide1.pause();
+
+        // this.logoSlide2 = TweenMax.to(f.findAll(this.logoSlideEl, "li:nth-child(even)"), 30, {backgroundPositionX: "-100%", repeat: -1, ease:"linear", yoyo:true})
+        // this.logoSlide2.pause();
+
         document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
     }
 
@@ -160,6 +171,8 @@ export default class UI {
         // open subscription dialoge
         f.elList(".subscribe-btn").forEach((e)=> {
             e.addEventListener("click", (e:any)=> {
+                var inputs = document.querySelectorAll(".hbspt-form .hs-input");
+                console.log(inputs);
                 this.togglePage("subscribe");
             });
         })
@@ -194,8 +207,9 @@ export default class UI {
             // this.LANDING.show();
         }
 
-        // this.showNavBar();
-        // this.showEndFrame("Best savoured on your local park bench, your brew is extra fresh and topped off with just a dash of liquid poison. Kick back and chill with low key tunes filled with all the right feels, that'll have you feeling like an extra cool snowman.");
+        // the background
+        // TweenMax.to("#nectaron-slide li:nth-child(odd)", 20, {backgroundPositionX: "100%", repeat: -1, ease:"linear", yoyo:true})
+        // TweenMax.to("#nectaron-slide li:nth-child(even)", 20, {backgroundPositionX: "-100%", repeat: -1, ease:"linear", yoyo:true})
     }
 
     private loaderInit() {
@@ -475,8 +489,27 @@ export default class UI {
         // hide waves
         this.hideWaves(0);
 
+        // show logoslide
+        this.showLogoSlider();
+
         // hide the elements
         this.transitionOut();
+    }
+
+    public showLogoSlider() {
+        // TweenMax.fromTo(this.logoSlideEl, 0.5, {display: "none", opacity: 0}, {display: "block", opacity: 0.2, delay:0.5});
+        
+        // show logoslide
+        // this.logoSlide1.play();
+        // this.logoSlide2.play();
+    }
+
+    public hideLogoSlider() {
+        // TweenMax.to(this.logoSlideEl, 0.5, {display: "none", opacity: 0, onComplete() {
+        //     // hide logoslide
+        //     this.logoSlide1.pause();
+        //     this.logoSlide2.pause();
+        // }});
     }
 
     public showEndFrame(description: string) {
