@@ -295,10 +295,11 @@ export default class Slider {
         // change the sun ray colors
         for (var i=0; i<rays.length; i++) {
             this.loopingAnimations.push(
-                TweenMax.fromTo(rays[i], 1, {
-                fill: COLORS.white
+                TweenMax.fromTo(rays[i], 0.3, {
+                    fill: COLORS.yellow,
                 }, {
-                    fill: COLORS.yellow, repeat:-1, yoyo:true, ease: "linear", delay: i*0.1
+                    fill: COLORS.white,
+                    repeat:-1, yoyo:true, ease: "linear", delay: i*0.05
                 })
             )
         }
@@ -317,7 +318,7 @@ export default class Slider {
         // make the image pulse
         this.loopingAnimations.push(
             TweenMax.to(sunRays, 2, {
-                scale:0.95, repeat:-1, yoyo:true, ease: "linear"
+                scale:1.2, repeat:-1, yoyo:true, ease: "linear"
             })
         )
     }
