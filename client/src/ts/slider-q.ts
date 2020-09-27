@@ -25,6 +25,7 @@ export default class Slider {
     private questionElement: HTMLElement = f.find(this.el, ".question");
     private minValueLabel : HTMLElement = f.find(this.el, "#min-value-label");
     private maxValueLabel : HTMLElement = f.find(this.el, "#max-value-label");
+    private sliderContainerEl : HTMLElement = f.find(this.el, ".slide-container");
     private sliderThumbEl : HTMLElement = f.find(this.el, " .slider-thumb");
     private sliderLineEl : HTMLElement = f.find(this.el, ".slider-line")
 
@@ -151,6 +152,23 @@ export default class Slider {
         this.getNextQuestion();
     }
 
+    private toggleFullWidth() {
+        f.find(this.el, ".col-wrapper.text-column").classList.toggle("full-width");
+    }
+
+    private orangeLeft() {
+        this.sliderContainerEl.className = this.sliderContainerEl.className.replace(" orange-right", "");
+        this.sliderContainerEl.classList.toggle("orange-left");
+        this.sliderColor1 = f.convertHexToRgb("FF1900");
+        this.sliderColor2 = f.convertHexToRgb("88009D");
+    }
+
+    private orangeRight() {
+        this.sliderContainerEl.className = this.sliderContainerEl.className.replace(" orange-left", "");
+        this.sliderContainerEl.classList.toggle("orange-right");
+        this.sliderColor1 = f.convertHexToRgb("88009D");
+        this.sliderColor2 = f.convertHexToRgb("FF1900");
+    }
 
     private onResize(e: any) {
         console.log(this.questionIdx)
@@ -252,16 +270,15 @@ export default class Slider {
         })
     }
 
-    private toggleFullWidth() {
-        f.find(this.el, ".col-wrapper.text-column").classList.toggle("full-width");
-    }
-
     private showQ1() {
         // SUN AND CLOUDS
         this.count = 5;
         var sunRays = f.find(this.el, ".sun-rays");
         var rays = f.findAll(sunRays, ".line");
         var stars = f.findAll(sunRays, "polygon.star");
+
+        // set gradient
+        this.orangeLeft();
 
         // hide the content column
         f.find(this.el, ".col-wrapper.content-column").style.display = "none"
@@ -365,6 +382,9 @@ export default class Slider {
         // PINEAPPLE AND HOPS
         var slider = f.find(this.el, ".slider-q2");
         this.imgs = f.findAll(slider, "li img");
+
+        // set gradient
+        this.orangeRight();
 
         // set slider value
         this.setSliderValue(50);

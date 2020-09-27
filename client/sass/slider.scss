@@ -183,9 +183,30 @@
         width: 100%;
         left: 10px;
         margin-top: 20px;
+
         // < 1024px
         @include maxW($tabletLandscapeWidth) {
             margin: 0;
+        }
+
+        &.orange-left {
+            #min-value-label {
+                color: $orange;
+            }
+            
+            .slider-line {
+                background: linear-gradient(90deg, rgba(255,25,0,1) 0%, rgba(136,0,157,1) 100%);
+            }
+        }
+
+        &.orange-right {
+            #max-value-label {
+                color: $orange;
+            }
+
+            .slider-line {
+                background: linear-gradient(90deg, rgba(136,0,157,1) 0%, rgba(255,25,0,1) 100%);
+            }
         }
     }
 
@@ -224,7 +245,6 @@
     #max-value-label {
         // right: -20px;
         right: 0px;
-        color: $orange;
     }
 
     .slider-line {
@@ -234,7 +254,7 @@
         // border-top: 3px solid $purple;
         height: 3px;
         background: rgb(136,0,157);
-        background: linear-gradient(90deg, rgba(136,0,157,1) 0%, rgba(255,25,0,1) 100%);
+        // background: linear-gradient(90deg, rgba(136,0,157,1) 0%, rgba(255,25,0,1) 100%);
     }
 
     .slider-input {
