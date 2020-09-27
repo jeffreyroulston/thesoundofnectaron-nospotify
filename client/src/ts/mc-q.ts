@@ -128,50 +128,17 @@ export default class MCQ {
             this.optionEls[i].style.display = "inline-block"
         }
 
-        // var options = [];
-
         // show the options
-        // console.log("options length", this.currentQuestion.options.length)
         for (var i=0; i<this.currentQuestion.options.length; i++) {
-            // options.push(this.optionEls[i])
             TweenMax.fromTo(this.optionEls[i], this.time, {alpha:0}, {alpha:1, delay: d + (0.1*i)});
-            // TweenMax.fromTo(this.optionEls[i], this.time, {
-            //     y:50, alpha:0
-            // }, {
-            //     y:0, alpha:1, delay : d + this.time + (0.1*i), ease: "linear"
-            // })
 
             // // bounce them
-            // this.loopingAnimations.push(TweenMax.to(this.optionEls[i], this.time, {
-            //     y:50, repeat:-1, yoyo:true, delay: d + (this.time*2) + (0.1*i), ease: "linear"
-            // }))
-
-            // // bounce them
-            this.loopingAnimations.push(TweenMax.fromTo(this.optionEls[i], 0.3, {
-                y:-20
+            this.loopingAnimations.push(TweenMax.fromTo(this.optionEls[i], 0.5, {
+                y:-30
             }, {
-                y:20, repeat:-1, yoyo:true, delay: d + (0.1*i), ease: "linear"
+                y:30, repeat:-1, yoyo:true, delay: d + (0.1*i), ease: "linear"
             }))
         }
-
-        // f.shuffle(options);
-
-        // for (var i=0; i<options.length; i++) {
-        //     TweenMax.fromTo(options[i], this.time, {alpha:0}, {alpha:1, delay: d + (0.1*i)});
-        //     // TweenMax.fromTo(this.optionEls[i], this.time, {
-        //     //     y:50, alpha:0
-        //     // }, {
-        //     //     y:0, alpha:1, delay : d + this.time + (0.1*i), ease: "linear"
-        //     // })
-
-        //     // // bounce them
-        //     this.loopingAnimations.push(TweenMax.fromTo(options[i], this.time, {
-        //         y:-10
-        //     }, {
-        //         y:10, repeat:-1, yoyo:true, delay: d + (0.1*i), ease: "linear"
-        //     }))
-        // }
-
 
         // resize
         this.onResize();
