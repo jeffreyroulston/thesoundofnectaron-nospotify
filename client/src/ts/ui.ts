@@ -410,9 +410,9 @@ export default class UI {
     }
 
     public showWaves(d: number) {
-        TweenMax.fromTo([this.wavesTopEl, this.wavesBottomEl], 2, {display:"none", alpha:0}, {display:"block", alpha:0.95, ease: "linear", delay: d})
-        TweenMax.fromTo(this.wavesBottomEl, 3, {y:100}, {y:0, ease: "linear", delay: d});
-        TweenMax.fromTo(this.wavesTopEl, 3, {y:-100}, {y:0, ease: "linear", delay: d});
+        TweenMax.fromTo([this.wavesTopEl, this.wavesBottomEl], 3, {display:"none", alpha:0}, {display:"block", alpha:0.95, ease: "linear", delay: d})
+        TweenMax.fromTo(this.wavesBottomEl, 3, {y:200}, {y:0, ease: "linear", delay: d});
+        TweenMax.fromTo(this.wavesTopEl, 3, {y:-200}, {y:0, ease: "linear", delay: d});
         
         // get waves
         var topWaves = f.findAll(this.wavesTopEl, ".wave." + this.currentWaveColor);

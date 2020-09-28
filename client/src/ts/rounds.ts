@@ -9,6 +9,8 @@ import {TweenMax} from "gsap"
 import { DrawSVGPlugin } from "gsap/dist/DrawSVGPlugin";
 import { easeCircleInOut} from "d3";
 import gsap from "gsap";
+import { testAllProps } from "modernizr";
+import App from "./app";
 gsap.registerPlugin(DrawSVGPlugin);
 
 export default class Rounds {
@@ -54,8 +56,8 @@ export default class Rounds {
         this.qfq = new QuickFireQ();
 
         // set the question order
-        // this.questionGroups = [this.slider, this.mcq, this.qfq];
-        this.questionGroups = [this.mcq, this.slider, this.qfq];
+        this.questionGroups = [this.slider, this.mcq, this.qfq];
+        // this.questionGroups = [this.mcq, this.slider, this.qfq];
         // this.questionGroups = [this.qfq, this.slider, this.mcq];
 
         // set callbacks
@@ -193,6 +195,11 @@ export default class Rounds {
 
     private next() {
         if (!this.btnActive) return;
+        if (this.currentRoundIdx == 0) {
+            App.audio.playAmbient();
+        } else if (this.currentRoundIdx == 2) {
+            App.audio.playRound3();
+        }
 
         this.btnActive = false;
         this.loopingAnimations.forEach((anim)=> {
@@ -222,7 +229,7 @@ export default class Rounds {
             this.currentRoundIdx++;
             this.UI.transitionOut();
             this.UI.hideLogoSlider();
-            this.showRound(0.7);
+            this.showRound(1);
         } else {
             // all done
             this.UI.transitionOut();
@@ -237,12 +244,12 @@ export default class Rounds {
     }
 
     public changeToMobile() {
-        console.log("change to mobile");
+        // console.log("change to mobile");
         // TweenMax.to(this.descriptionEl, 0.2, {rotation: 0});
     }
 
     public changeToDesktop() {
-        console.log("change to desktop");
+        // console.log("change to desktop");
         // TweenMax.to(this.descriptionEl, 0.2, {rotation: -17});
     }
 

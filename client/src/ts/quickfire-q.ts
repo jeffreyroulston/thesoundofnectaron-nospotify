@@ -20,7 +20,7 @@ export default class QuickFireQ {
     private questionEl: HTMLElement = f.find(this.el, " .question");
     private timerEl : HTMLElement = f.find(this.el, "#timer");
 
-    private timerCount : number = 1;
+    private timerCount : number = 20;
     private timerActive : boolean = true;
     private active : boolean = false;
 
@@ -57,24 +57,38 @@ export default class QuickFireQ {
         this.questionEl.innerHTML = this.questionsAsked[this.questionsAsked.length-1].question
         this.el.style.display = "block";
 
-        TweenMax.fromTo(this.questionEl, this.time, {
+        TweenMax.fromTo(this.questionEl, 0.6, {
             alpha:0, x:-50
         }, {
             alpha:1, x:0, delay:delay
         });
 
-        TweenMax.fromTo("#answer-wrapper li", this.time, {
+        TweenMax.fromTo("#answer-wrapper li", 0.6, {
             alpha:0, y:50
         }, {
             alpha:1, y:0, stagger:0.1, delay: delay
         });
         
-        TweenMax.fromTo(f.find(this.el, "#timer-wrapper"), this.time, {
+        TweenMax.fromTo(f.find(this.el, "#timer-wrapper"), 0.6, {
             alpha:0, x:200
         }, {
             alpha:1, x:0, delay: delay, onComplete: ()=> {
             setTimeout(this.updateTimer.bind(this), 1000)
         }})
+        // TweenMax.fromTo(f.find(this.el, "#timer-wrapper"), this.time, {
+        //     alpha:0
+        // }, {
+        //     alpha:1, delay: delay, onComplete: ()=> {
+        //     setTimeout(this.updateTimer.bind(this), 1000)
+        // }})
+
+        // var wrapper = f.find(this.el, "#timer-wrapper");
+
+        // var tl = new TimelineMax();
+        // tl.fromTo(wrapper, {x:-100}, {duration: 1, x:100});
+        // tl.to(wrapper, {x:-100, duration:1});
+        // tl.repeat(-1);
+        // tl.play();
     }
 
     getNextQuestion() {

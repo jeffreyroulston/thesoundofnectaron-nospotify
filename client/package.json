@@ -10,6 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/d3": "^5.7.2",
+    "@types/howler": "^2.2.1",
     "browserify": "^16.5.1",
     "del": "^5.1.0",
     "gulp": "^4.0.0",
@@ -29,6 +30,7 @@
     "gsap": "file:src/js/gsap-bonus.tgz",
     "gulp-cli": "^2.3.0",
     "gulp-watch": "^5.0.1",
+    "howler": "^2.2.0",
     "modernizr": "^3.11.3",
     "simplex-noise": "^2.4.0",
     "three": "^0.118.3"

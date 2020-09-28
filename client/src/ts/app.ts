@@ -9,6 +9,7 @@ import Landing from "./landing";
 import Game from "./rounds";
 import { easeExpIn } from "d3";
 import { shuffle } from "./helpers";
+import AudioPlayer from "./audio";
 import Fire from "./fire";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
@@ -38,10 +39,11 @@ export default class App {
     private topTracks: si.Track[] | undefined;
     public playlistCreated: si.Playlist | undefined;
     private playlistDescription = "";
-
     private alreadyAskedForRecommendations = false;
-
     private requestedPlaylistLength: number = 120;
+
+    // audio
+    static audio = new AudioPlayer();
 
     constructor() {
         // console.log(window.location.href);
