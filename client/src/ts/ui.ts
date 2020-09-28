@@ -8,7 +8,7 @@ import Rounds from "./rounds";
 import Graphics from "./graphics";
 import * as THREE from "three";
 import { animation } from "modernizr";
-import { brushSelection } from "d3";
+import { brushSelection, easeBounce } from "d3";
 // import Modernizr from "modernizr";
 
 var qDefault = function() { return { value: 0, include: false } };
@@ -39,6 +39,7 @@ export default class UI {
     private wavesTopEl : HTMLElement = f.elByID("waves-top");
     private wavesBottomEl : HTMLElement = f.elByID("waves-bottom");
     private currentWaveColor: string = "purple";
+    private loopingWaveAnimantions : TweenMax[] = [];
 
     // end frame
     private endFrameEl : HTMLElement = f.elByID("end-frame");
@@ -187,7 +188,7 @@ export default class UI {
 
             // start
             this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
-            this.ROUNDS.showRound(0)
+            this.ROUNDS.showRound(1);
             this.onResize();
         } else {
             // show the loader
@@ -410,12 +411,42 @@ export default class UI {
 
     public showWaves(d: number) {
         TweenMax.fromTo([this.wavesTopEl, this.wavesBottomEl], 2, {display:"none", alpha:0}, {display:"block", alpha:0.95, ease: "linear", delay: d})
-        TweenMax.fromTo(this.wavesBottomEl, 3, {y:100}, {y:0, ease: "linear", delay: d})
-        TweenMax.fromTo(this.wavesTopEl, 3, {y:-100}, {y:0, ease: "linear", delay: d})
+        TweenMax.fromTo(this.wavesBottomEl, 3, {y:100}, {y:0, ease: "linear", delay: d});
+        TweenMax.fromTo(this.wavesTopEl, 3, {y:-100}, {y:0, ease: "linear", delay: d});
+        
+        // get waves
+        var topWaves = f.findAll(this.wavesTopEl, ".wave." + this.currentWaveColor);
+        var bottomWaves = f.findAll(this.wavesBottomEl, ".wave." + this.currentWaveColor);
+        
+        var waves : HTMLElement[] = [];
+        waves = waves.concat(topWaves, bottomWaves);
+        console.log(waves);
+        
+        // animate
+        this.loopingWaveAnimantions.push(
+            TweenMax.to([topWaves[0], bottomWaves[0]], 7, {x:-1600, repeat:-1, ease: "linear"})
+        )
+
+        this.loopingWaveAnimantions.push(
+            TweenMax.to([topWaves[1], bottomWaves[1]], 7, {x:-1600, repeat:-1, delay:0.5, ease: "linear"})
+        )
+
+        this.loopingWaveAnimantions.push(
+            TweenMax.to([topWaves[0], bottomWaves[0]], 7, {y:50, repeat:-1, delay:1, ease: easeBounce, yoyo:true})
+        )
+
+        this.loopingWaveAnimantions.push(
+            TweenMax.to([topWaves[1], bottomWaves[1]], 7, {y:25, repeat:-1, ease: easeBounce, yoyo:true})
+        )
     }
 
     public hideWaves(delay: number) {
-        TweenMax.to([this.wavesTopEl, this.wavesBottomEl], 1, {display:"none", alpha:0, ease: "linear"})
+        TweenMax.to([this.wavesTopEl, this.wavesBottomEl], 1, {display:"none", alpha:0, ease: "linear", onComplete: ()=> {
+            this.loopingWaveAnimantions.forEach((anim)=> {
+                anim.kill();
+            })
+            this.loopingWaveAnimantions = [];
+        }})
         TweenMax.to(this.wavesBottomEl, 1, {y:500, ease: "linear"})
         TweenMax.to(this.wavesTopEl, 1, {y:-500, ease: "linear"})
     }
@@ -423,11 +454,8 @@ export default class UI {
     public toggleWaveColor(color: string) {
         // change visible wave colors
         TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + this.currentWaveColor), 1, {alpha:1, display:"block"}, {alpha:0, display:"none"})
-
         TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + this.currentWaveColor), 1, {alpha:1, display:"block"}, {alpha:0, display:"none"})
-
         TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + color), 1, {alpha:0, display:"none"}, {alpha:1, display:"block"})
-
         TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + color), 1, {alpha:0, display:"none"}, {alpha:1, display:"block"})
 
         this.currentWaveColor = color;
