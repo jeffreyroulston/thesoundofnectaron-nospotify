@@ -9,15 +9,9 @@ export default class Landing {
     private UI : UI;
     private landingPageEl: HTMLElement = f.elByID("landing");
     private loopingAnimations: TweenMax[] = [];
-    private preloadImgs : string[] = [
-        "fruit/hop.png",
-        "waves/wave-orange.svg",
-        "waves/wave-purple.svg"
-    ]
 
     // BUTTON
     private btnActive : boolean = false;
-
     public onLoginPressed = ()=> {};
 
     constructor(ui : UI) {
@@ -28,24 +22,42 @@ export default class Landing {
 
     private login() {
         if (!this.btnActive) return;
+        
+        // play sound
         App.audio.playClick();
-        this.onLoginPressed();
+
+        // kill the looping animations
+        this.loopingAnimations.forEach((anim)=> {
+            anim.kill();
+        })
+
+        this.loopingAnimations = [];
+
+        // transition it out
+        this.UI.transitionOut();
+        this.UI.hideWaves(0);
+        
+        // do the login thing
+        setTimeout(this.onLoginPressed.bind(this), 500);
     }
 
     public show() {
-        f.el("body").style.backgroundColor = data.COLORS.purple;
-
         // elements
         var logoDesktop = f.find(this.landingPageEl, ".logo-wrapper-large");
         var logoMobile = f.find(this.landingPageEl, ".logo-wrapper-mobile");
         var isDesktop = f.getStyle(logoDesktop, "display") == "block";
         var logoContainer = isDesktop ? logoDesktop : logoMobile;
-
         var logoHeadElements= f.findAll(logoContainer, ".logo-head-fill");
         var logoElements= f.findAll(logoContainer, ".logo-fill");
         var hop = f.elByID("hop");
         var subheading = f.find(this.landingPageEl, ".subheading")
         var btn = f.find(this.landingPageEl, "#start-btn");
+
+        // set visible elements
+        this.UI.setVisibleElements([this.landingPageEl]);
+
+        // set background to purple
+        this.UI.setBgColor(data.COLORS.purple);
 
         // elements to hide
         this.UI.setVisibleElements([this.landingPageEl, hop]);

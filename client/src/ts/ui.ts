@@ -65,9 +65,9 @@ export default class UI {
 
     // loader
     private loaderEl = f.elByID("loader")
-    private loaderCircleWrapperEl = f.find(this.loaderEl, "#loader-circle-wrapper");
-    private loaderCircleEl = f.find(this.loaderEl, "#loader-circle");
-    private loaderPercentEl =f.find(this.loaderEl, "#loader-percent");
+    // private loaderCircleWrapperEl = f.find(this.loaderEl, "#loader-circle-wrapper");
+    // private loaderCircleEl = f.find(this.loaderEl, "#loader-circle");
+    // private loaderPercentEl =f.find(this.loaderEl, "#loader-percent");
     private imgCount = 0;
     private imgsLoaded = 0;
     
@@ -120,14 +120,14 @@ export default class UI {
         document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
     }
 
-    private copyText(text: string) {
-        const el = document.createElement('textarea');
-        el.value = text;
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
-    }
+    // private copyText(text: string) {
+    //     const el = document.createElement('textarea');
+    //     el.value = text;
+    //     document.body.appendChild(el);
+    //     el.select();
+    //     document.execCommand('copy');
+    //     document.body.removeChild(el);
+    // }
 
     private init() {
         if (this.nope) return;
@@ -214,8 +214,8 @@ export default class UI {
     }
 
     private loaderInit() {
-        this.loaderCircleWrapperEl.style.height = "200px";
-        this.loaderCircleWrapperEl.style.width = "200px";
+        // this.loaderCircleWrapperEl.style.height = "200px";
+        // this.loaderCircleWrapperEl.style.width = "200px";
         this.loadImages(data.preloadList)
 
         // this.imgCount = 100;
@@ -256,13 +256,6 @@ export default class UI {
         }
     }
 
-    private isCached(src: string) {
-        var image = new Image();
-        image.src = src;
-        console.log("CACHED?", src, image.complete)
-        return image.complete;
-    }
-
     private checkMobileSize() {
         var m = this.burgerEl.getBoundingClientRect().width > 1;
         
@@ -292,22 +285,19 @@ export default class UI {
         // reset nav
         this.navVisible = false;
         this.navWrapperEl.removeAttribute("style");
-
-
         TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
         TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
-
-        this.ROUNDS?.changeToDesktop();
     }
 
     private changeToMobile() {
-        this.navWrapperEl.removeAttribute("style");
-        f.elByID("album-cover").removeAttribute("style");
-
         // small logo
         if (this.LANDING == undefined) this.toggleHeaderLogo(true);
 
-        this.ROUNDS?.changeToMobile();
+        // nav
+        this.navWrapperEl.removeAttribute("style");
+
+        // album cover bug
+        f.elByID("album-cover").removeAttribute("style");
     }
 
     private onResize() {
@@ -316,28 +306,6 @@ export default class UI {
         let vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
         this.checkMobileSize();
-
-        // change the position of the nav
-        // if (this.isMobileSize) {
-        //     // remove the left offset
-        //     this.navEl.removeAttribute("style")
-        //     // remove the colour
-        //     f.findAll(this.navWrapperEl, "*").forEach((el)=> {
-        //         el.removeAttribute("style");
-        //     })
-
-        //     // console.log(f.findAll(this.navWrapperEl, "*"))
-        // } else {
-        //     if (window.innerWidth <= 768) {
-        //         console.log("remove nav width");
-        //         this.navEl.style.left = "0";
-        //     } else {
-        //         console.log("reposition nav");
-        //         // is desktop...
-        //         console.log(window.innerWidth, window.innerWidth)
-        //         this.navEl.style.left = f.px((window.innerWidth/2 - this.navEl.getBoundingClientRect().width)/2)
-        //     }
-        // }
 
         // frame
         if (window.innerWidth <= 768) {
@@ -384,7 +352,6 @@ export default class UI {
             TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
             TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
         }
-
     }
 
     private frameIn() {
@@ -417,10 +384,8 @@ export default class UI {
         // get waves
         var topWaves = f.findAll(this.wavesTopEl, ".wave." + this.currentWaveColor);
         var bottomWaves = f.findAll(this.wavesBottomEl, ".wave." + this.currentWaveColor);
-        
         var waves : HTMLElement[] = [];
         waves = waves.concat(topWaves, bottomWaves);
-        console.log(waves);
         
         // animate
         this.loopingWaveAnimantions.push(
@@ -499,7 +464,7 @@ export default class UI {
     }
 
     public transitionOut() {
-        console.log("elements to hide", this.elementsToHide);
+        // console.log("elements to hide", this.elementsToHide);
         // hide the elements
         TweenMax.to(this.elementsToHide, 0.5, {
             alpha:0, scale:0.95, display: "none", onComplete: this.clearHiddenElements.bind(this)
@@ -517,45 +482,27 @@ export default class UI {
         // hide waves
         this.hideWaves(0);
 
-        // show logoslide
-        this.showLogoSlider();
-
         // hide the elements
         this.transitionOut();
     }
 
-    public showLogoSlider() {
-        // TweenMax.fromTo(this.logoSlideEl, 0.5, {display: "none", opacity: 0}, {display: "block", opacity: 0.2, delay:0.5});
+    // public showLogoSlider() {
+    //     // TweenMax.fromTo(this.logoSlideEl, 0.5, {display: "none", opacity: 0}, {display: "block", opacity: 0.2, delay:0.5});
         
-        // show logoslide
-        // this.logoSlide1.play();
-        // this.logoSlide2.play();
-    }
+    //     // show logoslide
+    //     // this.logoSlide1.play();
+    //     // this.logoSlide2.play();
+    // }
 
-    public hideLogoSlider() {
-        // TweenMax.to(this.logoSlideEl, 0.5, {display: "none", opacity: 0, onComplete() {
-        //     // hide logoslide
-        //     this.logoSlide1.pause();
-        //     this.logoSlide2.pause();
-        // }});
-    }
+    // public hideLogoSlider() {
+    //     // TweenMax.to(this.logoSlideEl, 0.5, {display: "none", opacity: 0, onComplete() {
+    //     //     // hide logoslide
+    //     //     this.logoSlide1.pause();
+    //     //     this.logoSlide2.pause();
+    //     // }});
+    // }
 
     public showEndFrame(description: string) {
-        // f.elByID("canvas-container").style.zIndex = "50";
-        // const graphics: Graphics = new Graphics();
-        // graphics.onInitResources(App.resourceManager);
-        // graphics.switchColorForward(data.COLORS_THREE[data.COLORS.beige], 0.3)
-
-        // const container = document.getElementById('canvas-container');
-        // if (container !== null) {
-        //     container.append(graphics.domElement);
-        //     container.style.zIndex ="50";
-        //     graphics.domElement.style.zIndex = '50';
-        //     graphics.domElement.id = "graphics-canvas";
-        // }
-
-        // graphics.switchColorForward(new THREE.Color(0xff00), 1.0);
-
         this.setBgColor(data.COLORS.beige);
         this.toggleFrameColors(data.COLORS.purple, true);
 
@@ -688,24 +635,14 @@ export default class UI {
         } else {
             // nothing visible? easy, show the page
             this.currentPopupPageEl = f.find(this.popupPageEl, "#" + target);
-            // this.fadeIn(this.currentPopupPageEl);
+
             this.currentPopupPageEl.style.display = "block";
-            // this.slideIn(this.currentPopupPageEl)
-            // this.currentPopupPageEl.style.display = "block";
+            
             this.popupPageVisible = true;
+
             console.log("show ", target, this.currentPopupPageEl);
 
-            // if (this.isMobileSize) {
-            //     this.slideIn(this.popupPageEl)
-            // } else {
-            //     this.fadeIn(this.popupPageEl);
-            // }
             this.slideIn(this.popupPageEl);
-            // TweenMax.to(this.popupPageEl, 0, {display:"block", onComplete: ()=> {
-            //     this.popupPageEl.classList.toggle("active");
-            // }})
-            // this.popupPageEl.style.display = "block"
-            // this.popupPageEl.classList.toggle("active");
 
             // change the frame Colors
             this.toggleFrameColors(data.COLORS.orange, false);
@@ -729,76 +666,9 @@ export default class UI {
                 scale: 1.01, repeat: -1, yoyo: true, ease: "linear"
             }))
         }
-
-
-        // if (this.isMobileSize) {
-        //     // MOBILE
-        //     if (target == "about" || target == "faq") {
-        //         this.showPage(target);
-
-        //         // hide the nav wrapper
-        //         this.slideOut(this.navWrapperEl);
-        //     }
-        // } else {
-        //     // DEKSTOP
-        //     if (this.currentPopupPage == target) {
-        //         // if it's the same page, close it
-
-        //         // show the underline on the next page
-        //         e.srcElement.classList.toggle("active");
-
-        //         // hide the current page
-        //         this.hidePage(this.currentPopupPage);
-    
-        //         // change the frame Colors
-        //         this.toggleFrameColors(this.currentFrameColor, false);
-
-        //         // set current pop up page to nothing
-        //         this.currentPopupPageEl = undefined;
-    
-        //     } else {  
-        //         if (target == "about" || target == "faq") {
-        //             // change the color of the frame but don't set it as the current (so it can be reverted)
-        //             this.toggleFrameColors(data.COLORS.orange, false);
-    
-        //             if (this.currentPopupPage.length) {
-        //                 // if there's a page currently showing, so hide it and show the next
-        //                 this.currentPopupPageEl?.classList.toggle("active");
-
-        //                 // hide the current page and show the next one 
-        //                 this.hidePage(this.currentPopupPage, target);
-        //             } else {
-        //                 // nothing else visible, show the damn page
-        //                 this.showPage(target);
-        //             } 
-
-        //             // set the currrent list element to active
-        //             this.currentPopupPageEl = e.srcElement;
-        //             this.currentPopupPageEl?.classList.toggle("active");
-        //         }          
-        //     }
-        // }
     }
 
     private closePage() {
-        // called from x buttons on desktop page
-        // this.hidePage(this.currentPopupPage);
-        // this.toggleFrameColors(this.currentFrameColor, false);
-        // this.currentPopupPageEl?.classList.toggle("active");
-        // this.currentPopupPageEl = undefined;
-        // if (this.isMobileSize) {
-        //     this.slideOut(this.popupPageEl);
-        //     TweenMax.to(this.popupPageEl, 1, {
-        //         display: "none", x:-window.innerWidth*2, ease: "easeOut", onComplete: this.resetPopupPage.bind(this)
-        //     })
-        // } else {
-        //     TweenMax.to(this.popupPageEl, 0.3, {
-        //         display: "none", alpha: 0, onComplete: this.resetPopupPage.bind(this)
-        //     })
-        // }
-
-        // this.slideOut(this.popupPageEl);
-        // if (this.currentPopupPageEl) this.slideOut(this.currentPopupPageEl);
         TweenMax.to(this.popupPageEl, 1, {
             display: "none", x:-window.innerWidth*2, ease: "easeOut", onComplete: this.resetPopupPage.bind(this)
         })
@@ -820,104 +690,6 @@ export default class UI {
         this.currentPopupPageEl = undefined
     }
 
-    // private showPage(p : string, delay?: number) {
-    //     // animations for different pages
-    //     if (p == "about") {
-    //         // bop the fruit
-    //         this.inPageLoopingAnimations.push(TweenMax.fromTo(this.aboutHopTopEl, 3, {
-    //             rotate: -10, x:-50
-    //         }, {
-    //             rotate: 10, x:50, repeat: -1, yoyo: true, ease: "linear"
-    //         }))
-
-    //         this.inPageLoopingAnimations.push(TweenMax.to(this.aboutHopBottomEl, 1.5, {
-    //             y: -50, repeat: -1, yoyo: true, ease: "linear"
-    //         }))
-
-    //         if (this.isMobileSize) {
-    //             this.slideIn(this.aboutEl)
-    //         } else {
-    //             delay? this.show(this.aboutEl, delay) : this.show(this.aboutEl)
-    //         }
-    //     } else if (p == "faq") {
-    //         this.inPageLoopingAnimations.push(TweenMax.to(f.elByID("faq-bg"), 2, {
-    //             scale: 1.01, repeat: -1, yoyo: true, ease: "linear"
-    //         }))
-
-    //         if (this.isMobileSize) {
-    //             this.slideIn(this.faqEl);
-    //         } else {
-    //             delay? this.show(this.faqEl, delay) : this.show(this.faqEl)
-    //         }
-    //     }
-
-    //     this.currentPopupPage = p;
-    //     // this.currentPopupPageEl = f.elByID(p);
-    //     console.log("show page", this.currentPopupPage, this.currentPopupPageEl);
-    // }
-
-    // private hidePage(p : string, p2?: string) {
-    //     if (p == "about") {
-    //         if (this.isMobileSize) {
-    //             this.slideOut(this.aboutEl)
-    //         } else {
-    //             this.hide(this.aboutEl);
-    //         }
-    //     } else if (p == "faq") {
-    //         if (this.isMobileSize) {
-    //             this.slideOut(this.faqEl);
-    //         } else {
-    //             this.hide(this.faqEl);
-    //         }
-    //     }
-
-    //     this.inPageLoopingAnimations.forEach((anim)=> {
-    //         anim.kill();
-    //     });
-
-    //     this.inPageLoopingAnimations = [];
-    //     this.currentPopupPage = "";
-    //     // this.currentPopupPageEl = undefined;
-    //     console.log("hide page", p, this.currentPopupPageEl);
-
-    //     if (p2) this.showPage(p2, 0.3);
-    // }
-
-    // private show(e: HTMLElement, delay?: number) {
-    //     var d = delay ? delay : 0; 
-
-    //     TweenMax.fromTo(e, 0.3, {
-    //         display : "none", alpha: 0
-    //     }, {
-    //         display: "block", alpha: 1, delay: d
-    //     })
-    // }
-
-    // private hide(e: HTMLElement) {
-    //     TweenMax.fromTo(e, 0.3, {
-    //         display : "block", alpha: 1
-    //     }, {
-    //         display: "none", alpha: 0
-    //     })
-    // }
-
-
-    // private fadeIn(e: HTMLElement) {
-    //     TweenMax.fromTo(e, 0.3, {
-    //         display : "none", opacity: 0
-    //     }, {
-    //         display: "block", opacity: 1, ease: "linear"
-    //     })
-    // }
-
-    // private fadeOut(e: HTMLElement) {
-    //     TweenMax.fromTo(e, 0.3, {
-    //         display : "block", opacity: 1
-    //     }, {
-    //         display: "none", opacity: 0, ease: "linear"
-    //     })
-    // }
-
     private slideIn(e: HTMLElement) {
         TweenMax.fromTo(e, 0.5, {
             display: "none", x:-window.innerWidth*2
@@ -936,13 +708,6 @@ export default class UI {
         console.log("playlist created", url);
         var split = url.split("/");
         var id = split[split.length-1];
-        console.log(split, id)
-        // f.elByID("playlist-url").innerHTML = url;
-
-        // set the button
-        // var btn = <HTMLLinkElement>f.el("#listen a");
-        // console.log(btn);
-        // btn.href = url;
 
         // create the embed
         f.elByID("embed").innerHTML = '<iframe src="https://open.spotify.com/embed/playlist/' + id + '" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>'
@@ -959,22 +724,29 @@ export default class UI {
         f.elByID("playlist-title").innerHTML = this.name + "'s Playlist"
     }
 
-    private copyLink() {
-        var copyText = this.app.playlistCreated?.ShareLink;
-        console.log("copy link", copyText);
-        if (copyText) {
-            var el = <HTMLInputElement>f.elByID("playlist-url-thing");
-            el.value = copyText;
+    // private copyLink() {
+    //     var copyText = this.app.playlistCreated?.ShareLink;
+    //     console.log("copy link", copyText);
+    //     if (copyText) {
+    //         var el = <HTMLInputElement>f.elByID("playlist-url-thing");
+    //         el.value = copyText;
 
-            console.log("value", el.value);
+    //         console.log("value", el.value);
     
-              /* Select the text field */
-            el.select();
-            el.setSelectionRange(0, 99999); /*For mobile devices*/
+    //           /* Select the text field */
+    //         el.select();
+    //         el.setSelectionRange(0, 99999); /*For mobile devices*/
     
-            /* Copy the text inside the text field */
-            document.execCommand("copy");
-            console.log("test");
-        }
-    }
+    //         /* Copy the text inside the text field */
+    //         document.execCommand("copy");
+    //         console.log("test");
+    //     }
+    // }
+
+    // private isCached(src: string) {
+    //     var image = new Image();
+    //     image.src = src;
+    //     console.log("CACHED?", src, image.complete)
+    //     return image.complete;
+    // }
 }

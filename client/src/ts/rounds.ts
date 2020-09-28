@@ -231,7 +231,6 @@ export default class Rounds {
         if (this.currentRoundIdx <2) {
             this.currentRoundIdx++;
             this.UI.transitionOut();
-            this.UI.hideLogoSlider();
             this.showRound(1);
         } else {
             // all done
@@ -242,19 +241,4 @@ export default class Rounds {
         // this.UI.transitionOut();
         // this.CreatePlaylist();
     }
-
-    public onResize() {
-    }
-
-    public changeToMobile() {
-        // console.log("change to mobile");
-        // TweenMax.to(this.descriptionEl, 0.2, {rotation: 0});
-    }
-
-    public changeToDesktop() {
-        // console.log("change to desktop");
-        // TweenMax.to(this.descriptionEl, 0.2, {rotation: -17});
-    }
-
-
 }
