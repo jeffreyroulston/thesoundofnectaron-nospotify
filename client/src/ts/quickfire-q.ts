@@ -44,10 +44,8 @@ export default class QuickFireQ {
         // get next question
         this.getNextQuestion();
 
-        var answer = f.findAll(this.el, "#answer-wrapper li");
-        for (var i=0; i<answer.length; i++) {
-            answer[i].addEventListener("click", this.answerRetrieved.bind(this))
-        }
+        f.find(this.el, "#answer-wrapper li:first-child").addEventListener("click", this.yea.bind(this))
+        f.find(this.el, "#answer-wrapper li:last-child").addEventListener("click", this.nah.bind(this))
     }
 
     set() {
@@ -142,7 +140,6 @@ export default class QuickFireQ {
             setTimeout(this.updateTimer.bind(this), 1000);
         } else {
             this.active = false;
-            console.log("all questions completed");
             this.roundComplete(this.el);
         }
     }
@@ -159,26 +156,21 @@ export default class QuickFireQ {
         }
     }
 
-    answerRetrieved(e: any) {
+    yea(e: any) {
         if (!this.active) return;
-        this.active = false;
-        var el = <HTMLElement>e.srcElement;
-        var value = el.getAttribute("data") == "true";
-        console.log(el.getAttribute("data"), value);
-
-        if (value) {
-            // play sound
-            App.audio.playSelectedSound();
-        } else {
-            App.audio.playRejectedSound();
-        }
-
-        this.questionsAsked[this.questionsAsked.length-1].answered = true;
-        this.questionsAsked[this.questionsAsked.length-1].answer = value;
-        this.getNextQuestion();
+        App.audio.playSelectedSound();
+        this.answerRetrieved(true);
     }
 
-    completed(){
+    nah(e: any) {
+        if (!this.active) return;
+        App.audio.playRejectedSound();
+        this.answerRetrieved(false);
+    }
 
+    answerRetrieved(a : boolean) {
+        this.questionsAsked[this.questionsAsked.length-1].answered = true;
+        this.questionsAsked[this.questionsAsked.length-1].answer = a
+        this.getNextQuestion();
     }
 }
