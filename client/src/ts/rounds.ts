@@ -195,6 +195,9 @@ export default class Rounds {
 
     private next() {
         if (!this.btnActive) return;
+
+        App.audio.playClick();
+
         if (this.currentRoundIdx == 0) {
             App.audio.playAmbient();
         } else if (this.currentRoundIdx == 2) {

@@ -146,6 +146,9 @@ export default class Slider {
     }
 
     private sliderValueSet(e:any) {
+        // play sound
+        App.audio.playSelectedSound();
+
         var q = sliderQuestions[this.questionIdx];
         var v = (q.max - q.min)/100 * this.sliderValue + q.min;
         sliderQuestions[this.questionIdx].answer = f.roundTo(v, 2);

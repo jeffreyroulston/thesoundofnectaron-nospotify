@@ -3,6 +3,7 @@ import * as data from "./data";
 import UI from "./ui";
 import { easeSinIn } from "d3";
 import {TweenMax} from "gsap"
+import App from "./app";
 
 export default class Landing {
     private UI : UI;
@@ -27,7 +28,7 @@ export default class Landing {
 
     private login() {
         if (!this.btnActive) return;
-        
+        App.audio.playClick();
         this.onLoginPressed();
     }
 

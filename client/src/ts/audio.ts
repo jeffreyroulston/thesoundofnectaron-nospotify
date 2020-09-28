@@ -4,40 +4,37 @@ import { el } from "./helpers";
 export default class AudioPlayer {
     private ambientLoopSound : Howl;
     private quickfireSound : Howl;
+    private clickSound : Howl;
+    private selectedSound : Howl;
+    private rejectedSound : Howl;
 
     constructor() {
         this.ambientLoopSound = new Howl({
-            src: ["assets/sounds/ambient_loop.wav"] ,
+            src: ["assets/sounds/ambient_loop.mp3"] ,
             volume: 0.5,
             loop: true
         });
 
         this.quickfireSound = new Howl({
-            src: ["assets/sounds/round_3.wav"] ,
+            src: ["assets/sounds/round_3.mp3"] ,
             volume: 0.5
         });
 
-        // el("body").addEventListener("click", ()=> {
-        //     this.ambientLoopSound.play();
-        // });
-        // el("body").click();
 
-        // this.ambientLoopSound.play();
-        // var r1 = new XMLHttpRequest();
-        // r1.open('GET', "assets/sounds/ambient_loop.wav", true);
-        // r1.responseType = 'arraybuffer';
-        // r1.onload = (r : any) => {
-        //     this.context.decodeAudioData(r.response, (buffer) => {
-        //         this.ambientLoopSound = buffer;
-        //     })
-        // }
-        // r1.onload = function() {
-        //     this.context.decodeAudioData(r1.response, function(buffer) {
-        //     bubbleSound = buffer;
-        //     game.soundLoaded();
-        //     }, onError);
-        // }
-        // r1.send();
+        this.clickSound = new Howl({
+            src: ["assets/sounds/click_1.wav"] ,
+            volume: 0.5
+        });
+
+        this.selectedSound = new Howl({
+            src: ["assets/sounds/click_2.wav"] ,
+            volume: 0.5
+        });
+
+        this.rejectedSound = new Howl({
+            src: ["assets/sounds/click_3.wav"] ,
+            volume: 0.5
+        });
     }
 
     public playAmbient() {
@@ -53,6 +50,21 @@ export default class AudioPlayer {
 
         this.quickfireSound.play();
         this.quickfireSound.on("end", this.playAmbient.bind(this))
+    }
+
+    public playClick() {
+        // used for landing page, round page
+        if (!this.clickSound.playing()) this.clickSound.play();
+    }
+
+    public playSelectedSound() {
+        // used for questions
+        if (!this.selectedSound.playing()) this.selectedSound.play();
+    }
+
+    public playRejectedSound() {
+        // used for questions
+        if (!this.rejectedSound.playing()) this.rejectedSound.play();
     }
 
     // ambientSoundLoaded(e: any) {

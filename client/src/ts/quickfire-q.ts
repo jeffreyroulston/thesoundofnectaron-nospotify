@@ -3,6 +3,7 @@ import {QuickFireQuestion, qfQuestions, COLORS} from "./data";
 import * as f from "./helpers";
 import {TweenMax} from "gsap"
 import { Color } from "three";
+import App from "./app";
 
 export default class QuickFireQ {
     // the element
@@ -161,7 +162,17 @@ export default class QuickFireQ {
     answerRetrieved(e: any) {
         if (!this.active) return;
         this.active = false;
-        var value = e.srcElement.data == "true";
+        var el = <HTMLElement>e.srcElement;
+        var value = el.getAttribute("data") == "true";
+        console.log(el.getAttribute("data"), value);
+
+        if (value) {
+            // play sound
+            App.audio.playSelectedSound();
+        } else {
+            App.audio.playRejectedSound();
+        }
+
         this.questionsAsked[this.questionsAsked.length-1].answered = true;
         this.questionsAsked[this.questionsAsked.length-1].answer = value;
         this.getNextQuestion();

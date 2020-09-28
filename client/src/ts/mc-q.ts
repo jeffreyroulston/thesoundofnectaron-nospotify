@@ -2,6 +2,7 @@ import * as f from "./helpers";
 import {mcqQuestions, MCQuestion} from "./data";
 import {TweenMax} from "gsap"
 import {easeCubic, easeCubicIn, easeCubicInOut, easeElastic, easeExp, easeExpIn } from "d3";
+import App from "./app";
 
 export default class MCQ {
     // the element
@@ -161,6 +162,9 @@ export default class MCQ {
 
     private optionSelected(e: any) {
         if (!this.interactable) return;
+
+        // play sound
+        App.audio.playSelectedSound();
 
         // get the answer
         var bg = e.srcElement.style.backgroundImage;
