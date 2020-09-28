@@ -179,7 +179,7 @@ export default class UI {
         })
 
         // we playing rounds on the redirect
-        if (window.location.href.indexOf("access_token") > -1) {
+        if (this.app.authorized) {
             // hide the loader
             // this.loaderEl.style.display = "none";
 

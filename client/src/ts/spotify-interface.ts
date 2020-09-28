@@ -108,6 +108,9 @@ export class SpotifyInterface {
 
         // get the token
         this.token = window.location.hash.substr(1).split('&')[0].split("=")[1];
+        
+        // this removes the hash
+        history.pushState(null, "", window.location.href.split('#')[0]);
     }
 
     public get Authorized(): boolean {

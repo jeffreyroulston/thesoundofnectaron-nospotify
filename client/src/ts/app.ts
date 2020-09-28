@@ -118,6 +118,10 @@ export default class App {
         // this.graphics.switchColorBackward();
     }
 
+    public get authorized(): boolean {
+        return this.spotifyInterface.Authorized;
+    }
+
     public Login() {
         // called from UI on landing page button click
         if (this.spotifyInterface.Authorized) {
