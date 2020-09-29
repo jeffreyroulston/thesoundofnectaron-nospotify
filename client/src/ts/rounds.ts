@@ -92,7 +92,7 @@ export default class Rounds {
         this.UI.toggleWaveColor(currentRound.waveColor);
 
         // make the border come in
-        this.UI.showNavBar();
+        // this.UI.showNavBar();
 
         // waves
         this.UI.showWaves(d);

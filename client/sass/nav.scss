@@ -105,7 +105,7 @@
     top: 25px;
     left: 0px;
     width: 50%;
-    transform: translateY(-100px);
+    // transform: translateY(-100px);
     text-align: center;
     display: block;
 
@@ -178,6 +178,42 @@
     }
 }
 
+#deg-top {
+    width: 50%;
+    right: 0px;
+    top: 25px;
+    // transform: translateY(-100px);
+
+    // < 768px
+    @include maxW($tabletPortraitWidth) {
+        display: none;
+    }
+}
+
+#deg-bottom {
+    width: 50%;
+    left: 0px;
+    bottom: 25px;
+    // transform: translateY(100px);
+
+    span {
+        display: none;
+
+        // < 768px
+        @include maxW($tabletPortraitWidth) {
+            display: inline;
+        }
+    }
+}
+
+#true {
+    width: 50%;
+    right: 0px;
+    bottom: 25px;
+    // transform: translateY(100px);
+}
+
+
 #true-mob{
     display: none;
     font-family: "Circular";
@@ -191,6 +227,18 @@
     // < 640px;
     @include maxW($mobileLargeWidth) {
         display: block;
+    }
+}
+
+#deg-bottom, #true {
+    // < 768px
+    @include maxW($tabletPortraitWidth) {
+        font-size: 12px;
+    }
+
+    // < 640px;
+    @include maxW($mobileLargeWidth) {
+        display: none;
     }
 }
 
@@ -215,49 +263,54 @@
     }
 }
 
-#deg-top {
-    width: 50%;
-    right: 0px;
-    top: 25px;
+.hide-top {
     transform: translateY(-100px);
-
-    // < 768px
-    @include maxW($tabletPortraitWidth) {
-        display: none;
+    &.visible {
+        transform: none
     }
 }
 
-#deg-bottom {
-    width: 50%;
-    left: 0px;
-    bottom: 25px;
+.hide-bottom {
     transform: translateY(100px);
+    &.visible {
+        transform: none
+    }
+}
 
-    span {
+#frame-letters {
+    li {
         display: none;
+        position: absolute;
+        height: $frameLetterSize;
+        width: $frameLetterSize;
+        z-index: $zIndexNav;
 
-        // < 768px
-        @include maxW($tabletPortraitWidth) {
-            display: inline;
+        &.left {
+            left: $framePadding;
+        }
+
+        &.right {
+            right: $framePadding
+        }
+
+        &.top {
+            top: $framePadding;
+        }
+        
+        &.bottom {
+            bottom: $framePadding;
+        }
+
+        &.center {
+            @include horizontalAlign(absolute);
+        }
+
+        &.middle {
+            @include verticalAlign(absolute);
         }
     }
-}
 
-#true {
-    width: 50%;
-    right: 0px;
-    bottom: 25px;
-    transform: translateY(100px);
-}
-
-#deg-bottom, #true {
-    // < 768px
-    @include maxW($tabletPortraitWidth) {
-        font-size: 12px;
-    }
-
-    // < 640px;
-    @include maxW($mobileLargeWidth) {
-        display: none;
+    &.visible li{
+        display: block;
     }
 }

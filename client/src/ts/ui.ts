@@ -120,15 +120,6 @@ export default class UI {
         document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
     }
 
-    // private copyText(text: string) {
-    //     const el = document.createElement('textarea');
-    //     el.value = text;
-    //     document.body.appendChild(el);
-    //     el.select();
-    //     document.execCommand('copy');
-    //     document.body.removeChild(el);
-    // }
-
     private init() {
         if (this.nope) return;
 
@@ -182,6 +173,12 @@ export default class UI {
         if (this.app.authorized) {
             // hide the loader
             // this.loaderEl.style.display = "none";
+
+            // set the frame
+            this.frameVisible = true;
+            this.frameEl.classList.toggle("visible");
+            f.elList(".hide-top").forEach((el)=> {el.classList.toggle("visible")});
+            f.elList(".hide-bottom").forEach((el)=> {el.classList.toggle("visible")});
 
             // GAMEPLAY
             this.ROUNDS = new Rounds(this);
@@ -742,6 +739,16 @@ export default class UI {
     //         console.log("test");
     //     }
     // }
+
+    // private copyText(text: string) {
+    //     const el = document.createElement('textarea');
+    //     el.value = text;
+    //     document.body.appendChild(el);
+    //     el.select();
+    //     document.execCommand('copy');
+    //     document.body.removeChild(el);
+    // }
+
 
     // private isCached(src: string) {
     //     var image = new Image();
