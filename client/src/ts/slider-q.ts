@@ -157,6 +157,7 @@ export default class Slider {
 
     private toggleFullWidth() {
         f.find(this.el, ".col-wrapper.text-column").classList.toggle("full-width");
+        this.el.classList.toggle("wide");
     }
 
     private orangeLeft() {

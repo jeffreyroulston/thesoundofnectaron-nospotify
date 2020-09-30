@@ -227,14 +227,16 @@ p, table {
     // width: calc(100% - 400px);
     height: calc(100% - 200px);
     position: relative;
-    margin: 0 auto;
+    // margin: 0 auto;
     top: 100px;
+    left: 200px;
 
     // border: 1px solid black;
 
     // < 1024px
     @include maxW($tabletLandscapeWidth) {
         width: 100%;
+        left: 0;
     }
 
     // < 640px;
@@ -243,6 +245,11 @@ p, table {
         // top: 75px;
         // border: 1px solid blue;
     }
+}
+
+.wide .wrapper {
+    left: 0px;
+    margin: 0 auto;
 }
 
 // .question-box-wrapper {
