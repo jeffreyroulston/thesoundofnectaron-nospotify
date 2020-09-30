@@ -21,7 +21,7 @@ let SCOPES: string[] = [
     'user-top-read', 
     'user-read-private', 
     'user-read-email', 
-    'user-top-read', 
+    'user-top-read',  
     'user-library-modify', 
     'playlist-modify-public',
     'playlist-modify-private',
@@ -43,58 +43,27 @@ export default class App {
     private requestedPlaylistLength: number = 120;
 
     // audio
-    static audio = new AudioPlayer();
+    static audio: AudioPlayer;
 
     constructor() {
-        // console.log(window.location.href);
+        // create audio thing
+        App.audio = new AudioPlayer(this.ui)
 
-        this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
-
+        // bind UI login
         this.ui.Login = this.Login.bind(this);
-        this.spotifyInterface.NameSet = this.ui.nameSet.bind(this.ui);
 
-        // // we need these binds to make sure and 'this' in callbacks is bound to the correct object
-        //this.spotifyInterface.OnAuthorisedListeners.push(this.OnAuthorised.bind(this));
+        // load some extra assets for the canvas
+        App.resourceManager.loadResourceByPath(HTMLImageElement, "assets/spritesheet.png");
+        // App.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png");
+        
+        // initialise spotify interface
+        this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
+        this.spotifyInterface.NameSet = this.ui.nameSet.bind(this.ui);
         this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this));
         this.spotifyInterface.OnErrorListeners.push(this.OnSpotifyInterfaceError.bind(this));
 
-        // this.spotifyInterface.OnDataListeners.push(this.OnUserData.bind(this.ui));
-
-        // this.ui.OnLoginPressed = this.Login;
-        // this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
-
-        // this.resourceManager.loadResourceByPath(HTMLImageElement, "assets/spritesheet.png").then(() => {
-        //     this.flames.onInitResources(this.resourceManager);
-        // });
-        App.resourceManager.loadResourceByPath(HTMLImageElement, "assets/spritesheet.png");
-        App.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png");
-
-        // const bgcontainer = document.getElementById('canvas-container-background');
-        // if (bgcontainer !== null) {
-        //     bgcontainer.style.zIndex = '100000';
-        //     bgcontainer.append(this.flames.domElement);
-        //     this.flames.domElement.id = "graphics-canvas";
-        // }
-
+        // check if authorised
         this.getProfile();
-
-        // transition finished callback here
-        // this.graphics.transitionedCallback = () => {
-        //     this.ui.bgTransitionComplete();
-        // }
-        // this below was just for testing
-        // is also a great example for how to switch colour in the background
-        // setInterval(() => {
-        //     this.graphics.switchColor(new THREE.Color(Math.random(), Math.random(), Math.random()), 0.5);
-        // }, 2000);
-        
-        // UI BINDINGS
-        // this.ui.OnLoginPressed = this.Login.bind(this);
-        // this.ui.OnQuestionAnswered.push(this.QuestionAnswered.bind(this));
-        // this.resourceManager.loadResourceByPath(HTMLImageElement, "")
-
-        // console.log("app initialised", this.spotifyInterface);
-        // this.switchGraphics();
     }
 
     async getProfile() {
@@ -224,7 +193,6 @@ export default class App {
 
     async generatePlaylist() {
         // get spotify paramaters
-
         
         if (this.profile !== undefined && this.topArtists !== undefined && this.topTracks !== undefined) {
             const name = this.profile.DisplayName;
@@ -242,8 +210,6 @@ export default class App {
                     queries.push({parameter: si.QueryParameters[q.params], value: q.answer});
                 }
             }
-
-
 
             // get a random selection of genres
             let genres: string[] = [];
@@ -268,10 +234,6 @@ export default class App {
                 SeedTrackIDs: tracks
             });
         }
-        // console.log(data.mcqQuestions);
-        // console.log(data.qfQuestions);
-        // console.log(data.sliderQuestions);
-
     }
 
     // public Login() {
@@ -411,7 +373,6 @@ export default class App {
                                 Width: 100,
                                 Height: 100,
                                 Url: "http://thesoundofnectaron.truedigital.co.nz/assets/albumCover.jpg"
-                                // Url: "http://localhost:8888/assets/albumCover.jpg"
 
                             }
                         });

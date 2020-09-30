@@ -65,11 +65,8 @@ export default class UI {
 
     // loader
     private loaderEl = f.elByID("loader")
-    // private loaderCircleWrapperEl = f.find(this.loaderEl, "#loader-circle-wrapper");
-    // private loaderCircleEl = f.find(this.loaderEl, "#loader-circle");
-    // private loaderPercentEl =f.find(this.loaderEl, "#loader-percent");
-    private imgCount = 0;
-    private imgsLoaded = 0;
+    private assetCount= 0;
+    private assetsLoaded = 0;
     
     // nav
     private navVisible : boolean = false;
@@ -83,11 +80,7 @@ export default class UI {
     private loopingAnimations : TweenMax[] = [];
     private inPageLoopingAnimations : TweenMax[] = [];
 
-    // logo slide
-    public logoSlideEl : HTMLElement = f.elByID("nectaron-slide");
-    // private logoSlide1 : TweenMax;
-    // private logoSlide2 : TweenMax;
-
+    // for bad browsers
     private nope : boolean = false;
 
     // for end page
@@ -100,7 +93,6 @@ export default class UI {
     public Login = ()=>{};
 
     constructor(app : App) {
-        // pass in the app to use for spotify interface
         this.app = app;
 
         // check if it's a shit browser
@@ -111,19 +103,12 @@ export default class UI {
         //     window.addEventListener('resize', this.onResize.bind(this));
         //     document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
         // }
-        // this.logoSlide1 = TweenMax.to(f.findAll(this.logoSlideEl, "li:nth-child(odd)"), 30, {backgroundPositionX: "100%", repeat: -1, ease:"linear", yoyo:true});
-        // this.logoSlide1.pause();
-
-        // this.logoSlide2 = TweenMax.to(f.findAll(this.logoSlideEl, "li:nth-child(even)"), 30, {backgroundPositionX: "-100%", repeat: -1, ease:"linear", yoyo:true})
-        // this.logoSlide2.pause();
 
         document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
     }
 
     private init() {
         if (this.nope) return;
-
-        console.log(this.degTopEl, this.degBottomEl, this.trueLinkEl);
 
         // resize callback
         window.addEventListener('resize', this.onResize.bind(this));
@@ -195,34 +180,17 @@ export default class UI {
             this.LANDING = new Landing(this);
             this.LANDING.onLoginPressed = this.Login.bind(this);
             this.loaderInit();
-
-            // this.loadImages(data.preloadList)
-            // if (this.isCached(this.ASSET_URL + data.preloadList[0])) {
-            //     this.LANDING.show();
-            // } else {
-            //     this.loaderInit();
-            // }
-            // this.LANDING.show();
         }
-
-        // the background
-        // TweenMax.to("#nectaron-slide li:nth-child(odd)", 20, {backgroundPositionX: "100%", repeat: -1, ease:"linear", yoyo:true})
-        // TweenMax.to("#nectaron-slide li:nth-child(even)", 20, {backgroundPositionX: "-100%", repeat: -1, ease:"linear", yoyo:true})
     }
 
     private loaderInit() {
-        // this.loaderCircleWrapperEl.style.height = "200px";
-        // this.loaderCircleWrapperEl.style.width = "200px";
         this.loadImages(data.preloadList)
-
-        // this.imgCount = 100;
-        // this.incrementLoader();
     }
 
     async loadImages(images: string[]) {
-        this.imgCount = images.length;
-        // console.log(this.imgCount);
-        
+        this.assetCount= images.length + App.audio.audioCount;
+        console.log(images.length, this.assetCount);
+
         images.forEach((imgSrc)=> {
             let imgObject = new Image();
             imgObject.onload = this.incrementLoader.bind(this);
@@ -230,24 +198,14 @@ export default class UI {
         })
     }
 
-    private incrementLoader() {
-        this.imgsLoaded++;
-        var percent = this.imgsLoaded/this.imgCount * 100;
+    public incrementLoader() {
+        if (this.app.authorized) return;
+        
+        this.assetsLoaded++;
+        var percent = this.assetsLoaded/this.assetCount* 100;
         console.log(percent);
-        // this.loaderPercentEl.innerHTML = Math.round(percent).toString() + "%";
-        // if (this.imgsLoaded == this.imgCount) {
-        //     TweenMax.to(this.loaderEl, 0.2, {
-        //         alpha: 0, display: "none", onComplete : this.LANDING?.show.bind(this.LANDING)
-        //     })
-        //     // this.LANDING?.show();
-        //     this.onResize();
-        // } else {
-        //     var scale = (percent > 1) ? (1 + percent*0.2) : 1;
-        //     console.log(scale);
-        //     this.loaderCircleEl.style.transform = "scale(" + scale + ")";
-        // }
 
-        if (this.imgsLoaded == this.imgCount) {
+        if (this.assetsLoaded == this.assetCount) {
             this.LANDING?.show();
             this.onResize();
         }
@@ -707,9 +665,9 @@ export default class UI {
         var id = split[split.length-1];
 
         // create the embed
-        f.elByID("embed").innerHTML = '<iframe src="https://open.spotify.com/embed/playlist/' + id + '" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>'
+        // f.elByID("embed").innerHTML = '<iframe src="https://open.spotify.com/embed/playlist/' + id + '" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>'
 
-        // f.elByID("embed").innerHTML = '<iframe src="https://open.spotify.com/embed/playlist/' + id + '" width="300" height="80" frameborder="0" data-mce-fragment="1"></iframe>'
+        f.elByID("embed").innerHTML = '<iframe src="https://open.spotify.com/embed/playlist/' + id + '" width="250" height="80" frameborder="0" data-mce-fragment="1"></iframe>'
 
         // <iframe src="https://open.spotify.com/embed/playlist/6xJs7RQhcQwMDf4azJPqiZ" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe
 
