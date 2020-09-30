@@ -371,14 +371,6 @@ export default class Slider {
             star.style.opacity = starOpacity.toString();
         })
 
-        // the background
-        // console.log(this.sliderValue);
-        // if (this.sliderValue >=50) {
-        //     f.elByID("nectaron-slide").style.opacity = "0.01"
-        // } else {
-        //     f.elByID("nectaron-slide").style.opacity = "0.2"
-        // }
-
         this.moon.style.opacity = ratio.toString();
     }
 
@@ -402,23 +394,9 @@ export default class Slider {
         // Make it not full width
         this.toggleFullWidth();
 
-        TweenMax.fromTo(this.imgs, 0.3, {
-            alpha:0
-        }, {
-            alpha:1
-        });
-
-        TweenMax.fromTo(f.find(slider, "li:first-child"), 0.8, {
-            y:-100
-        }, {
-            y:0
-        });
-
-        TweenMax.fromTo(f.find(slider, "li:last-child"), 0.8, {
-            y:100
-        }, {
-            y:0
-        });
+        TweenMax.fromTo(this.imgs, 0.3, {alpha:0}, {alpha:1});
+        TweenMax.fromTo(f.find(slider, "li:first-child"), 0.8, {y:-100}, {y:0});
+        TweenMax.fromTo(f.find(slider, "li:last-child"), 0.8, {y:100}, {y:0});
 
         this.loopingAnimations.push(TweenMax.to(this.imgs[0], 0.5, {
             y:-20, repeat:-1, yoyo:true, delay:0.8
@@ -599,7 +577,7 @@ export default class Slider {
             this.loopingAnimations.push(TweenMax.fromTo(this.imgs[i], 1.5, {
                 rotate:5, transformOrigin: "50% 100%"
             }, {
-                rotate:-10, transformOrigin: "50% 100%", repeat:-1, yoyo:true, delay: 0.06 * i
+                rotate:-10, transformOrigin: "50% 100%", repeat:-1, yoyo:true, delay: 0.1 * i
             }));
         }
     }
