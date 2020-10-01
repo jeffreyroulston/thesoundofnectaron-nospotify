@@ -98,7 +98,7 @@ export default class UI {
         if (f.getStyle(f.el("#shit-browser-alert"), "display") == "block") {
             this.nope = true;
         }
-        
+
         document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
     }
 
@@ -696,26 +696,26 @@ export default class UI {
             alpha:1, scale:1, delay:d
         })
 
-        TweenMax.to(hop, 1, {
+        TweenMax.to(hop, 4, {
             y:20, repeat:-1, yoyo:true, ease: "linear"
         })
 
         TweenMax.fromTo(f.find(this.endFrameEl, "#playlist-title"), 0.5, {
             alpha: 0, y:50
         }, {
-            alpha: 1, y:0, delay: d
+            alpha: 1, y:0, delay: d+0.2
         });
 
         TweenMax.fromTo(f.find(this.endFrameEl, "#playlist-desc"), 0.5, {
             alpha: 0, y:50
         }, {
-            alpha: 1, y:0, delay: d+0.2
+            alpha: 1, y:0, delay: d+0.4
         });
 
         TweenMax.fromTo(f.find(this.endFrameEl, "iframe"), 0.5, {
             alpha: 0, y:50
         }, {
-            alpha: 1, y:0, delay: d+0.4
+            alpha: 1, y:0, delay: d+0.6
         })
 
         TweenMax.fromTo([playlistBtn, restartBtn], 0.3, {

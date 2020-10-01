@@ -43,14 +43,14 @@
     img {
         position: relative;
         width: 350px;
-        top: -75px;
+        top: -70px;
 
         transition: top 0.2s ease, width 0.2s ease, left 0.2s ease;
 
         // < 1366px
         @include maxW($desktopLargeWidth) {
             width: 300px;
-            top: -25px;
+            top: -20px;
         }
 
         @include maxPxW(900) {
@@ -131,6 +131,7 @@
         li {
             display: inline-block;
             background-color: $orange;
+            color: $beige;
             padding: 15px 20px;
             border-radius: 0.25em;
 
@@ -140,16 +141,14 @@
                 font-size: inherit;
             }
 
-            &.active:hover {
+            &:hover {
                 background-color: $yellow;
+                color: $orange;
+                cursor: pointer;
             }
 
             &:last-child {
                 margin-left: 10px;
-            }
-
-            &:hover {
-                cursor: pointer;
             }
     
             @include maxPxH(730) {
