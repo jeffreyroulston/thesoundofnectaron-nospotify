@@ -7,6 +7,7 @@
 @import "mcq";
 @import "qfq";
 @import "side-pages";
+@import "end-page";
 
 * {
     margin: 0;
@@ -25,8 +26,7 @@ html {
 
 body {
     background-color: $purple;
-    // background-color: $orange;
-    @include transition(background-color 1s ease);
+    @include transition(background-color 0.5s ease);
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
 }
@@ -49,7 +49,6 @@ h1, h2 {
 
 h1 {
     font-size: 55px;
-
     @include transition(font-size 0.2s ease);
 
     // < 1366px
@@ -66,11 +65,6 @@ h1 {
     @include maxW($tabletLandscapeWidth) {
         font-size: 40px;
     }
-
-    // < 640px;
-    // @include maxW($mobileLargeWidth) {
-    //     font-size: 45px;
-    // }
 
     // < 480px;
     @include maxW($mobileWidth) {
@@ -91,16 +85,6 @@ h2 {
 
     @include transition(font-size 0.2s ease);
 
-    // // < 1366px
-    // @include maxW($desktopLargeWidth) {
-    //     font-size: 50px;
-    // }
-
-    // // < 1280px
-    // @include maxW($desktopWidth) {
-    //     font-size: 45px;
-    // }
-
     // < 1024px
     @include maxW($tabletLandscapeWidth) {
         // font-size: 50px;
@@ -115,11 +99,6 @@ h2 {
     @include maxW($mobileWidth) {
         font-size: 20px
     }
-
-    // really small screens
-    // @include maxW(380px) {
-    //     font-size: 30px;
-    //  }
 }
 
 p, table {
@@ -129,17 +108,6 @@ p, table {
     line-height: 1.5;
 
     @include transition(font-size 0.2s ease);
-
-
-    // // < 1366px
-    // @include maxW($desktopLargeWidth) {
-    //     // font-size: 19px;
-    // }
-
-    // // < 1280px
-    // @include maxW($desktopWidth) {
-    //     font-size: 18px;
-    // }
 
     // < 1024px
     @include maxW($tabletLandscapeWidth) {
@@ -192,8 +160,6 @@ p, table {
 
 .section {
     display: none;
-    // max-width: 2500px;
-    // @include horizontalAlign(relative);
 }
 
 .full-page {
@@ -224,26 +190,16 @@ p, table {
 
 .wrapper {
     width: calc(100% - 300px);
-    // width: calc(100% - 400px);
     height: calc(100% - 200px);
     position: relative;
-    // margin: 0 auto;
     top: 100px;
     left: 200px;
 
-    // border: 1px solid black;
 
     // < 1024px
     @include maxW($tabletLandscapeWidth) {
         width: 100%;
         left: 0;
-    }
-
-    // < 640px;
-    @include maxW($mobileLargeWidth) {
-        // height: calc(100% - 125px);
-        // top: 75px;
-        // border: 1px solid blue;
     }
 }
 
@@ -252,42 +208,22 @@ p, table {
     margin: 0 auto;
 }
 
-// .question-box-wrapper {
-//     height: 300px;
-// }
-
-
 .question-wrapper {
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    // border: 1px solid blue;
 
     // < 1024px
     @include maxW($tabletLandscapeWidth) {
         width: 80%;
         text-align: center;
-        // max-width: 700px;
     }
-
-    // // < 1024px
-    // @include maxW($tabletLandscapeWidth) {
-    //     max-width: 500px;
-    // }
-}
-
-.question-box-wrapper {
-    // border: 1px solid black;
-    // display: table-cell;
-    // vertical-align: middle;
 }
 
 .question {
-    // height: 380px;
     color: $orange;
-    // @include verticalAlign(relative);
-    
+
     // < 1024px
     @include maxW($tabletLandscapeWidth) {
         text-align: center;
@@ -386,253 +322,54 @@ p, table {
     }
 }
 
-// svg.letter, .letter svg{
-//     height: $letterSize;
-// }
-
-.fruits {
-    .fruit {
-        position: absolute;
-        // display: none
-    }
+.subscribe-btn {
+    display: inline-block;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
+// .fruits {
+//     .fruit {
+//         position: absolute;
+//         // display: none
+//     }
+// }
 
 #questions {
     z-index: 10;
     position: relative;
 }
 
-// #questions {
-//      // < 768px;
-//     @include maxW($tabletPortraitWidth) {
-//         .col-wrapper:not(.full-width), .col-wrapper.text-column:not(.full-width) {
-//             width: 100%;
-//             height: 100%;
-//             float: none;
-//             margin:0;
-//             position: absolute;
-//         }
-
-//         .question-wrapper {
-//             width: 80%;
-//             border: 1px solid black;
-
-//             .question {
-//                 top: 100px;
-//                 text-align: center;
-//                 margin-top: 50px;
-//                 text-shadow: 1px 1px 5px $beige;
-//             }
-
-//             .slide-container {
-//                 position: absolute;
-//                 bottom: 80px;
-//                 width: 80%;
-//                 left: 10%;
-
-//                 .slider-line {
-//                     width: 100%;
-//                 }
-
-//                 .slider-label {
-//                     font-size: 16px;
-//                 }
-//             }
-//         }
-
-//         .col-wrapper:not(.text-column) {
-//             height: calc(100% - 200px);
-//             top: 100px;
-//             border: 1px solid black;
-//             z-index: -1;
-//         }
-//     }
-// }
-
-#end-frame {
-    .wrapper {
-        // < 1024px
-        @include maxW($tabletLandscapeWidth) {
-            @include verticalAlign(relative);
-            height: auto;
-
-        }
-    }
-
-    .col-wrapper {
-        // border: 1px solid black;
-        // < 1024px
-        @include maxW($tabletLandscapeWidth) {
-            float: none;
-            position: relative;
-
-        }
-    }
-
-    .text-column {
-        text-align: center;
-
-        // < 1024px
-        @include maxW($tabletLandscapeWidth) {
-            height: auto;
-            margin-bottom: 50px;
-        }
-
-        @include maxPxH(600) {
-            @media (orientation: portrait) {
-                margin-bottom: 10px;
-              }
-         }
-    }
-
-    .content-column {
-        // < 1024px
-        @include maxW($tabletLandscapeWidth) {
-            height: 200px;
-        }
-
-        @include maxPxH(730) {
-            @media (orientation: portrait) {
-                height: 160px;
-              }
-         }
-
-         @include maxPxH(600) {
-            @media (orientation: portrait) {
-                height: 100px;
-              }
-         }
-    }
-
-    .question-wrapper {
-        // top: calc(50% - 10vh);
-
-        // < 1024px
-        @include maxW($tabletLandscapeWidth) {
-            top: 0;
-            transform: none;
-
-        }
-    }
-
-    h1 {
-        margin-bottom: 40px;
-    }
-
-    #album-wrapper {
-        height: 100%;
-        width: 100%;
-    }
-
-    #album-cover {
-        // width: calc(100% - 200px);
-        width: 100%;
-        @include verticalAlign(absolute);
-        // left:-100px
-
-        @include maxW($tabletLandscapeWidth) {
-            width: auto;
-            height: 100%;
-            top: 0;
-            transform: none;
-            margin: 0 auto;
-            display: block;
-            position: relative;
-
-        }
-    }
-
-    #brew-again, #listen {
-        background-color: $purple;
-        padding: 15px 20px;
-        border-radius: 0.25em;
-        color: $beige;
-        display: inline-block;
-        margin-top: 50px;
-
-        &.active:hover {
-            background-color: $orange;
-        }
-
-        @include maxPxH(730) {
-            padding: 10px;
-            margin-top: 20px;
-        }
-    }
-
-    #listen {
-        margin-left: 10px;
-
-        a {
-            color: inherit;
-            text-decoration: none;
-            font-size: inherit;
-        }
-    }
-    // #playlist-url, #brew-again {
-    //     margin-top: 50px;;
-    // }
-
-    .active {
-        cursor: pointer;
-    }
-}
-
-.subscribe-btn {
-    margin-top: 50px;
-    display: inline-block;
-    cursor: pointer;
-
-    @include maxPxH(730) {
-        margin-top: 20px;
-    }
-
-    &:hover {
-        color: $purple;
-        text-decoration: underline;
-    }
-}
 
 #loader {
-    background-color: $orange;
     height: 100%;
     width: 100%;
-    z-index: 150;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
     display: none;
 
-    #loader-circle-wrapper {
+    ul {
+        display: block;
         position: relative;
+        width: 150px;
+        height: 150px;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        // width: 200px;
-        // height: 200px;
-        width: 0px;
-        height: 0px;
 
-        @include transition(all 0.2s ease);
+        li {
+            width: inherit;
+            height: inherit;
+            display: block;
+            opacity: 0;
+        }
     }
 
-    #loader-circle {
+    img {
         width: 100%;
         height: 100%;
-        border-radius: 100%;
-        background-color: purple;
-
-        transition: all 0.1s linear;
     }
-
-    #loader-percent {
-        color: $orange;
-        text-align: center;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%)
-    }
-
 }
 
 #shit-browser-alert {
@@ -684,26 +421,22 @@ p, table {
     }
 }
 
-#playlist-url-thing {
-    display: none;
-}
+// #nectaron-slide {
+//     opacity: 0.2;
+//     width: 100%;
+//     height: 100%;
+//     position: absolute;
+//     display: none;
+//     top: 0;
+//     left: 0;
 
-#nectaron-slide {
-    opacity: 0.2;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    display: none;
-    top: 0;
-    left: 0;
-
-    li {
-        height: 10%;
-        width: 100%;
-        display: block;
-        background-image: url("assets/nectaron.svg");
-        background-size: auto 100%;
-        // background-size: 10% auto;
-        // background-repeat: repeat-x;
-    }
-}
+//     li {
+//         height: 10%;
+//         width: 100%;
+//         display: block;
+//         background-image: url("assets/nectaron.svg");
+//         background-size: auto 100%;
+//         // background-size: 10% auto;
+//         // background-repeat: repeat-x;
+//     }
+// }

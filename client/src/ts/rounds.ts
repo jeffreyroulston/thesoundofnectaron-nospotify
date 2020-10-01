@@ -42,8 +42,6 @@ export default class Rounds {
     // BUTTON
     private btnActive : boolean = false;
 
-    // CALLBACK
-    public CreatePlaylist = () => {};
 
     constructor(ui : UI) {
         this.UI = ui;
@@ -90,9 +88,6 @@ export default class Rounds {
 
         // set wave colour
         this.UI.toggleWaveColor(currentRound.waveColor);
-
-        // make the border come in
-        // this.UI.showNavBar();
 
         // waves
         this.UI.showWaves(d);
@@ -193,6 +188,19 @@ export default class Rounds {
         this.btnActive = true;
     }
 
+    public showQuestion() { 
+        this.UI.setBgColor(data.COLORS.beige)
+
+        // change the color of the frame
+        this.UI.toggleFrameColors(data.COLORS.purple, true);
+
+        // hide waves
+        this.UI.hideWaves(0);
+
+        // hide the elements
+        this.UI.transitionOut();
+    }
+
     private next() {
         if (!this.btnActive) return;
 
@@ -211,7 +219,7 @@ export default class Rounds {
 
         var q = this.questionGroups[this.currentRoundIdx];
         this.UI.setVisibleElements([this.roundPageEl]);
-        this.UI.showQuestion();
+        this.showQuestion();
         q.set();
     }
 
@@ -235,7 +243,7 @@ export default class Rounds {
         } else {
             // all done
             this.UI.transitionOut();
-            this.CreatePlaylist();
+            this.UI.prepareEndFrame();
         }
 
         // this.UI.transitionOut();

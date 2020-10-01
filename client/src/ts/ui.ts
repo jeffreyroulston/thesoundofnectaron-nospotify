@@ -169,7 +169,6 @@ export default class UI {
             this.ROUNDS = new Rounds(this);
 
             // start
-            this.ROUNDS.CreatePlaylist = this.app.CreatePlaylist.bind(this.app);
             this.ROUNDS.showRound(1);
             this.onResize();
         } else {
@@ -181,10 +180,28 @@ export default class UI {
             this.LANDING.onLoginPressed = this.Login.bind(this);
             this.loaderInit();
         }
+
+        // this.showEndFrame();
+    }
+
+    // ************************
+    // LOADER
+    // ************************
+
+    public showLoader() {
+        TweenMax.fromTo(this.loaderEl, 0.5, {display:"none", alpha:0}, {display:"block", alpha:1});
+        TweenMax.to(f.find(this.loaderEl, ".purple-loader"), 0, {alpha:1})
+    }
+
+    public hideLoader() {
+        TweenMax.to(this.loaderEl, 0.5, {display:"none", alpha:0});
+        TweenMax.to(f.find(this.loaderEl, ".purple-loader"), 0.3, {alpha:0})
     }
 
     private loaderInit() {
-        this.loadImages(data.preloadList)
+        this.loadImages(data.preloadList);
+        this.showLoader();
+        this.loaderEl.style.display = "block";
     }
 
     async loadImages(images: string[]) {
@@ -200,60 +217,21 @@ export default class UI {
 
     public incrementLoader() {
         if (this.app.authorized) return;
-        
+
         this.assetsLoaded++;
         var percent = this.assetsLoaded/this.assetCount* 100;
         console.log(percent);
 
         if (this.assetsLoaded == this.assetCount) {
+            this.hideLoader();
             this.LANDING?.show();
             this.onResize();
         }
     }
 
-    private checkMobileSize() {
-        var m = this.burgerEl.getBoundingClientRect().width > 1;
-        
-        if (m != this.isMobileSize) {
-            if (this.isMobileSize) {
-                this.changeToDesktop();
-            } else {
-                this.changeToMobile();
-            }
-        }
-
-        this.isMobileSize = m;
-    }
-
-    private toggleHeaderLogo(show: boolean) {
-        if (show) {
-            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
-        } else {
-            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "block", y:0}, {display: "none", y:0})
-        }
-    }
-
-    private changeToDesktop() {
-        // small logo
-        if (this.LANDING == undefined) this.toggleHeaderLogo(false);
-
-        // reset nav
-        this.navVisible = false;
-        this.navWrapperEl.removeAttribute("style");
-        TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
-        TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
-    }
-
-    private changeToMobile() {
-        // small logo
-        if (this.LANDING == undefined) this.toggleHeaderLogo(true);
-
-        // nav
-        this.navWrapperEl.removeAttribute("style");
-
-        // album cover bug
-        f.elByID("album-cover").removeAttribute("style");
-    }
+    // ************************
+    // RESIZES
+    // ************************
 
     private onResize() {
         if (this.nope) return;
@@ -278,11 +256,42 @@ export default class UI {
         }
     }
 
-    private clearHiddenElements() {
-        // reset hidden elements
-        this.elementsToHide = [];
+    private checkMobileSize() {
+        var m = this.burgerEl.getBoundingClientRect().width > 1;
+        
+        if (m != this.isMobileSize) {
+            if (this.isMobileSize) {
+                this.changeToDesktop();
+            } else {
+                this.changeToMobile();
+            }
+        }
+
+        this.isMobileSize = m;
     }
 
+    private changeToDesktop() {
+        // small logo
+        if (this.LANDING == undefined) this.toggleHeaderLogo(false);
+
+        // reset nav
+        this.navVisible = false;
+        this.navWrapperEl.removeAttribute("style");
+        TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
+        TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
+    }
+
+    private changeToMobile() {
+        // small logo
+        if (this.LANDING == undefined) this.toggleHeaderLogo(true);
+
+        // nav
+        this.navWrapperEl.removeAttribute("style");
+    }
+
+    // ************************
+    // SET AND HIDE ELEMENTS
+    // ************************
 
     public setVisibleElements(elements : HTMLElement[]) {
         elements.forEach((e)=> {
@@ -290,24 +299,29 @@ export default class UI {
         })
     }
 
+    public transitionOut() {
+        // hide the elements
+        TweenMax.to(this.elementsToHide, 0.5, {
+            alpha:0, scale:0.95, display: "none", onComplete: this.clearHiddenElements.bind(this)
+        })
+    }
+
+    private clearHiddenElements() {
+        // reset hidden elements
+        this.elementsToHide = [];
+    }
+
+    // ************************
+    // SET BG COLOR
+    // ************************
+
     public setBgColor(color: string) {
         f.el("body").style.backgroundColor = color;
     }
 
-    public showNavBar() {
-        // change the position of the nav
-        if (this.isMobileSize) {
-            // is mobile
-            this.navEl.removeAttribute("style");
-
-            // small logo
-            if (this.LANDING == undefined) this.toggleHeaderLogo(true);
-        } else {
-            // show the listed nav
-            TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
-            TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
-        }
-    }
+    // ************************
+    // FRAME
+    // ************************
 
     private frameIn() {
         // N E C
@@ -321,6 +335,7 @@ export default class UI {
     }
 
     private frameOut() {
+        console.log("frame out");
         // N E C
         TweenMax.fromTo(f.findAll(this.frameEl, "li.top"), 0.5, {display:"block", y:-0}, {y:-100, display:"none"})
         // T
@@ -329,56 +344,6 @@ export default class UI {
         TweenMax.fromTo(f.findAll(this.frameEl, "li.right.middle"), 0.5, {display:"block", x:0}, { x:100, display:"none"})
         // R O N
         TweenMax.fromTo(f.findAll(this.frameEl, "li.bottom"), 0.5, {display:"block", y:0}, {y:100, display:"none"})
-    }
-
-    public showWaves(d: number) {
-        TweenMax.fromTo([this.wavesTopEl, this.wavesBottomEl], 3, {display:"none", alpha:0}, {display:"block", alpha:0.95, ease: "linear", delay: d})
-        TweenMax.fromTo(this.wavesBottomEl, 3, {y:200}, {y:0, ease: "linear", delay: d});
-        TweenMax.fromTo(this.wavesTopEl, 3, {y:-200}, {y:0, ease: "linear", delay: d});
-        
-        // get waves
-        var topWaves = f.findAll(this.wavesTopEl, ".wave." + this.currentWaveColor);
-        var bottomWaves = f.findAll(this.wavesBottomEl, ".wave." + this.currentWaveColor);
-        var waves : HTMLElement[] = [];
-        waves = waves.concat(topWaves, bottomWaves);
-        
-        // animate
-        this.loopingWaveAnimantions.push(
-            TweenMax.to([topWaves[0], bottomWaves[0]], 7, {x:-1600, repeat:-1, ease: "linear"})
-        )
-
-        this.loopingWaveAnimantions.push(
-            TweenMax.to([topWaves[1], bottomWaves[1]], 7, {x:-1600, repeat:-1, delay:0.5, ease: "linear"})
-        )
-
-        this.loopingWaveAnimantions.push(
-            TweenMax.to([topWaves[0], bottomWaves[0]], 7, {y:50, repeat:-1, delay:1, ease: easeBounce, yoyo:true})
-        )
-
-        this.loopingWaveAnimantions.push(
-            TweenMax.to([topWaves[1], bottomWaves[1]], 7, {y:25, repeat:-1, ease: easeBounce, yoyo:true})
-        )
-    }
-
-    public hideWaves(delay: number) {
-        TweenMax.to([this.wavesTopEl, this.wavesBottomEl], 1, {display:"none", alpha:0, ease: "linear", onComplete: ()=> {
-            this.loopingWaveAnimantions.forEach((anim)=> {
-                anim.kill();
-            })
-            this.loopingWaveAnimantions = [];
-        }})
-        TweenMax.to(this.wavesBottomEl, 1, {y:500, ease: "linear"})
-        TweenMax.to(this.wavesTopEl, 1, {y:-500, ease: "linear"})
-    }
-
-    public toggleWaveColor(color: string) {
-        // change visible wave colors
-        TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + this.currentWaveColor), 1, {alpha:1, display:"block"}, {alpha:0, display:"none"})
-        TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + this.currentWaveColor), 1, {alpha:1, display:"block"}, {alpha:0, display:"none"})
-        TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + color), 1, {alpha:0, display:"none"}, {alpha:1, display:"block"})
-        TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + color), 1, {alpha:0, display:"none"}, {alpha:1, display:"block"})
-
-        this.currentWaveColor = color;
     }
 
     public toggleFrameColors(color : string, setValue : boolean) {
@@ -418,27 +383,62 @@ export default class UI {
         }
     }
 
-    public transitionOut() {
-        // console.log("elements to hide", this.elementsToHide);
-        // hide the elements
-        TweenMax.to(this.elementsToHide, 0.5, {
-            alpha:0, scale:0.95, display: "none", onComplete: this.clearHiddenElements.bind(this)
-        })
+    // ************************
+    // WAVES
+    // ************************
+
+    public showWaves(d: number) {
+        console.log(this.loopingWaveAnimantions);
+        TweenMax.fromTo([this.wavesTopEl, this.wavesBottomEl], 3, {display:"none", alpha:0}, {display:"block", alpha:0.95, ease: "linear", delay: d})
+        TweenMax.fromTo(this.wavesBottomEl, 3, {y:200}, {y:0, ease: "linear", delay: d});
+        TweenMax.fromTo(this.wavesTopEl, 3, {y:-200}, {y:0, ease: "linear", delay: d});
+        
+        // get waves
+        var topWaves = f.findAll(this.wavesTopEl, ".wave." + this.currentWaveColor);
+        var bottomWaves = f.findAll(this.wavesBottomEl, ".wave." + this.currentWaveColor);
+        var waves : HTMLElement[] = [];
+        waves = waves.concat(topWaves, bottomWaves);
+
+        // reset waves
+        TweenMax.to(waves, 0, {x:0, y:0});
+
+        // animate
+        this.loopingWaveAnimantions.push(
+            TweenMax.to([topWaves[0], bottomWaves[0]], 7, {x:-1600, repeat:-1, ease: "linear"})
+        )
+
+        this.loopingWaveAnimantions.push(
+            TweenMax.to([topWaves[1], bottomWaves[1]], 7, {x:-1600, repeat:-1, delay:0.5, ease: "linear"})
+        )
+
+        this.loopingWaveAnimantions.push(
+            TweenMax.to([topWaves[0], bottomWaves[0]], 7, {y:50, repeat:-1, delay:1, ease: easeBounce, yoyo:true})
+        )
+
+        this.loopingWaveAnimantions.push(
+            TweenMax.to([topWaves[1], bottomWaves[1]], 7, {y:25, repeat:-1, ease: easeBounce, yoyo:true})
+        )
     }
 
-    public showQuestion() { 
-        // called from UI.ROUNDS
-        // this.currentPage = PageType.Question;
-        this.setBgColor(data.COLORS.beige)
+    public hideWaves(delay: number) {
+        TweenMax.to([this.wavesTopEl, this.wavesBottomEl], 1, {display:"none", alpha:0, ease: "linear", onComplete: ()=> {
+            this.loopingWaveAnimantions.forEach((anim)=> {
+                anim.kill();
+            })
+            this.loopingWaveAnimantions = [];
+        }})
+        TweenMax.to(this.wavesBottomEl, 1, {y:500, ease: "linear"})
+        TweenMax.to(this.wavesTopEl, 1, {y:-500, ease: "linear"})
+    }
 
-        // change the color of the frame
-        this.toggleFrameColors(data.COLORS.purple, true);
+    public toggleWaveColor(color: string) {
+        // change visible wave colors
+        TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + this.currentWaveColor), 1, {alpha:1, display:"block"}, {alpha:0, display:"none"})
+        TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + this.currentWaveColor), 1, {alpha:1, display:"block"}, {alpha:0, display:"none"})
+        TweenMax.fromTo(f.findAll(this.wavesTopEl, "." + color), 1, {alpha:0, display:"none"}, {alpha:1, display:"block"})
+        TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + color), 1, {alpha:0, display:"none"}, {alpha:1, display:"block"})
 
-        // hide waves
-        this.hideWaves(0);
-
-        // hide the elements
-        this.transitionOut();
+        this.currentWaveColor = color;
     }
 
     // public showLogoSlider() {
@@ -457,60 +457,31 @@ export default class UI {
     //     // }});
     // }
 
-    public showEndFrame(description: string) {
-        this.setBgColor(data.COLORS.beige);
-        this.toggleFrameColors(data.COLORS.purple, true);
+    // ************************
+    // NAVIGATION AND PAGES
+    // ************************
 
-        // set description
-        f.find(this.endFrameEl, "#playlist-desc").innerHTML = description;
+    public showNavBar() {
+        // change the position of the nav
+        if (this.isMobileSize) {
+            // is mobile
+            this.navEl.removeAttribute("style");
 
-        this.endFrameEl.style.display = "block";
-        var d = 1;
+            // small logo
+            if (this.LANDING == undefined) this.toggleHeaderLogo(true);
+        } else {
+            // show the listed nav
+            TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
+            TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
+        }
+    }
 
-        let restartBtn = f.find(this.endFrameEl, "#brew-again");
-        // let shareBtn = f.find(this.endFrameEl, "#share");
-        let playlistBtn = f.find(this.endFrameEl, "#listen")
-
-        TweenMax.fromTo(f.find(this.endFrameEl, "#playlist-title"), 0.5, {
-            alpha: 0, x:-100
-        }, {
-            alpha: 1, x:0, delay: d
-        });
-
-        TweenMax.fromTo(f.find(this.endFrameEl, "#playlist-desc"), 0.5, {
-            alpha: 0, x:-100
-        }, {
-            alpha: 1, x:0, delay: d+0.2
-        });
-
-        // TweenMax.fromTo(f.find(this.endFrameEl, "#album-wrapper"), 0.5, {
-        //     alpha:0, scale:0.9
-        // }, {
-        //     alpha: 1, scale:1, delay: d+0.4
-        // });
-
-        TweenMax.fromTo([playlistBtn, restartBtn], 0.3, {
-            alpha: 0, y:50
-        }, {
-            alpha:1, y:0, delay: d+1.2, stagger:0.1, onComplete : ()=> {
-                restartBtn.className += " active";
-                playlistBtn.className += " active";
-            }
-        })
-
-        TweenMax.fromTo(f.find(this.endFrameEl, ".subscribe-btn"), 2, {
-            alpha: 0
-        }, {
-            alpha:1, delay: d+2
-        })
-
-        // subscription form styling?
-        // let link = document.createElement("link");
-        // link.href = "subscription.css";      /**** your CSS file ****/ 
-        // link.rel = "stylesheet"; 
-        // link.type = "text/css"; 
-        // let iFrame = <HTMLIFrameElement>document.querySelector("#hs-form-iframe-0");
-        // iFrame.contentDocument?.body.appendChild(link);
+    private toggleHeaderLogo(show: boolean) {
+        if (show) {
+            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+        } else {
+            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "block", y:0}, {display: "none", y:0})
+        }
     }
 
     private mobileMenuClicked() {
@@ -659,24 +630,103 @@ export default class UI {
         })
     }
 
+    // ************************
+    // END FRAME
+    // ************************
+
+    public prepareEndFrame() {
+        this.setBgColor(data.COLORS.purple);
+        this.showLoader();
+        this.app.CreatePlaylist();
+    }
+
     public playlistCreated(url: string) {
         console.log("playlist created", url);
         var split = url.split("/");
         var id = split[split.length-1];
 
-        // create the embed
-        // f.elByID("embed").innerHTML = '<iframe src="https://open.spotify.com/embed/playlist/' + id + '" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>'
-
-        f.elByID("embed").innerHTML = '<iframe src="https://open.spotify.com/embed/playlist/' + id + '" width="250" height="80" frameborder="0" data-mce-fragment="1"></iframe>'
-
-        // <iframe src="https://open.spotify.com/embed/playlist/6xJs7RQhcQwMDf4azJPqiZ" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe
-
-        // <iframe src="https://open.spotify.com/embed/track/4Dg5moVCTqxAb7Wr8Dq2T5" width="300" height="80" frameborder="0" data-mce-fragment="1"></iframe>
+        // create an embed link
+        var iframe = <HTMLIFrameElement>f.el("#embed");
+        iframe.src = "https://open.spotify.com/embed/playlist/" + id;
+        iframe.onload = ()=> {
+            console.log("iframe loaded");
+            this.showEndFrame();
+        }
     }
 
     public nameSet(name : string) {
+        // set user name pulled from spotify
         this.name = name.split(" ")[0];
         f.elByID("playlist-title").innerHTML = this.name + "'s Playlist"
+    }
+
+    public setEndFrameCopy(copy: string) {
+        // set description
+        f.find(this.endFrameEl, "#playlist-desc").innerHTML = copy;
+    }
+
+    public showEndFrame() {
+        this.endFrameEl.style.display = "block";
+        var d = 1;
+
+        var hop = f.find(this.endFrameEl, ".hop-wrapper img");
+        let restartBtn = f.find(this.endFrameEl, "#brew-again");
+        let playlistBtn = f.find(this.endFrameEl, "#listen");
+
+        // hide the loader
+        this.hideLoader();
+
+        // make the frame text white
+        this.toggleFrameColors(data.COLORS.beige, true);
+
+        // set wave colour
+        this.toggleWaveColor("purple");
+
+        // waves
+        this.showWaves(0);
+
+        TweenMax.fromTo(hop, 0.5, {
+            alpha: 0, scale:0.8
+        }, {
+            alpha:1, scale:1, delay:d
+        })
+
+        TweenMax.to(hop, 1, {
+            y:20, repeat:-1, yoyo:true, ease: "linear"
+        })
+
+        TweenMax.fromTo(f.find(this.endFrameEl, "#playlist-title"), 0.5, {
+            alpha: 0, y:50
+        }, {
+            alpha: 1, y:0, delay: d
+        });
+
+        TweenMax.fromTo(f.find(this.endFrameEl, "#playlist-desc"), 0.5, {
+            alpha: 0, y:50
+        }, {
+            alpha: 1, y:0, delay: d+0.2
+        });
+
+        TweenMax.fromTo(f.find(this.endFrameEl, "iframe"), 0.5, {
+            alpha: 0, y:50
+        }, {
+            alpha: 1, y:0, delay: d+0.4
+        })
+
+        TweenMax.fromTo([playlistBtn, restartBtn], 0.3, {
+            alpha: 0, y:50
+        }, {
+            alpha:1, y:0, delay: d+1.2, stagger:0.1, onComplete : ()=> {
+                restartBtn.className += " active";
+                playlistBtn.className += " active";
+            }
+        })
+
+        TweenMax.fromTo(f.find(this.endFrameEl, ".subscribe-btn"), 2, {
+            alpha: 0
+        }, {
+            alpha:1, delay: d+2
+        })
     }
 
     // private copyLink() {

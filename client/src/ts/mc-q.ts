@@ -198,12 +198,11 @@ export default class MCQ {
             if (window.innerWidth > 1024) {
                 // question set completed
                 TweenMax.to(f.find(this.el, ".text-column"), 0, {width: "0"});
-                TweenMax.to(f.find(this.el, ".content-column"), this.time*2, {left: "-25%"});
+                TweenMax.to(f.find(this.el, ".content-column"), this.time*2, {left: "calc(-25% - 50px)"});
             } else {
                 TweenMax.to(f.find(this.el, ".content-column"), this.time*2, {scale: 1.5});
             }
 
-            // do something sparkly here
             setTimeout(this.finished.bind(this), 1000);
         }
     }

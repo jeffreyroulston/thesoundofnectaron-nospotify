@@ -230,7 +230,7 @@ export default class Slider {
     }
 
     private show() {
-        var delay = this.initiated ? 0 : this.delay;
+        var delay = this.initiated ? 0.3 : this.delay;
         this.initiated = true;
         this.el.style.display = "block";
 

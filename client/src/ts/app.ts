@@ -110,12 +110,12 @@ export default class App {
         var intro = "Here's your special brew, with a dash of ";
 
         var ingredientMap = [
-            "liquid sparkle.<br />",
-            "something explosive.<br />",
-            "liquid lightning.<br />",
-            "liquid passion.<br />",
-            "liquid mortality.<br />",
-            "liquid alchemy.<br />"
+            "liquid sparkle.<br /><br />",
+            "something explosive.<br /><br />",
+            "liquid lightning.<br /><br />",
+            "liquid passion.<br /><br />",
+            "liquid mortality.<br /><br />",
+            "liquid alchemy.<br /><br />"
         ]
 
         var settingMap = [
@@ -187,7 +187,7 @@ export default class App {
 
         var longDesc = intro + ingredient + danceability + setting + energy + valence
         this.playlistDescription = danceability + energy + valence;
-        this.ui.showEndFrame(longDesc);
+        this.ui.setEndFrameCopy(longDesc);
         this.generatePlaylist();
     }
 

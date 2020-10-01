@@ -1,0 +1,196 @@
+@import "shared";
+
+#end-frame {
+    // < 768px
+    @include maxW($tabletPortraitWidth) {
+        overflow-y: scroll;
+    }
+    
+    .hop-wrapper {
+        width: 45%;
+        top: 50%;
+        position: absolute;
+        transform: translateY(-50%);
+        left: calc(45% - 400px);
+
+        // < 1366px
+        @include maxW($desktopLargeWidth) {
+            left: calc(45% - 350px);
+        }
+
+        @include maxPxW(900) {
+            left: calc(45% - 300px);
+        }
+
+        // < 768px
+        @include maxW($tabletPortraitWidth) {
+            width: 100%;
+            top: 0;
+            left: 0;
+            text-align: center;
+            position: relative;
+            transform: none;
+            margin-bottom: 30px;
+            margin-top: 80px;
+        }
+
+        // < 480px;
+        @include maxW($mobileWidth) {
+            margin-bottom: 10px;
+        }
+    }
+
+    img {
+        position: relative;
+        width: 350px;
+        top: -75px;
+
+        transition: top 0.2s ease, width 0.2s ease, left 0.2s ease;
+
+        // < 1366px
+        @include maxW($desktopLargeWidth) {
+            width: 300px;
+            top: -25px;
+        }
+
+        @include maxPxW(900) {
+            width: 250px;
+        }
+
+        // < 768px
+        @include maxW($tabletPortraitWidth) {
+            top: 0;
+            display: inline-block;
+        }
+
+        // < 640px;
+        @include maxW($mobileLargeWidth) {
+
+        }
+
+        // < 480px;
+        @include maxW($mobileWidth) {
+            width: 150px;
+        }
+    }
+
+    .end-frame-wrapper {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        width: calc(100% - 200px);
+        left: 100px;
+
+        @include maxW($tabletPortraitWidth) {
+            width: 80%;
+            left: 10%;
+            top: 20px;
+            transform: none;
+            padding-bottom: 100px;
+            text-align: center;
+        }
+    }
+
+    .playlist-wrapper {
+        display: inline-block;
+        position: relative;
+        width: 50%;
+        left: 45%;
+
+        // < 768px
+        @include maxW($tabletPortraitWidth) {
+            width: 100%;
+            left: 0;
+        }
+    }
+
+    #playlist-desc {
+        margin-top: 20px;
+        margin-bottom: 30px;
+        max-width: 500px;
+
+        @include maxW($tabletPortraitWidth) {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    h1 {
+        margin-bottom: 40px;
+        color: $yellow;
+
+        // < 480px;
+        @include maxW($mobileWidth) {
+            margin-bottom: 10px;
+        }
+    //     font-size: 80px;
+
+    //     // < 1366px
+    //     @include maxW($desktopLargeWidth) {
+    //         font-size: 70px;
+    //     }
+
+    //     // < 1280px
+    //     @include maxW($desktopWidth) {
+    //         font-size: 60px;
+    //     }
+
+    //     // < 1024px
+    //     @include maxW($tabletLandscapeWidth) {
+    //         font-size: 50px;
+    //     }
+    }
+
+    p {
+        color: $beige;
+    }
+
+    .btn-wrapper {
+        display: block;
+        margin-top: 30px;
+        margin-bottom: 30px;
+
+        // < 480px;
+        @include maxW($mobileWidth) {
+            margin-top: 10px;
+        }
+
+        li {
+            display: inline-block;
+            background-color: $orange;
+            padding: 15px 20px;
+            border-radius: 0.25em;
+
+            a {
+                color: inherit;
+                text-decoration: none;
+                font-size: inherit;
+            }
+
+            &.active:hover {
+                background-color: $yellow;
+            }
+
+            &:last-child {
+                margin-left: 10px;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+    
+            @include maxPxH(730) {
+                padding: 10px;
+                margin-top: 20px;
+            }
+        }
+    }
+
+    .subscribe-btn {
+        color: $beige;
+
+        &:hover {
+            color: $orange;
+        }
+    }
+}
