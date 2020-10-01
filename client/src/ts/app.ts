@@ -403,4 +403,4 @@ export default class App {
     }
 }
 
-// const app: App = new App();?
+const app: App = new App();
