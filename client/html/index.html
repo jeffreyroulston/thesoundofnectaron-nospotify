@@ -719,6 +719,12 @@
     <!-- <textarea></textarea> -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript">
+      console.log("Test");
+      if (document.fonts == undefined) {
+        document.getElementById("shit-browser-alert").style.display = "block";
+      }
+    </script>
     <script type="text/javascript" src="out.js"></script>
   </body>
 </html>
