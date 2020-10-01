@@ -95,15 +95,10 @@ export default class UI {
     constructor(app : App) {
         this.app = app;
 
-        // check if it's a shit browser
-        // if (!Modernizr.svg) {
-        //     this.nope = true;
-        //     f.elByID("shit-browser-alert").style.display = "block";
-        // } else {
-        //     window.addEventListener('resize', this.onResize.bind(this));
-        //     document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
-        // }
-
+        if (f.getStyle(f.el("#shit-browser-alert"), "display") == "block") {
+            this.nope = true;
+        }
+        
         document.addEventListener('DOMContentLoaded', this.init.bind(this), false);
     }
 
