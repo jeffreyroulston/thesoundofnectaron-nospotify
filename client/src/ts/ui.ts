@@ -248,7 +248,6 @@ export default class UI {
             }
 
         } else {
-            console.log("frame visible", this.frameVisible);
             if (!this.frameVisible) {
                 this.frameIn();
                 this.frameVisible = true;
@@ -263,6 +262,7 @@ export default class UI {
             if (this.isMobileSize) {
                 this.changeToDesktop();
             } else {
+                this.isMobileSize = m;
                 this.changeToMobile();
             }
         }
@@ -271,19 +271,27 @@ export default class UI {
     }
 
     private changeToDesktop() {
-        // small logo
-        if (this.LANDING == undefined) this.toggleHeaderLogo(false);
+        this.toggleHeaderLogo(false);
 
         // reset nav
         this.navVisible = false;
         this.navWrapperEl.removeAttribute("style");
         TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
         TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
+
+        this.toggleFrameColors(this.currentFrameColor, false);
     }
 
     private changeToMobile() {
-        // small logo
-        if (this.LANDING == undefined) this.toggleHeaderLogo(true);
+        // check nav
+        if (this.currentPopupPageEl) {
+            this.burgerEl.classList.toggle("opened");
+            this.toggleHeaderLogo(true);
+            this.toggleFrameColors(data.COLORS.purple, false);
+        } else {
+            // small logo
+            if (this.LANDING == undefined) this.toggleHeaderLogo(true);
+        }
 
         // nav
         this.navWrapperEl.removeAttribute("style");
@@ -354,9 +362,9 @@ export default class UI {
 
         if (this.isMobileSize) {
             // change the color of the nav
-            // f.findAll(this.navWrapperEl, "*").forEach((el)=> {
-            //     el.removeAttribute("style");
-            // })
+            f.findAll(this.navWrapperEl, "*").forEach((el)=> {
+                el.removeAttribute("style");
+            })
 
             // change the color of the burger
             f.findAll(this.burgerEl, "li").forEach((el)=> {
@@ -367,6 +375,8 @@ export default class UI {
             f.findAll(this.smallLogoEl, ".logo-small-fill").forEach((el)=> {
                 el.style.fill = color;
             })
+
+            console.log(color);
         } else {
             f.findAll(this.navWrapperEl, "*").forEach((el)=> {
                 el.style.color = color;
@@ -478,9 +488,9 @@ export default class UI {
 
     private toggleHeaderLogo(show: boolean) {
         if (show) {
-            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "none", y:-100}, {display: "block", y:0})
+            TweenMax.to(this.smallLogoEl, 0.5, {display: "block", y:0})
         } else {
-            TweenMax.fromTo(this.smallLogoEl, 0.5, {display: "block", y:0}, {display: "none", y:0})
+            TweenMax.to(this.smallLogoEl, 0.5, {display: "none", y:-100})
         }
     }
 
