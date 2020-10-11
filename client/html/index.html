@@ -4,11 +4,21 @@
     <title>The Sound of Nectaron</title>
     <meta name="viewport" content="width=device-width,initial-scale=1, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="main.css" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-18565740-4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-18565740-4');
+    </script>
   </head>
 
   <body class="full-page">
     <div id="color-wipe"></div>
     <div id="icon-bg"></div>
+
+    <!-- <h1 id="coming-soon">Coming Soon</h1> -->
    
     <!-- loader -->
     <div id="loader">
@@ -100,7 +110,7 @@
           </div>
             <!-- SUBHEADING AND BUTTON -->
             <p class="subheading"><span>Brew your very own sonically delicious,</span><span>&nbsp;</span><span>Nectaron-infused playlist.</span></p><br />
-            <div id="start-btn" class="next-btn">
+            <div id="start-btn" class="next-btn" onclick="ga('send', 'event', 'Interaction', 'ButtonClick', 'Landing')">
               <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
               viewBox="0 0 726.53 726.53" style="enable-background:new 0 0 726.53 726.53;" xml:space="preserve"><style type="text/css">
               .next-btn-login{fill:#FCF1DB;}</style><path class="next-btn-login" d="M363.27,0C162.64,0,0,162.64,0,363.27s162.64,363.27,363.27,363.27s363.27-162.64,363.27-363.27
