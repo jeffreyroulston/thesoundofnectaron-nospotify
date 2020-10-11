@@ -53,7 +53,7 @@ export default class UI {
     // pop up pages
     private popupPageEl : HTMLElement = f.elByID("popupPage");
     private popupPageVisible : boolean = false;
-    private currentPopupPageEl : HTMLElement | undefined = undefined;
+    private currentPage : string = "";
 
     // about page
     private aboutEl : HTMLElement = f.elByID("about");
@@ -119,10 +119,8 @@ export default class UI {
             li.addEventListener("click", this.navClicked.bind(this))
         })
 
-        // page close buttons
-        f.elList(".close-btn").forEach((e)=> {
-            e.addEventListener("click", this.closePage.bind(this));
-        })
+        // popuppage close button
+        f.find(this.popupPageEl, ".close-btn").addEventListener("click", this.closePage.bind(this));
 
         // reload
         f.find(this.endFrameEl, "#brew-again").addEventListener("click", (e: any)=> {
@@ -212,10 +210,7 @@ export default class UI {
 
     public incrementLoader() {
         if (this.app.authorized) return;
-
         this.assetsLoaded++;
-        var percent = this.assetsLoaded/this.assetCount* 100;
-        console.log(percent);
 
         if (this.assetsLoaded == this.assetCount) {
             this.hideLoader();
@@ -224,75 +219,7 @@ export default class UI {
         }
     }
 
-    // ************************
-    // RESIZES
-    // ************************
-
-    private onResize() {
-        if (this.nope) return;
-
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-        this.checkMobileSize();
-
-        // frame
-        if (window.innerWidth <= 768) {
-            if (this.frameVisible) {
-                this.frameOut();
-                this.frameVisible = false;
-            }
-
-        } else {
-            if (!this.frameVisible) {
-                this.frameIn();
-                this.frameVisible = true;
-            }
-        }
-    }
-
-    private checkMobileSize() {
-        var m = this.burgerEl.getBoundingClientRect().width > 1;
-        
-        if (m != this.isMobileSize) {
-            if (this.isMobileSize) {
-                this.changeToDesktop();
-            } else {
-                this.isMobileSize = m;
-                this.changeToMobile();
-            }
-        }
-
-        this.isMobileSize = m;
-    }
-
-    private changeToDesktop() {
-        this.toggleHeaderLogo(false);
-
-        // reset nav
-        this.navVisible = false;
-        this.navWrapperEl.removeAttribute("style");
-        TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
-        TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
-
-        this.toggleFrameColors(this.currentFrameColor, false);
-    }
-
-    private changeToMobile() {
-        // check nav
-        if (this.currentPopupPageEl) {
-            this.burgerEl.classList.toggle("opened");
-            this.toggleHeaderLogo(true);
-            this.toggleFrameColors(data.COLORS.purple, false);
-        } else {
-            // small logo
-            if (this.LANDING == undefined) this.toggleHeaderLogo(true);
-        }
-
-        // nav
-        this.navWrapperEl.removeAttribute("style");
-    }
-
-    // ************************
+        // ************************
     // SET AND HIDE ELEMENTS
     // ************************
 
@@ -323,6 +250,77 @@ export default class UI {
     }
 
     // ************************
+    // RESIZES
+    // ************************
+
+    private onResize() {
+        if (this.nope) return;
+
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        this.checkMobileSize();
+
+        // frame
+        if (window.innerWidth <= 768) {
+            if (this.frameVisible) {
+                this.frameOut();
+                this.frameVisible = false;
+            }
+
+        } else {
+            if (!this.frameVisible) {
+                this.frameIn();
+                this.frameVisible = true;
+            }
+        }
+    }
+
+    private checkMobileSize() {
+        // check if the burger is visible
+        var m = this.burgerEl.getBoundingClientRect().width > 1;
+
+        if (m != this.isMobileSize) {
+            if (this.isMobileSize) {
+                this.changeToDesktop();
+            } else {
+                this.isMobileSize = m;
+                this.changeToMobile();
+            }
+        }
+
+        this.isMobileSize = m;
+    }
+
+    private changeToDesktop() {
+        this.toggleHeaderLogo(false);
+
+        // reset nav
+        this.navVisible = false;
+        this.navWrapperEl.removeAttribute("style");
+        // TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
+        // TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
+
+        // change the frame colour
+        this.toggleFrameColors(this.currentFrameColor, false);
+    }
+
+    private changeToMobile() {
+        // nav
+        this.navWrapperEl.removeAttribute("style");
+
+        // check pages
+        if (this.currentPage.length) {
+            // if there's a page open
+            this.burgerEl.classList.toggle("opened");
+            this.toggleHeaderLogo(true);
+            this.toggleFrameColors(data.COLORS.purple, false);
+        } else {
+            // small logo
+            if (this.LANDING == undefined) this.toggleHeaderLogo(true);
+        }
+    }
+
+    // ************************
     // FRAME
     // ************************
 
@@ -335,6 +333,10 @@ export default class UI {
         TweenMax.fromTo(f.findAll(this.frameEl, "li.right.middle"), 0.5, {display:"none", x:100}, { x:0, display:"block"})
         // R O N
         TweenMax.fromTo(f.findAll(this.frameEl, "li.bottom"), 0.5, {display:"none", y:100}, {y:0, display:"block"})
+
+        if (!this.isMobileSize) {
+            TweenMax.to(".hide-top", 0.5, {y:0})
+        }
     }
 
     private frameOut() {
@@ -366,12 +368,18 @@ export default class UI {
                 el.style.backgroundColor = color;
             })
 
-            // change the color of the small logo
-            f.findAll(this.smallLogoEl, ".logo-small-fill").forEach((el)=> {
-                el.style.fill = color;
-            })
-
-            console.log(color);
+            if (this.LANDING == undefined) {
+                // change the color of the small logo
+                f.findAll(this.smallLogoEl, ".logo-small-fill").forEach((el)=> {
+                    el.style.fill = color;
+                })
+            } else {
+                // keep it purple
+                f.findAll(this.smallLogoEl, ".logo-small-fill").forEach((el)=> {
+                    el.style.fill = data.COLORS.purple;
+                })
+            }
+            
         } else {
             f.findAll(this.navWrapperEl, "*").forEach((el)=> {
                 el.style.color = color;
@@ -386,6 +394,245 @@ export default class UI {
         if (setValue) {
             this.currentFrameColor = color;
         }
+    }
+
+    // ************************
+    // NAVIGATION AND PAGES
+    // ************************
+
+    public showNavBar() {
+        // // change the position of the nav
+        // if (this.isMobileSize) {
+        //     // is mobile
+        //     this.navEl.removeAttribute("style");
+
+        //     // small logo
+        //     if (this.LANDING == undefined) this.toggleHeaderLogo(true);
+        // } else {
+        //     // show the listed nav
+        //     TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
+        //     TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
+        // }
+    }
+
+    private toggleHeaderLogo(show: boolean) {
+        // if (show) {
+        //     TweenMax.fromTo(this.smallLogoEl, 0.5, {display:"none", y:-100, alpha:0}, {display: "block", y:0, alpha:1})
+        // } else {
+        //     TweenMax.to(this.smallLogoEl, 0.5, {display: "none", y:-100, alpha:0})
+        // }
+    }
+
+    private mobileMenuClicked() {
+        // // called from the burger/close
+        console.log(this.navVisible);
+
+        if (this.navVisible) {
+            this.fadeOut(this.navWrapperEl);
+            this.navVisible = false;
+        } else {
+            if (this.popupPageVisible) {
+                // hide the popup page
+                this.fadeOut(this.popupPageEl);
+                this.popupPageVisible = false;
+
+            } else {
+                // show the navigation
+                this.fadeIn(this.navWrapperEl);
+                this.showMobileNavElements();
+                this.navVisible = true;
+            }
+        }
+
+        this.burgerEl.classList.toggle("opened");
+
+        // if (this.navVisible) {
+        //     this.slideOut(this.navWrapperEl);
+
+        //     // revert the frame Colors
+        //     this.toggleFrameColors(this.currentFrameColor, false);
+
+        //     // hide the small logo
+        //     if (this.LANDING) this.toggleHeaderLogo(false);
+        //     this.navVisible = false;
+
+        // } else {
+        //     if (this.currentPopupPageEl) {
+        //         this.closePage();
+
+        //     } else {
+        //         // show the nav
+        //         this.toggleFrameColors(data.COLORS.purple, false);
+        //         this.slideIn(this.navWrapperEl);
+
+        //         // bounce in the things
+        //         TweenMax.fromTo(f.findAll(this.navEl, "li"), 0.5, {
+        //             alpha:0, y:50
+        //         }, {
+        //             alpha: 1, y:0, delay:0.2, stagger : {
+        //                 each: 0.1
+        //             }
+        //         })
+
+        //         // show the small logo
+        //         if (this.LANDING) this.toggleHeaderLogo(true);
+        //         this.navVisible = true;
+        //     }
+        // }
+
+        // this.burgerEl.classList.toggle("opened");
+    }
+
+
+    private navClicked(e: any) {
+        var target = e.srcElement.getAttribute("data");
+        if (target.length > 0) this.togglePage(target);
+    }
+
+    private togglePage(target: string) {
+        // console.log(this.navVisible, this.popupPageVisible);
+        console.log("toggle page", target);
+        console.log("current page", this.currentPage);
+        console.log("popup visible", this.popupPageVisible)
+
+        var pageEl = f.find(this.popupPageEl, "#" + target);
+
+        if (this.popupPageVisible) {
+            this.fadeOut(f.find(this.popupPageEl, "#" + this.currentPage));
+            this.fadeIn(pageEl, 0.3);
+            this.currentPage = target;
+
+        } else {
+            // get page
+            this.currentPage = target;
+            if (this.isMobileSize) {
+                // MOBILE
+                // remove nav elements
+                this.hidemobileNavElements();
+                this.toggleNavWrapperColor(data.COLORS.beige);
+
+                // change the burger color
+                this.setBurgerColor(data.COLORS.orange);
+
+                // hide the navigation
+                // this.slideIn(this.navWrapperEl, 0.5);
+
+                // transition in page
+                TweenMax.to([pageEl, this.popupPageEl], 0.5, {
+                    display: "block", delay: 0.5
+                })
+            } else {
+                // DESKTOP
+                this.toggleFrameColors(data.COLORS.orange, false);
+
+                // transition in popup page element
+                this.slideIn(this.popupPageEl); 
+
+                // show current page
+                this.fadeIn(pageEl);
+            }
+
+            // set variables
+            this.popupPageVisible = true;
+            this.navVisible = false;
+        }
+    }
+
+    private closePage() {
+        console.log("close current page", this.currentPage);
+        this.toggleFrameColors(this.currentFrameColor, false);
+        this.slideOut(this.popupPageEl);
+        this.fadeOut(f.find(this.popupPageEl, "#" + this.currentPage));
+        this.popupPageVisible = false;
+        this.currentPage = "";
+    }
+
+    private slideIn(e: HTMLElement) {
+        TweenMax.fromTo(e, 0.5, {
+            display: "none", x:-window.innerWidth, opacity: 0
+        }, {
+            display: "block", x:0, opacity: 1
+        })
+    }
+
+    private slideOut(e: HTMLElement, delay?:number) {
+        var d  = delay ? delay : 0
+        TweenMax.to(e, 0.5, {
+            display: "none", x:-window.innerWidth, opacity: 0
+        })
+    }
+
+    private fadeIn(e: HTMLElement, delay?:number) {
+        var d  = delay ? delay : 0
+        TweenMax.fromTo(e, 0.3, {
+            display: "none", opacity: 0
+        }, {
+            display: "block", opacity: 1, delay: d
+        })
+    }
+
+    private fadeOut(e: HTMLElement, delay?:number) {
+        TweenMax.to(e, 0.3, {
+            display: "none", opacity: 0
+        })
+    }
+    private showMobileNavElements() {
+        // bounce in the things
+        TweenMax.fromTo(f.findAll(this.navEl, "li"), 0.5, {
+            alpha:0, y:50
+        }, {
+            alpha: 1, y:0, delay:0.2, stagger : {
+                each: 0.1
+            }
+        })
+    }
+
+    private hidemobileNavElements() {
+        // bounce in the things
+        TweenMax.fromTo(f.findAll(this.navEl, "li"), 0.3, {
+            alpha: 1, y:0
+        }, {
+            alpha:0, y:-50, stagger : {
+                each: 0.05
+            }
+        })
+    }
+
+    // private showPopupPageElements() {
+    //     if (!this.currentPopupPageEl) return;
+    //     TweenMax.fromTo(f.findAll(this.currentPopupPageEl, ".col-wrapper"), 0.5, {
+    //         alpha:0, y:50
+    //     }, {
+    //         alpha: 1, y:0, delay:0.5, stagger : {
+    //             each: 0.05
+    //         }
+    //     });
+    // }
+
+    // private hidePopupPageElements() {
+    //     if (!this.currentPopupPageEl) return;
+    //     TweenMax.fromTo(f.findAll(this.currentPopupPageEl, ".pop"), 0.5, {
+    //         alpha:1, y:0
+    //     }, {
+    //         alpha: 0, y:-50, stagger : {
+    //             each: 0.05
+    //         }, onComplete: ()=> {
+    //             if (this.currentPopupPageEl) this.currentPopupPageEl.style.display = "none"
+    //         }
+    //     });
+    // }
+
+    private toggleNavWrapperColor(color: string) {
+        TweenMax.to(this.navWrapperEl, 0.5, {
+            backgroundColor : color
+        })
+    }
+
+    private setBurgerColor(color: string) {
+        f.findAll(this.burgerEl, "li").forEach((el)=> {
+            el.style.backgroundColor = color;
+        })
+
     }
 
     // ************************
@@ -444,195 +691,6 @@ export default class UI {
         TweenMax.fromTo(f.findAll(this.wavesBottomEl, "." + color), 1, {alpha:0, display:"none"}, {alpha:1, display:"block"})
 
         this.currentWaveColor = color;
-    }
-
-    // public showLogoSlider() {
-    //     // TweenMax.fromTo(this.logoSlideEl, 0.5, {display: "none", opacity: 0}, {display: "block", opacity: 0.2, delay:0.5});
-        
-    //     // show logoslide
-    //     // this.logoSlide1.play();
-    //     // this.logoSlide2.play();
-    // }
-
-    // public hideLogoSlider() {
-    //     // TweenMax.to(this.logoSlideEl, 0.5, {display: "none", opacity: 0, onComplete() {
-    //     //     // hide logoslide
-    //     //     this.logoSlide1.pause();
-    //     //     this.logoSlide2.pause();
-    //     // }});
-    // }
-
-    // ************************
-    // NAVIGATION AND PAGES
-    // ************************
-
-    public showNavBar() {
-        // change the position of the nav
-        if (this.isMobileSize) {
-            // is mobile
-            this.navEl.removeAttribute("style");
-
-            // small logo
-            if (this.LANDING == undefined) this.toggleHeaderLogo(true);
-        } else {
-            // show the listed nav
-            TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
-            TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
-        }
-    }
-
-    private toggleHeaderLogo(show: boolean) {
-        if (show) {
-            TweenMax.to(this.smallLogoEl, 0.5, {display: "block", y:0})
-        } else {
-            TweenMax.to(this.smallLogoEl, 0.5, {display: "none", y:-100})
-        }
-    }
-
-    private mobileMenuClicked() {
-        // called from the burger/close
-        console.log("burger clicked", this.navVisible);
-
-        if (this.navVisible) {
-            this.slideOut(this.navWrapperEl);
-
-            // revert the frame Colors
-            this.toggleFrameColors(this.currentFrameColor, false);
-
-            // hide the small logo
-            if (this.LANDING) this.toggleHeaderLogo(false);
-            this.navVisible = false;
-
-        } else {
-            if (this.currentPopupPageEl) {
-                this.closePage();
-
-            } else {
-                // show the nav
-                this.toggleFrameColors(data.COLORS.purple, false);
-                this.slideIn(this.navWrapperEl);
-
-                // bounce in the things
-                TweenMax.fromTo(f.findAll(this.navEl, "li"), 0.5, {
-                    alpha:0, y:50
-                }, {
-                    alpha: 1, y:0, delay:0.2, stagger : {
-                        each: 0.1
-                    }
-                })
-
-                // show the small logo
-                if (this.LANDING) this.toggleHeaderLogo(true);
-                this.navVisible = true;
-            }
-        }
-
-        this.burgerEl.classList.toggle("opened");
-    }
-
-
-    private navClicked(e: any) {
-        var target = e.srcElement.getAttribute("data");
-        if (target.length > 0) this.togglePage(target);
-    }
-
-    private togglePage(target: string) {
-        // used for nav (About/Contact/Subscribe)
-        // console.log(document.querySelector("#hs-form-iframe-0"))
-
-        if (this.navVisible) {
-            this.slideOut(this.navWrapperEl);
-            this.navVisible = false;
-        }
-
-        if (this.popupPageVisible) {
-            // something is already visible
-            if (!this.currentPopupPageEl || target == this.currentPopupPageEl.id) return;
-            let currentPage = this.currentPopupPageEl
-            // this.fadeOut(currentPage);
-            // console.log("hide ", this.currentPopupPageEl.id, this.currentPopupPageEl);
-            this.currentPopupPageEl.style.display = "none";
-            
-            // show the new page
-            let targetPage = f.find(this.popupPageEl, "#" + target);
-            // this.slideIn(targetPage);
-            // console.log("show ", target, targetPage);
-            targetPage.style.display = "block";
-            // this.fadeIn(targetPage);
-
-            // set the new page
-            this.currentPopupPageEl = targetPage;
-
-        } else {
-            // nothing visible? easy, show the page
-            this.currentPopupPageEl = f.find(this.popupPageEl, "#" + target);
-
-            this.currentPopupPageEl.style.display = "block";
-            
-            this.popupPageVisible = true;
-
-            console.log("show ", target, this.currentPopupPageEl);
-
-            this.slideIn(this.popupPageEl);
-
-            // change the frame Colors
-            this.toggleFrameColors(data.COLORS.orange, false);
-        }
-
-        // ANIMATIONS
-        if (target == "about") {
-            // bop the fruit
-            this.inPageLoopingAnimations.push(TweenMax.fromTo(this.aboutHopTopEl, 3, {
-                rotate: -10, x:-50
-            }, {
-                rotate: 10, x:50, repeat: -1, yoyo: true, ease: "linear"
-            }))
-
-            this.inPageLoopingAnimations.push(TweenMax.to(this.aboutHopBottomEl, 1.5, {
-                y: -50, repeat: -1, yoyo: true, ease: "linear"
-            }))
-
-        } else if (target == "faq") {
-            this.inPageLoopingAnimations.push(TweenMax.to(f.elByID("faq-bg"), 2, {
-                scale: 1.01, repeat: -1, yoyo: true, ease: "linear"
-            }))
-        }
-    }
-
-    private closePage() {
-        TweenMax.to(this.popupPageEl, 1, {
-            display: "none", x:-window.innerWidth*2, ease: "easeOut", onComplete: this.resetPopupPage.bind(this)
-        })
-
-        // stop the animations 
-        this.inPageLoopingAnimations.forEach((anim)=> {
-            anim.kill();
-        });
-        this.inPageLoopingAnimations = [];
-
-        // reset the frame Colors
-        this.toggleFrameColors(this.currentFrameColor, false);
-    }
-
-    private resetPopupPage() {
-        if (!this.currentPopupPageEl) return;
-        this.popupPageVisible = false;
-        this.currentPopupPageEl.style.display = "none";
-        this.currentPopupPageEl = undefined
-    }
-
-    private slideIn(e: HTMLElement) {
-        TweenMax.fromTo(e, 0.5, {
-            display: "none", x:-window.innerWidth*2
-        }, {
-            display: "block", x:0, ease: "linear"
-        })
-    }
-
-    private slideOut(e: HTMLElement) {
-        TweenMax.to(e, 0.5, {
-            display: "none", x:-window.innerWidth*2, ease: "linear"
-        })
     }
 
     // ************************

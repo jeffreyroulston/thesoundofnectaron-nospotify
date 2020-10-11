@@ -9,7 +9,6 @@
 
     // opacity: 0;
     // z-index: -1000;
-    transition: opacity 0.3s ease;
 
     // &.active {
     //     // z-index: $zIndexPopupPages;
@@ -25,19 +24,19 @@
     h1, p, table {
         color: $purple;
     }
-
-    .col-wrapper:not(.content-wrapper) {
-        overflow-y: scroll;
-    }
+    // .col-wrapper:not(.content-wrapper) {
+    //     overflow-y: scroll;
+    // }
 
     .col-wrapper {
         width: 100%;
-        height: calc(100% - 30px);
+        height: 100%;
+        // height: calc(100% - 30px);
 
-        // < 640px;
-        @include maxW($mobileLargeWidth) {
-            height: 100%;
-        }
+        // // < 640px;
+        // @include maxW($mobileLargeWidth) {
+        //     height: 100%;
+        // }
     }
 
     .content-wrapper {
@@ -65,14 +64,13 @@
     .close-btn {
         height: 30px;
         display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 30px;
+        left: calc(50% - 15px);
         cursor: pointer;
         transform: rotate(0deg);
         transition: transform 0.5s ease;
-        position: relative;
+        position: absolute;
         z-index: 50;
+        top: 90px;
 
         &:hover {
             transform: rotate(360deg);
@@ -87,13 +85,18 @@
     .wrapper {
         margin: 0 auto;
         left: 0;
+        border: 1px solid black;
+        overflow-y: scroll;
     }
 }
 
 #about, #faq, #subscribe {
     display: none;
-    height: 100%;
-    overflow: scroll;
+    height: calc(100% - 50px);
+    margin-top: 50px;
+    position: absolute;
+    width: 100%;
+    // overflow: scroll;
     // z-index: 1000;
 }
 
@@ -107,9 +110,9 @@
         // }
     }
 
-    .question-wrapper {
-        max-width: 1075px;
-    }
+    // .question-wrapper {
+    //     max-width: 1075px;
+    // }
 
 
     h1 {
@@ -136,12 +139,12 @@
         }
     }
 
-    .meetNectaron {
+    img {
         width: 100%;
-        max-width: 500px;
+        max-width: 650px;
         display: block;
         // margin-top: 20px;
-        margin-bottom: 50px;
+        margin-bottom: 90px;
         margin-left: auto;
         margin-right: auto;
 
