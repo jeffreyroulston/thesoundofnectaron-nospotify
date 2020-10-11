@@ -494,16 +494,19 @@ export default class UI {
         console.log("toggle page", target);
         console.log("current page", this.currentPage);
         console.log("popup visible", this.popupPageVisible)
+        console.log(this.currentPage != target);
 
         var pageEl = f.find(this.popupPageEl, "#" + target);
 
         if (this.popupPageVisible) {
-            this.fadeOut(f.find(this.popupPageEl, "#" + this.currentPage));
-            this.fadeIn(pageEl, 0.3);
-            this.currentPage = target;
+            if (this.currentPage != target) {
+                pageEl.scrollTop = 0;
+                this.fadeOut(f.find(this.popupPageEl, "#" + this.currentPage));
+                this.fadeIn(pageEl, 0.3);
+                this.currentPage = target;
+            }
 
         } else {
-            // get page
             this.currentPage = target;
             if (this.isMobileSize) {
                 // MOBILE
