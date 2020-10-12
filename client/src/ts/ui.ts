@@ -425,16 +425,17 @@ export default class UI {
 
     private mobileMenuClicked() {
         // // called from the burger/close
-        console.log(this.navVisible);
-
         if (this.navVisible) {
             this.fadeOut(this.navWrapperEl);
             this.navVisible = false;
         } else {
             if (this.popupPageVisible) {
                 // hide the popup page
-                this.fadeOut(this.popupPageEl);
-                this.popupPageVisible = false;
+                // this.fadeOut(this.popupPageEl);
+                // this.fadeOut(this.navWrapperEl);
+                // this.navVisible = false;
+                // this.popupPageVisible = false;
+                this.closePage();
 
             } else {
                 // show the navigation
@@ -486,6 +487,7 @@ export default class UI {
 
     private navClicked(e: any) {
         var target = e.srcElement.getAttribute("data");
+        if (!target || target == null) return;
         if (target.length > 0) this.togglePage(target);
     }
 
@@ -501,8 +503,18 @@ export default class UI {
         if (this.popupPageVisible) {
             if (this.currentPage != target) {
                 pageEl.scrollTop = 0;
-                this.fadeOut(f.find(this.popupPageEl, "#" + this.currentPage));
-                this.fadeIn(pageEl, 0.3);
+                // pageEl.scroll = (0,0)
+                
+                var currentPageEl = f.find(this.popupPageEl, "#" + this.currentPage);
+                if (this.isMobileSize) {
+                    this.slideUpOut(currentPageEl);
+                    this.slideUpIn(pageEl);
+
+                } else {
+                    this.fadeOut(currentPageEl);
+                    this.fadeIn(pageEl, 0.3);
+                }
+                
                 this.currentPage = target;
             }
 
@@ -517,13 +529,11 @@ export default class UI {
                 // change the burger color
                 this.setBurgerColor(data.COLORS.orange);
 
-                // hide the navigation
-                // this.slideIn(this.navWrapperEl, 0.5);
-
                 // transition in page
-                TweenMax.to([pageEl, this.popupPageEl], 0.5, {
-                    display: "block", delay: 0.5
-                })
+                this.fadeIn(this.popupPageEl, 0.3);
+
+                // show current page
+                this.slideUpIn(pageEl);
             } else {
                 // DESKTOP
                 this.toggleFrameColors(data.COLORS.orange, false);
@@ -532,7 +542,7 @@ export default class UI {
                 this.slideIn(this.popupPageEl); 
 
                 // show current page
-                this.fadeIn(pageEl);
+                this.fadeIn(pageEl, 0.3);
             }
 
             // set variables
@@ -543,9 +553,20 @@ export default class UI {
 
     private closePage() {
         console.log("close current page", this.currentPage);
-        this.toggleFrameColors(this.currentFrameColor, false);
-        this.slideOut(this.popupPageEl);
-        this.fadeOut(f.find(this.popupPageEl, "#" + this.currentPage));
+        if (this.isMobileSize) {
+            this.slideUpOut(f.find(this.popupPageEl, "#" + this.currentPage));
+            this.fadeOut(this.popupPageEl);
+            this.fadeOut(this.navWrapperEl);
+            this.navVisible = false;
+            this.toggleNavWrapperColor(data.COLORS.orange, 0.5);
+            console.log(this.currentFrameColor);
+            // change the burger color
+            this.setBurgerColor(this.currentFrameColor);
+        } else {
+            this.toggleFrameColors(this.currentFrameColor, false);
+            this.slideOut(this.popupPageEl);
+            this.fadeOut(f.find(this.popupPageEl, "#" + this.currentPage));
+        }
         this.popupPageVisible = false;
         this.currentPage = "";
     }
@@ -558,10 +579,25 @@ export default class UI {
         })
     }
 
-    private slideOut(e: HTMLElement, delay?:number) {
-        var d  = delay ? delay : 0
+    private slideOut(e: HTMLElement) {
         TweenMax.to(e, 0.5, {
             display: "none", x:-window.innerWidth, opacity: 0
+        })
+    }
+
+    private slideUpIn(e: HTMLElement) {
+        TweenMax.fromTo(e, 0.5, {
+            display: "none", y:50, opacity: 0
+        }, {
+            display: "block", y:0, opacity: 1, delay: 0.2
+        })
+    }
+
+    private slideUpOut(e: HTMLElement) {
+        TweenMax.fromTo(e, 0.5, {
+            display: "block", y:0, opacity: 1
+        }, {
+            display: "none", y:-50, opacity: 0
         })
     }
 
@@ -625,9 +661,10 @@ export default class UI {
     //     });
     // }
 
-    private toggleNavWrapperColor(color: string) {
+    private toggleNavWrapperColor(color: string, delay?:number) {
+        var d = delay ? delay : 0
         TweenMax.to(this.navWrapperEl, 0.5, {
-            backgroundColor : color
+            backgroundColor : color, delay: d
         })
     }
 
