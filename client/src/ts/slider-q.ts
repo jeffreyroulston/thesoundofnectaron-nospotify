@@ -114,7 +114,6 @@ export default class Slider {
 
     private sliderChange(e: any) {
         if (e.x == undefined) {
-            console.log(e.touches[0].pageX)
             this.draggableCurrentPos = e.touches[0].pageX
         } else {
             this.draggableCurrentPos = e.x;
@@ -175,8 +174,6 @@ export default class Slider {
     }
 
     private onResize(e: any) {
-        console.log(this.questionIdx)
-
         // resize slider
         this.sliderResize();
         this.setSliderValue(this.sliderValue);

@@ -104,7 +104,7 @@ export class SpotifyInterface {
     constructor(params: SpotifyInterfaceParams) {
         this.params = params;
 
-        console.log("window hash:", window.location.hash);
+        // console.log("window hash:", window.location.hash);
 
         // get the token
         this.token = window.location.hash.substr(1).split('&')[0].split("=")[1];
@@ -125,7 +125,7 @@ export class SpotifyInterface {
         // otherwise we will need to reauth
         if (this.token === undefined) {
 
-            console.log(this.params);
+            // console.log(this.params);
 
             // build url in a nice clean way
             const scopes = this.params.Scopes.join(" ");
@@ -159,7 +159,7 @@ export class SpotifyInterface {
     }
 
     public GetUserProfile(): void {
-        console.log("Get user profile")
+        // console.log("Get user profile")
         const auth = this.BuildAuthToken();
 
         // we shouldn't be calling these functions without a valid auth token
@@ -455,7 +455,7 @@ export class SpotifyInterface {
 
         // TODO: consider setting market to NZ
         
-        console.log(url.href);
+        // console.log(url.href);
 
         fetch(url.href, {headers: {'Authorization': auth}})
         .then((response: Response) => {
@@ -472,7 +472,7 @@ export class SpotifyInterface {
                 response.json().then((json) => {
 
                     // DEBUG
-                    console.log(json);
+                    // console.log(json);
 
                     // check for tracks
                     const tracks = json.tracks;
@@ -558,7 +558,7 @@ export class SpotifyInterface {
         }
 
         const url = new URL(SpotifyInterface.PLAYLIST_CREATION_ADDRESS.replace("{user_id}", params.UserId));
-        console.log(url.href);
+        // console.log(url.href);
 
         fetch(url.href, options).then((response) => {
             
@@ -568,7 +568,7 @@ export class SpotifyInterface {
                 // the json body will contain the id we need to continue updating the songs
                 response.json().then((json) => {
 
-                    console.log(json)
+                    // console.log(json)
 
                     // create the right url
                     const playlistId = json.id;

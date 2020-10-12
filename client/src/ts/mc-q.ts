@@ -133,12 +133,21 @@ export default class MCQ {
         for (var i=0; i<this.currentQuestion.options.length; i++) {
             TweenMax.fromTo(this.optionEls[i], this.time, {alpha:0}, {alpha:1, delay: d + (0.1*i)});
 
-            // // bounce them
-            this.loopingAnimations.push(TweenMax.fromTo(this.optionEls[i], 0.5, {
-                y:-30
-            }, {
-                y:30, repeat:-1, yoyo:true, delay: d + (0.1*i), ease: easeCubicIn
-            }))
+            if (window.innerWidth > 640) {
+                // bounce them
+                this.loopingAnimations.push(TweenMax.fromTo(this.optionEls[i], 0.5, {
+                    y:-30
+                }, {
+                    y:30, repeat:-1, yoyo:true, delay: d + (0.1*i), ease: easeCubicIn
+                }))
+            } else {
+                // bounce them
+                this.loopingAnimations.push(TweenMax.fromTo(this.optionEls[i], 0.5, {
+                    y:-10
+                }, {
+                    y:10, repeat:-1, yoyo:true, delay: d + (0.1*i), ease: easeCubicIn
+                }))
+            }
         }
 
         // resize

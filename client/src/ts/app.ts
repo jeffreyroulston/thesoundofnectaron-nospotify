@@ -13,11 +13,8 @@ import AudioPlayer from "./audio";
 import Fire from "./fire";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
-// let REDIRECT_URI: string = "http://10.100.10.63:8888";
-let REDIRECT_URI: string = "http://localhost:8888";
-// let REDIRECT_URI: string = "http://192.168.1.155:8888";
-// let REDIRECT_URI: string = "https://thesoundofnectaron.com";
-// let REDIRECT_URI: string = "https://thesoundofnectaron.truedigital.co.nz";
+// let REDIRECT_URI: string = "http://localhost:8888";
+let REDIRECT_URI: string = "https://thesoundofnectaron.com";
 let SCOPES: string[] = [
     'user-top-read', 
     'user-read-private', 
@@ -31,9 +28,7 @@ let SCOPES: string[] = [
 
 export default class App {
     private spotifyInterface: si.SpotifyInterface;
-    // private graphics: Graphics = new Graphics();
     static resourceManager: ResourceManager = new ResourceManager();
-    // private ui: UI = new UI(this.graphics);
     private ui: UI = new UI(this);
     private profile: si.UserProfile | undefined;
     private topArtists: si.Artist[] | undefined;
@@ -55,8 +50,7 @@ export default class App {
 
         // load some extra assets for the canvas
         App.resourceManager.loadResourceByPath(HTMLImageElement, "assets/spritesheet.png");
-        // App.resourceManager.loadResourceByPath(HTMLImageElement, "assets/noise-tex.png");
-        
+
         // initialise spotify interface
         this.spotifyInterface = new si.SpotifyInterface({ClientID: CLIENT_ID, RedirectURI: REDIRECT_URI, Scopes: SCOPES});
         this.spotifyInterface.NameSet = this.ui.nameSet.bind(this.ui);
@@ -68,24 +62,9 @@ export default class App {
     }
 
     async getProfile() {
-        console.log("authorized", this.spotifyInterface.Authorized);
         if (this.spotifyInterface.Authorized) {
             this.spotifyInterface.GetUserProfile();
-            console.log("User profile:", this.profile);
         }
-    }
-
-    // private playlistCreated(url : string) {
-    //     console.log("playlist created", url);
-    //     this.ui.playlistCreated(url);
-    // }
-
-    public switchGraphics(color : THREE.Color) {
-        // this.graphics.switchColorForward(color, 0.5)
-    }
-
-    public resetGraphics() {
-        // this.graphics.switchColorBackward();
     }
 
     public get authorized(): boolean {
@@ -95,8 +74,7 @@ export default class App {
     public Login() {
         // called from UI on landing page button click
         if (this.spotifyInterface.Authorized) {
-            this.spotifyInterface.GetUserProfile();
-            console.log("User profile:", this.profile);
+            this.spotifyInterface.GetUserProfile();;
         } else {
             this.spotifyInterface.GetAuthorization();
         }
@@ -204,7 +182,6 @@ export default class App {
 
                 if (q.params === si.QueryParameters.PlaylistLength) {
                     this.requestedPlaylistLength = q.answer
-                    console.log("requested playlist length", this.requestedPlaylistLength)
                 }
 
                 else {
@@ -237,48 +214,6 @@ export default class App {
         }
     }
 
-    // public Login() {
-    //     // kick it all off
-    //     // called from UI
-    //     console.log("spotify authorised?", this.spotifyInterface.Authorized);
-
-    //     if (this.spotifyInterface.Authorized) {
-    //         this.ui.authenticated();
-    //         this.spotifyInterface.GetUserProfile();
-    //         console.log(this.profile);
-    //     } else {
-    //         this.spotifyInterface.GetAuthorization();
-    //     }
-    // }
-
-    // private QuestionAnswered(totalQuestions: number, questionNumber: number, question: Questions.Question) {
-        // this is where we aggregate query parameters
-        // once we have all questions i.e. TotalQuestions == QuestionNumber, we can get recommendations and make the playlist
-        // and the ui will get the recommendations, and playlist information through the data callback
-        
-        // this.answeredQuestions.push(question);
-        
-        // if (totalQuestions >= questionNumber) {
-            
-        //     var artistIds = this.topArtists?.map(artist => artist.Id).slice(0, 5);
-        //     var params: ({parameter: string, value: number})[] = [];
-            
-        //     // parse parameters
-        //     this.answeredQuestions.forEach((question) => {
-        //         if (question.answer !== undefined) {
-        //             params.push({parameter: question.parameter, value: question.answer.value})
-        //         }
-        //     });
-
-        //     // get spotify recommendation
-        //     this.spotifyInterface.GetRecommendations({
-        //         Count: 100, 
-        //         SeedArtistIDs: artistIds,
-        //         QueryParameters: params
-        //     });
-        // }
-    // }
-
     // most of this stuff is temporary, will hook up the proper handlers with the ui state
     public OnUserData(type: si.DataType, userData: si.Data): void {
 
@@ -301,7 +236,7 @@ export default class App {
             case si.DataType.Recommendations:
 
                 var recommendations = (userData as si.Track[]);
-                console.log(recommendations);
+                // console.log(recommendations);
 
 
 
@@ -323,7 +258,7 @@ export default class App {
                 
                                 if (q.params === si.QueryParameters.PlaylistLength) {
                                     this.requestedPlaylistLength = q.answer
-                                    console.log("requested playlist length", this.requestedPlaylistLength)
+                                    // console.log("requested playlist length", this.requestedPlaylistLength)
                                 }
                 
                                 else {
@@ -392,7 +327,7 @@ export default class App {
 
             case si.DataType.PlaylistCreated:
                 this.playlistCreated = (userData as si.Playlist);
-                console.log("playlist created in app");
+                // console.log("playlist created in app");
                 this.ui.playlistCreated(this.playlistCreated.ShareLink);
                 break;
         }

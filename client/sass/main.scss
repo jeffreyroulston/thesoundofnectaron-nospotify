@@ -239,6 +239,11 @@ p, table {
         width: 100%;
         left: 0;
     }
+
+    // @include maxW($mobileLargeWidth) {
+    //     height: calc(100% - 150px);
+    //     top: 75px;
+    // }
 }
 
 .wide .wrapper {

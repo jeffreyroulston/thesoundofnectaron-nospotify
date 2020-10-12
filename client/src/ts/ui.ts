@@ -184,7 +184,6 @@ export default class UI {
 
     async loadImages(images: string[]) {
         this.assetCount= images.length + App.audio.audioCount;
-        console.log(images.length, this.assetCount);
 
         images.forEach((imgSrc)=> {
             let imgObject = new Image();
@@ -300,7 +299,6 @@ export default class UI {
     private changeToMobile() {
         // nav
         this.navWrapperEl.removeAttribute("style");
-        this.navEl.removeAttribute("style");
         f.findAll(this.navWrapperEl, "*").forEach((el)=> {
             el.removeAttribute("style");
         })
@@ -351,8 +349,6 @@ export default class UI {
     }
 
     public toggleFrameColors(color : string, setValue : boolean) {
-        console.log("toggle frame colours", color)
-        // change color of letters in the border
         this.frameLetterFill.forEach((el)=> {
             el.style.fill = color;
         })
@@ -363,30 +359,14 @@ export default class UI {
                 el.removeAttribute("style");
             })
 
-            // change the color of the burger
-            f.findAll(this.burgerEl, "li").forEach((el)=> {
-                el.style.backgroundColor = color;
-            })
-
-            if (this.LANDING == undefined) {
-                // change the color of the small logo
-                f.findAll(this.smallLogoEl, ".logo-small-fill").forEach((el)=> {
-                    el.style.fill = color;
-                })
-                console.log("small logo fill", color);
-            } else {
-                // keep it purple
-                // f.findAll(this.smallLogoEl, ".logo-small-fill").forEach((el)=> {
-                //     el.style.fill = data.COLORS.purple;
-                // })
-            }
+            // change the color of the burger and small header
+            this.setMobileNavColor(color);
             
         } else {
             f.findAll(this.navWrapperEl, "*").forEach((el)=> {
                 el.style.color = color;
             });
 
-            // var e = [this.degTopEl, this.degBottomEl, this.trueLinkEl];
             var e = [this.degTopEl, this.degBottomEl];
             e.forEach((el)=> {
                 el.style.color = color;
@@ -397,7 +377,6 @@ export default class UI {
         }
 
         if (setValue) {
-            console.log("set current frame color to:", color);
             this.currentFrameColor = color;
         }
     }
@@ -409,7 +388,7 @@ export default class UI {
     private mobileMenuClicked() {
         // // called from the burger/close
         if (this.navVisible) {
-            this.setBurgerColor(this.currentFrameColor);
+            this.setMobileNavColor(this.currentFrameColor);
             this.fadeOut(this.navWrapperEl);
             this.navVisible = false;
         } else {
@@ -419,7 +398,7 @@ export default class UI {
             } else {
                 // show the navigation
                 // change the burger color
-                this.setBurgerColor(data.COLORS.purple);
+                this.setMobileNavColor(data.COLORS.purple);
                 this.fadeIn(this.navWrapperEl);
                 this.showMobileNavElements();
                 this.navVisible = true;
@@ -437,19 +416,11 @@ export default class UI {
     }
 
     private togglePage(target: string) {
-        // console.log(this.navVisible, this.popupPageVisible);
-        console.log("toggle page", target);
-        console.log("current page", this.currentPage);
-        console.log("popup visible", this.popupPageVisible)
-        console.log(this.currentPage != target);
-
         var pageEl = f.find(this.popupPageEl, "#" + target);
 
         if (this.popupPageVisible) {
             if (this.currentPage != target) {
-                pageEl.scrollTop = 0;
-                // pageEl.scroll = (0,0)
-                
+                f.find(this.popupPageEl, ".wrapper").scrollTop = 0;
                 var currentPageEl = f.find(this.popupPageEl, "#" + this.currentPage);
                 if (this.isMobileSize) {
                     this.slideUpOut(currentPageEl);
@@ -472,7 +443,7 @@ export default class UI {
                 this.toggleNavWrapperColor(data.COLORS.beige);
 
                 // change the burger color
-                this.setBurgerColor(data.COLORS.orange);
+                this.setMobileNavColor(data.COLORS.orange);
 
                 // transition in page
                 this.fadeIn(this.popupPageEl, 0.3);
@@ -497,14 +468,13 @@ export default class UI {
     }
 
     private closePage() {
-        console.log("close current page", this.currentPage);
         if (this.isMobileSize) {
             this.slideUpOut(f.find(this.popupPageEl, "#" + this.currentPage));
             this.fadeOut(this.popupPageEl);
             this.fadeOut(this.navWrapperEl);
             this.navVisible = false;
             this.toggleNavWrapperColor(data.COLORS.orange, 0.5);
-            this.setBurgerColor(this.currentFrameColor);
+            this.setMobileNavColor(this.currentFrameColor);
         } else {
             this.toggleFrameColors(this.currentFrameColor, false);
             this.slideOut(this.popupPageEl);
@@ -587,11 +557,18 @@ export default class UI {
         })
     }
 
-    private setBurgerColor(color: string) {
-        console.log("set burger color", color)
+    private setMobileNavColor(color: string) {
+        // change burger line colors
         f.findAll(this.burgerEl, "li").forEach((el)=> {
             el.style.backgroundColor = color;
         })
+
+        if (this.LANDING == undefined) {
+            // change the color of the small logo
+            f.findAll(this.smallLogoEl, ".logo-small-fill").forEach((el)=> {
+                el.style.fill = color;
+            })
+        } 
 
     }
 
@@ -600,7 +577,6 @@ export default class UI {
     // ************************
 
     public showWaves(d: number) {
-        console.log(this.loopingWaveAnimantions);
         TweenMax.fromTo([this.wavesTopEl, this.wavesBottomEl], 3, {display:"none", alpha:0}, {display:"block", alpha:0.95, ease: "linear", delay: d})
         TweenMax.fromTo(this.wavesBottomEl, 3, {y:200}, {y:0, ease: "linear", delay: d});
         TweenMax.fromTo(this.wavesTopEl, 3, {y:-200}, {y:0, ease: "linear", delay: d});
@@ -664,7 +640,6 @@ export default class UI {
     }
 
     public playlistCreated(url: string) {
-        console.log("playlist created", url);
         var split = url.split("/");
         var id = split[split.length-1];
 
@@ -676,7 +651,6 @@ export default class UI {
         var iframe = <HTMLIFrameElement>f.el("#embed");
         iframe.src = "https://open.spotify.com/embed/playlist/" + id;
         iframe.onload = ()=> {
-            console.log("iframe loaded");
             this.showEndFrame();
         }
     }
@@ -801,13 +775,11 @@ export default class UI {
             f.find(this.soundMobile, ".mute").style.display = "none";
             App.audio.unmute();
             App.audio.muted = false;
-            console.log("UN MUTE")
         } else {
             f.find(this.soundDesktop, ".mute").style.display = "inline-block";
             f.find(this.soundMobile, ".mute").style.display = "inline-block";
             App.audio.mute();
             App.audio.muted = true;
-            console.log("MUTE")
         }
 
     }

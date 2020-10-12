@@ -4,7 +4,6 @@
     <title>The Sound of Nectaron</title>
     <meta name="viewport" content="width=device-width,initial-scale=1, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="main.css" />
-    <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-18565740-4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -527,6 +526,7 @@
       </div>
 
       <div id="popupPage" class="section full-page">
+        <div class="bg"></div>
         <div class="wrapper">
           <div id="about">
             <div class="col-wrapper">
@@ -605,8 +605,6 @@
                 </div>
               </div>
             </div>
-
-            <a href="https://thisistrue.co" target="_blank">A True&#x2122; Story </a>
           </div>
           <div id="faq">
             <!-- <div class="col-wrapper content-wrapper">
@@ -636,6 +634,7 @@
                 <h2>Who are NZ Hops?</h2>
                 <p>NZ Hops is a cooperative of Master Growers, whose legend and cultivars have been crafted and refined for over 150 years.</p>
                 <p class="subscribe-btn"><a href="https://share.hsforms.com/14WWn-fHgSRqVWX0KiWsyqw4yypk" target="_blank">Care to subscribe?</a></p>
+                <p class="true"><a href="https://thisistrue.co" target="_blank">A True&#x2122; Story </a></p> 
               </div>
             </div>
           </div>
@@ -658,12 +657,12 @@
 
       <div id="nav-wrapper">
         <ul id="nav" class="hide-top">
-          <li class="deg top"><a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="ga('send', 'event', 'Interaction', 'ButtonClick', 'DegreeTop')">41.3185182&#xb0; S</a></li>
-          <li><a href="https://nzhops.co.nz/pages/buy-nz-hops" target="_blank" onclick="ga('send', 'event', 'Interaction', 'ButtonClick', 'Shop')">Shop</a></li>
+          <li class="deg top"><a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'DegreeTop'});">41.3185182&#xb0; S</a></li>
+          <li><a href="https://nzhops.co.nz/pages/buy-nz-hops" target="_blank" onclick="gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'Shop'});">Shop</a></li>
           <li data="about" class="nav-about">About</li>
           <li data="faq" class="nav-faq">FAQ</li>
-          <li><a href="https://nzhops.co.nz/" target="_blank" onclick="ga('send', 'event', 'Interaction', 'ButtonClick', 'NZHopsSite')">nzhops</a></li>
-          <li class="deg bottom"><a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="ga('send', 'event', 'Interaction', 'ButtonClick', 'DegreeBottom')">173.1374699&#xb0; E</a></li>
+          <li><a href="https://nzhops.co.nz/" target="_blank" onclick="gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'NZHopsSite'});"></a>nzhops</a></li>
+          <li class="deg bottom"><a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'DegreeBottom'});">173.1374699&#xb0; E</a></li>
         </ul>
         <div id="sound-controller-mobile" class="sound-controller">
           <ul>
@@ -679,10 +678,10 @@
       </div>
 
       <div id="deg-top" class="desktop-nav-element hide-top">
-        <a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="ga('send', 'event', 'Interaction', 'ButtonClick', 'DegreeTop')">173.1374699&#xb0; E</a>
+        <a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'DegreeTop'});">173.1374699&#xb0; E</a>
       </div>
       <div id="deg-bottom" class="desktop-nav-element hide-bottom">
-          <a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="ga('send', 'event', 'Interaction', 'ButtonClick', 'DegreeBottom')"><span>173.1374699&#xb0; E&nbsp;</span>41.3185182&#xb0; S</a></a>
+          <a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'DegreeBottom'});"><span>173.1374699&#xb0; E&nbsp;</span>41.3185182&#xb0; S</a></a>
       </div>
       <div id="sound-controller-desktop" class="sound-controller desktop-nav-element hide-bottom">
         <ul>
@@ -744,58 +743,45 @@
       </div>
     </div>
 
-    <!-- <input type="text" value="" id="playlist-url-thing"> -->
-    <!-- <textarea></textarea> -->
-    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script> -->
-    <!-- <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script> -->
     <script type="text/javascript">
       if (document.fonts == undefined) {
         document.getElementById("shit-browser-alert").style.display = "block";
       }
 
       document.getElementById("start-btn").addEventListener("click", function(){
-        console.log("start button clicked");
-        ga('send', 'event', 'Interaction', 'ButtonClick', 'Landing');
+        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'startExperience'});
       });
 
       document.querySelector("#round-name .next-btn").addEventListener("click", function(){
-        console.log("round button clicked");
-        ga('send', 'event', 'Interaction', 'ButtonClick', 'StartRound');
+        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'startRound'});
       })
 
       document.querySelector("#listen").addEventListener("click", function(){
-        console.log("end frame listen button clicked");
-        ga('send', 'event', 'Interaction', 'ButtonClick', 'OpenInSpotify');
+        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'openSpotifyPlaylist'});
       })
 
       document.querySelector("#brew-again").addEventListener("click", function(){
-        console.log("end frame brew again button clicked");
-        ga('send', 'event', 'Interaction', 'ButtonClick', 'Brew Again');
+        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'brewAgain'});
       })
 
       document.querySelector("#end-frame .subscribe-btn").addEventListener("click", function(){
-        console.log("end frame subscribe button clicked");
-        ga('send', 'event', 'Interaction', 'ButtonClick', 'EndFrametoSubscribe');
+        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'endFrame-subscribe'});
       })
 
       document.querySelector("#faq .subscribe-btn").addEventListener("click", function(){
-        console.log("faw subscribe button clicked");
-        ga('send', 'event', 'Interaction', 'ButtonClick', 'FAQtoSubscribe');
+        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'faq-subscribe'});
       })
 
       document.querySelector("#nav-wrapper .nav-about").addEventListener("click", function(){
-        console.log("about button clicked");
-        ga('send', 'event', 'Interaction', 'ButtonClick', 'About');
+        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'about'});
       })
 
       document.querySelector("#nav-wrapper .nav-faq").addEventListener("click", function(){
-        console.log("about button clicked");
-        ga('send', 'event', 'Interaction', 'ButtonClick', 'FAQ');
+        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'faq'});
       })
 
       document.querySelector(".to-nzhops").addEventListener("click", function(){
-        console.log("faq nzhops button clicked");
-        ga('send', 'event', 'Interaction', 'ButtonClick', 'FAQtoNZHops');
+        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'faq-nzhops'});
       })
     </script>
     <script type="text/javascript" src="out.js"></script>

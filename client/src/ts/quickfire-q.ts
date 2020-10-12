@@ -2,7 +2,6 @@ import UI from "./ui";
 import {QuickFireQuestion, qfQuestions, COLORS} from "./data";
 import * as f from "./helpers";
 import {TweenMax} from "gsap"
-import { Color } from "three";
 import App from "./app";
 
 export default class QuickFireQ {
@@ -21,7 +20,7 @@ export default class QuickFireQ {
     private questionEl: HTMLElement = f.find(this.el, " .question");
     private timerEl : HTMLElement = f.find(this.el, "#timer");
 
-    private timerCount : number = 1;
+    private timerCount : number = 20;
     private timerActive : boolean = true;
     private active : boolean = false;
 
