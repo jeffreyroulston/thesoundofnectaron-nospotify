@@ -65,9 +65,6 @@ export default class Landing {
         // make the frame text white
         this.UI.toggleFrameColors(data.COLORS.beige, true);
 
-        // make the border come in
-        this.UI.showNavBar();
-
         // waves
         this.UI.showWaves(0);
 

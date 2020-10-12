@@ -151,11 +151,10 @@ export default class Rounds {
             alpha:1, y:0, delay:2*d+1
         });
 
-        if (this.UI.isMobileSize) {
+        if (this.UI.isMobileSize  && !this.UI.smallLogoVisible) {
             // show the little logo
-            TweenMax.fromTo(this.UI.smallLogoEl, 0.5, {opacity:0, y:-100}, {opacity:1, y:0, display: "block"})
-
-        } else {
+            TweenMax.fromTo(this.UI.smallLogoEl, 0.5, {opacity:0, y:-100}, {opacity:1, y:0})
+            this.UI.smallLogoVisible = true;
         }
 
         // bring in the fruit
