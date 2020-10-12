@@ -31,6 +31,18 @@
             position: relative;
         }
     }
+
+    .content-column {
+        // < 640px;
+        @include maxW($mobileLargeWidth) {
+            top: 20px;
+        }
+    }
+
+    .wrapper {
+        height: calc(100% - 140px);
+        top: 80px;
+    }
 }
 
 #can {

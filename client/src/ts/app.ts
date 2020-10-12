@@ -1,16 +1,10 @@
 import * as si from "./spotify-interface";
 // import * as Questions from "./questions";
-import * as THREE from 'three';
 import * as data from "./data";
 import UI from "./ui";
 import ResourceManager, { GLTFAsset } from "./resource-manager";
-import Graphics from "./graphics";
-import Landing from "./landing";
-import Game from "./rounds";
-import { easeExpIn } from "d3";
 import { shuffle } from "./helpers";
 import AudioPlayer from "./audio";
-import Fire from "./fire";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
 // let REDIRECT_URI: string = "http://localhost:8888";

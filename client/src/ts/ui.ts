@@ -123,7 +123,6 @@ export default class UI {
 
         // reload
         f.find(this.endFrameEl, "#brew-again").addEventListener("click", (e: any)=> {
-            if (!(e.target.className.indexOf("active") > -1)) return;
             location.reload();
         })
 
