@@ -87,6 +87,12 @@
         left: 0;
         border: 1px solid black;
         overflow-y: scroll;
+
+        // < 640px;
+        @include maxW($mobileLargeWidth) {
+            height: calc(100% - 100px);
+            top: 50px;
+        }
     }
 }
 
@@ -98,6 +104,12 @@
     width: 100%;
     // overflow: scroll;
     // z-index: 1000;
+
+    // < 640px;
+    @include maxW($mobileLargeWidth) {
+        height: 100%;
+        margin: 0;
+    }
 }
 
 #about {
@@ -152,6 +164,7 @@
         @include maxW($mobileLargeWidth) {
             // max-width: 500px;
             margin-top: 30px;
+            margin-bottom: 50px;
         }
     }
 
@@ -267,7 +280,6 @@
     }
 
     .subscribe-btn {
-        margin-top: 20px;
         margin-bottom: 50px;
         color: $orange;
         text-decoration: underline;
@@ -283,5 +295,9 @@
         margin-left: auto;
         margin-right: auto;
         margin-top: 30px;
+    }
+
+    h1, p {
+        margin-bottom: 50px;
     }
 }

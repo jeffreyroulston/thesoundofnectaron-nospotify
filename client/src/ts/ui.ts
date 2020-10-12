@@ -139,13 +139,13 @@ export default class UI {
         // });
 
         // open subscription dialoge
-        f.elList(".subscribe-btn").forEach((e)=> {
-            e.addEventListener("click", (e:any)=> {
-                var inputs = document.querySelectorAll(".hbspt-form .hs-input");
-                console.log(inputs);
-                this.togglePage("subscribe");
-            });
-        })
+        // f.elList(".subscribe-btn").forEach((e)=> {
+        //     e.addEventListener("click", (e:any)=> {
+        //         // var inputs = document.querySelectorAll(".hbspt-form .hs-input");
+        //         // console.log(inputs);
+        //         this.togglePage("subscribe");
+        //     });
+        // })
 
         // we playing rounds on the redirect
         if (this.app.authorized) {
@@ -173,6 +173,30 @@ export default class UI {
             this.LANDING.onLoginPressed = this.Login.bind(this);
             this.loaderInit();
         }
+
+        // setTimeout(()=> {
+        //     console.log(document.getElementsByClassName("hbspt-form"));
+        //     console.log(document.querySelectorAll(".hbspt-form label"))
+        // }, 3000);
+
+        // window.onload = function() {
+        //     let myiFrame = <HTMLIFrameElement>document.getElementById("hs-form-iframe-0");
+        //     console.log("iframe", myiFrame);
+        //     let doc = myiFrame.contentDocument;
+        //     if (!doc) return;
+
+        //     doc.body.innerHTML = doc.body.innerHTML + '<style>label {font-family: "Circular"; font-weight: 400; font-size: 20px; line-height: 1.5;}</style>';
+        //  }
+
+        //  window.onload = function() {
+        //     let link = document.createElement("link");
+        //     link.href = "form.css";      /**** your CSS file ****/ 
+        //     link.rel = "stylesheet"; 
+        //     link.type = "text/css"; 
+        //     console.log(frames, frames[0]);
+        //     frames[0].document.head.appendChild(link); /**** 0 is an index of your iframe ****/ 
+        //     frames[1].document.head.appendChild(link); /**** 0 is an index of your iframe ****/ 
+        //   }
 
         // this.showEndFrame();
     }
@@ -430,15 +454,12 @@ export default class UI {
             this.navVisible = false;
         } else {
             if (this.popupPageVisible) {
-                // hide the popup page
-                // this.fadeOut(this.popupPageEl);
-                // this.fadeOut(this.navWrapperEl);
-                // this.navVisible = false;
-                // this.popupPageVisible = false;
                 this.closePage();
 
             } else {
                 // show the navigation
+                // change the burger color
+                this.setBurgerColor(data.COLORS.purple);
                 this.fadeIn(this.navWrapperEl);
                 this.showMobileNavElements();
                 this.navVisible = true;
@@ -446,42 +467,6 @@ export default class UI {
         }
 
         this.burgerEl.classList.toggle("opened");
-
-        // if (this.navVisible) {
-        //     this.slideOut(this.navWrapperEl);
-
-        //     // revert the frame Colors
-        //     this.toggleFrameColors(this.currentFrameColor, false);
-
-        //     // hide the small logo
-        //     if (this.LANDING) this.toggleHeaderLogo(false);
-        //     this.navVisible = false;
-
-        // } else {
-        //     if (this.currentPopupPageEl) {
-        //         this.closePage();
-
-        //     } else {
-        //         // show the nav
-        //         this.toggleFrameColors(data.COLORS.purple, false);
-        //         this.slideIn(this.navWrapperEl);
-
-        //         // bounce in the things
-        //         TweenMax.fromTo(f.findAll(this.navEl, "li"), 0.5, {
-        //             alpha:0, y:50
-        //         }, {
-        //             alpha: 1, y:0, delay:0.2, stagger : {
-        //                 each: 0.1
-        //             }
-        //         })
-
-        //         // show the small logo
-        //         if (this.LANDING) this.toggleHeaderLogo(true);
-        //         this.navVisible = true;
-        //     }
-        // }
-
-        // this.burgerEl.classList.toggle("opened");
     }
 
 
