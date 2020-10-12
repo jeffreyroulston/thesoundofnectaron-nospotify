@@ -484,6 +484,16 @@ p, table {
 //     display: none;
 // }
 
+#coming-soon-wrapper {
+    height: 100%;
+    width: 100%;
+    background-color: $purple;
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 #coming-soon {
     color: $orange;
     position: relative;

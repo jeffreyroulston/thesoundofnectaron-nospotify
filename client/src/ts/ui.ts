@@ -57,8 +57,8 @@ export default class UI {
 
     // about page
     private aboutEl : HTMLElement = f.elByID("about");
-    private aboutHopTopEl : HTMLElement = f.find(this.aboutEl, ".hopTop");
-    private aboutHopBottomEl : HTMLElement = f.find(this.aboutEl, ".hopBottom")
+    // private aboutHopTopEl : HTMLElement = f.find(this.aboutEl, ".hopTop");
+    // private aboutHopBottomEl : HTMLElement = f.find(this.aboutEl, ".hopBottom")
     
     // for between pages
     private elementsToHide : HTMLElement[] = [];
@@ -138,20 +138,8 @@ export default class UI {
         //     }
         // });
 
-        // open subscription dialoge
-        // f.elList(".subscribe-btn").forEach((e)=> {
-        //     e.addEventListener("click", (e:any)=> {
-        //         // var inputs = document.querySelectorAll(".hbspt-form .hs-input");
-        //         // console.log(inputs);
-        //         this.togglePage("subscribe");
-        //     });
-        // })
-
         // we playing rounds on the redirect
         if (this.app.authorized) {
-            // hide the loader
-            // this.loaderEl.style.display = "none";
-
             // set the frame
             this.frameVisible = true;
             this.frameEl.classList.toggle("visible");
@@ -165,40 +153,11 @@ export default class UI {
             this.ROUNDS.showRound(1);
             this.onResize();
         } else {
-            // show the loader
-            // this.loaderEl.style.display = "block";
-
             // LANDING PAGE
             this.LANDING = new Landing(this);
             this.LANDING.onLoginPressed = this.Login.bind(this);
             this.loaderInit();
         }
-
-        // setTimeout(()=> {
-        //     console.log(document.getElementsByClassName("hbspt-form"));
-        //     console.log(document.querySelectorAll(".hbspt-form label"))
-        // }, 3000);
-
-        // window.onload = function() {
-        //     let myiFrame = <HTMLIFrameElement>document.getElementById("hs-form-iframe-0");
-        //     console.log("iframe", myiFrame);
-        //     let doc = myiFrame.contentDocument;
-        //     if (!doc) return;
-
-        //     doc.body.innerHTML = doc.body.innerHTML + '<style>label {font-family: "Circular"; font-weight: 400; font-size: 20px; line-height: 1.5;}</style>';
-        //  }
-
-        //  window.onload = function() {
-        //     let link = document.createElement("link");
-        //     link.href = "form.css";      /**** your CSS file ****/ 
-        //     link.rel = "stylesheet"; 
-        //     link.type = "text/css"; 
-        //     console.log(frames, frames[0]);
-        //     frames[0].document.head.appendChild(link); /**** 0 is an index of your iframe ****/ 
-        //     frames[1].document.head.appendChild(link); /**** 0 is an index of your iframe ****/ 
-        //   }
-
-        // this.showEndFrame();
     }
 
     // ************************
@@ -243,7 +202,7 @@ export default class UI {
         }
     }
 
-        // ************************
+    // ************************
     // SET AND HIDE ELEMENTS
     // ************************
 
@@ -310,25 +269,29 @@ export default class UI {
                 this.isMobileSize = m;
                 this.changeToMobile();
             }
+        } else {
+            TweenMax.to(".hide-top", 0.5, {y:0})
+            TweenMax.to(".hide-bottom", 0.5, {y:0})
         }
 
         this.isMobileSize = m;
     }
 
     private changeToDesktop() {
+        console.log("change to desktop");
         this.toggleHeaderLogo(false);
 
         // reset nav
         this.navVisible = false;
         this.navWrapperEl.removeAttribute("style");
-        // TweenMax.fromTo([this.navEl, this.degTopEl], 0.5, {y:-100}, {y:0});
-        // TweenMax.fromTo([this.degBottomEl, this.trueLinkEl], 0.5, {y:100}, {y:0});
+        TweenMax.to(this.navWrapperEl, 0.5, {y:0})
 
         // change the frame colour
         this.toggleFrameColors(this.currentFrameColor, false);
     }
 
     private changeToMobile() {
+        console.log("change to mobile");
         // nav
         this.navWrapperEl.removeAttribute("style");
 
@@ -360,11 +323,11 @@ export default class UI {
 
         if (!this.isMobileSize) {
             TweenMax.to(".hide-top", 0.5, {y:0})
+            TweenMax.to(".hide-bottom", 0.5, {y:0})
         }
     }
 
     private frameOut() {
-        console.log("frame out");
         // N E C
         TweenMax.fromTo(f.findAll(this.frameEl, "li.top"), 0.5, {display:"block", y:-0}, {y:-100, display:"none"})
         // T
@@ -622,30 +585,6 @@ export default class UI {
         })
     }
 
-    // private showPopupPageElements() {
-    //     if (!this.currentPopupPageEl) return;
-    //     TweenMax.fromTo(f.findAll(this.currentPopupPageEl, ".col-wrapper"), 0.5, {
-    //         alpha:0, y:50
-    //     }, {
-    //         alpha: 1, y:0, delay:0.5, stagger : {
-    //             each: 0.05
-    //         }
-    //     });
-    // }
-
-    // private hidePopupPageElements() {
-    //     if (!this.currentPopupPageEl) return;
-    //     TweenMax.fromTo(f.findAll(this.currentPopupPageEl, ".pop"), 0.5, {
-    //         alpha:1, y:0
-    //     }, {
-    //         alpha: 0, y:-50, stagger : {
-    //             each: 0.05
-    //         }, onComplete: ()=> {
-    //             if (this.currentPopupPageEl) this.currentPopupPageEl.style.display = "none"
-    //         }
-    //     });
-    // }
-
     private toggleNavWrapperColor(color: string, delay?:number) {
         var d = delay ? delay : 0
         TweenMax.to(this.navWrapperEl, 0.5, {
@@ -732,6 +671,10 @@ export default class UI {
         console.log("playlist created", url);
         var split = url.split("/");
         var id = split[split.length-1];
+
+        // set it
+        var btn = <HTMLLinkElement>f.el("#listen-link");
+        btn.href = url;
 
         // create an embed link
         var iframe = <HTMLIFrameElement>f.el("#embed");

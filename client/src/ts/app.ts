@@ -16,7 +16,8 @@ let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
 // let REDIRECT_URI: string = "http://10.100.10.63:8888";
 let REDIRECT_URI: string = "http://localhost:8888";
 // let REDIRECT_URI: string = "http://192.168.1.155:8888";
-// let REDIRECT_URI: string = "http://thesoundofnectaron.truedigital.co.nz";
+// let REDIRECT_URI: string = "https://thesoundofnectaron.com";
+// let REDIRECT_URI: string = "https://thesoundofnectaron.truedigital.co.nz";
 let SCOPES: string[] = [
     'user-top-read', 
     'user-read-private', 
@@ -372,7 +373,7 @@ export default class App {
                             Image: {
                                 Width: 100,
                                 Height: 100,
-                                Url: "http://thesoundofnectaron.truedigital.co.nz/assets/albumCover.jpg"
+                                Url: "https://thesoundofnectaron.com/assets/albumCover.jpg"
 
                             }
                         });
