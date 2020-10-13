@@ -442,8 +442,6 @@
                   <p id="max-value-label" class="slider-label"></p>
                   <span class="slider-line"></span>
                   <span class="slider-thumb"></span>
-                  <span class="test"></span>
-                  <input type="range" min="0" max="100" value="50" class="slider slider-input">
                 </div>
               </div>
             </div>
@@ -660,12 +658,12 @@
 
       <div id="nav-wrapper">
         <ul id="nav" class="hide-top">
-          <li class="deg top"><a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'DegreeTop'});">41.3185182&#xb0; S</a></li>
-          <li><a href="https://nzhops.co.nz/pages/buy-nz-hops" target="_blank" onclick="gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'Shop'});">Shop</a></li>
+          <li class="deg top"><a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'degree top'});">41.3185182&#xb0; S</a></li>
+          <li><a href="https://nzhops.co.nz/pages/buy-nz-hops" target="_blank" onclick="gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'shop'});">Shop</a></li>
           <li data="about" class="nav-about">About</li>
           <li data="faq" class="nav-faq">FAQ</li>
-          <li><a href="https://nzhops.co.nz/" target="_blank" onclick="gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'NZHopsSite'});">nzhops</a></li>
-          <li class="deg bottom"><a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'DegreeBottom'});">173.1374699&#xb0; E</a></li>
+          <li><a href="https://nzhops.co.nz/" target="_blank" onclick="gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'nzhops website'});">nzhops</a></li>
+          <li class="deg bottom"><a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'degree bottom'});">173.1374699&#xb0; E</a></li>
         </ul>
         <div id="sound-controller-mobile" class="sound-controller">
           <ul>
@@ -681,10 +679,10 @@
       </div>
 
       <div id="deg-top" class="desktop-nav-element hide-top">
-        <a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'DegreeTop'});">173.1374699&#xb0; E</a>
+        <a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'degree top'});">173.1374699&#xb0; E</a>
       </div>
       <div id="deg-bottom" class="desktop-nav-element hide-bottom">
-          <a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'DegreeBottom'});"><span>173.1374699&#xb0; E&nbsp;</span>41.3185182&#xb0; S</a></a>
+          <a href="https://goo.gl/maps/DMUMeCQ5FoV3nfge8" target="_blank" onclick="gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'degree bottom'});"><span>173.1374699&#xb0; E&nbsp;</span>41.3185182&#xb0; S</a></a>
       </div>
       <div id="sound-controller-desktop" class="sound-controller desktop-nav-element hide-bottom">
         <ul>
@@ -752,39 +750,35 @@
       }
 
       document.getElementById("start-btn").addEventListener("click", function(){
-        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'startExperience'});
+        gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'start experience'});
       });
 
-      document.querySelector("#round-name .next-btn").addEventListener("click", function(){
-        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'startRound'});
-      })
-
       document.querySelector("#listen").addEventListener("click", function(){
-        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'openSpotifyPlaylist'});
+        gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'open spotify playlist'});
       })
 
       document.querySelector("#brew-again").addEventListener("click", function(){
-        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'brewAgain'});
+        gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'brew again'});
       })
 
       document.querySelector("#end-frame .subscribe-btn").addEventListener("click", function(){
-        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'endFrame-subscribe'});
+        gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'end frame-subscribe'});
       })
 
       document.querySelector("#faq .subscribe-btn").addEventListener("click", function(){
-        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'faq-subscribe'});
+        gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'faq-subscribe'});
       })
 
       document.querySelector("#nav-wrapper .nav-about").addEventListener("click", function(){
-        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'about'});
+        gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'about'});
       })
 
       document.querySelector("#nav-wrapper .nav-faq").addEventListener("click", function(){
-        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'faq'});
+        gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'faq'});
       })
 
       document.querySelector(".to-nzhops").addEventListener("click", function(){
-        gtag('event', 'Interaction', {'event_category' : 'ButtonClick', 'event_label' : 'faq-nzhops'});
+        gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'faq-nzhops'});
       })
     </script>
     <script type="text/javascript" src="out.js"></script>

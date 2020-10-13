@@ -206,6 +206,7 @@
         // < 1024px
         @include maxW($tabletLandscapeWidth) {
             margin: 0;
+            left: 20px;
         }
 
         &.orange-left {
@@ -238,13 +239,14 @@
         border-bottom: 16px solid $purple;
         position: absolute;
         opacity: 0;
-        // left: calc(50% - 9px);
+        top: 10px;
 
-        // @include maxW($tabletPortraitWidth) {
-        //     border-left: 25px solid transparent;
-        //     border-right: 25px solid transparent;
-        //     border-bottom: 35px solid $purple;
-        // }
+        @include maxW($tabletPortraitWidth) {
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 30px solid $purple;
+            left: -19px;
+        }
     }
 
     .slider-label {
@@ -262,45 +264,20 @@
     }
 
     #max-value-label {
-        // right: -20px;
         right: 0px;
+        @include maxW($tabletPortraitWidth) {
+            right: 20px;
+        }
     }
 
     .slider-line {
         width: calc(100% - 20px);
-        // width: 100%;
         display: block;
-        // border-top: 3px solid $purple;
         height: 3px;
         background: rgb(136,0,157);
-        // background: linear-gradient(90deg, rgba(136,0,157,1) 0%, rgba(255,25,0,1) 100%);
-    }
 
-    .slider-input {
-        width: 100%;
-        opacity: 1;
-        position: relative;
-        display: none;
+        @include maxW($tabletPortraitWidth) {
+            width: calc(100% - 40px);
+        }
     }
-
-    .slider-thumb, .slider-input {
-        top: 17px;
-        cursor: pointer;
-    }
-
-    // @include maxW($tabletPortraitWidth) {
-    //     .slider-q2 {
-    //         li {
-    //             img {
-    //                 width: 50%;
-    //             }
-    //         }
-    //     }
-    
-    //     .slider-q5 {
-    //         margin:0;
-    //         width: 120%;
-    //         left:-35%;
-    //     }
-    // }
 }

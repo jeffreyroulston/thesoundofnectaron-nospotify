@@ -73,20 +73,6 @@ export default class QuickFireQ {
             alpha:1, x:0, delay: delay, onComplete: ()=> {
             setTimeout(this.updateTimer.bind(this), 1000)
         }})
-        // TweenMax.fromTo(f.find(this.el, "#timer-wrapper"), this.time, {
-        //     alpha:0
-        // }, {
-        //     alpha:1, delay: delay, onComplete: ()=> {
-        //     setTimeout(this.updateTimer.bind(this), 1000)
-        // }})
-
-        // var wrapper = f.find(this.el, "#timer-wrapper");
-
-        // var tl = new TimelineMax();
-        // tl.fromTo(wrapper, {x:-100}, {duration: 1, x:100});
-        // tl.to(wrapper, {x:-100, duration:1});
-        // tl.repeat(-1);
-        // tl.play();
     }
 
     getNextQuestion() {
@@ -168,6 +154,11 @@ export default class QuickFireQ {
     }
 
     answerRetrieved(a : boolean) {
+        // google analytics
+        var message = this.questionsAsked[this.questionsAsked.length-1].question + " - " + a.toString();
+        // console.log(message);
+        gtag('event', 'answer retrieved', {'event_category' : 'quickfire', 'event_label' : message});
+
         this.questionsAsked[this.questionsAsked.length-1].answered = true;
         this.questionsAsked[this.questionsAsked.length-1].answer = a
         this.getNextQuestion();

@@ -128,8 +128,6 @@ export default class Slider {
             this.sliderThumbEl.style.borderBottomColor = color;
             this.callbackCurrentQuestion(this.sliderValue);
         }
-
-        // this.callbackCurrentQuestion(Math.round((this.draggableCurrentPos - this.draggableOffset)/this.draggableMax * 100))
     }
 
     private setSliderValue(n : number) {
@@ -151,6 +149,12 @@ export default class Slider {
         var q = sliderQuestions[this.questionIdx];
         var v = (q.max - q.min)/100 * this.sliderValue + q.min;
         sliderQuestions[this.questionIdx].answer = f.roundTo(v, 2);
+
+        // google analytics
+        var message = sliderQuestions[this.questionIdx].question + " - " + this.sliderValue.toString();
+        // console.log(message);
+        gtag('event', 'answer retrieved', {'event_category' : 'slider', 'event_label' : message});
+        
         this.getNextQuestion();
     }
 

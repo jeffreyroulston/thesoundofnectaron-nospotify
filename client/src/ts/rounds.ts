@@ -203,6 +203,11 @@ export default class Rounds {
     private next() {
         if (!this.btnActive) return;
 
+        // google analytics
+        var message = "start round " + (this.currentRoundIdx+1).toString();
+        // console.log(message);
+        gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : message});
+    
         App.audio.playClick();
 
         if (this.currentRoundIdx == 0) {
