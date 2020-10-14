@@ -182,7 +182,7 @@ export default class MCQ {
 
         // google analytics
         // console.log(answer);
-        gtag('event', 'answer retrieved', {'event_category' : 'slider', 'event_label' : answer});
+        gtag('event', 'answer retrieved', {'event_category' : 'mcq', 'event_label' : answer});
 
         // set the thing
         this.canGraphicEls[this.questionIdx].style.backgroundImage = this.getCanPath(bg);
