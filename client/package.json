@@ -4,8 +4,8 @@
   "description": "Nectaron Client App",
   "main": "index.js",
   "scripts": {
-    "build-dev": "gulp build-dev",
-    "build": "gulp build"
+    "build-dev": "npx gulp build-dev",
+    "build": "npx gulp build"
   },
   "author": "",
   "license": "ISC",
