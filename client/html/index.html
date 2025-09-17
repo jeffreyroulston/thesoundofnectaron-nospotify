@@ -510,12 +510,12 @@
           <div class="playlist-wrapper">
             <h1 id="playlist-title">Your Playlist</h1>
             <p id="playlist-desc" class="body-copy">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Augue ut lectus arcu bibendum at varius vel. Scelerisque eu ultrices vitae auctor eu augue. Fermentum leo vel orci porta. Scelerisque felis imperdiet proin fermentum leo vel orci.</p>
-            <iframe id="embed" width="250" height="80" frameborder="0" data-mce-fragment="1"></iframe>
+            <iframe id="embed" width="250" height="80" frameborder="0" data-mce-fragment="1" style="display: none;"></iframe>
             <ul class="btn-wrapper">
-              <li id="listen"><p><a id="listen-link" href="" target="_blank">Take a listen</a></p></li>
+              <!-- <li id="listen"><p><a id="listen-link" href="" target="_blank">Create on Spotify</a></p></li> -->
               <li id="brew-again"><p>Brew again</p></li>
             </ul>
-            <p class="subscribe-btn"><a href="https://share.hsforms.com/14WWn-fHgSRqVWX0KiWsyqw4yypk" target="_blank">Care to subscribe?</a></p>
+            <p class="subscribe-btn"><a href="https://share.hsforms.com/14WWn-fHgSRqVWX0KiWsyqw4yypk" target="_blank" style="display: none;">Care to subscribe?</a></p>
           </div>
           <!-- <div class="col-wrapper content-column">
             <div id="album-wrapper">
@@ -753,9 +753,9 @@
         gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'start experience'});
       });
 
-      document.querySelector("#listen").addEventListener("click", function(){
-        gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'open spotify playlist'});
-      })
+      // document.querySelector("#listen").addEventListener("click", function(){
+      //   gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'open spotify playlist'});
+      // })
 
       document.querySelector("#brew-again").addEventListener("click", function(){
         gtag('event', 'interaction', {'event_category' : 'button click', 'event_label' : 'brew again'});

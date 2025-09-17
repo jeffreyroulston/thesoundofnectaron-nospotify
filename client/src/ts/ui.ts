@@ -141,24 +141,29 @@ export default class UI {
 
         // we playing rounds on the redirect
         if (this.app.authorized) {
-            // set the frame
-            this.frameVisible = true;
-            this.frameEl.classList.toggle("visible");
-            f.elList(".hide-top").forEach((el)=> {el.classList.toggle("visible")});
-            f.elList(".hide-bottom").forEach((el)=> {el.classList.toggle("visible")});
-
-            // GAMEPLAY
-            this.ROUNDS = new Rounds(this);
-
-            // start
-            this.ROUNDS.showRound(1);
-            this.onResize();
+            this.startLevels();
         } else {
             // LANDING PAGE
             this.LANDING = new Landing(this);
             this.LANDING.onLoginPressed = this.Login.bind(this);
             this.loaderInit();
         }
+    }
+
+    public startLevels() {
+        // set the frame
+        this.frameVisible = true;
+        this.frameEl.classList.toggle("visible");
+        f.elList(".hide-top").forEach((el)=> {el.classList.toggle("visible")});
+        f.elList(".hide-bottom").forEach((el)=> {el.classList.toggle("visible")});
+        this.transitionOut();
+
+        // GAMEPLAY
+        this.ROUNDS = new Rounds(this);
+
+        // start
+        this.ROUNDS.showRound(1);
+        this.onResize();
     }
 
     // ************************
@@ -638,6 +643,13 @@ export default class UI {
         this.app.CreatePlaylist();
     }
 
+    public prepareNewEndFrame() {
+        this.setBgColor(data.COLORS.purple);
+        this.app.CreatePlaylist();
+        this.showEndFrame();
+        // this.showLoader();
+    }
+
     public playlistCreated(url: string) {
         var split = url.split("/");
         var id = split[split.length-1];
@@ -662,7 +674,8 @@ export default class UI {
 
     public setEndFrameCopy(copy: string) {
         // set description
-        f.find(this.endFrameEl, "#playlist-desc").innerHTML = copy;
+        var rant = "<br /><br /><strong>This used to create a playlist on Spotify, but Spotify hates developers nowadays. Workaround coming soon.</strong>"
+        f.find(this.endFrameEl, "#playlist-desc").innerHTML = copy + rant;
     }
 
     public showEndFrame() {
@@ -707,18 +720,26 @@ export default class UI {
             alpha: 1, y:0, delay: d+0.4
         });
 
-        TweenMax.fromTo(f.find(this.endFrameEl, "iframe"), 0.5, {
-            alpha: 0, y:50
-        }, {
-            alpha: 1, y:0, delay: d+0.6
-        })
+        // TweenMax.fromTo(f.find(this.endFrameEl, "iframe"), 0.5, {
+        //     alpha: 0, y:50
+        // }, {
+        //     alpha: 1, y:0, delay: d+0.6
+        // })
 
-        TweenMax.fromTo([playlistBtn, restartBtn], 0.3, {
+        // TweenMax.fromTo([playlistBtn, restartBtn], 0.3, {
+        //     alpha: 0, y:50
+        // }, {
+        //     alpha:1, y:0, delay: d+1.2, stagger:0.1, onComplete : ()=> {
+        //         restartBtn.className += " active";
+        //         playlistBtn.className += " active";
+        //     }
+        // })
+
+        TweenMax.fromTo([restartBtn], 0.3, {
             alpha: 0, y:50
         }, {
             alpha:1, y:0, delay: d+1.2, stagger:0.1, onComplete : ()=> {
                 restartBtn.className += " active";
-                playlistBtn.className += " active";
             }
         })
 

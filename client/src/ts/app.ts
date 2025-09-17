@@ -7,8 +7,8 @@ import { shuffle } from "./helpers";
 import AudioPlayer from "./audio";
 
 let CLIENT_ID: string = 'c5a5170f00bf40e2a89be3510402947c';
-// let REDIRECT_URI: string = "http://localhost:8888";
-let REDIRECT_URI: string = "https://thesoundofnectaron.com";
+let REDIRECT_URI: string = "http://localhost:8888/dist";
+// let REDIRECT_URI: string = "https://thesoundofnectaron.com";
 let SCOPES: string[] = [
     'user-top-read', 
     'user-read-private', 
@@ -52,7 +52,7 @@ export default class App {
         this.spotifyInterface.OnErrorListeners.push(this.OnSpotifyInterfaceError.bind(this));
 
         // check if authorised
-        this.getProfile();
+        // this.getProfile();
     }
 
     async getProfile() {
@@ -158,10 +158,10 @@ export default class App {
             }
         })
 
-        var longDesc = intro + ingredient + danceability + setting + energy + valence
+        var longDesc = intro + ingredient + danceability + setting + energy + valence;
         this.playlistDescription = danceability + energy + valence;
         this.ui.setEndFrameCopy(longDesc);
-        this.generatePlaylist();
+        // this.generatePlaylist();
     }
 
     async generatePlaylist() {

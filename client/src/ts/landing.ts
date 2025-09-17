@@ -17,7 +17,13 @@ export default class Landing {
     constructor(ui : UI) {
         this.UI = ui;
 
-        f.find(this.landingPageEl, ".next-btn").addEventListener("click", this.login.bind(this))
+        // f.find(this.landingPageEl, ".next-btn").addEventListener("click", this.login.bind(this))
+        f.find(this.landingPageEl, ".next-btn").addEventListener("click", this.startLevels.bind(this))
+    }
+
+    private startLevels() {
+        console.log("startLevels");
+        this.UI.startLevels();
     }
 
     private login() {

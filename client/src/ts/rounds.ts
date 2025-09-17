@@ -247,7 +247,8 @@ export default class Rounds {
         } else {
             // all done
             this.UI.transitionOut();
-            this.UI.prepareEndFrame();
+            // this.UI.prepareEndFrame();
+            this.UI.prepareNewEndFrame();
         }
 
         // this.UI.transitionOut();

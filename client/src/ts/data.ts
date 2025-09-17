@@ -208,7 +208,7 @@ export const qfQuestions : Array<QuickFireQuestion> = [
         answer: false,
     },
     {
-        question: "Do you enjoy your own farts?",
+        question: "Do you talk to yourself in the mirror?",
         answered : false,
         answer: false
     },
@@ -248,7 +248,7 @@ export const qfQuestions : Array<QuickFireQuestion> = [
         answer: false
     },
     {
-        question: "Gingers have no soul?",
+        question: "Paddington 2 is better than the Paddington 1?",
         answered : false,
         answer: false
     },
@@ -259,11 +259,6 @@ export const qfQuestions : Array<QuickFireQuestion> = [
     },
     {
         question: "The Big Bang Theory is better than Modern Family?",
-        answered : false,
-        answer: false
-    },
-    {
-        question: "Marijuana should be legal?",
         answered : false,
         answer: false
     },
@@ -288,7 +283,7 @@ export const qfQuestions : Array<QuickFireQuestion> = [
         answer: false
     },
     {
-        question: "Is the Earth flat?",
+        question: "The Room is a bonafide cinematic masterpiece?",
         answered : false,
         answer: false
     },
@@ -323,12 +318,7 @@ export const qfQuestions : Array<QuickFireQuestion> = [
         answer: false
     },
     {
-        question: "Joe Rogan over The Guardian?",
-        answered : false,
-        answer: false
-    },
-    {
-        question: "The Big Bang did not create Earth?",
+        question: "New York Times over The Guardian?",
         answered : false,
         answer: false
     },

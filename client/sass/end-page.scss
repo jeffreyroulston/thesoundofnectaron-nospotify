@@ -147,9 +147,9 @@
                 cursor: pointer;
             }
 
-            &:last-child {
-                margin-left: 10px;
-            }
+            // &:last-child {
+            //     margin-left: 10px;
+            // }
     
             @include maxPxH(730) {
                 padding: 10px;
