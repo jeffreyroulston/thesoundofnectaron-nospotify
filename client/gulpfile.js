@@ -50,10 +50,6 @@ gulp.task('sass:watch', function () {
   gulp.watch('./sass/**/*.scss', ['sass']);
 });
 
-gulp.task("copy-assets", function() {
-    return gulp.src(["assets/**/*"], {base: "assets"}).pipe(gulp.dest("dist/assets"));
-});
-
 gulp.task('compile-dev', gulp.series(['scripts'], function () {
     var b = browserify({
         entries: 'build/app.js',
