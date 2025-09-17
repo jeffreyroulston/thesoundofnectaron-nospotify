@@ -74,7 +74,7 @@ gulp.task("watch", function() {
 });
 
 
-gulp.task('compile', gulp.parallel(['scripts'], function () {
+gulp.task('compile', gulp.series(['scripts'], function () {
     var b = browserify({
         entries: 'build/app.js',
         debug: false
