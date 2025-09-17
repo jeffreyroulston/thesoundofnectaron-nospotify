@@ -1,4 +1,4 @@
-@import "shared";
+@use "shared" as *;
 
 #burger, #headerSmall {
     position: absolute;

@@ -16,7 +16,7 @@ $zIndexPopupPages: 99;
 $zIndexPopupPagesMobile: 101;
 
 @function center($containerWidth, $elWidth) {
-    @return calc(#{$containerWidth}/2 - (#{$elWidth}.2));
+    @return calc(#{$containerWidth} / 2 - #{$elWidth} / 2);
 }
 
 @mixin verticalAlign($value) {

@@ -7,8 +7,8 @@ var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
 var tsProject = ts.createProject("tsconfig.json");
 var del = require('del');
-var sass = require('gulp-sass');
-sass.compiler = require('node-sass');
+var dartSass = require('sass');
+var sass = require('gulp-sass')(dartSass);
 
 gulp.task("scripts", function () {
     return tsProject.src()

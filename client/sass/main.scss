@@ -1,13 +1,13 @@
-@import "shared";
-@import "landing";
-@import "waves";
-@import "nav";
-@import "round";
-@import "slider";
-@import "mcq";
-@import "qfq";
-@import "side-pages";
-@import "end-page";
+@use "shared" as *;
+@use "landing";
+@use "waves";
+@use "nav";
+@use "round";
+@use "slider";
+@use "mcq";
+@use "qfq";
+@use "side-pages";
+@use "end-page";
 
 @font-face {
     font-family: 'Circular';

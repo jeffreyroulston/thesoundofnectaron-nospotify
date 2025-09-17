@@ -1,4 +1,4 @@
-@import 'shared';
+@use 'shared' as *;
 #hop {
     background-image: url(./assets/fruit/hop_headphones.png);
     background-repeat: no-repeat;
