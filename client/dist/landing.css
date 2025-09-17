@@ -1,0 +1,83 @@
+#hop {
+  background-image: url(./assets/fruit/hop_headphones.png);
+  background-repeat: no-repeat;
+  background-size: auto 85%;
+  background-position: center;
+  z-index: -1;
+  display: none;
+}
+
+#landing .text-wrapper {
+  text-align: center;
+  width: 100%;
+  padding: 100px 0px;
+  background: -moz-linear-gradient(0deg, rgba(136, 0, 157, 0) 0%, rgba(144, 17, 161, 0.32) 50%, rgba(153, 35, 166, 0) 100%);
+  background: -webkit-linear-gradient(0deg, rgba(136, 0, 157, 0) 0%, rgba(144, 17, 161, 0.32) 50%, rgba(153, 35, 166, 0) 100%);
+  background: linear-gradient(0deg, rgba(136, 0, 157, 0) 0%, rgba(144, 17, 161, 0.32) 50%, rgba(153, 35, 166, 0) 100%);
+}
+#landing .logo-wrapper-large, #landing .logo-wrapper-mobile {
+  width: 100%;
+}
+#landing .logo, #landing .logo-head {
+  display: inline-block;
+  width: 100%;
+  overflow: visible;
+  -webkit-transition: height 0.2s ease;
+  -moz-transition: height 0.2s ease;
+  -o-transition: height 0.2s ease;
+  transition: height 0.2s ease;
+}
+#landing .logo-wrapper-large .logo-head {
+  height: 19px;
+  margin-bottom: 20px;
+}
+@media (max-width: 1024px) {
+  #landing .logo-wrapper-large .logo-head {
+    height: 18px;
+  }
+}
+#landing .logo-wrapper-large .logo {
+  height: 55px;
+}
+@media (max-width: 1024px) {
+  #landing .logo-wrapper-large .logo {
+    height: 50px;
+  }
+}
+@media (max-width: 640px) {
+  #landing .logo-wrapper-large {
+    display: none;
+  }
+}
+#landing .logo-wrapper-mobile {
+  display: none;
+}
+#landing .logo-wrapper-mobile .logo-head {
+  margin-bottom: 20px;
+  display: inline-block;
+  width: 57%;
+}
+#landing .logo-wrapper-mobile .logo {
+  height: 40vh;
+}
+@media (max-width: 640px) {
+  #landing .logo-wrapper-mobile {
+    display: block;
+  }
+}
+#landing .subheading {
+  color: #FCF1DB;
+  font-weight: 400;
+  margin: 30px 0px;
+  text-align: center;
+  display: inline-block;
+}
+#landing .subheading span {
+  display: block;
+}
+#landing .subheading span:nth-child(2) {
+  display: none;
+}
+#landing .next-btn {
+  display: inline-block;
+}

@@ -1,0 +1,74 @@
+#mc-q {
+  height: 100%;
+}
+#mc-q .mc-options {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 100px;
+}
+@media (max-width: 1024px) {
+  #mc-q .mc-options {
+    text-align: center;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    margin: 0;
+  }
+}
+#mc-q .mc-options li {
+  width: 15%;
+  height: 100%;
+  display: none;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  background-position: bottom;
+  position: relative;
+}
+@media (max-width: 640px) {
+  #mc-q .content-column {
+    top: 20px;
+  }
+}
+#mc-q .wrapper {
+  height: calc(100% - 140px);
+  top: 80px;
+}
+
+#can {
+  width: 80%;
+  height: 100%;
+  max-width: 920px;
+  position: relative;
+  margin: 0 auto;
+  background-image: url("./assets/round2/can.png");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: center;
+}
+@media (max-width: 1024px) {
+  #can {
+    height: 50%;
+    top: 25%;
+    background-size: auto 100%;
+  }
+}
+#can li {
+  width: 100%;
+  height: 0;
+  height: 100%;
+  max-width: 920px;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: center;
+}
+@media (max-width: 1024px) {
+  #can li {
+    background-size: auto 100%;
+  }
+}

@@ -1,0 +1,248 @@
+#popupPage {
+  background-color: #FCF1DB;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+#popupPage .bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url("assets/shared/faqDesktop.png");
+  background-position: center;
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  opacity: 0.1;
+}
+@media (max-width: 640px) {
+  #popupPage {
+    z-index: 101;
+  }
+}
+#popupPage h1, #popupPage p, #popupPage table {
+  color: #88009D;
+}
+#popupPage .col-wrapper {
+  width: 100%;
+  height: 100%;
+}
+#popupPage .content-wrapper {
+  position: absolute;
+}
+#popupPage .col {
+  width: 45%;
+}
+#popupPage .col.left {
+  float: left;
+}
+#popupPage .col.right {
+  float: right;
+}
+@media (max-width: 900px) {
+  #popupPage .col {
+    width: 100%;
+    float: none;
+  }
+}
+#popupPage .close-btn {
+  height: 30px;
+  display: block;
+  left: calc(50% - 15px);
+  cursor: pointer;
+  transform: rotate(0deg);
+  transition: transform 0.5s ease;
+  position: absolute;
+  z-index: 50;
+  top: 100px;
+}
+#popupPage .close-btn:hover {
+  transform: rotate(360deg);
+}
+@media (max-width: 640px) {
+  #popupPage .close-btn {
+    display: none;
+  }
+}
+#popupPage .wrapper {
+  margin: 0 auto;
+  left: 0;
+  overflow-y: scroll;
+}
+@media (max-width: 640px) {
+  #popupPage .wrapper {
+    height: calc(100% - 50px);
+    top: 50px;
+  }
+}
+
+#about, #faq, #subscribe {
+  display: none;
+  height: calc(100% - 50px);
+  margin-top: 50px;
+  position: absolute;
+  width: 100%;
+}
+@media (max-width: 640px) {
+  #about, #faq, #subscribe {
+    height: 100%;
+    margin: 0;
+  }
+}
+
+#about .content-wrapper {
+  opacity: 0.65;
+}
+#about h1 {
+  font-weight: 400;
+}
+@media (min-width: 480px) {
+  #about h1 {
+    font-size: 45px;
+  }
+}
+#about p {
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+@media (max-width: 1024px) {
+  #about h1, #about p {
+    max-width: 500px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+#about img {
+  width: 100%;
+  max-width: 500px;
+  display: block;
+  margin-bottom: 80px;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (max-width: 640px) {
+  #about img {
+    margin-top: 30px;
+    margin-bottom: 50px;
+  }
+}
+#about table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 50px;
+}
+#about tr {
+  border-bottom: 1px solid #88009D;
+  line-height: 2;
+}
+#about tr:last-child {
+  border: none;
+}
+#about td:first-child {
+  font-weight: 600;
+}
+#about .fruit {
+  height: 100%;
+}
+#about .fruit li {
+  text-align: center;
+  position: relative;
+}
+#about .fruit li img {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+  width: 100%;
+  max-width: 50vh;
+}
+#about .fruit li:first-child {
+  height: 60%;
+}
+#about .fruit li:first-child img {
+  bottom: 0px;
+}
+#about .fruit li:first-child {
+  z-index: 1;
+}
+#about .fruit li:nth-child(2) {
+  height: 40%;
+  top: -5%;
+}
+#about .fruit li:nth-child(2) img {
+  top: 0px;
+}
+
+#faq .question-wrapper {
+  max-width: 800px;
+  text-align: center;
+}
+#faq p {
+  margin-bottom: 50px;
+  margin-top: 10px;
+}
+#faq h2:nth-child(2) {
+  margin-bottom: 50px;
+  margin-top: 10px;
+  color: #FF1900;
+  text-align: center;
+}
+#faq h1 {
+  color: #FF1900;
+  text-align: center;
+}
+@media (max-width: 640px) {
+  #faq h1 {
+    margin-top: 30px;
+  }
+}
+#faq a {
+  text-decoration: underline;
+}
+#faq .content-wrapper {
+  opacity: 0.07;
+}
+#faq .desktop {
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+  position: absolute;
+  top: -25%;
+}
+@media (max-width: 1024px) {
+  #faq .desktop {
+    display: none;
+  }
+}
+#faq .subscribe-btn {
+  margin-bottom: 50px;
+  color: #FF1900;
+  text-decoration: underline;
+}
+#faq .true {
+  margin-top: 100px;
+  font-size: 14px;
+}
+#faq .true a {
+  text-decoration: none;
+}
+@media (max-width: 640px) {
+  #faq .true {
+    display: none;
+  }
+}
+
+#subscribe #subscribe-wrapper {
+  width: 80%;
+  max-width: 500px;
+  overflow: hidden;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+}
+#subscribe h1, #subscribe p {
+  margin-bottom: 50px;
+}

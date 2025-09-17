@@ -1,0 +1,72 @@
+#quickfire-q .question {
+  color: #88009D;
+  margin-bottom: 0;
+  display: inline-block;
+}
+#quickfire-q .wrapper {
+  text-align: center;
+}
+@media (max-width: 1024px) {
+  #quickfire-q .question-wrapper {
+    height: 80%;
+    top: 10%;
+    transform: none;
+  }
+}
+@media (max-width: 1024px) {
+  #quickfire-q .question-box-wrapper {
+    height: auto;
+  }
+}
+#quickfire-q #timer-wrapper {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+#quickfire-q #timer {
+  font-family: "Harbour";
+  font-weight: 600;
+  text-align: right;
+  color: #00C1F5;
+  width: 100%;
+  text-align: center;
+  font-size: 55vw;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  top: 55%;
+  -webkit-transition: font-size 0.2s ease;
+  -moz-transition: font-size 0.2s ease;
+  -o-transition: font-size 0.2s ease;
+  transition: font-size 0.2s ease;
+}
+#quickfire-q #answer-wrapper {
+  text-align: center;
+}
+@media (max-width: 1024px) {
+  #quickfire-q #answer-wrapper {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+  }
+}
+#quickfire-q #answer-wrapper li {
+  background-color: #88009D;
+  color: #FF1900;
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  position: relative;
+  top: 0px;
+  -webkit-transition: top 0.2s ease;
+  -moz-transition: top 0.2s ease;
+  -o-transition: top 0.2s ease;
+  transition: top 0.2s ease;
+}
+#quickfire-q #answer-wrapper li:first-child {
+  margin-right: 20px;
+}
+#quickfire-q #answer-wrapper li:active {
+  background-color: #FF1900;
+  color: #88009D;
+}

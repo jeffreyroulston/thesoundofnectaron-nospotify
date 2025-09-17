@@ -1,0 +1,35 @@
+.waves {
+  height: 0;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #88009D;
+  z-index: -1;
+  display: none;
+}
+.waves.flipped {
+  transform: rotate(180deg);
+  top: 0;
+}
+.waves .wave {
+  position: absolute;
+  top: -195px;
+  width: 6400px;
+  height: 198px;
+  transform: translate3d(0, 0, 0);
+  display: none;
+}
+.waves .wave:nth-child(2) {
+  top: -175px;
+}
+.waves .wave.purple {
+  background: url("./assets/waves/wave-purple.svg") repeat-x;
+  display: block;
+}
+.waves .wave.orange {
+  background: url("./assets/waves/wave-orange.svg") repeat-x;
+}
+.waves .wave.blue {
+  background: url("./assets/waves/wave-blue.svg") repeat-x;
+}
