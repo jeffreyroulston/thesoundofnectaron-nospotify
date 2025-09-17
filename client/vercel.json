@@ -8,5 +8,12 @@
         "distDir": "dist"
       }
     }
-  ]
+  ],
+  "buildCommand": "npm run vercel-build",
+  "installCommand": "npm ci",
+  "functions": {
+    "app/api/**/*.js": {
+      "runtime": "nodejs16.x"
+    }
+  }
 }
